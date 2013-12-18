@@ -54,7 +54,7 @@ class KStatusNotifierItemPrivate;
  *
  * Whenever possible you should prefer passing icon by name rather than by
  * pixmap because:
- *  
+ *
  * - it is much lighter on Dbus (no need to pass all image pixels).
  *
  * - it makes it possible for the systemtray to load an icon of the appropriate
@@ -73,15 +73,15 @@ class KNOTIFICATIONS_EXPORT KStatusNotifierItem : public QObject
 
     Q_ENUMS(ItemStatus)
     Q_ENUMS(ItemCategory)
-    Q_PROPERTY( ItemCategory category READ category WRITE setCategory )
-    Q_PROPERTY( QString title READ title WRITE setTitle )
-    Q_PROPERTY( ItemStatus status READ status WRITE setStatus )
-    Q_PROPERTY( QString iconName READ iconName WRITE setIconByName )
-    Q_PROPERTY( QString overlayIconName READ overlayIconName WRITE setOverlayIconByName )
-    Q_PROPERTY( QString attentionIconName READ attentionIconName WRITE setAttentionIconByName )
-    Q_PROPERTY( QString toolTipIconName READ toolTipIconName WRITE setToolTipIconByName )
-    Q_PROPERTY( QString toolTipTitle READ toolTipTitle WRITE setToolTipTitle )
-    Q_PROPERTY( QString toolTipSubTitle READ toolTipSubTitle WRITE setToolTipSubTitle )
+    Q_PROPERTY(ItemCategory category READ category WRITE setCategory)
+    Q_PROPERTY(QString title READ title WRITE setTitle)
+    Q_PROPERTY(ItemStatus status READ status WRITE setStatus)
+    Q_PROPERTY(QString iconName READ iconName WRITE setIconByName)
+    Q_PROPERTY(QString overlayIconName READ overlayIconName WRITE setOverlayIconByName)
+    Q_PROPERTY(QString attentionIconName READ attentionIconName WRITE setAttentionIconByName)
+    Q_PROPERTY(QString toolTipIconName READ toolTipIconName WRITE setToolTipIconByName)
+    Q_PROPERTY(QString toolTipTitle READ toolTipTitle WRITE setToolTipTitle)
+    Q_PROPERTY(QString toolTipSubTitle READ toolTipSubTitle WRITE setToolTipSubTitle)
 
     friend class KStatusNotifierItemDBus;
     friend class KStatusNotifierItemPrivate;
@@ -138,7 +138,7 @@ public:
      *
      * The id should remain consistent even between application restarts.
      * Status notifier items without ids default to the application's name for the id.
-     * This id may be used, for instance, by hosts displaying status notifier items to 
+     * This id may be used, for instance, by hosts displaying status notifier items to
      * associate configuration information with this item in a way that can persist
      * between sessions or application restarts.
      *
@@ -288,7 +288,6 @@ public:
      */
     QString attentionMovieName() const;
 
-
     //ToolTip handling
     /**
      * Sets a new toolTip or this icon, a toolTip is composed of an icon,
@@ -423,7 +422,6 @@ public:
      */
     void showMessage(const QString &title, const QString &message, const QString &icon, int timeout = 10000);
 
-
 public Q_SLOTS:
 
     /**
@@ -471,9 +469,9 @@ protected:
 private:
     KStatusNotifierItemPrivate *const d;
 
-    Q_PRIVATE_SLOT(d, void serviceChange(const QString& name,
-                                         const QString& oldOwner,
-                                         const QString& newOwner))
+    Q_PRIVATE_SLOT(d, void serviceChange(const QString &name,
+                                         const QString &oldOwner,
+                                         const QString &newOwner))
     Q_PRIVATE_SLOT(d, void checkForRegisteredHosts())
     Q_PRIVATE_SLOT(d, void registerToDaemon())
     Q_PRIVATE_SLOT(d, void contextMenuAboutToShow())

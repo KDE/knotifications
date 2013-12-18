@@ -35,22 +35,20 @@
 
 #include "statusnotifierwatcher_interface.h"
 
-
 #include "statusnotifieritemadaptor.h"
 
-#ifdef Q_OS_WIN64    
-__inline int toInt(WId wid) 
+#ifdef Q_OS_WIN64
+__inline int toInt(WId wid)
 {
-	return (int)((__int64)wid);
+    return (int)((__int64)wid);
 }
 
 #else
-__inline int toInt(WId wid) 
+__inline int toInt(WId wid)
 {
-	return (int)wid;
+    return (int)wid;
 }
-#endif        
-
+#endif
 
 // Marshall the ImageStruct data into a D-BUS argument
 const QDBusArgument &operator<<(QDBusArgument &argument, const KDbusImageStruct &icon)
@@ -83,13 +81,12 @@ const QDBusArgument &operator>>(const QDBusArgument &argument, KDbusImageStruct 
     return argument;
 }
 
-
 // Marshall the ImageVector data into a D-BUS argument
 const QDBusArgument &operator<<(QDBusArgument &argument, const KDbusImageVector &iconVector)
 {
     argument.beginArray(qMetaTypeId<KDbusImageStruct>());
-    for (int i=0; i<iconVector.size(); ++i) {
-        argument << iconVector[i]; 
+    for (int i = 0; i < iconVector.size(); ++i) {
+        argument << iconVector[i];
     }
     argument.endArray();
     return argument;
@@ -101,14 +98,13 @@ const QDBusArgument &operator>>(const QDBusArgument &argument, KDbusImageVector 
     argument.beginArray();
     iconVector.clear();
 
-    while ( !argument.atEnd() ) {
-       KDbusImageStruct element;
-       argument >> element;
-       iconVector.append(element);
+    while (!argument.atEnd()) {
+        KDbusImageStruct element;
+        argument >> element;
+        iconVector.append(element);
     }
 
     argument.endArray();
-
 
     return argument;
 }
@@ -148,21 +144,20 @@ const QDBusArgument &operator>>(const QDBusArgument &argument, KDbusToolTipStruc
     return argument;
 }
 
-
 int KStatusNotifierItemDBus::s_serviceCount = 0;
 
 KStatusNotifierItemDBus::KStatusNotifierItemDBus(KStatusNotifierItem *parent)
-  : QObject(parent),
-    m_statusNotifierItem(parent),
-    m_service(QString("org.kde.StatusNotifierItem-%1-%2")
-                      .arg(QCoreApplication::applicationPid())
-                      .arg(++s_serviceCount)),
-    m_dbus(QDBusConnection::connectToBus(QDBusConnection::SessionBus, m_service))
+    : QObject(parent),
+      m_statusNotifierItem(parent),
+      m_service(QString("org.kde.StatusNotifierItem-%1-%2")
+                .arg(QCoreApplication::applicationPid())
+                .arg(++s_serviceCount)),
+      m_dbus(QDBusConnection::connectToBus(QDBusConnection::SessionBus, m_service))
 {
-   new StatusNotifierItemAdaptor(this);
-   qDebug() << "service is" << m_service;
-   m_dbus.registerService(m_service);
-   m_dbus.registerObject("/StatusNotifierItem", this);
+    new StatusNotifierItemAdaptor(this);
+    qDebug() << "service is" << m_service;
+    m_dbus.registerService(m_service);
+    m_dbus.registerObject("/StatusNotifierItem", this);
 }
 
 KStatusNotifierItemDBus::~KStatusNotifierItemDBus()
@@ -205,7 +200,7 @@ QString KStatusNotifierItemDBus::Id() const
 }
 
 QString KStatusNotifierItemDBus::Status() const
- {
+{
     return m_statusNotifierItem->metaObject()->enumerator(m_statusNotifierItem->metaObject()->indexOfEnumerator("ItemStatus")).valueToKey(m_statusNotifierItem->status());
 }
 
@@ -217,7 +212,6 @@ int KStatusNotifierItemDBus::WindowId() const
         return 0;
     }
 }
-
 
 //Icon
 
@@ -258,7 +252,6 @@ QString KStatusNotifierItemDBus::AttentionMovieName() const
     return m_statusNotifierItem->d->movieName;
 }
 
-
 //ToolTip
 
 KDbusToolTipStruct KStatusNotifierItemDBus::ToolTip() const
@@ -293,9 +286,9 @@ void KStatusNotifierItemDBus::ContextMenu(int x, int y)
 
     //TODO: nicer placement, possible?
     if (!m_statusNotifierItem->d->menu->isVisible()) {
-        m_statusNotifierItem->d->menu->setWindowFlags(Qt::Window|Qt::FramelessWindowHint);
-        m_statusNotifierItem->d->menu->popup(QPoint(x,y));
-        KWindowSystem::setState(m_statusNotifierItem->d->menu->winId(), NET::SkipTaskbar|NET::SkipPager|NET::KeepAbove);
+        m_statusNotifierItem->d->menu->setWindowFlags(Qt::Window | Qt::FramelessWindowHint);
+        m_statusNotifierItem->d->menu->popup(QPoint(x, y));
+        KWindowSystem::setState(m_statusNotifierItem->d->menu->winId(), NET::SkipTaskbar | NET::SkipPager | NET::KeepAbove);
         KWindowSystem::setType(m_statusNotifierItem->d->menu->winId(), NET::PopupMenu);
         KWindowSystem::forceActiveWindow(m_statusNotifierItem->d->menu->winId());
     } else {
@@ -308,13 +301,13 @@ void KStatusNotifierItemDBus::Activate(int x, int y)
     if (m_statusNotifierItem->d->associatedWidget == m_statusNotifierItem->d->menu) {
         ContextMenu(x, y);
     } else {
-        m_statusNotifierItem->activate(QPoint(x,y));
+        m_statusNotifierItem->activate(QPoint(x, y));
     }
 }
 
 void KStatusNotifierItemDBus::SecondaryActivate(int x, int y)
 {
-    emit m_statusNotifierItem->secondaryActivateRequested(QPoint(x,y));
+    emit m_statusNotifierItem->secondaryActivateRequested(QPoint(x, y));
 }
 
 void KStatusNotifierItemDBus::Scroll(int delta, const QString &orientation)
@@ -322,6 +315,4 @@ void KStatusNotifierItemDBus::Scroll(int delta, const QString &orientation)
     Qt::Orientation dir = (orientation.toLower() == "horizontal" ? Qt::Horizontal : Qt::Vertical);
     emit m_statusNotifierItem->scrollRequested(delta, dir);
 }
-
-
 

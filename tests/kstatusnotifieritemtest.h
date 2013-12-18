@@ -27,7 +27,7 @@ class KStatusNotifierItem;
 
 class KStatusNotifierItemTest : public QObject
 {
-  Q_OBJECT
+    Q_OBJECT
 
 public:
     KStatusNotifierItemTest(QObject *parent, KStatusNotifierItem *tray);

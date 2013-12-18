@@ -32,22 +32,22 @@ class QStringList;
  */
 class KNotificationManager : public QObject
 {
-Q_OBJECT
-public: 
-    static KNotificationManager* self();
+    Q_OBJECT
+public:
+    static KNotificationManager *self();
     ~KNotificationManager();
 
     /**
      * send the dbus call to the knotify server
      */
-    bool notify(KNotification *n, const QPixmap& pix, const QStringList &action,
-                        const KNotification::ContextList& contexts, const QString &appname);
+    bool notify(KNotification *n, const QPixmap &pix, const QStringList &action,
+                const KNotification::ContextList &contexts, const QString &appname);
 
     /**
      * send the close dcop call to the knotify server for the notification with the identifier @p id .
      * And remove the notification from the internal map
      * @param id the id of the notification
-	 * @param force if false, only close registered notification
+     * @param force if false, only close registered notification
      */
     void close(int id, bool force = false);
 
@@ -67,12 +67,12 @@ public:
     void reemit(KNotification *n, int id);
 
 private Q_SLOTS:
-    void notificationClosed( int id );
-    void notificationActivated( int id,  int action);
+    void notificationClosed(int id);
+    void notificationActivated(int id,  int action);
 
 private:
     struct Private;
-    Private * const d;
+    Private *const d;
     KNotificationManager();
 
     friend class KNotificationManagerSingleton;

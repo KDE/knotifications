@@ -27,11 +27,10 @@
 
 #include "knotify_interface.h"
 
-typedef QHash<QString,QString> Dict;
+typedef QHash<QString, QString> Dict;
 
-struct KNotificationManager::Private
-{
-    QHash<int , KNotification*> notifications;
+struct KNotificationManager::Private {
+    QHash<int, KNotification *> notifications;
     org::kde::KNotify *knotify;
 };
 
@@ -43,16 +42,15 @@ public:
 
 Q_GLOBAL_STATIC(KNotificationManagerSingleton, s_self)
 
-KNotificationManager * KNotificationManager::self()
+KNotificationManager *KNotificationManager::self()
 {
     return &s_self()->instance;
 }
 
-
 KNotificationManager::KNotificationManager()
     : d(new Private)
 {
-    QDBusConnectionInterface* bus = QDBusConnection::sessionBus().interface();
+    QDBusConnectionInterface *bus = QDBusConnection::sessionBus().interface();
     if (!bus->isServiceRegistered("org.kde.knotify")) {
         QDBusReply<void> reply = bus->startService("org.kde.knotify");
         if (!reply.isValid()) {
@@ -62,11 +60,10 @@ KNotificationManager::KNotificationManager()
     d->knotify =
         new org::kde::KNotify(QLatin1String("org.kde.knotify"), QLatin1String("/Notify"), QDBusConnection::sessionBus(), this);
     connect(d->knotify, SIGNAL(notificationClosed(int)),
-                           this, SLOT(notificationClosed(int)));
+            this, SLOT(notificationClosed(int)));
     connect(d->knotify, SIGNAL(notificationActivated(int,int)),
-                           this, SLOT(notificationActivated(int,int)));
+            this, SLOT(notificationActivated(int,int)));
 }
-
 
 KNotificationManager::~KNotificationManager()
 {
@@ -74,21 +71,19 @@ KNotificationManager::~KNotificationManager()
     delete d;
 }
 
-void KNotificationManager::notificationActivated( int id, int action )
+void KNotificationManager::notificationActivated(int id, int action)
 {
-    if(d->notifications.contains(id))
-    {
+    if (d->notifications.contains(id)) {
         qDebug() << id << " " << action;
         KNotification *n = d->notifications[id];
         d->notifications.remove(id);
-        n->activate( action );
+        n->activate(action);
     }
 }
 
-void KNotificationManager::notificationClosed( int id )
+void KNotificationManager::notificationClosed(int id)
 {
-    if(d->notifications.contains(id))
-    {
+    if (d->notifications.contains(id)) {
         qDebug() << id;
         KNotification *n = d->notifications[id];
         d->notifications.remove(id);
@@ -96,22 +91,21 @@ void KNotificationManager::notificationClosed( int id )
     }
 }
 
-
-void KNotificationManager::close( int id, bool force )
+void KNotificationManager::close(int id, bool force)
 {
-	if(force || d->notifications.contains(id)) {
-		d->notifications.remove(id);
-		qDebug() << id;
-		d->knotify->closeNotification(id);
-	}
+    if (force || d->notifications.contains(id)) {
+        d->notifications.remove(id);
+        qDebug() << id;
+        d->knotify->closeNotification(id);
+    }
 }
 
-bool KNotificationManager::notify( KNotification* n, const QPixmap &pix,
-                                           const QStringList &actions,
-                                           const KNotification::ContextList & contexts,
-                                           const QString &appname)
+bool KNotificationManager::notify(KNotification *n, const QPixmap &pix,
+                                  const QStringList &actions,
+                                  const KNotification::ContextList &contexts,
+                                  const QString &appname)
 {
-    WId winId=n->widget() ? n->widget()->topLevelWidget()->winId()  : 0;
+    WId winId = n->widget() ? n->widget()->topLevelWidget()->winId()  : 0;
 
     QByteArray pixmapData;
     {
@@ -121,9 +115,8 @@ bool KNotificationManager::notify( KNotification* n, const QPixmap &pix,
     }
 
     QVariantList contextList;
-    typedef QPair<QString,QString> Context;
-    foreach (const Context& ctx, contexts)
-    {
+    typedef QPair<QString, QString> Context;
+    foreach (const Context &ctx, contexts) {
         QVariantList vl;
         vl << ctx.first << ctx.second;
         contextList << vl;
@@ -136,8 +129,8 @@ bool KNotificationManager::notify( KNotification* n, const QPixmap &pix,
     QList<QVariant>  args;
     args << n->eventId() << (appname.isEmpty() ? QCoreApplication::instance()->applicationName() : appname);
     args.append(QVariant(contextList));
-    args << n->title() << n->text() <<  pixmapData << QVariant(actions) << timeout << qlonglong(winId) ;
-    return d->knotify->callWithCallback( "event", args, n, SLOT(slotReceivedId(int)), SLOT(slotReceivedIdError(QDBusError)));
+    args << n->title() << n->text() <<  pixmapData << QVariant(actions) << timeout << qlonglong(winId);
+    return d->knotify->callWithCallback("event", args, n, SLOT(slotReceivedId(int)), SLOT(slotReceivedIdError(QDBusError)));
 }
 
 void KNotificationManager::insert(KNotification *n, int id)
@@ -145,36 +138,34 @@ void KNotificationManager::insert(KNotification *n, int id)
     d->notifications.insert(id, n);
 }
 
-void KNotificationManager::update(KNotification * n, int id)
+void KNotificationManager::update(KNotification *n, int id)
 {
-	if(id <= 0)
-		return;
+    if (id <= 0) {
+        return;
+    }
 
     QByteArray pixmapData;
-    if(!n->pixmap().isNull())
-    {
+    if (!n->pixmap().isNull()) {
         QBuffer buffer(&pixmapData);
         buffer.open(QIODevice::WriteOnly);
         n->pixmap().save(&buffer, "PNG");
     }
 
-    d->knotify->update(id, n->title(), n->text(), pixmapData , n->actions() );
+    d->knotify->update(id, n->title(), n->text(), pixmapData, n->actions());
 }
 
-void KNotificationManager::reemit(KNotification * n, int id)
+void KNotificationManager::reemit(KNotification *n, int id)
 {
-	QVariantList contextList;
-	typedef QPair<QString,QString> Context;
-	foreach (const Context& ctx, n->contexts())
-	{
-//		qDebug() << "add context " << ctx.first << "-" << ctx.second;
-		QVariantList vl;
-		vl << ctx.first << ctx.second;
-		contextList << vl;
-	}
+    QVariantList contextList;
+    typedef QPair<QString, QString> Context;
+    foreach (const Context &ctx, n->contexts()) {
+//      qDebug() << "add context " << ctx.first << "-" << ctx.second;
+        QVariantList vl;
+        vl << ctx.first << ctx.second;
+        contextList << vl;
+    }
 
-	d->knotify->reemit(id, contextList);
+    d->knotify->reemit(id, contextList);
 }
-
 
 #include "moc_knotificationmanager_p.cpp"

@@ -228,7 +228,6 @@ private:
     static int s_serviceCount;
 };
 
-
 const QDBusArgument &operator<<(QDBusArgument &argument, const KDbusImageStruct &icon);
 const QDBusArgument &operator>>(const QDBusArgument &argument, KDbusImageStruct &icon);
 

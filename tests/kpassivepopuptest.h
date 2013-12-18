@@ -6,23 +6,21 @@
 
 class Test : public QObject
 {
-  Q_OBJECT
+    Q_OBJECT
 
 public:
-  Test() : QObject() {}
-  ~Test() {}
+    Test() : QObject() {}
+    ~Test() {}
 
 public Q_SLOTS:
-  void showIt();
-  void showIt2();
-  void showIt3();
-  void showIt4();
-  void showIt5();
-  void showIt6();
-  void showItIcon(QSystemTrayIcon::ActivationReason);
+    void showIt();
+    void showIt2();
+    void showIt3();
+    void showIt4();
+    void showIt5();
+    void showIt6();
+    void showItIcon(QSystemTrayIcon::ActivationReason);
 };
 
-
 #endif // KPASSIVEPOPUPTEST_H
-
 

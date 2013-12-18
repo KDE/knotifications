@@ -32,7 +32,7 @@
 #include <qdebug.h>
 
 KStatusNotifierItemTest::KStatusNotifierItemTest(QObject *parent, KStatusNotifierItem *tray)
-  : QObject(parent)
+    : QObject(parent)
 {
     QMenu *menu = tray->contextMenu();
     m_tray = tray;
@@ -52,20 +52,20 @@ KStatusNotifierItemTest::KStatusNotifierItemTest(QObject *parent, KStatusNotifie
 
 void KStatusNotifierItemTest::setNeedsAttention()
 {
-    qDebug()<<"Asking for attention";
+    qDebug() << "Asking for attention";
     m_tray->showMessage("message test", "Test of the new systemtray notifications wrapper", "konqueror", 3000);
     m_tray->setStatus(KStatusNotifierItem::NeedsAttention);
 }
 
 void KStatusNotifierItemTest::setActive()
 {
-    qDebug()<<"Systray icon in active state";
+    qDebug() << "Systray icon in active state";
     m_tray->setStatus(KStatusNotifierItem::Active);
 }
 
 void KStatusNotifierItemTest::setPassive()
 {
-    qDebug()<<"Systray icon in passive state";
+    qDebug() << "Systray icon in passive state";
     m_tray->setStatus(KStatusNotifierItem::Passive);
 }
 
@@ -85,14 +85,14 @@ int main(int argc, char **argv)
 
         if (parser.positionalArguments().count() != 0) {
             parser.showHelp();
-            return ( 1 );
+            return (1);
         }
         ksniCount = parser.value("ksni-count").toInt();
         iconName = parser.value("active-icon");
     }
 
     QLabel *l = new QLabel("System Tray Main Window", 0L);
-    for (int x=0; x < ksniCount; ++x) {
+    for (int x = 0; x < ksniCount; ++x) {
         KStatusNotifierItem *tray = new KStatusNotifierItem(l);
 
         new KStatusNotifierItemTest(0, tray);

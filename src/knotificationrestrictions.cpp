@@ -37,40 +37,40 @@
 
 class KNotificationRestrictions::Private
 {
-    public:
-        Private( KNotificationRestrictions* qq, Services c )
-            : q( qq ),
-              control(c)
-            , screenSaverDbusCookie(-1)
+public:
+    Private(KNotificationRestrictions *qq, Services c)
+        : q(qq),
+          control(c)
+          , screenSaverDbusCookie(-1)
 #if HAVE_XTEST
-             ,screensaverTimer(0),
-              haveXTest(0),
-              XTestKeyCode(0)
+          , screensaverTimer(0),
+          haveXTest(0),
+          XTestKeyCode(0)
 #endif // HAVE_XTEST
-        {
-        }
+    {
+    }
 
-        void screensaverFakeKeyEvent();
-        void startScreenSaverPrevention();
-        void stopScreenSaverPrevention();
+    void screensaverFakeKeyEvent();
+    void startScreenSaverPrevention();
+    void stopScreenSaverPrevention();
 
-        static QString determineProgramName();
+    static QString determineProgramName();
 
-        KNotificationRestrictions* q;
-        Services control;
-        int screenSaverDbusCookie;
-        QString reason;
+    KNotificationRestrictions *q;
+    Services control;
+    int screenSaverDbusCookie;
+    QString reason;
 #if HAVE_XTEST
-        QTimer* screensaverTimer;
-        int haveXTest;
-        int XTestKeyCode;
+    QTimer *screensaverTimer;
+    int haveXTest;
+    int XTestKeyCode;
 #endif // HAVE_XTEST
 };
 
-KNotificationRestrictions::KNotificationRestrictions( Services control,
-                                                      QObject* parent )
+KNotificationRestrictions::KNotificationRestrictions(Services control,
+        QObject *parent)
     : QObject(parent),
-      d( new Private( this, control ) )
+      d(new Private(this, control))
 {
     if (d->control & ScreenSaver) {
         d->startScreenSaverPrevention();
@@ -91,7 +91,7 @@ void KNotificationRestrictions::Private::screensaverFakeKeyEvent()
     qDebug();
 #if HAVE_XTEST
     qDebug() << "---- using XTestFakeKeyEvent";
-    Display* display = QX11Info::display();
+    Display *display = QX11Info::display();
     XTestFakeKeyEvent(display, XTestKeyCode, true, CurrentTime);
     XTestFakeKeyEvent(display, XTestKeyCode, false, CurrentTime);
     XSync(display, false);
@@ -103,7 +103,7 @@ void KNotificationRestrictions::Private::startScreenSaverPrevention()
     qDebug();
 
     QDBusMessage message = QDBusMessage::createMethodCall(
-            "org.freedesktop.ScreenSaver", "/ScreenSaver", "org.freedesktop.ScreenSaver", "Inhibit");
+                               "org.freedesktop.ScreenSaver", "/ScreenSaver", "org.freedesktop.ScreenSaver", "Inhibit");
     message << determineProgramName();
     message << reason;
     QDBusReply<uint> reply = QDBusConnection::sessionBus().call(message);
@@ -112,36 +112,36 @@ void KNotificationRestrictions::Private::startScreenSaverPrevention()
         return;
     }
 #if HAVE_XTEST
-    if ( !haveXTest ) {
-        int a,b,c,e;
+    if (!haveXTest) {
+        int a, b, c, e;
         haveXTest = XTestQueryExtension(QX11Info::display(), &a, &b, &c, &e);
 
-        if ( !haveXTest ) {
+        if (!haveXTest) {
             qDebug() << "--- No XTEST!";
             return;
         }
     }
 
-    if ( !XTestKeyCode ) {
+    if (!XTestKeyCode) {
         XTestKeyCode = XKeysymToKeycode(QX11Info::display(), XK_Shift_L);
 
-        if ( !XTestKeyCode ) {
+        if (!XTestKeyCode) {
             qDebug() << "--- No XKeyCode for XK_Shift_L!";
             return;
         }
     }
 
-    if ( !screensaverTimer ) {
-        screensaverTimer = new QTimer( q );
-        connect( screensaverTimer, SIGNAL(timeout()),
-                 q, SLOT(screensaverFakeKeyEvent()) );
+    if (!screensaverTimer) {
+        screensaverTimer = new QTimer(q);
+        connect(screensaverTimer, SIGNAL(timeout()),
+                q, SLOT(screensaverFakeKeyEvent()));
     }
 
     qDebug() << "---- using XTest";
     // send a fake event right away in case this got started after a period of
     // innactivity leading to the screensaver set to activate in <55s
     screensaverFakeKeyEvent();
-    screensaverTimer->start( 55000 );
+    screensaverTimer->start(55000);
 #endif // HAVE_XTEST
 }
 
@@ -150,7 +150,7 @@ void KNotificationRestrictions::Private::stopScreenSaverPrevention()
 
     if (screenSaverDbusCookie != -1) {
         QDBusMessage message = QDBusMessage::createMethodCall(
-                "org.freedesktop.ScreenSaver", "/ScreenSaver", "org.freedesktop.ScreenSaver", "UnInhibit");
+                                   "org.freedesktop.ScreenSaver", "/ScreenSaver", "org.freedesktop.ScreenSaver", "UnInhibit");
         message << static_cast<uint>(screenSaverDbusCookie);
         screenSaverDbusCookie = -1;
         if (QDBusConnection::sessionBus().send(message)) {

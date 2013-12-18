@@ -48,62 +48,61 @@ class KNOTIFICATIONS_EXPORT KNotificationRestrictions : public QObject
 {
     Q_OBJECT
 
-    public:
+public:
+    /**
+     * @enum Service
+     */
+    enum Service {
         /**
-         * @enum Service
+         * The baseline "don't disable anything" value.
          */
-        enum Service
-        {
-            /**
-             * The baseline "don't disable anything" value.
-             */
-            NoServices = 0,
-            /**
-             * Causes the screensaver to be prevented from automatically
-             * turning on.
-             */
-            ScreenSaver = 1,
-            /**
-             * Causes instant messaging and email notifications to not appear.
-             *
-             * @note <b>not implemented yet</b>
-             */
-            MessagingPopups = 2,
-            /**
-             * Causes non-critical desktop messages to be suppressed.
-             *
-             * @note <b>not implemented yet</b>
-             */
-            Notifications = 4,
-            /**
-             * Causes all desktop notifications, including critical ones
-             * (such as as "battery low" warnings) to be suppressed.
-             *
-             * @note <b>not implemented yet</b>
-             */
-            CriticalNotifications = 8,
-            NonCriticalServices = ScreenSaver |
-                                  MessagingPopups |
-                                  Notifications,
-            AllServices = NonCriticalServices | CriticalNotifications
-        };
-        Q_DECLARE_FLAGS(Services, Service)
-
+        NoServices = 0,
         /**
-         * Constructs a new service for restrict some services.
+         * Causes the screensaver to be prevented from automatically
+         * turning on.
+         */
+        ScreenSaver = 1,
+        /**
+         * Causes instant messaging and email notifications to not appear.
          *
-         * @param control the services to be restricted
-         * @param parent the parent of this object
+         * @note <b>not implemented yet</b>
          */
-        explicit KNotificationRestrictions(Services control = NonCriticalServices,
-                                           QObject* parent = 0);
-        virtual ~KNotificationRestrictions();
+        MessagingPopups = 2,
+        /**
+         * Causes non-critical desktop messages to be suppressed.
+         *
+         * @note <b>not implemented yet</b>
+         */
+        Notifications = 4,
+        /**
+         * Causes all desktop notifications, including critical ones
+         * (such as as "battery low" warnings) to be suppressed.
+         *
+         * @note <b>not implemented yet</b>
+         */
+        CriticalNotifications = 8,
+        NonCriticalServices = ScreenSaver |
+                              MessagingPopups |
+                              Notifications,
+        AllServices = NonCriticalServices | CriticalNotifications
+    };
+    Q_DECLARE_FLAGS(Services, Service)
 
-    private:
-        class Private;
-        Private * const d;
+    /**
+     * Constructs a new service for restrict some services.
+     *
+     * @param control the services to be restricted
+     * @param parent the parent of this object
+     */
+    explicit KNotificationRestrictions(Services control = NonCriticalServices,
+                                       QObject *parent = 0);
+    virtual ~KNotificationRestrictions();
 
-        Q_PRIVATE_SLOT( d, void screensaverFakeKeyEvent() )
+private:
+    class Private;
+    Private *const d;
+
+    Q_PRIVATE_SLOT(d, void screensaverFakeKeyEvent())
 };
 
 Q_DECLARE_OPERATORS_FOR_FLAGS(KNotificationRestrictions::Services)

@@ -56,13 +56,13 @@ class KDBusMenuExporter : public DBusMenuExporter
 {
 public:
     KDBusMenuExporter(const QString &dbusObjectPath, QMenu *menu, const QDBusConnection &dbusConnection)
-    : DBusMenuExporter(dbusObjectPath, menu, dbusConnection)
+        : DBusMenuExporter(dbusObjectPath, menu, dbusConnection)
     {}
 
 protected:
     virtual QString iconNameForAction(QAction *action)
     {
-	QIcon icon(action->icon());
+        QIcon icon(action->icon());
 #if QT_VERSION >= 0x040701
         // QIcon::name() is in the 4.7 git branch, but it is not in 4.7 TP.
         // If you get a build error here, you need to update your pre-release
@@ -98,16 +98,15 @@ protected:
 #endif //HAVE_DBUSMENUQT
 
 KStatusNotifierItem::KStatusNotifierItem(QObject *parent)
-      : QObject(parent),
-        d(new KStatusNotifierItemPrivate(this))
+    : QObject(parent),
+      d(new KStatusNotifierItemPrivate(this))
 {
     d->init(QString());
 }
 
-
 KStatusNotifierItem::KStatusNotifierItem(const QString &id, QObject *parent)
-      : QObject(parent),
-        d(new KStatusNotifierItemPrivate(this))
+    : QObject(parent),
+      d(new KStatusNotifierItemPrivate(this))
 {
     d->init(id);
 }
@@ -163,8 +162,6 @@ void KStatusNotifierItem::setStatus(const ItemStatus status)
     }
 }
 
-
-
 //normal icon
 
 void KStatusNotifierItem::setIconByName(const QString &name)
@@ -218,9 +215,9 @@ void KStatusNotifierItem::setOverlayIconByName(const QString &name)
     if (d->systemTrayIcon) {
         QPixmap iconPixmap = QIcon::fromTheme(d->iconName).pixmap(s_legacyTrayIconSize, s_legacyTrayIconSize);
         if (!name.isEmpty()) {
-            QPixmap overlayPixmap = QIcon::fromTheme(d->overlayIconName).pixmap(s_legacyTrayIconSize/2, s_legacyTrayIconSize/2);
+            QPixmap overlayPixmap = QIcon::fromTheme(d->overlayIconName).pixmap(s_legacyTrayIconSize / 2, s_legacyTrayIconSize / 2);
             QPainter p(&iconPixmap);
-            p.drawPixmap(iconPixmap.width()-overlayPixmap.width(), iconPixmap.height()-overlayPixmap.height(), overlayPixmap);
+            p.drawPixmap(iconPixmap.width() - overlayPixmap.width(), iconPixmap.height() - overlayPixmap.height(), overlayPixmap);
             p.end();
         }
         d->systemTrayIcon->setIcon(iconPixmap);
@@ -245,10 +242,10 @@ void KStatusNotifierItem::setOverlayIconByPixmap(const QIcon &icon)
     d->overlayIcon = icon;
     if (d->systemTrayIcon) {
         QPixmap iconPixmap = d->icon.pixmap(s_legacyTrayIconSize, s_legacyTrayIconSize);
-        QPixmap overlayPixmap = d->overlayIcon.pixmap(s_legacyTrayIconSize/2, s_legacyTrayIconSize/2);
+        QPixmap overlayPixmap = d->overlayIcon.pixmap(s_legacyTrayIconSize / 2, s_legacyTrayIconSize / 2);
 
         QPainter p(&iconPixmap);
-        p.drawPixmap(iconPixmap.width()-overlayPixmap.width(), iconPixmap.height()-overlayPixmap.height(), overlayPixmap);
+        p.drawPixmap(iconPixmap.width() - overlayPixmap.width(), iconPixmap.height() - overlayPixmap.height(), overlayPixmap);
         p.end();
         d->systemTrayIcon->setIcon(iconPixmap);
     }
@@ -323,8 +320,8 @@ QString KStatusNotifierItem::attentionMovieName() const
 void KStatusNotifierItem::setToolTip(const QString &iconName, const QString &title, const QString &subTitle)
 {
     if (d->toolTipIconName == iconName &&
-        d->toolTipTitle == title &&
-        d->toolTipSubTitle == subTitle) {
+            d->toolTipTitle == title &&
+            d->toolTipSubTitle == subTitle) {
         return;
     }
 
@@ -343,8 +340,8 @@ void KStatusNotifierItem::setToolTip(const QString &iconName, const QString &tit
 void KStatusNotifierItem::setToolTip(const QIcon &icon, const QString &title, const QString &subTitle)
 {
     if (d->toolTipIconName.isEmpty() && d->toolTipIcon.cacheKey() == icon.cacheKey() &&
-        d->toolTipTitle == title &&
-        d->toolTipSubTitle == subTitle) {
+            d->toolTipTitle == title &&
+            d->toolTipSubTitle == subTitle) {
         return;
     }
 
@@ -549,7 +546,6 @@ void KStatusNotifierItem::setStandardActionsEnabled(bool enabled)
             d->menu->removeAction(action);
         }
 
-
         d->hasQuit = false;
     }
 }
@@ -559,11 +555,11 @@ bool KStatusNotifierItem::standardActionsEnabled() const
     return d->standardActionsEnabled;
 }
 
-void KStatusNotifierItem::showMessage(const QString & title, const QString & message, const QString &icon, int timeout)
+void KStatusNotifierItem::showMessage(const QString &title, const QString &message, const QString &icon, int timeout)
 {
     if (!d->notificationsClient) {
         d->notificationsClient = new org::freedesktop::Notifications("org.freedesktop.Notifications", "/org/freedesktop/Notifications",
-                                                QDBusConnection::sessionBus());
+                QDBusConnection::sessionBus());
     }
 
     uint id = 0;
@@ -574,8 +570,6 @@ QString KStatusNotifierItem::title() const
 {
     return d->title;
 }
-
-
 
 void KStatusNotifierItem::activate(const QPoint &pos)
 {
@@ -610,7 +604,7 @@ bool KStatusNotifierItemPrivate::checkVisibility(QPoint pos, bool perform)
     // the problem is that we lose focus when the systray icon is activated
     // and we don't know the former active window
     // therefore we watch for activation event and use our stopwatch :)
-    if(GetTickCount() - dwTickCount < 300) {
+    if (GetTickCount() - dwTickCount < 300) {
         // we were active in the last 300ms -> hide it
         minimizeRestore(false);
         emit activateRequested(false, pos);
@@ -637,7 +631,7 @@ bool KStatusNotifierItemPrivate::checkVisibility(QPoint pos, bool perform)
 
         return true;
     } else {
-        QListIterator< WId > it (KWindowSystem::stackingOrder());
+        QListIterator< WId > it(KWindowSystem::stackingOrder());
         it.toBack();
         while (it.hasPrevious()) {
             WId id = it.previous();
@@ -646,7 +640,7 @@ bool KStatusNotifierItemPrivate::checkVisibility(QPoint pos, bool perform)
             }
 
             KWindowInfo info2 = KWindowSystem::windowInfo(id,
-                NET::WMDesktop | NET::WMGeometry | NET::XAWMState | NET::WMState | NET::WMWindowType);
+                                NET::WMDesktop | NET::WMGeometry | NET::XAWMState | NET::WMState | NET::WMWindowType);
 
             if (info2.mappingState() != NET::Visible) {
                 continue; // not visible on current desktop -> ignore
@@ -661,8 +655,8 @@ bool KStatusNotifierItemPrivate::checkVisibility(QPoint pos, bool perform)
             }
 
             NET::WindowType type = info2.windowType(NET::NormalMask | NET::DesktopMask
-                | NET::DockMask | NET::ToolbarMask | NET::MenuMask | NET::DialogMask
-                | NET::OverrideMask | NET::TopMenuMask | NET::UtilityMask | NET::SplashMask);
+                                                    | NET::DockMask | NET::ToolbarMask | NET::MenuMask | NET::DialogMask
+                                                    | NET::OverrideMask | NET::TopMenuMask | NET::UtilityMask | NET::SplashMask);
 
             if (type == NET::Dock || type == NET::TopMenu) {
                 continue; // obscured by dock or topmenu -> ignore
@@ -704,14 +698,13 @@ bool KStatusNotifierItem::eventFilter(QObject *watched, QEvent *event)
     if (d->systemTrayIcon == 0) {
         //FIXME: ugly ugly workaround to weird QMenu's focus problems
         if (watched == d->menu &&
-            (event->type() == QEvent::WindowDeactivate || (event->type() == QEvent::MouseButtonRelease && static_cast<QMouseEvent*>(event)->button() == Qt::LeftButton))) {
+                (event->type() == QEvent::WindowDeactivate || (event->type() == QEvent::MouseButtonRelease && static_cast<QMouseEvent *>(event)->button() == Qt::LeftButton))) {
             //put at the back of even queue to let the action activate anyways
             QTimer::singleShot(0, this, SLOT(hideMenu()));
         }
     }
     return false;
 }
-
 
 //KStatusNotifierItemPrivate
 
@@ -740,12 +733,12 @@ void KStatusNotifierItemPrivate::init(const QString &extraId)
     qDBusRegisterMetaType<KDbusToolTipStruct>();
 
     statusNotifierItemDBus = new KStatusNotifierItemDBus(q);
-    q->setAssociatedWidget(qobject_cast<QWidget*>(q->parent()));
+    q->setAssociatedWidget(qobject_cast<QWidget *>(q->parent()));
 
     QDBusServiceWatcher *watcher = new QDBusServiceWatcher(s_statusNotifierWatcherServiceName,
-                                                           QDBusConnection::sessionBus(),
-                                                           QDBusServiceWatcher::WatchForOwnerChange,
-                                                           q);
+            QDBusConnection::sessionBus(),
+            QDBusServiceWatcher::WatchForOwnerChange,
+            q);
     QObject::connect(watcher, SIGNAL(serviceOwnerChanged(QString,QString,QString)),
                      q, SLOT(serviceChange(QString,QString,QString)));
 
@@ -753,8 +746,9 @@ void KStatusNotifierItemPrivate::init(const QString &extraId)
     QMenu *m = new QMenu(associatedWidget);
 
     title = QGuiApplication::applicationDisplayName();
-    if (title.isEmpty())
+    if (title.isEmpty()) {
         title = QCoreApplication::applicationName();
+    }
     titleAction = m->addSection(qApp->windowIcon(), title);
     m->setTitle(title);
     q->setContextMenu(m);
@@ -781,7 +775,7 @@ void KStatusNotifierItemPrivate::registerToDaemon()
     qDebug() << "Registering a client interface to the KStatusNotifierWatcher";
     if (!statusNotifierWatcher) {
         statusNotifierWatcher = new org::kde::StatusNotifierWatcher(s_statusNotifierWatcherServiceName, "/StatusNotifierWatcher",
-                                                                    QDBusConnection::sessionBus());
+                QDBusConnection::sessionBus());
         QObject::connect(statusNotifierWatcher, SIGNAL(StatusNotifierHostRegistered()),
                          q, SLOT(checkForRegisteredHosts()));
         QObject::connect(statusNotifierWatcher, SIGNAL(StatusNotifierHostUnregistered()),
@@ -789,12 +783,12 @@ void KStatusNotifierItemPrivate::registerToDaemon()
     }
 
     if (statusNotifierWatcher->isValid() &&
-        statusNotifierWatcher->property("ProtocolVersion").toInt() == s_protocolVersion) {
+            statusNotifierWatcher->property("ProtocolVersion").toInt() == s_protocolVersion) {
 
         statusNotifierWatcher->RegisterStatusNotifierItem(statusNotifierItemDBus->service());
         setLegacySystemTrayEnabled(false);
     } else {
-        qDebug()<<"KStatusNotifierWatcher not reachable";
+        qDebug() << "KStatusNotifierWatcher not reachable";
         setLegacySystemTrayEnabled(true);
     }
 }
@@ -810,7 +804,7 @@ void KStatusNotifierItemPrivate::serviceChange(const QString &name, const QStrin
         statusNotifierWatcher = 0;
     } else if (oldOwner.isEmpty()) {
         //registered
-       setLegacyMode(false);
+        setLegacyMode(false);
     }
 }
 
@@ -931,7 +925,7 @@ void KStatusNotifierItemPrivate::contextMenuAboutToShow()
     }
 
     if (associatedWidget && associatedWidget != menu) {
-        QAction* action = actionCollection.value("minimizeRestore");
+        QAction *action = actionCollection.value("minimizeRestore");
         if (checkVisibility(QPoint(0, 0), false)) {
             action->setText(q->tr("&Restore"));
         } else {
@@ -943,12 +937,13 @@ void KStatusNotifierItemPrivate::contextMenuAboutToShow()
 void KStatusNotifierItemPrivate::maybeQuit()
 {
     QString caption = QGuiApplication::applicationDisplayName();
-    if (caption.isEmpty())
+    if (caption.isEmpty()) {
         caption = QCoreApplication::applicationName();
+    }
 
     QString query = q->tr("<qt>Are you sure you want to quit <b>%1</b>?</qt>", caption.toUtf8());
 
-    if (QMessageBox::question(associatedWidget, 
+    if (QMessageBox::question(associatedWidget,
                               q->tr("Confirm Quit From System Tray"), query)) {
         qApp->quit();
     }
@@ -1002,16 +997,16 @@ KDbusImageStruct KStatusNotifierItemPrivate::imageToStruct(const QImage &image)
     icon.width = image.size().width();
     icon.height = image.size().height();
     if (image.format() == QImage::Format_ARGB32) {
-        icon.data = QByteArray((char*)image.bits(), image.byteCount());
+        icon.data = QByteArray((char *)image.bits(), image.byteCount());
     } else {
         QImage image32 = image.convertToFormat(QImage::Format_ARGB32);
-        icon.data = QByteArray((char*)image32.bits(), image32.byteCount());
+        icon.data = QByteArray((char *)image32.bits(), image32.byteCount());
     }
 
     //swap to network byte order if we are little endian
     if (QSysInfo::ByteOrder == QSysInfo::LittleEndian) {
         quint32 *uintBuf = (quint32 *) icon.data.data();
-        for (uint i = 0; i < icon.data.size()/sizeof(quint32); ++i) {
+        for (uint i = 0; i < icon.data.size() / sizeof(quint32); ++i) {
             *uintBuf = qToBigEndian(*uintBuf);
             ++uintBuf;
         }

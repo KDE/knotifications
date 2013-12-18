@@ -45,28 +45,28 @@
 #endif
 
 static const int DEFAULT_POPUP_TYPE = KPassivePopup::Boxed;
-static const int DEFAULT_POPUP_TIME = 6*1000;
+static const int DEFAULT_POPUP_TIME = 6 * 1000;
 static const Qt::WindowFlags POPUP_FLAGS = Qt::Tool | Qt::X11BypassWindowManagerHint | Qt::WindowStaysOnTopHint | Qt::FramelessWindowHint;
 
 class KPassivePopup::Private
 {
 public:
     Private(KPassivePopup *q, WId winId)
-    : q(q),
-      popupStyle(DEFAULT_POPUP_TYPE),
-      window(winId),
-      msgView(0),
-      topLayout(0),
-      hideDelay(DEFAULT_POPUP_TIME),
-      hideTimer(new QTimer(q)),
-      autoDelete(false)
+        : q(q),
+          popupStyle(DEFAULT_POPUP_TYPE),
+          window(winId),
+          msgView(0),
+          topLayout(0),
+          hideDelay(DEFAULT_POPUP_TIME),
+          hideTimer(new QTimer(q)),
+          autoDelete(false)
     {
         q->setWindowFlags(POPUP_FLAGS);
-        q->setFrameStyle(QFrame::Box| QFrame::Plain);
+        q->setFrameStyle(QFrame::Box | QFrame::Plain);
         q->setLineWidth(2);
 
         if (popupStyle == Boxed) {
-            q->setFrameStyle(QFrame::Box| QFrame::Plain);
+            q->setFrameStyle(QFrame::Box | QFrame::Plain);
             q->setLineWidth(2);
         } else if (popupStyle == Balloon) {
             q->setPalette(QToolTip::palette());
@@ -113,8 +113,8 @@ public:
             xh = width - 40;
         }
 
-        bool bottom = (anchor.y() + height) > ((deskRect.y() + deskRect.height()-48));
-        bool right = (anchor.x() + width) > ((deskRect.x() + deskRect.width()-48));
+        bool bottom = (anchor.y() + height) > ((deskRect.y() + deskRect.height() - 48));
+        bool right = (anchor.x() + width) > ((deskRect.x() + deskRect.width() - 48));
 
         QPoint corners[4] = {
             QPoint(width - 50, 10),
@@ -182,14 +182,15 @@ public:
     /**
      * Calculates the position to place the popup near the specified rectangle.
      */
-    QPoint calculateNearbyPoint(const QRect &target) {
+    QPoint calculateNearbyPoint(const QRect &target)
+    {
         QPoint pos = target.topLeft();
         int x = pos.x();
         int y = pos.y();
         int w = q->minimumSizeHint().width();
         int h = q->minimumSizeHint().height();
 
-        QRect r = QApplication::desktop()->screenGeometry(QPoint(x+w/2,y+h/2));
+        QRect r = QApplication::desktop()->screenGeometry(QPoint(x + w / 2, y + h / 2));
 
         if (popupStyle == Balloon) {
             // find a point to anchor to
@@ -245,50 +246,47 @@ KPassivePopup::~KPassivePopup()
     delete d;
 }
 
-void KPassivePopup::setPopupStyle( int popupstyle )
+void KPassivePopup::setPopupStyle(int popupstyle)
 {
-    if ( d->popupStyle == popupstyle )
-	return;
+    if (d->popupStyle == popupstyle) {
+        return;
+    }
 
     d->popupStyle = popupstyle;
-    if( d->popupStyle == Boxed )
-    {
-        setFrameStyle( QFrame::Box| QFrame::Plain );
-        setLineWidth( 2 );
-    }
-    else if( d->popupStyle == Balloon )
-    {
+    if (d->popupStyle == Boxed) {
+        setFrameStyle(QFrame::Box | QFrame::Plain);
+        setLineWidth(2);
+    } else if (d->popupStyle == Balloon) {
         setPalette(QToolTip::palette());
     }
 }
 
-void KPassivePopup::setView( QWidget *child )
+void KPassivePopup::setView(QWidget *child)
 {
     delete d->msgView;
     d->msgView = child;
 
     delete d->topLayout;
-    d->topLayout = new QVBoxLayout( this );
-    if ( d->popupStyle == Balloon ) {
+    d->topLayout = new QVBoxLayout(this);
+    if (d->popupStyle == Balloon) {
         const int marginHint = style()->pixelMetric(QStyle::PM_DefaultChildMargin);
-        d->topLayout->setMargin( 2 * marginHint );
+        d->topLayout->setMargin(2 * marginHint);
     }
-    d->topLayout->addWidget( d->msgView );
+    d->topLayout->addWidget(d->msgView);
     d->topLayout->activate();
 }
 
-void KPassivePopup::setView( const QString &caption, const QString &text,
-                             const QPixmap &icon )
+void KPassivePopup::setView(const QString &caption, const QString &text,
+                            const QPixmap &icon)
 {
     // qDebug() << "KPassivePopup::setView " << caption << ", " << text;
-    setView( standardView( caption, text, icon, this ) );
+    setView(standardView(caption, text, icon, this));
 }
 
-
-QWidget * KPassivePopup::standardView( const QString& caption,
-                                     const QString& text,
-                                     const QPixmap& icon,
-                                     QWidget *parent )
+QWidget *KPassivePopup::standardView(const QString &caption,
+                                     const QString &text,
+                                     const QPixmap &icon,
+                                     QWidget *parent)
 {
     QWidget *top = new QWidget(parent ? parent : this);
     QVBoxLayout *vb = new QVBoxLayout(top);
@@ -296,34 +294,34 @@ QWidget * KPassivePopup::standardView( const QString& caption,
     top->setLayout(vb);
 
     QHBoxLayout *hb = 0;
-    if ( !icon.isNull() ) {
-	hb = new QHBoxLayout( top );
-	hb->setMargin( 0 );
-        vb->addLayout( hb );
-	d->ttlIcon = new QLabel( top );
-	d->ttlIcon->setPixmap( icon );
-        d->ttlIcon->setAlignment( Qt::AlignLeft );
-        hb->addWidget( d->ttlIcon );
+    if (!icon.isNull()) {
+        hb = new QHBoxLayout(top);
+        hb->setMargin(0);
+        vb->addLayout(hb);
+        d->ttlIcon = new QLabel(top);
+        d->ttlIcon->setPixmap(icon);
+        d->ttlIcon->setAlignment(Qt::AlignLeft);
+        hb->addWidget(d->ttlIcon);
     }
 
-    if ( !caption.isEmpty() ) {
-	d->ttl = new QLabel( caption, top );
-	QFont fnt = d->ttl->font();
-	fnt.setBold( true );
-	d->ttl->setFont( fnt );
-	d->ttl->setAlignment( Qt::AlignHCenter );
+    if (!caption.isEmpty()) {
+        d->ttl = new QLabel(caption, top);
+        QFont fnt = d->ttl->font();
+        fnt.setBold(true);
+        d->ttl->setFont(fnt);
+        d->ttl->setAlignment(Qt::AlignHCenter);
 
-        if ( hb ) {
+        if (hb) {
             hb->addWidget(d->ttl);
-            hb->setStretchFactor( d->ttl, 10 ); // enforce centering
+            hb->setStretchFactor(d->ttl, 10);   // enforce centering
         } else {
             vb->addWidget(d->ttl);
         }
     }
 
-    if ( !text.isEmpty() ) {
-        d->msg = new QLabel( text, top );
-        d->msg->setAlignment( Qt::AlignLeft );
+    if (!text.isEmpty()) {
+        d->msg = new QLabel(text, top);
+        d->msg->setAlignment(Qt::AlignLeft);
         d->msg->setTextInteractionFlags(Qt::LinksAccessibleByMouse);
         d->msg->setOpenExternalLinks(true);
         vb->addWidget(d->msg);
@@ -332,9 +330,9 @@ QWidget * KPassivePopup::standardView( const QString& caption,
     return top;
 }
 
-void KPassivePopup::setView( const QString &caption, const QString &text )
+void KPassivePopup::setView(const QString &caption, const QString &text)
 {
-    setView( caption, text, QPixmap() );
+    setView(caption, text, QPixmap());
 }
 
 QWidget *KPassivePopup::view() const
@@ -347,13 +345,12 @@ int KPassivePopup::timeout() const
     return d->hideDelay;
 }
 
-void KPassivePopup::setTimeout( int delay )
+void KPassivePopup::setTimeout(int delay)
 {
     d->hideDelay = delay;
-    if( d->hideTimer->isActive() )
-    {
-        if( delay ) {
-            d->hideTimer->start( delay );
+    if (d->hideTimer->isActive()) {
+        if (delay) {
+            d->hideTimer->start(delay);
         } else {
             d->hideTimer->stop();
         }
@@ -365,48 +362,50 @@ bool KPassivePopup::autoDelete() const
     return d->autoDelete;
 }
 
-void KPassivePopup::setAutoDelete( bool autoDelete )
+void KPassivePopup::setAutoDelete(bool autoDelete)
 {
     d->autoDelete = autoDelete;
 }
 
-void KPassivePopup::mouseReleaseEvent( QMouseEvent *e )
+void KPassivePopup::mouseReleaseEvent(QMouseEvent *e)
 {
     emit clicked();
-    emit clicked( e->pos() );
+    emit clicked(e->pos());
 }
 
 //
 // Main Implementation
 //
 
-void KPassivePopup::setVisible( bool visible )
+void KPassivePopup::setVisible(bool visible)
 {
-    if (! visible ) {
-        QFrame::setVisible( visible );
+    if (! visible) {
+        QFrame::setVisible(visible);
         return;
     }
 
-    if ( size() != sizeHint() )
-        resize( sizeHint() );
-
-    if ( d->fixedPosition.isNull() )
-        positionSelf();
-    else {
-        if( d->popupStyle == Balloon )
-            setAnchor( d->fixedPosition );
-        else
-            move( d->fixedPosition );
+    if (size() != sizeHint()) {
+        resize(sizeHint());
     }
-    QFrame::setVisible( /*visible=*/ true );
+
+    if (d->fixedPosition.isNull()) {
+        positionSelf();
+    } else {
+        if (d->popupStyle == Balloon) {
+            setAnchor(d->fixedPosition);
+        } else {
+            move(d->fixedPosition);
+        }
+    }
+    QFrame::setVisible(/*visible=*/ true);
 
     int delay = d->hideDelay;
-    if ( delay < 0 ) {
+    if (delay < 0) {
         delay = DEFAULT_POPUP_TIME;
     }
 
-    if ( delay > 0 ) {
-        d->hideTimer->start( delay );
+    if (delay > 0) {
+        d->hideTimer->start(delay);
     }
 }
 
@@ -416,11 +415,12 @@ void KPassivePopup::show(const QPoint &p)
     show();
 }
 
-void KPassivePopup::hideEvent( QHideEvent * )
+void KPassivePopup::hideEvent(QHideEvent *)
 {
     d->hideTimer->stop();
-    if ( d->autoDelete )
+    if (d->autoDelete) {
         deleteLater();
+    }
 }
 
 QPoint KPassivePopup::defaultLocation() const
@@ -433,63 +433,63 @@ void KPassivePopup::positionSelf()
 {
     QRect target;
 
-    if ( !d->window ) {
+    if (!d->window) {
         target = QRect(defaultLocation(), QSize(0, 0));
 #if HAVE_X11
-    } else if ( QX11Info::isPlatformX11() ) {
-        NETWinInfo ni( QX11Info::connection(), d->window, QX11Info::appRootWindow(),
-                       NET::WMIconGeometry | NET::WMState );
+    } else if (QX11Info::isPlatformX11()) {
+        NETWinInfo ni(QX11Info::connection(), d->window, QX11Info::appRootWindow(),
+                      NET::WMIconGeometry | NET::WMState);
 
         // Try to put the popup by the taskbar entry
-        if ( !(ni.state() & NET::SkipTaskbar) ) {
+        if (!(ni.state() & NET::SkipTaskbar)) {
             NETRect r = ni.iconGeometry();
-            target.setRect( r.pos.x, r.pos.y, r.size.width, r.size.height );
+            target.setRect(r.pos.x, r.pos.y, r.size.width, r.size.height);
         }
         // If that failed, put it by the window itself
-        if ( target.isNull() ) {
+        if (target.isNull()) {
             NETRect dummy;
             NETRect r;
-            ni.kdeGeometry( dummy, r );
-            target.setRect( r.pos.x, r.pos.y,
-                            r.size.width, r.size.height);
+            ni.kdeGeometry(dummy, r);
+            target.setRect(r.pos.x, r.pos.y,
+                           r.size.width, r.size.height);
         }
 #else
     } else {
         // Our only choice is to put it by the window
 
         // Easy case: we were passed one of our own widgets
-        QWidget *widget = QWidget::find( d->winId );
-        if ( widget ) {
+        QWidget *widget = QWidget::find(d->winId);
+        if (widget) {
             target = widget->geometry();
-            if ( target.isNull() ) {
-                const QRect d = QApplication::desktop()->availableGeometry( widget );
-                target.setRect( d.x(), d.y(), 0, 0 );
+            if (target.isNull()) {
+                const QRect d = QApplication::desktop()->availableGeometry(widget);
+                target.setRect(d.x(), d.y(), 0, 0);
             }
         } else {
             // NB: this will not work on X11 (hence the fallback in the NET
             //     code above) as the XCB platform plugin does not collect
             //     information about foreign windows
-            QWindow *window = QWindow::fromWinId( d->winId );
+            QWindow *window = QWindow::fromWinId(d->winId);
             target = window->geometry();
-            if ( target.isNull() ) {
+            if (target.isNull()) {
                 const QRect d = window->screen()->availableGeometry();
-                target.setRect( d.x(), d.y(), 0, 0 );
+                target.setRect(d.x(), d.y(), 0, 0);
             }
         }
 #endif
     }
-    moveNear( target );
+    moveNear(target);
 }
 
-void KPassivePopup::moveNear( const QRect &target )
+void KPassivePopup::moveNear(const QRect &target)
 {
     QPoint pos = d->calculateNearbyPoint(target);
-    if( d->popupStyle == Balloon )
-        setAnchor( pos );
-    else
-        move( pos.x(), pos.y() );
+    if (d->popupStyle == Balloon) {
+        setAnchor(pos);
+    } else {
+        move(pos.x(), pos.y());
+    }
 }
-
 
 QPoint KPassivePopup::anchor() const
 {
@@ -502,113 +502,113 @@ void KPassivePopup::setAnchor(const QPoint &anchor)
     d->updateMask();
 }
 
-void KPassivePopup::paintEvent( QPaintEvent* pe )
+void KPassivePopup::paintEvent(QPaintEvent *pe)
 {
-    if( d->popupStyle == Balloon )
-    {
+    if (d->popupStyle == Balloon) {
         QPainter p;
-        p.begin( this );
-        p.drawPolygon( d->surround );
-    } else
-        QFrame::paintEvent( pe );
+        p.begin(this);
+        p.drawPolygon(d->surround);
+    } else {
+        QFrame::paintEvent(pe);
+    }
 }
-
 
 //
 // Convenience Methods
 //
 
-KPassivePopup *KPassivePopup::message( const QString &caption, const QString &text,
-                        const QPixmap &icon, QWidget *parent, int timeout, const QPoint &p )
+KPassivePopup *KPassivePopup::message(const QString &caption, const QString &text,
+                                      const QPixmap &icon, QWidget *parent, int timeout, const QPoint &p)
 {
-    return message( DEFAULT_POPUP_TYPE, caption, text, icon, parent, timeout, p );
+    return message(DEFAULT_POPUP_TYPE, caption, text, icon, parent, timeout, p);
 }
 
-KPassivePopup *KPassivePopup::message( const QString &text, QWidget *parent, const QPoint &p )
+KPassivePopup *KPassivePopup::message(const QString &text, QWidget *parent, const QPoint &p)
 {
-    return message( DEFAULT_POPUP_TYPE, QString(), text, QPixmap(), parent, -1, p );
+    return message(DEFAULT_POPUP_TYPE, QString(), text, QPixmap(), parent, -1, p);
 }
 
-KPassivePopup *KPassivePopup::message( const QString &caption, const QString &text,
-				       QWidget *parent, const QPoint &p )
+KPassivePopup *KPassivePopup::message(const QString &caption, const QString &text,
+                                      QWidget *parent, const QPoint &p)
 {
-    return message( DEFAULT_POPUP_TYPE, caption, text, QPixmap(), parent, -1, p );
+    return message(DEFAULT_POPUP_TYPE, caption, text, QPixmap(), parent, -1, p);
 }
 
-KPassivePopup *KPassivePopup::message( const QString &caption, const QString &text,
-				       const QPixmap &icon, WId parent, int timeout, const QPoint &p )
+KPassivePopup *KPassivePopup::message(const QString &caption, const QString &text,
+                                      const QPixmap &icon, WId parent, int timeout, const QPoint &p)
 {
-    return message( DEFAULT_POPUP_TYPE, caption, text, icon, parent, timeout, p );
+    return message(DEFAULT_POPUP_TYPE, caption, text, icon, parent, timeout, p);
 }
 
-KPassivePopup *KPassivePopup::message( const QString &caption, const QString &text,
-                       const QPixmap &icon, QSystemTrayIcon *parent, int timeout )
+KPassivePopup *KPassivePopup::message(const QString &caption, const QString &text,
+                                      const QPixmap &icon, QSystemTrayIcon *parent, int timeout)
 {
-    return message( DEFAULT_POPUP_TYPE, caption, text, icon, parent, timeout );
+    return message(DEFAULT_POPUP_TYPE, caption, text, icon, parent, timeout);
 }
 
-KPassivePopup *KPassivePopup::message( const QString &text, QSystemTrayIcon *parent )
+KPassivePopup *KPassivePopup::message(const QString &text, QSystemTrayIcon *parent)
 {
-    return message( DEFAULT_POPUP_TYPE, QString(), text, QPixmap(), parent);
+    return message(DEFAULT_POPUP_TYPE, QString(), text, QPixmap(), parent);
 }
 
-KPassivePopup *KPassivePopup::message( const QString &caption, const QString &text,
-                       QSystemTrayIcon *parent )
+KPassivePopup *KPassivePopup::message(const QString &caption, const QString &text,
+                                      QSystemTrayIcon *parent)
 {
-    return message( DEFAULT_POPUP_TYPE, caption, text, QPixmap(), parent );
+    return message(DEFAULT_POPUP_TYPE, caption, text, QPixmap(), parent);
 }
 
-
-KPassivePopup *KPassivePopup::message( int popupStyle, const QString &caption, const QString &text,
-                        const QPixmap &icon, QWidget *parent, int timeout, const QPoint &p )
+KPassivePopup *KPassivePopup::message(int popupStyle, const QString &caption, const QString &text,
+                                      const QPixmap &icon, QWidget *parent, int timeout, const QPoint &p)
 {
-    KPassivePopup *pop = new KPassivePopup( parent );
-    pop->setPopupStyle( popupStyle );
-    pop->setAutoDelete( true );
-    pop->setView( caption, text, icon );
+    KPassivePopup *pop = new KPassivePopup(parent);
+    pop->setPopupStyle(popupStyle);
+    pop->setAutoDelete(true);
+    pop->setView(caption, text, icon);
     pop->d->hideDelay = timeout;
-    if(p.isNull())
+    if (p.isNull()) {
         pop->show();
-    else
+    } else {
         pop->show(p);
+    }
 
     return pop;
 }
 
-KPassivePopup *KPassivePopup::message( int popupStyle, const QString &text, QWidget *parent, const QPoint& p )
+KPassivePopup *KPassivePopup::message(int popupStyle, const QString &text, QWidget *parent, const QPoint &p)
 {
-    return message( popupStyle, QString(), text, QPixmap(), parent, -1, p );
+    return message(popupStyle, QString(), text, QPixmap(), parent, -1, p);
 }
 
-KPassivePopup *KPassivePopup::message( int popupStyle, const QString &caption, const QString &text,
-                            QWidget *parent, const QPoint& p )
+KPassivePopup *KPassivePopup::message(int popupStyle, const QString &caption, const QString &text,
+                                      QWidget *parent, const QPoint &p)
 {
-    return message( popupStyle, caption, text, QPixmap(), parent, -1, p );
+    return message(popupStyle, caption, text, QPixmap(), parent, -1, p);
 }
 
-KPassivePopup *KPassivePopup::message( int popupStyle, const QString &caption, const QString &text,
-                                       const QPixmap &icon, WId parent, int timeout, const QPoint &p )
+KPassivePopup *KPassivePopup::message(int popupStyle, const QString &caption, const QString &text,
+                                      const QPixmap &icon, WId parent, int timeout, const QPoint &p)
 {
-    KPassivePopup *pop = new KPassivePopup( parent );
-    pop->setPopupStyle( popupStyle );
-    pop->setAutoDelete( true );
-    pop->setView( caption, text, icon );
+    KPassivePopup *pop = new KPassivePopup(parent);
+    pop->setPopupStyle(popupStyle);
+    pop->setAutoDelete(true);
+    pop->setView(caption, text, icon);
     pop->d->hideDelay = timeout;
-    if(p.isNull())
+    if (p.isNull()) {
         pop->show();
-    else
+    } else {
         pop->show(p);
+    }
 
     return pop;
 }
 
-KPassivePopup *KPassivePopup::message( int popupStyle, const QString &caption, const QString &text,
-                       const QPixmap &icon, QSystemTrayIcon *parent, int timeout )
+KPassivePopup *KPassivePopup::message(int popupStyle, const QString &caption, const QString &text,
+                                      const QPixmap &icon, QSystemTrayIcon *parent, int timeout)
 {
-    KPassivePopup *pop = new KPassivePopup( );
-    pop->setPopupStyle( popupStyle );
-    pop->setAutoDelete( true );
-    pop->setView( caption, text, icon );
+    KPassivePopup *pop = new KPassivePopup();
+    pop->setPopupStyle(popupStyle);
+    pop->setAutoDelete(true);
+    pop->setView(caption, text, icon);
     pop->d->hideDelay = timeout;
     QPoint pos = pop->d->calculateNearbyPoint(parent->geometry());
     pop->show(pos);
@@ -617,19 +617,17 @@ KPassivePopup *KPassivePopup::message( int popupStyle, const QString &caption, c
     return pop;
 }
 
-KPassivePopup *KPassivePopup::message( int popupStyle, const QString &text, QSystemTrayIcon *parent )
+KPassivePopup *KPassivePopup::message(int popupStyle, const QString &text, QSystemTrayIcon *parent)
 {
-    return message( popupStyle, QString(), text, QPixmap(), parent );
+    return message(popupStyle, QString(), text, QPixmap(), parent);
 }
 
-KPassivePopup *KPassivePopup::message( int popupStyle, const QString &caption, const QString &text,
-                       QSystemTrayIcon *parent )
+KPassivePopup *KPassivePopup::message(int popupStyle, const QString &caption, const QString &text,
+                                      QSystemTrayIcon *parent)
 {
-    return message( popupStyle, caption, text, QPixmap(), parent );
+    return message(popupStyle, caption, text, QPixmap(), parent);
 }
-
 
 // Local Variables:
-// c-basic-offset: 4
 // End:
 

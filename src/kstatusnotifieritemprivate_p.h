@@ -41,7 +41,6 @@ class KSystemTrayIcon;
 class QMenu;
 class QAction;
 
-
 // this class is needed because we can't just put an event filter on it:
 // the events that are passed to QSystemTrayIcon are done so in a way that
 // bypasses the usual event filtering mechanisms *sigh*
@@ -156,7 +155,7 @@ public:
     QMenu *menu;
     QHash<QString, QAction *> actionCollection;
     QWidget *associatedWidget;
-    QAction* titleAction;
+    QAction *titleAction;
     org::kde::StatusNotifierWatcher *statusNotifierWatcher;
     org::freedesktop::Notifications *notificationsClient;
 

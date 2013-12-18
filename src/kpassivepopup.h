@@ -85,15 +85,14 @@ class QSystemTrayIcon;
 class KNOTIFICATIONS_EXPORT KPassivePopup : public QFrame
 {
     Q_OBJECT
-    Q_PROPERTY (bool autoDelete READ autoDelete WRITE setAutoDelete)
-    Q_PROPERTY (int timeout READ timeout WRITE setTimeout)
+    Q_PROPERTY(bool autoDelete READ autoDelete WRITE setAutoDelete)
+    Q_PROPERTY(int timeout READ timeout WRITE setTimeout)
 
 public:
     /**
      * Styles that a KPassivePopup can have.
      */
-    enum PopupStyle
-    {
+    enum PopupStyle {
         Boxed,             ///< Information will appear in a framed box (default)
         Balloon,           ///< Information will appear in a comic-alike balloon
     };
@@ -101,12 +100,12 @@ public:
     /**
      * Creates a popup for the specified widget.
      */
-    explicit KPassivePopup( QWidget *parent=0, Qt::WindowFlags f = 0 );
+    explicit KPassivePopup(QWidget *parent = 0, Qt::WindowFlags f = 0);
 
     /**
      * Creates a popup for the specified window.
      */
-    explicit KPassivePopup( WId parent );
+    explicit KPassivePopup(WId parent);
 
     /**
      * Cleans up.
@@ -116,17 +115,17 @@ public:
     /**
      * Sets the main view to be the specified widget (which must be a child of the popup).
      */
-    void setView( QWidget *child );
+    void setView(QWidget *child);
 
     /**
      * Creates a standard view then calls setView(QWidget*) .
      */
-    void setView( const QString &caption, const QString &text = QString() );
+    void setView(const QString &caption, const QString &text = QString());
 
     /**
      * Creates a standard view then calls setView(QWidget*) .
      */
-    virtual void setView( const QString &caption, const QString &text, const QPixmap &icon );
+    virtual void setView(const QString &caption, const QString &text, const QPixmap &icon);
 
     /**
      * Returns a widget that is used as standard view if one of the
@@ -149,8 +148,8 @@ public:
      * @see setView( const QString&, const QString& )
      * @see setView( const QString&, const QString&, const QPixmap& )
      */
-    QWidget * standardView( const QString& caption, const QString& text,
-                          const QPixmap& icon, QWidget *parent = 0L );
+    QWidget *standardView(const QString &caption, const QString &text,
+                          const QPixmap &icon, QWidget *parent = 0L);
 
     /**
      * Returns the main view.
@@ -168,7 +167,7 @@ public:
      * The default is false (unless created by one of the static
      * message() overloads).
      */
-    virtual void setAutoDelete( bool autoDelete );
+    virtual void setAutoDelete(bool autoDelete);
 
     /**
      * Returns whether the popup will be deleted when it is hidden.
@@ -187,7 +186,7 @@ public:
      *
      * The popup is placed near to the anchor.
      */
-    void setAnchor( const QPoint& anchor );
+    void setAnchor(const QPoint &anchor);
 
     /**
      * Convenience method that displays popup with the specified  message  beside the
@@ -195,8 +194,8 @@ public:
      * Note that the returned object is destroyed when it is hidden.
      * @see setAutoDelete
      */
-    static KPassivePopup *message( const QString &text, QWidget *parent,
-                                   const QPoint& p = QPoint() );
+    static KPassivePopup *message(const QString &text, QWidget *parent,
+                                  const QPoint &p = QPoint());
 
     /**
      * Convenience method that displays popup with the specified  message  beside the
@@ -204,7 +203,7 @@ public:
      * Note that the returned object is destroyed when it is hidden.
      * @see setAutoDelete
      */
-    static KPassivePopup *message( const QString &text, QSystemTrayIcon *parent );
+    static KPassivePopup *message(const QString &text, QSystemTrayIcon *parent);
 
     /**
      * Convenience method that displays popup with the specified caption and message
@@ -212,8 +211,8 @@ public:
      * Note that the returned object is destroyed when it is hidden.
      * @see setAutoDelete
      */
-    static KPassivePopup *message( const QString &caption, const QString &text,
-                                   QWidget *parent, const QPoint& p = QPoint() );
+    static KPassivePopup *message(const QString &caption, const QString &text,
+                                  QWidget *parent, const QPoint &p = QPoint());
 
     /**
      * Convenience method that displays popup with the specified caption and message
@@ -221,8 +220,8 @@ public:
      * Note that the returned object is destroyed when it is hidden.
      * @see setAutoDelete
      */
-    static KPassivePopup *message( const QString &caption, const QString &text,
-                                   QSystemTrayIcon *parent );
+    static KPassivePopup *message(const QString &caption, const QString &text,
+                                  QSystemTrayIcon *parent);
 
     /**
      * Convenience method that displays popup with the specified icon, caption and
@@ -230,9 +229,9 @@ public:
      * Note that the returned object is destroyed when it is hidden.
      * @see setAutoDelete
      */
-    static KPassivePopup *message( const QString &caption, const QString &text,
-                                   const QPixmap &icon, QWidget *parent, int timeout = -1,
-                                   const QPoint& p = QPoint() );
+    static KPassivePopup *message(const QString &caption, const QString &text,
+                                  const QPixmap &icon, QWidget *parent, int timeout = -1,
+                                  const QPoint &p = QPoint());
 
     /**
      * Convenience method that displays popup with the specified icon, caption and
@@ -240,8 +239,8 @@ public:
      * Note that the returned object is destroyed when it is hidden.
      * @see setAutoDelete
      */
-    static KPassivePopup *message( const QString &caption, const QString &text,
-                   const QPixmap &icon, QSystemTrayIcon *parent, int timeout = -1 );
+    static KPassivePopup *message(const QString &caption, const QString &text,
+                                  const QPixmap &icon, QSystemTrayIcon *parent, int timeout = -1);
 
     /**
      * Convenience method that displays popup with the specified icon, caption and
@@ -249,9 +248,9 @@ public:
      * Note that the returned object is destroyed when it is hidden.
      * @see setAutoDelete
      */
-    static KPassivePopup *message( const QString &caption, const QString &text,
-                                   const QPixmap &icon, WId parent,
-                                   int timeout = -1, const QPoint& p = QPoint() );
+    static KPassivePopup *message(const QString &caption, const QString &text,
+                                  const QPixmap &icon, WId parent,
+                                  int timeout = -1, const QPoint &p = QPoint());
 
     /**
      * Convenience method that displays popup with the specified popup-style and message beside the
@@ -259,7 +258,7 @@ public:
      * Note that the returned object is destroyed when it is hidden.
      * @see setAutoDelete
      */
-    static KPassivePopup *message( int popupStyle, const QString &text, QWidget *parent, const QPoint& p = QPoint() );
+    static KPassivePopup *message(int popupStyle, const QString &text, QWidget *parent, const QPoint &p = QPoint());
 
     /**
      * Convenience method that displays popup with the specified popup-style and message beside the
@@ -267,7 +266,7 @@ public:
      * Note that the returned object is destroyed when it is hidden.
      * @see setAutoDelete
      */
-    static KPassivePopup *message( int popupStyle, const QString &text, QSystemTrayIcon *parent );
+    static KPassivePopup *message(int popupStyle, const QString &text, QSystemTrayIcon *parent);
 
     /**
      * Convenience method that displays popup with the specified popup-style, caption and message
@@ -275,8 +274,8 @@ public:
      * Note that the returned object is destroyed when it is hidden.
      * @see setAutoDelete
      */
-    static KPassivePopup *message( int popupStyle, const QString &caption, const QString &text,
-                                   QSystemTrayIcon *parent );
+    static KPassivePopup *message(int popupStyle, const QString &caption, const QString &text,
+                                  QSystemTrayIcon *parent);
 
     /**
      * Convenience method that displays popup with the specified popup-style, caption and message
@@ -284,8 +283,8 @@ public:
      * Note that the returned object is destroyed when it is hidden.
      * @see setAutoDelete
      */
-    static KPassivePopup *message( int popupStyle, const QString &caption, const QString &text,
-                                   QWidget *parent, const QPoint& p = QPoint() );
+    static KPassivePopup *message(int popupStyle, const QString &caption, const QString &text,
+                                  QWidget *parent, const QPoint &p = QPoint());
 
     /**
      * Convenience method that displays popup with the specified popup-style, icon, caption and
@@ -293,9 +292,9 @@ public:
      * Note that the returned object is destroyed when it is hidden.
      * @see setAutoDelete
      */
-    static KPassivePopup *message( int popupStyle, const QString &caption, const QString &text,
-                                   const QPixmap &icon, QWidget *parent, int timeout = -1,
-                                   const QPoint& p = QPoint() );
+    static KPassivePopup *message(int popupStyle, const QString &caption, const QString &text,
+                                  const QPixmap &icon, QWidget *parent, int timeout = -1,
+                                  const QPoint &p = QPoint());
 
     /**
      * Convenience method that displays popup with the specified popup-style, icon, caption and
@@ -303,8 +302,8 @@ public:
      * Note that the returned object is destroyed when it is hidden.
      * @see setAutoDelete
      */
-    static KPassivePopup *message( int popupStyle, const QString &caption, const QString &text,
-                                   const QPixmap &icon, QSystemTrayIcon *parent, int timeout = -1 );
+    static KPassivePopup *message(int popupStyle, const QString &caption, const QString &text,
+                                  const QPixmap &icon, QSystemTrayIcon *parent, int timeout = -1);
 
     /**
      * Convenience method that displays popup with the specified popup-style, icon, caption and
@@ -312,13 +311,12 @@ public:
      * Note that the returned object is destroyed when it is hidden.
      * @see setAutoDelete
      */
-    static KPassivePopup *message( int popupStyle, const QString &caption, const QString &text,
-                                   const QPixmap &icon, WId parent, int timeout = -1,
-                                   const QPoint& p = QPoint() );
+    static KPassivePopup *message(int popupStyle, const QString &caption, const QString &text,
+                                  const QPixmap &icon, WId parent, int timeout = -1,
+                                  const QPoint &p = QPoint());
 
     // we create an overloaded version of show()
     using QFrame::show;
-
 
 public Q_SLOTS:
     /**
@@ -329,13 +327,13 @@ public Q_SLOTS:
      *
      * @see timeout
      */
-    void setTimeout( int delay );
+    void setTimeout(int delay);
 
     /**
      * Sets the visual appearance of the popup.
      * @see PopupStyle
      */
-    void setPopupStyle( int popupstyle );
+    void setPopupStyle(int popupstyle);
 
     /**
      * Shows the popup in the given point
@@ -354,7 +352,7 @@ Q_SIGNALS:
     /**
      * Emitted when the popup is clicked.
      */
-    void clicked( const QPoint &pos );
+    void clicked(const QPoint &pos);
 
 protected:
     /**
@@ -396,7 +394,7 @@ protected:
     virtual void mouseReleaseEvent(QMouseEvent *e) Q_DECL_OVERRIDE;
 
     /** @reimp */
-    virtual void paintEvent(QPaintEvent* pe) Q_DECL_OVERRIDE;
+    virtual void paintEvent(QPaintEvent *pe) Q_DECL_OVERRIDE;
 
 private:
     /* @internal */
@@ -407,6 +405,5 @@ private:
 #endif // KPASSIVEPOPUP_H
 
 // Local Variables:
-// c-basic-offset: 4
 // End:
 

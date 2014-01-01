@@ -37,6 +37,8 @@ add_library(KF5Notifications ${knotifications_SRCS})
 generate_export_header(KF5Notifications BASE_NAME KNotifications)
 add_library(KF5::Notifications ALIAS KF5Notifications)
 
+target_include_directories(KF5Notifications INTERFACE "$<INSTALL_INTERFACE:${INCLUDE_INSTALL_DIR}/knotifications>" "$<INSTALL_INTERFACE:${INCLUDE_INSTALL_DIR}/KNotifications>")
+
 target_link_libraries(KF5Notifications PUBLIC
    Qt5::Widgets
 )
@@ -62,15 +64,23 @@ set_target_properties(KF5Notifications PROPERTIES VERSION   ${KNOTIFICATIONS_VER
                                                   EXPORT_NAME Notifications
 )
 
+ecm_generate_headers(
+  KNotification
+  KPassivePopup
+  KStatusNotifierItem
+  KNotificationRestrictions
+
+  MODULE_NAME KNotifications
+  REQUIRED_HEADERS KNotifications_HEADERS
+)
+install(DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/KNotifications DESTINATION ${INCLUDE_INSTALL_DIR} COMPONENT Devel)
+
 install(TARGETS KF5Notifications EXPORT KF5NotificationsTargets ${INSTALL_TARGETS_DEFAULT_ARGS})
 
 install(FILES
-  knotification.h
-  kpassivepopup.h
-  kstatusnotifieritem.h
-  knotificationrestrictions.h
   ${CMAKE_CURRENT_BINARY_DIR}/knotifications_export.h
-  DESTINATION ${INCLUDE_INSTALL_DIR} COMPONENT Devel
+  ${KNotifications_HEADERS}
+  DESTINATION ${INCLUDE_INSTALL_DIR}/knotifications COMPONENT Devel
 )
 
 install(FILES

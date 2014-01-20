@@ -5,21 +5,14 @@
 #include <QLatin1String>
 #include <qsystemtrayicon.h>
 
-#include <config-knotifications.h>
-
-#if HAVE_X11
-#include <QX11Info>
-#include <netwm.h>
-#endif
+#include <kwindowsystem.h>
 
 QPushButton *pb;
 QPushButton *pb2;
 QPushButton *pb3;
 QPushButton *pb4;
 QPushButton *pb5;
-#if HAVE_X11
 QPushButton *pb6;
-#endif
 QSystemTrayIcon *icon;
 
 void Test::showIt()
@@ -49,12 +42,10 @@ void Test::showIt5()
     KPassivePopup::message(KPassivePopup::Balloon, QLatin1String("The caption is..."), QLatin1String("Hello World"), pb5);
 }
 
-#if HAVE_X11
 void Test::showIt6()
 {
     KPassivePopup::message(KPassivePopup::Boxed, QLatin1String("The caption is..."), QLatin1String("Hello World"), pb6);
 }
-#endif
 
 void Test::showItIcon(QSystemTrayIcon::ActivationReason reason)
 {
@@ -95,15 +86,12 @@ int main(int argc, char **argv)
     pb5->connect(pb5, SIGNAL(clicked()), t, SLOT(showIt5()));
     pb5->show();
 
-#if HAVE_X11
+    // this test depends on X11
     pb6 = new QPushButton();
     pb6->setText(QLatin1String("By window (with caption, balloon)"));
     pb6->connect(pb6, SIGNAL(clicked()), t, SLOT(showIt6()));
     pb6->show();
-    NETWinInfo ni(QX11Info::connection(), pb6->effectiveWinId(),
-                  QX11Info::appRootWindow(), NET::WMState);
-    ni.setState(NET::SkipTaskbar, NET::SkipTaskbar);
-#endif
+    KWindowSystem::setState(pb6->effectiveWinId(), NET::SkipTaskbar);
 
     icon = new QSystemTrayIcon();
     // TODO icon->setIcon(icon->loadIcon("xorg"));

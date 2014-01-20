@@ -44,6 +44,8 @@
 #include <netwm.h>
 #endif
 
+#include <kwindowinfo.h>
+
 static const int DEFAULT_POPUP_TYPE = KPassivePopup::Boxed;
 static const int DEFAULT_POPUP_TIME = 6 * 1000;
 static const Qt::WindowFlags POPUP_FLAGS = Qt::Tool | Qt::X11BypassWindowManagerHint | Qt::WindowStaysOnTopHint | Qt::FramelessWindowHint;
@@ -433,50 +435,37 @@ void KPassivePopup::positionSelf()
 {
     QRect target;
 
-    if (!d->window) {
-        target = QRect(defaultLocation(), QSize(0, 0));
+    if (d->window) {
 #if HAVE_X11
-    } else if (QX11Info::isPlatformX11()) {
-        NETWinInfo ni(QX11Info::connection(), d->window, QX11Info::appRootWindow(),
-                      NET::WMIconGeometry | NET::WMState);
+        if (QX11Info::isPlatformX11()) {
+            NETWinInfo ni(QX11Info::connection(), d->window, QX11Info::appRootWindow(),
+                          NET::WMIconGeometry | NET::WMState);
 
-        // Try to put the popup by the taskbar entry
-        if (!(ni.state() & NET::SkipTaskbar)) {
-            NETRect r = ni.iconGeometry();
-            target.setRect(r.pos.x, r.pos.y, r.size.width, r.size.height);
-        }
-        // If that failed, put it by the window itself
-        if (target.isNull()) {
-            NETRect dummy;
-            NETRect r;
-            ni.kdeGeometry(dummy, r);
-            target.setRect(r.pos.x, r.pos.y,
-                           r.size.width, r.size.height);
-        }
-#else
-    } else {
-        // Our only choice is to put it by the window
-
-        // Easy case: we were passed one of our own widgets
-        QWidget *widget = QWidget::find(d->winId);
-        if (widget) {
-            target = widget->geometry();
-            if (target.isNull()) {
-                const QRect d = QApplication::desktop()->availableGeometry(widget);
-                target.setRect(d.x(), d.y(), 0, 0);
-            }
-        } else {
-            // NB: this will not work on X11 (hence the fallback in the NET
-            //     code above) as the XCB platform plugin does not collect
-            //     information about foreign windows
-            QWindow *window = QWindow::fromWinId(d->winId);
-            target = window->geometry();
-            if (target.isNull()) {
-                const QRect d = window->screen()->availableGeometry();
-                target.setRect(d.x(), d.y(), 0, 0);
+            // Try to put the popup by the taskbar entry
+            if (!(ni.state() & NET::SkipTaskbar)) {
+                NETRect r = ni.iconGeometry();
+                target.setRect(r.pos.x, r.pos.y, r.size.width, r.size.height);
             }
         }
 #endif
+        // If that failed, put it by the window itself
+
+        if (target.isNull()) {
+            // Avoid making calls to the window system if we can
+            QWidget *widget = QWidget::find(d->window);
+            if (widget) {
+                target = widget->geometry();
+            }
+        }
+        if (target.isNull()) {
+            KWindowInfo info(d->window, NET::WMGeometry);
+            if (info.valid()) {
+                target = info.geometry();
+            }
+        }
+    }
+    if (target.isNull()) {
+        target = QRect(defaultLocation(), QSize(0, 0));
     }
     moveNear(target);
 }

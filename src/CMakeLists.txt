@@ -85,5 +85,10 @@ install(FILES
 
 install(FILES
     org.kde.StatusNotifierItem.xml
+    DESTINATION ${DBUS_INTERFACES_INSTALL_DIR}
+    RENAME kf5_org.kde.StatusNotifierItem.xml)
+
+install(FILES
     org.kde.StatusNotifierWatcher.xml
-    DESTINATION ${DBUS_INTERFACES_INSTALL_DIR})
+    DESTINATION ${DBUS_INTERFACES_INSTALL_DIR}
+    RENAME kf5_org.kde.StatusNotifierWatcher.xml)

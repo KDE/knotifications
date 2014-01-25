@@ -92,3 +92,7 @@ install(FILES
     org.kde.StatusNotifierWatcher.xml
     DESTINATION ${DBUS_INTERFACES_INSTALL_DIR}
     RENAME kf5_org.kde.StatusNotifierWatcher.xml)
+
+include(ECMGeneratePriFile)
+ecm_generate_pri_file(BASE_NAME KNotifications LIB_NAME KF5Notifications DEPS "widgets" FILENAME_VAR PRI_FILENAME)
+install(FILES ${PRI_FILENAME} DESTINATION ${ECM_MKSPECS_INSTALL_DIR})

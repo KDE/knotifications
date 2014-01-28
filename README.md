@@ -5,7 +5,7 @@ Desktop notifications
 ## Introduction
 
 KNotification is used to notify the user of an event. It covers feedback and
-persistant events.
+persistent events.
 
 ## Links
 

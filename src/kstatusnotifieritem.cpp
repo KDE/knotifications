@@ -489,12 +489,8 @@ void KStatusNotifierItem::setAssociatedWidget(QWidget *associatedWidget)
             connect(action, SIGNAL(triggered(bool)), this, SLOT(minimizeRestore()));
         }
 
-#if HAVE_X11
         KWindowInfo info = KWindowSystem::windowInfo(d->associatedWidget->winId(), NET::WMDesktop);
         d->onAllDesktops = info.onAllDesktops();
-#else
-        d->onAllDesktops = false;
-#endif
     } else {
         if (d->menu && d->hasQuit) {
             QAction *action = d->actionCollection.value("minimizeRestore");
@@ -613,7 +609,7 @@ bool KStatusNotifierItemPrivate::checkVisibility(QPoint pos, bool perform)
         emit activateRequested(true, pos);
     }
 #endif
-#elif HAVE_X11
+#else
     KWindowInfo info1 = KWindowSystem::windowInfo(associatedWidget->winId(), NET::XAWMState | NET::WMState | NET::WMDesktop);
     // mapped = visible (but possibly obscured)
     bool mapped = (info1.mappingState() == NET::Visible) && !info1.isMinimized();
@@ -962,7 +958,6 @@ void KStatusNotifierItemPrivate::hideMenu()
 
 void KStatusNotifierItemPrivate::minimizeRestore(bool show)
 {
-#if HAVE_X11
     KWindowInfo info = KWindowSystem::windowInfo(associatedWidget->winId(), NET::WMDesktop | NET::WMFrameExtents);
     if (show) {
         if (onAllDesktops) {
@@ -980,15 +975,6 @@ void KStatusNotifierItemPrivate::minimizeRestore(bool show)
         onAllDesktops = info.onAllDesktops();
         associatedWidget->hide();
     }
-#else
-    if (show) {
-        associatedWidget->show();
-        associatedWidget->raise();
-        KWindowSystem::forceActiveWindow(associatedWidget->winId());
-    } else {
-        associatedWidget->hide();
-    }
-#endif
 }
 
 KDbusImageStruct KStatusNotifierItemPrivate::imageToStruct(const QImage &image)

@@ -45,7 +45,8 @@ public:
 #if HAVE_XTEST
           , screensaverTimer(0),
           haveXTest(0),
-          XTestKeyCode(0)
+          XTestKeyCode(0),
+          isX11(QX11Info::isPlatformX11())
 #endif // HAVE_XTEST
     {
     }
@@ -64,6 +65,7 @@ public:
     QTimer *screensaverTimer;
     int haveXTest;
     int XTestKeyCode;
+    bool isX11;
 #endif // HAVE_XTEST
 };
 
@@ -90,6 +92,9 @@ void KNotificationRestrictions::Private::screensaverFakeKeyEvent()
 {
     qDebug();
 #if HAVE_XTEST
+    if (!isX11) {
+        return;
+    }
     qDebug() << "---- using XTestFakeKeyEvent";
     Display *display = QX11Info::display();
     XTestFakeKeyEvent(display, XTestKeyCode, true, CurrentTime);
@@ -112,6 +117,9 @@ void KNotificationRestrictions::Private::startScreenSaverPrevention()
         return;
     }
 #if HAVE_XTEST
+    if (!isX11) {
+        return;
+    }
     if (!haveXTest) {
         int a, b, c, e;
         haveXTest = XTestQueryExtension(QX11Info::display(), &a, &b, &c, &e);
@@ -158,6 +166,9 @@ void KNotificationRestrictions::Private::stopScreenSaverPrevention()
         }
     }
 #if HAVE_XTEST
+    if (!isX11) {
+        return;
+    }
     delete screensaverTimer;
     screensaverTimer = 0;
 #endif // HAVE_XTEST

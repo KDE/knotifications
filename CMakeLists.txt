@@ -27,7 +27,10 @@ include(KDEInstallDirs)
 include(KDEFrameworkCompilerSettings)
 include(KDECMakeSettings)
 
-find_package(X11)
+if (NOT APPLE)
+    find_package(X11)
+endif()
+
 set(HAVE_X11 ${X11_FOUND})
 set(HAVE_XTEST ${X11_XTest_FOUND})
 if(X11_FOUND)

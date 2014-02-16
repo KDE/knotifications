@@ -64,16 +64,15 @@ set_target_properties(KF5Notifications PROPERTIES VERSION   ${KNOTIFICATIONS_VER
                                                   EXPORT_NAME Notifications
 )
 
-ecm_generate_headers(
+ecm_generate_headers(KNotifications_HEADERS
+  HEADER_NAMES
   KNotification
   KPassivePopup
   KStatusNotifierItem
   KNotificationRestrictions
 
-  MODULE_NAME KNotifications
   REQUIRED_HEADERS KNotifications_HEADERS
 )
-install(DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/KNotifications DESTINATION ${INCLUDE_INSTALL_DIR} COMPONENT Devel)
 
 install(TARGETS KF5Notifications EXPORT KF5NotificationsTargets ${INSTALL_TARGETS_DEFAULT_ARGS})
 

@@ -25,6 +25,7 @@
 class KNotification;
 class QPixmap;
 class QStringList;
+class KNotifyPlugin;
 
 /**
  * @internal
@@ -36,6 +37,8 @@ class KNotificationManager : public QObject
 public:
     static KNotificationManager *self();
     ~KNotificationManager();
+
+    void addPlugin(KNotifyPlugin *notifyPlugin);
 
     /**
      * send the dbus call to the knotify server
@@ -51,11 +54,6 @@ public:
     void close(int id, bool force = false);
 
     /**
-     * Insert the notification and its id in the internal map
-     */
-    void insert(KNotification *n, int id);
-
-    /**
      * update one notification text and pixmap and actions
      */
     void update(KNotification *n);
@@ -68,6 +66,7 @@ public:
 private Q_SLOTS:
     void notificationClosed(KNotification *notification);
     void notificationActivated(int id,  int action);
+    void notifyPluginFinished(KNotification *notification);
 
 private:
     struct Private;

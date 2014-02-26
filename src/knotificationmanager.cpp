@@ -25,13 +25,22 @@
 #include <QDBusConnection>
 #include <QPointer>
 
+#include <kservicetypetrader.h>
 
 #include "knotifyconfig.h"
+#include "knotifyplugin.h"
+#include "notifybypopup.h"
+#include "notifybyaudio.h"
+#include "notifybylogfile.h"
+#include "notifybytaskbar.h"
+#include "notifybyexecute.h"
 
 typedef QHash<QString, QString> Dict;
 
 struct KNotificationManager::Private {
     QHash<int, KNotification *> notifications;
+    QHash<QString, KNotifyPlugin *> notifyPlugins;
+
 };
 
 class KNotificationManagerSingleton
@@ -50,6 +59,32 @@ KNotificationManager *KNotificationManager::self()
 KNotificationManager::KNotificationManager()
     : d(new Private)
 {
+    d->notifyIdCounter = 0;
+    qDeleteAll(d->notifyPlugins);
+    d->notifyPlugins.clear();
+    addPlugin(new NotifyByPopup(this));
+    //FIXME: port and reenable
+//     addPlugin(new NotifyBySound(this));
+    addPlugin(new NotifyByExecute(this));
+//     addPlugin(new NotifyByLogfile(this));
+    addPlugin(new NotifyByAudio(this));
+    //TODO reactivate on Mac/Win when KWindowSystem::demandAttention will implemented on this system.
+    #ifndef Q_WS_MAC
+    addPlugin(new NotifyByTaskbar(this));
+    #endif
+//     addPlugin(new NotifyByKTTS(this));
+
+    KService::List offers = KServiceTypeTrader::self()->query("KNotify/NotifyMethod");
+
+    QVariantList args;
+    QString error;
+
+    Q_FOREACH (const KService::Ptr service, offers) {
+        KNotifyPlugin *plugin = service->createInstance<KNotifyPlugin>(this, args, &error);
+        if (plugin) {
+            addPlugin(plugin);
+        } else {
+            qDebug() << "Could not load plugin" << service->name() << "due to:" << error;
         }
     }
 }
@@ -57,6 +92,22 @@ KNotificationManager::KNotificationManager()
 KNotificationManager::~KNotificationManager()
 {
     delete d;
+}
+
+void KNotificationManager::addPlugin(KNotifyPlugin *notifyPlugin)
+{
+    d->notifyPlugins[notifyPlugin->optionName()] = notifyPlugin;
+    connect(notifyPlugin, SIGNAL(finished(KNotification*)), this, SLOT(notifyPluginFinished(KNotification*)));
+    connect(notifyPlugin, SIGNAL(actionInvoked(int, int)), this, SLOT(notificationActivated(int, int)));
+}
+
+void KNotificationManager::notifyPluginFinished(KNotification *notification)
+{
+    if (!d->notifications.contains(notification->id())) {
+        return;
+    }
+
+    notification->deref();
 }
 
 void KNotificationManager::notificationActivated(int id, int action)
@@ -82,9 +133,12 @@ void KNotificationManager::notificationClosed(KNotification *notification)
 void KNotificationManager::close(int id, bool force)
 {
     if (force || d->notifications.contains(id)) {
-        d->notifications.remove(id);
-        qDebug() << id;
-        d->knotify->closeNotification(id);
+        KNotification *n = d->notifications.take(id);
+        qDebug() << "Closing notification" << id;
+
+        Q_FOREACH (KNotifyPlugin *plugin, d->notifyPlugins) {
+            plugin->close(n);
+        }
     }
 }
 
@@ -125,7 +179,11 @@ void KNotificationManager::update(KNotification *n)
         n->pixmap().save(&buffer, "PNG");
     }
 
-    d->knotify->update(id, n->title(), n->text(), pixmapData, n->actions());
+    KNotifyConfig notifyConfig(n->appName(), n->contexts(), n->eventId());
+
+    Q_FOREACH (KNotifyPlugin *p, d->notifyPlugins) {
+        p->update(n, &notifyConfig);
+    }
 }
 
 void KNotificationManager::reemit(KNotification *n)
@@ -139,7 +197,8 @@ void KNotificationManager::reemit(KNotification *n)
         contextList << vl;
     }
 
-    d->knotify->reemit(id, contextList);
+
+    notify(n);
 }
 
 #include "moc_knotificationmanager_p.cpp"

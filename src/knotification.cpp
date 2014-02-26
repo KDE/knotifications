@@ -241,11 +241,11 @@ void KNotification::close()
     if (d->id >= 0) {
         KNotificationManager::self()->close(d->id);
     }
-    if (d->id != -1) { //=-1 mean still waiting for receiving the id
-        deleteLater();
-    }
+
     d->id = -2;
+
     emit closed();
+    deleteLater();
 }
 
 void KNotification::raiseWidget()

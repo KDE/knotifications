@@ -369,18 +369,10 @@ void KNotification::sendEvent()
 }
 
 void KNotification::slotReceivedId(int id)
+int KNotification::id()
 {
-    if (d->id == -2) { //we are already closed
-        KNotificationManager::self()->close(id, /*force=*/ true);
-        deleteLater();
-        return;
-    }
-    d->id = id;
-    if (d->id > 0) {
-        KNotificationManager::self()->insert(this, d->id);
-        if (d->needUpdate) {
-            sendEvent();
-        }
+    return d->id;
+}
     } else {
         //if there is no presentation, delete the object
         QTimer::singleShot(0, this, SLOT(deref()));
@@ -389,14 +381,19 @@ void KNotification::slotReceivedId(int id)
 }
 
 void KNotification::slotReceivedIdError(const QDBusError &error)
+QString KNotification::appName() const
 {
-    if (d->id == -2) { //we are already closed
-        deleteLater();
-        return;
+    QString appname;
+
+    if (d->flags & DefaultEvent) {
+        appname = QLatin1String("kde");
+    } else if (!d->componentName.isEmpty()) {
+        appname = d->componentName;
+    } else {
+        appname = QCoreApplication::applicationName();
     }
-    qWarning() << "Error while contacting notify daemon" << error.message();
-    d->id = -3;
-    QTimer::singleShot(0, this, SLOT(deref()));
+
+    return appname;
 }
 
 void KNotification::update()

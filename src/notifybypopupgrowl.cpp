@@ -33,8 +33,8 @@
  */
 bool NotifyByPopupGrowl::canPopup()
 {
-  return QFile::exists( GROWL_LOCATION_MACOSX )
-      || QFile::exists( GROWL_LOCATION_WIN32  );
+    return QFile::exists(GROWL_LOCATION_MACOSX)
+        || QFile::exists(GROWL_LOCATION_WIN32);
 }
 
 /**
@@ -42,7 +42,7 @@ bool NotifyByPopupGrowl::canPopup()
  */
 QStringList NotifyByPopupGrowl::capabilities()
 {
-  return QStringList();
+    return QStringList();
 }
 
 /**
@@ -52,14 +52,14 @@ QStringList NotifyByPopupGrowl::capabilities()
  * @param title The title displayed inside the notification.
  * @param message The message displayed inside the notification.
  */
-void NotifyByPopupGrowl::popup( const QPixmap *icon, int timeout,
-                                const QString &title, const QString &message )
+void NotifyByPopupGrowl::popup(const QPixmap *icon, int timeout,
+                               const QString &title, const QString &message )
 {
-  Q_UNUSED( icon );
+    Q_UNUSED(icon);
 
-  QSystemTrayIcon i;
-  i.show();
-  i.showMessage( title, message,
-                 QSystemTrayIcon::Information, timeout );
-  i.hide();
+    QSystemTrayIcon i;
+    i.show();
+    i.showMessage(title, message,
+                  QSystemTrayIcon::Information, timeout);
+    i.hide();
 }

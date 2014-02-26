@@ -39,8 +39,8 @@ class NotifyByPopupGrowl
 public:
     static bool canPopup();
     static QStringList capabilities();
-    static void popup( const QPixmap *icon, int timeout,
-                       const QString &title, const QString &message );
+    static void popup(const QPixmap *icon, int timeout,
+                      const QString &title, const QString &message);
 };
 
 #endif // NOTIFYBYPOPUPGROWL_H

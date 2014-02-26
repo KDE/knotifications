@@ -24,6 +24,7 @@
 #include <QWidget>
 #include <QDBusConnection>
 #include <QPointer>
+#include <QBuffer>
 
 #include <kservicetypetrader.h>
 
@@ -41,6 +42,8 @@ struct KNotificationManager::Private {
     QHash<int, KNotification *> notifications;
     QHash<QString, KNotifyPlugin *> notifyPlugins;
 
+    // incremental ids for notifications
+    int notifyIdCounter;
 };
 
 class KNotificationManagerSingleton
@@ -164,9 +167,6 @@ int KNotificationManager::notify(KNotification *n)
         notifyPlugin->notify(n, notifyConfig);
     }
 
-void KNotificationManager::insert(KNotification *n, int id)
-{
-    d->notifications.insert(id, n);
     return d->notifyIdCounter;
 }
 
@@ -191,7 +191,6 @@ void KNotificationManager::reemit(KNotification *n)
     QVariantList contextList;
     typedef QPair<QString, QString> Context;
     foreach (const Context &ctx, n->contexts()) {
-//      qDebug() << "add context " << ctx.first << "-" << ctx.second;
         QVariantList vl;
         vl << ctx.first << ctx.second;
         contextList << vl;

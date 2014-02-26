@@ -31,7 +31,7 @@
 #include <kwindowsystem.h>
 
 #include <QCoreApplication>
-#include <QDebug>
+
 #include <QMap>
 #include <QPixmap>
 #include <QPointer>
@@ -40,9 +40,6 @@
 #include <QTabWidget>
 #include <QFile>
 #include <QStringList>
-#include <QTextStream>
-#include <QDateTime>
-#include <QDBusError>
 
 struct KNotification::Private {
     QString eventId;
@@ -97,7 +94,7 @@ KNotification::KNotification(
 
 KNotification::~KNotification()
 {
-    if (d ->id > 0) {
+    if (d->id > 0) {
         KNotificationManager::self()->close(d->id);
     }
     delete d;
@@ -375,7 +372,7 @@ QString KNotification::appName() const
 
 void KNotification::update()
 {
-    KNotificationManager::self()->update(this, d->id);
+    KNotificationManager::self()->update(this);
 }
 
 bool KNotification::eventFilter(QObject *watched, QEvent *event)
@@ -386,7 +383,6 @@ bool KNotification::eventFilter(QObject *watched, QEvent *event)
                 QTimer::singleShot(500, this, SLOT(close()));
             }
         }
-        //qDebug() << event->type();
     }
 
     return false;

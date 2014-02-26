@@ -25,15 +25,15 @@
 
 #include "knotifyplugin.h"
 
-
 class NotifyByExecute : public KNotifyPlugin
-{ Q_OBJECT
-	public:
-		NotifyByExecute(QObject *parent=0l);
-		virtual ~NotifyByExecute();
-		
-		virtual QString optionName() { return "Execute"; }
-		virtual void notify(int id , KNotifyConfig *config);
+{
+    Q_OBJECT
+public:
+    NotifyByExecute(QObject *parent = 0);
+    virtual ~NotifyByExecute();
+
+    virtual QString optionName() { return QStringLiteral("Execute"); }
+    virtual void notify(KNotification *notification, KNotifyConfig *config);
 };
 
 #endif

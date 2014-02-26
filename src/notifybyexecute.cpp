@@ -21,16 +21,17 @@
 #include "notifybyexecute.h"
 
 #include <QHash>
+#include <QDebug>
+#include <QWidget>
+
 #include <KProcess>
 #include <knotifyconfig.h>
+#include "knotification.h"
 
-#include <kdebug.h>
 #include <kmacroexpander.h>
 
-
-
-
-NotifyByExecute::NotifyByExecute(QObject *parent) : KNotifyPlugin(parent)
+NotifyByExecute::NotifyByExecute(QObject *parent)
+    : KNotifyPlugin(parent)
 {
 }
 
@@ -39,32 +40,33 @@ NotifyByExecute::~NotifyByExecute()
 {
 }
 
-
-
-void NotifyByExecute::notify( int id, KNotifyConfig * config )
+void NotifyByExecute::notify(KNotification *notification, KNotifyConfig *config)
 {
-	QString command=config->readEntry( "Execute" );
-	
-	kDebug() << command;
-	
-	if (!command.isEmpty()) {
-// 	kDebug() << "executing command '" << command << "'";
-		QHash<QChar,QString> subst;
-		subst.insert( 'e', config->eventid );
-		subst.insert( 'a', config->appname );
-		subst.insert( 's', config->text );
-		subst.insert( 'w', QString::number( (quintptr)config->winId ));
-		subst.insert( 'i', QString::number( id ));
-		QString execLine = KMacroExpander::expandMacrosShellQuote( command, subst );
-		if ( execLine.isEmpty() )
-			execLine = command; // fallback
-                KProcess proc;
-		proc.setShellCommand(execLine.trimmed());
-		if(!proc.startDetached())
-			kDebug()<<"KNotify: Could not start process!";
-	}
-	
-	finish( id );
+    QString command = config->readEntry(QStringLiteral("Execute"));
+
+    qDebug() << command;
+
+    if (!command.isEmpty()) {
+        QHash<QChar,QString> subst;
+        subst.insert('e', notification->eventId());
+        subst.insert('a', notification->appName());
+        subst.insert('s', notification->text());
+        subst.insert('w', QString::number(notification->widget()->topLevelWidget()->winId()));
+        subst.insert('i', QString::number(notification->id()));
+
+        QString execLine = KMacroExpander::expandMacrosShellQuote(command, subst);
+        if (execLine.isEmpty()) {
+            execLine = command; // fallback
+        }
+
+        KProcess proc;
+        proc.setShellCommand(execLine.trimmed());
+        if (!proc.startDetached()) {
+            qDebug() << "KNotify: Could not start process!";
+        }
+    }
+
+    finish(notification);
 }
 
 #include "notifybyexecute.moc"

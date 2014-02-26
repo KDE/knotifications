@@ -19,9 +19,6 @@ else()
    set(HAVE_DBUSMENUQT 0)
 endif()
 
-qt5_add_dbus_interface(knotifications_SRCS org.kde.KNotify.xml knotify_interface)
-
-
 qt5_add_dbus_adaptor(knotifications_SRCS     org.kde.StatusNotifierItem.xml
                      kstatusnotifieritemdbus_p.h KStatusNotifierItemDBus)
 

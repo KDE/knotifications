@@ -25,7 +25,6 @@
 #include <QDBusConnection>
 #include <QPointer>
 
-#include "knotify_interface.h"
 
 #include "knotifyconfig.h"
 
@@ -33,7 +32,6 @@ typedef QHash<QString, QString> Dict;
 
 struct KNotificationManager::Private {
     QHash<int, KNotification *> notifications;
-    org::kde::KNotify *knotify;
 };
 
 class KNotificationManagerSingleton
@@ -52,24 +50,12 @@ KNotificationManager *KNotificationManager::self()
 KNotificationManager::KNotificationManager()
     : d(new Private)
 {
-    QDBusConnectionInterface *bus = QDBusConnection::sessionBus().interface();
-    if (!bus->isServiceRegistered("org.kde.knotify")) {
-        QDBusReply<void> reply = bus->startService("org.kde.knotify");
-        if (!reply.isValid()) {
-            qCritical() << "Couldn't start knotify from org.kde.knotify.service:" << reply.error();
         }
     }
-    d->knotify =
-        new org::kde::KNotify(QLatin1String("org.kde.knotify"), QLatin1String("/Notify"), QDBusConnection::sessionBus(), this);
-    connect(d->knotify, SIGNAL(notificationClosed(int)),
-            this, SLOT(notificationClosed(int)));
-    connect(d->knotify, SIGNAL(notificationActivated(int,int)),
-            this, SLOT(notificationActivated(int,int)));
 }
 
 KNotificationManager::~KNotificationManager()
 {
-    delete d->knotify;
     delete d;
 }
 

@@ -347,24 +347,9 @@ void KNotification::sendEvent()
 {
     d->needUpdate = false;
     if (d->id == 0) {
-        QString appname;
-
-        if (d->flags & DefaultEvent) {
-            appname = QLatin1String("kde");
-        } else if (!d->componentName.isEmpty()) {
-            appname = d->componentName;
-        } else {
-            appname = QCoreApplication::applicationName();
-        }
-
-        if (KNotificationManager::self()->notify(this, d->pixmap, d->actions, d->contexts, appname)) {
-            d->id = -1;
-        }
+        d->id = KNotificationManager::self()->notify(this);
     } else if (d->id > 0) {
-        KNotificationManager::self()->reemit(this, d->id);
-    } else if (d->id == -1) {
-        //schedule an update.
-        d->needUpdate = true;
+        KNotificationManager::self()->reemit(this);
     }
 }
 

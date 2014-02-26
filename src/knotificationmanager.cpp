@@ -127,6 +127,7 @@ int KNotificationManager::notify(KNotification *n)
 void KNotificationManager::insert(KNotification *n, int id)
 {
     d->notifications.insert(id, n);
+    return d->notifyIdCounter;
 }
 
 void KNotificationManager::update(KNotification *n)

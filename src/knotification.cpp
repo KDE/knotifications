@@ -353,19 +353,11 @@ void KNotification::sendEvent()
     }
 }
 
-void KNotification::slotReceivedId(int id)
 int KNotification::id()
 {
     return d->id;
 }
-    } else {
-        //if there is no presentation, delete the object
-        QTimer::singleShot(0, this, SLOT(deref()));
-    }
 
-}
-
-void KNotification::slotReceivedIdError(const QDBusError &error)
 QString KNotification::appName() const
 {
     QString appname;

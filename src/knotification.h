@@ -505,10 +505,6 @@ public Q_SLOTS:
      */
     void update();
 
-private Q_SLOTS:
-    void slotReceivedId(int);
-    void slotReceivedIdError(const QDBusError &);
-
 private:
     struct Private;
     Private *const d;

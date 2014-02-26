@@ -21,56 +21,55 @@
 
 #include "notifybylogfile.h"
 
-#include <kdebug.h>
-#include <knotifyconfig.h>
-#include <KUrl>
+#include <QDebug>
 #include <QDateTime>
 #include <QFile>
 #include <QTextStream>
+#include <QUrl>
+#include <QString>
 
-NotifyByLogfile::NotifyByLogfile(QObject *parent) : KNotifyPlugin(parent)
+#include "knotifyconfig.h"
+#include "knotification.h"
+
+NotifyByLogfile::NotifyByLogfile(QObject *parent)
+    : KNotifyPlugin(parent)
 {
 }
-
 
 NotifyByLogfile::~NotifyByLogfile()
 {
 }
 
-
-
-void NotifyByLogfile::notify( int id, KNotifyConfig * config )
+void NotifyByLogfile::notify(KNotification *notification, KNotifyConfig *config)
 {
-	QString file=config->readEntry( "Logfile" );
+    QString file = config->readEntry("Logfile");
 
-//	kDebug() << file << KUrl(file).path();
-	
-	if ( file.isEmpty() )
-	{
-		finish( id );
-		return;
-	}
-	
+    if (file.isEmpty()) {
+        finish(notification);
+        return;
+    }
+
     // open file in append mode
-    	QFile logFile(KUrl(file).path());
-	if ( !logFile.open(QIODevice::WriteOnly | QIODevice::Append) )
-	{
-		finish( id );
-		return;
-	}
+    QFile logFile(QUrl(file).path());
 
-	QString text = config->text;
-	if( text.isEmpty())
-		text = config->readEntry( "Name" );
+    if (!logFile.open(QIODevice::WriteOnly | QIODevice::Append)) {
+        finish(notification);
+        return;
+    }
+
+    QString text = notification->text();
+    if (text.isEmpty()) {
+        text = config->readEntry(QStringLiteral("Name"));
+    }
     // append msg
-	QTextStream strm( &logFile );
-	strm << "- KNotify " << QDateTime::currentDateTime().toString() << ": ";
-	strm << text << endl;
+    QTextStream strm(&logFile);
+    strm << "- KNotify " << QDateTime::currentDateTime().toString() << ": ";
+    strm << text << endl;
 
     // close file
-	logFile.close();
-	
-	finish( id );
+    logFile.close();
+
+    finish(notification);
 }
 
 #include "notifybylogfile.moc"

@@ -25,15 +25,18 @@
 
 #include "knotifyplugin.h"
 
+class KNotification;
 
 class NotifyByLogfile : public KNotifyPlugin
-{ Q_OBJECT
-	public:
-		NotifyByLogfile(QObject *parent=0l);
-		virtual ~NotifyByLogfile();
-		
-		virtual QString optionName() { return "Logfile"; }
-		virtual void notify(int id , KNotifyConfig *config);
+{
+    Q_OBJECT
+
+public:
+    NotifyByLogfile(QObject *parent = 0);
+    virtual ~NotifyByLogfile();
+
+    virtual QString optionName() { return QStringLiteral("Logfile"); }
+    virtual void notify(KNotification *notification, KNotifyConfig *config);
 };
 
 #endif

@@ -6,6 +6,16 @@ set(knotifications_SRCS
   kstatusnotifieritem.cpp
   kstatusnotifieritemdbus_p.cpp
   knotificationrestrictions.cpp
+
+  knotifyconfig.cpp
+  knotifyplugin.cpp
+  notifybypopup.cpp
+  imageconverter.cpp #needed to marshal images for sending over dbus by NotifyByPopup
+  notifybypopupgrowl.cpp
+  notifybyexecute.cpp
+#   notifybylogfile.cpp
+  notifybytaskbar.cpp
+  notifybyaudio.cpp
 )
 
 find_package(DBusMenuQt5)
@@ -40,7 +50,13 @@ target_link_libraries(KF5Notifications PUBLIC
    Qt5::Widgets
 )
 target_link_libraries(KF5Notifications PRIVATE
+   ${PHONON_LIBRARIES}
+   KF5::CoreAddons
+   KF5::IconThemes
+   KF5::Service
+   KF5::ConfigCore
    KF5::WindowSystem
+   KF5::Codecs
    Qt5::DBus
 )
 

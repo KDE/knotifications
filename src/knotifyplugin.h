@@ -26,8 +26,9 @@
 #include <QtCore/QObject>
 #include <KPluginFactory>
 
-#include "knotify_export.h"
+#include "knotifications_export.h"
 
+class KNotification;
 class KNotifyPluginPrivate;
 class KNotifyConfig;
 
@@ -41,66 +42,69 @@ class KNotifyConfig;
  *
  * @author Olivier Goffart <ogoffart at kde.org>
 */
-class KNOTIFY_EXPORT KNotifyPlugin : public QObject
-{ Q_OBJECT
-	public:
-	        KNotifyPlugin(QObject *parent=0l, const QVariantList &args=QVariantList());
-		virtual ~KNotifyPlugin();
+class KNOTIFICATIONS_EXPORT KNotifyPlugin : public QObject
+{
+    Q_OBJECT
 
-		/**
-		 * @brief return the name of this plugin.
-		 *
-		 * this is the name that should appear in the .knotifyrc file,
-		 * in the field Action=... if a notification is set to use this plugin
-		 */
-		virtual QString optionName() =0;
-		/**
-		 * This function is called when the notification is sent.
-		 * (or re-sent)
-		 * You should implement this function to display a notification
-		 *
-		 * for each call to this function (even for re-notification), you MUST call finish(int)
-		 *
-		 * @param id is the notification id
-		 * @param config is the configuration of the notification
-		 */
-		virtual void notify(int id , KNotifyConfig *config )=0;
+public:
+    KNotifyPlugin(QObject *parent = 0, const QVariantList &args = QVariantList());
+    virtual ~KNotifyPlugin();
 
-		/**
-		 * This function is called when the notification has changed (such as the text or the icon)
-		 */
-		virtual void update(int id, KNotifyConfig *config);
+    /**
+        * @brief return the name of this plugin.
+        *
+        * this is the name that should appear in the .knotifyrc file,
+        * in the field Action=... if a notification is set to use this plugin
+        */
+    virtual QString optionName() = 0;
 
-		/**
-		 * This function is called when the notification has been closed
-		 */
-		virtual void close(int id);
+    /**
+        * This function is called when the notification is sent.
+        * (or re-sent)
+        * You should implement this function to display a notification
+        *
+        * for each call to this function (even for re-notification), you MUST call finish(int)
+        *
+        * @param notification is the KNotification object
+        * @param notifyConfig is the configuration of the notification
+        */
+    virtual void notify(KNotification *notification, KNotifyConfig *notifyConfig) = 0;
 
-	protected:
-		/**
-		 * emit the finished signal
-		 * you MUST call this function for each call to notify(), even if you do nothing there
-		 *
-		 * call it when the presentation is finished (because the user closed the popup or the sound is finished)
-		 *
-		 * If your presentation is synchronous, you can even call this function from the notify() call itself
-		 */
-		void finish(int id);
+    /**
+        * This function is called when the notification has changed (such as the text or the icon)
+        */
+    virtual void update(KNotification *notification, KNotifyConfig *config);
 
-	Q_SIGNALS:
-		/**
-		 * the presentation is finished.
-		 */
-		void finished(int id);
-		/**
-		 * emit this signal if one action was invoked
-		 * @param id is the id of the notification
-		 * @param action is the action number.  zero for the default action
-		 */
-		void actionInvoked(int id , int action);
+    /**
+        * This function is called when the notification has been closed
+        */
+    virtual void close(KNotification *notification);
 
-	private:
-		KNotifyPluginPrivate *const d;
+protected:
+    /**
+        * emit the finished signal
+        * you MUST call this function for each call to notify(), even if you do nothing there
+        *
+        * call it when the presentation is finished (because the user closed the popup or the sound is finished)
+        *
+        * If your presentation is synchronous, you can even call this function from the notify() call itself
+        */
+    void finish(KNotification *notification);
+
+Q_SIGNALS:
+    /**
+        * the presentation is finished.
+        */
+    void finished(KNotification *notification);
+    /**
+        * emit this signal if one action was invoked
+        * @param id is the id of the notification
+        * @param action is the action number.  zero for the default action
+        */
+    void actionInvoked(int id , int action);
+
+private:
+    KNotifyPluginPrivate *const d;
 
 };
 

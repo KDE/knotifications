@@ -35,20 +35,20 @@ KNotifyPlugin::~KNotifyPlugin()
 }
 
 
-void KNotifyPlugin::update(int id, KNotifyConfig * config)
+void KNotifyPlugin::update(KNotification *notification, KNotifyConfig *config)
 {
-    Q_UNUSED(id);
+    Q_UNUSED(notification);
     Q_UNUSED(config);
 }
 
-void KNotifyPlugin::close(int id)
+void KNotifyPlugin::close(KNotification *notification)
 {
-	emit finished(id);
+	emit finished(notification);
 }
 
-void KNotifyPlugin::finish(int id)
+void KNotifyPlugin::finish(KNotification *notification)
 {
-	emit finished(id);
+	emit finished(notification);
 }
 
 #include "knotifyplugin.moc"

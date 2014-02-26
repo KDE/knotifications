@@ -20,30 +20,33 @@
 
 
 #include "notifybytaskbar.h"
+#include "knotifyconfig.h"
+#include "knotification.h"
 
-#include <kdebug.h>
-#include <kwindowsystem.h>
-#include <knotifyconfig.h>
+#include <QDebug>
+#include <QWidget>
 
-NotifyByTaskbar::NotifyByTaskbar(QObject *parent) : KNotifyPlugin(parent)
+#include <KWindowSystem>
+
+NotifyByTaskbar::NotifyByTaskbar(QObject *parent)
+    : KNotifyPlugin(parent)
 {
 }
-
 
 NotifyByTaskbar::~NotifyByTaskbar()
 {
 }
 
-
-
-void NotifyByTaskbar::notify( int id, KNotifyConfig * config )
+void NotifyByTaskbar::notify(KNotification *notification, KNotifyConfig *config)
 {
-	kDebug() << id << config->winId ;
-	
-	WId win = config->winId;
-	if( win != 0 )
-		KWindowSystem::demandAttention( win );
-	finish( id );
+    qDebug() << notification->id() << notification->widget()->topLevelWidget()->winId();
+
+    WId win = notification->widget()->topLevelWidget()->winId();
+    if (win != 0) {
+        KWindowSystem::demandAttention(win);
+    }
+
+    finish(notification);
 }
 
 #include "notifybytaskbar.moc"

@@ -25,15 +25,15 @@
 
 #include "knotifyplugin.h"
 
-
 class NotifyByTaskbar : public KNotifyPlugin
-{ Q_OBJECT
-	public:
-		NotifyByTaskbar(QObject *parent=0l);
-		virtual ~NotifyByTaskbar();
-		
-		virtual QString optionName() { return "Taskbar"; }
-		virtual void notify(int id , KNotifyConfig *config);
+{
+    Q_OBJECT
+public:
+    NotifyByTaskbar(QObject *parent = 0);
+    virtual ~NotifyByTaskbar();
+
+    virtual QString optionName() { return QStringLiteral("Taskbar"); }
+    virtual void notify(KNotification *notification, KNotifyConfig *config);
 };
 
 #endif

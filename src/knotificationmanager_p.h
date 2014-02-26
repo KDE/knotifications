@@ -59,15 +59,15 @@ public:
     /**
      * update one notification text and pixmap and actions
      */
-    void update(KNotification *n, int id);
+    void update(KNotification *n);
 
     /**
      * re-emit the notification, eventually with new contexts
      */
-    void reemit(KNotification *n, int id);
+    void reemit(KNotification *n);
 
 private Q_SLOTS:
-    void notificationClosed(int id);
+    void notificationClosed(KNotification *notification);
     void notificationActivated(int id,  int action);
 
 private:

@@ -81,12 +81,12 @@ void KNotificationManager::notificationActivated(int id, int action)
     }
 }
 
-void KNotificationManager::notificationClosed(int id)
+void KNotificationManager::notificationClosed(KNotification *notification)
 {
-    if (d->notifications.contains(id)) {
-        qDebug() << id;
-        KNotification *n = d->notifications[id];
-        d->notifications.remove(id);
+    if (d->notifications.contains(notification->id())) {
+        qDebug() << notification->id();
+        KNotification *n = d->notifications[notification->id()];
+        d->notifications.remove(notification->id());
         n->close();
     }
 }
@@ -138,12 +138,8 @@ void KNotificationManager::insert(KNotification *n, int id)
     d->notifications.insert(id, n);
 }
 
-void KNotificationManager::update(KNotification *n, int id)
+void KNotificationManager::update(KNotification *n)
 {
-    if (id <= 0) {
-        return;
-    }
-
     QByteArray pixmapData;
     if (!n->pixmap().isNull()) {
         QBuffer buffer(&pixmapData);
@@ -154,7 +150,7 @@ void KNotificationManager::update(KNotification *n, int id)
     d->knotify->update(id, n->title(), n->text(), pixmapData, n->actions());
 }
 
-void KNotificationManager::reemit(KNotification *n, int id)
+void KNotificationManager::reemit(KNotification *n)
 {
     QVariantList contextList;
     typedef QPair<QString, QString> Context;

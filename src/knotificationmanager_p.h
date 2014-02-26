@@ -40,8 +40,7 @@ public:
     /**
      * send the dbus call to the knotify server
      */
-    bool notify(KNotification *n, const QPixmap &pix, const QStringList &action,
-                const KNotification::ContextList &contexts, const QString &appname);
+    int notify(KNotification *n);
 
     /**
      * send the close dcop call to the knotify server for the notification with the identifier @p id .

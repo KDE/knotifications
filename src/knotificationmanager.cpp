@@ -27,6 +27,8 @@
 
 #include "knotify_interface.h"
 
+#include "knotifyconfig.h"
+
 typedef QHash<QString, QString> Dict;
 
 struct KNotificationManager::Private {
@@ -100,38 +102,27 @@ void KNotificationManager::close(int id, bool force)
     }
 }
 
-bool KNotificationManager::notify(KNotification *n, const QPixmap &pix,
-                                  const QStringList &actions,
-                                  const KNotification::ContextList &contexts,
-                                  const QString &appname)
+int KNotificationManager::notify(KNotification *n)
 {
-    WId winId = n->widget() ? n->widget()->topLevelWidget()->winId()  : 0;
+    //FIXME: leaking?
+    KNotifyConfig *notifyConfig = new KNotifyConfig(n->appName(), n->contexts(), n->eventId());
 
-    QByteArray pixmapData;
-    {
-        QBuffer buffer(&pixmapData);
-        buffer.open(QIODevice::WriteOnly);
-        pix.save(&buffer, "PNG");
+    QString notifyActions = notifyConfig->readEntry("Action");
+    qDebug() << "Got notification \"" << n->eventId() <<"\" with actions:" << notifyActions;
+
+    d->notifications.insert(++d->notifyIdCounter, n);
+
+    Q_FOREACH (const QString &action, notifyActions.split('|')) {
+        if (!d->notifyPlugins.contains(action)) {
+            qDebug() << "No plugin for action" << action;
+            continue;
+        }
+
+        KNotifyPlugin *notifyPlugin = d->notifyPlugins[action];
+        n->ref();
+        qDebug() << "calling notify on" << notifyPlugin->optionName();
+        notifyPlugin->notify(n, notifyConfig);
     }
-
-    QVariantList contextList;
-    typedef QPair<QString, QString> Context;
-    foreach (const Context &ctx, contexts) {
-        QVariantList vl;
-        vl << ctx.first << ctx.second;
-        contextList << vl;
-    }
-
-    // Persistent     => 0  == infinite timeout
-    // CloseOnTimeout => -1 == let the server decide
-    int timeout = (n->flags() & KNotification::Persistent) ? 0 : -1;
-
-    QList<QVariant>  args;
-    args << n->eventId() << (appname.isEmpty() ? QCoreApplication::instance()->applicationName() : appname);
-    args.append(QVariant(contextList));
-    args << n->title() << n->text() <<  pixmapData << QVariant(actions) << timeout << qlonglong(winId);
-    return d->knotify->callWithCallback("event", args, n, SLOT(slotReceivedId(int)), SLOT(slotReceivedIdError(QDBusError)));
-}
 
 void KNotificationManager::insert(KNotification *n, int id)
 {

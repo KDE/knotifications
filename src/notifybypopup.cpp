@@ -78,12 +78,13 @@ public:
     /**
      * Sends notification to DBus "org.freedesktop.notifications" interface.
      * @param id knotify-sid identifier of notification
-     * @param replacesId knotify-side notification identifier. If not 0, will
-     * request DBus service to replace existing notification with data in config
      * @param config notification data
+     * @param update If true, will request the DBus service to update
+                     the notification with new data from \c notification
+     *               Otherwise will put new notification on screen
      * @return true for success or false if there was an error.
      */
-    bool sendNotificationToGalagoServer(KNotification *notification, uint replacesId, KNotifyConfig *config);
+    bool sendNotificationToGalagoServer(KNotification *notification, KNotifyConfig *config, bool update = false);
     /**
      * Sends request to close Notification with id to DBus "org.freedesktop.notifications" interface
      *  @param id knotify-side notification ID to close
@@ -235,7 +236,7 @@ void NotifyByPopup::notify(KNotification *notification, KNotifyConfig *notifyCon
             d->notificationQueue.append(qMakePair(notification, notifyConfig));
             d->queryPopupServerCapabilities();
         } else {
-            if (!d->sendNotificationToGalagoServer(notification, 0, notifyConfig)) {
+            if (!d->sendNotificationToGalagoServer(notification, notifyConfig)) {
                 finish(notification); //an error ocurred.
             }
         }
@@ -368,7 +369,7 @@ void NotifyByPopup::update(KNotification *notification, KNotifyConfig *notifyCon
     // if Notifications DBus service exists on bus,
     // it'll be used instead
     if (d->dbusServiceExists) {
-        d->sendNotificationToGalagoServer(notification, notification->id(), notifyConfig);
+        d->sendNotificationToGalagoServer(notification, notifyConfig, true);
         return;
     }
 
@@ -559,15 +560,14 @@ void NotifyByPopupPrivate::fillPopup(KPassivePopup *popup, KNotification *notifi
     popup->setView( vb );
 }
 
-bool NotifyByPopupPrivate::sendNotificationToGalagoServer(KNotification *notification, uint replacesId, KNotifyConfig *notifyConfig_nocheck)
+bool NotifyByPopupPrivate::sendNotificationToGalagoServer(KNotification *notification, KNotifyConfig *notifyConfig_nocheck, bool update)
 {
-    KNotification *replaceNotification;
-    // If we got passed a replace ID, we need to find what we're replacing
-    if (replacesId != 0) {
-        replaceNotification = galagoNotifications.value(replacesId);
-        // If we found nothing, we do nothing
-        //FIXME: shouldn't the notification meant as a replacement be shown anyway?
-        if (!replaceNotification) {
+    uint updateId = galagoNotifications.key(notification, 0);
+
+    if (update) {
+        if (updateId == 0) {
+            // we have nothing to update; the notification we're trying to update
+            // has been already closed
             return false;
         }
     }
@@ -584,7 +584,7 @@ bool NotifyByPopupPrivate::sendNotificationToGalagoServer(KNotification *notific
     ensurePopupCompatibility(notification);
 
     args.append(appCaption); // app_name
-    args.append(replacesId); // replaces_id
+    args.append(updateId);  // notification to update
     args.append(iconName); // app_icon
     args.append(notification->title().isEmpty() ? appCaption : notification->title()); // summary
     args.append(notification->text()); // body

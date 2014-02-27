@@ -19,13 +19,14 @@ set(knotifications_SRCS
   notifybyaudio.cpp
 )
 
-find_package(DBusMenuQt5)
-set_package_properties(DBusMenuQt5 PROPERTIES DESCRIPTION "DBusMenuQt"
+find_package(dbusmenu-qt5 CONFIG)
+set_package_properties(dbusmenu-qt5 PROPERTIES DESCRIPTION "DBusMenuQt"
                        URL "https://launchpad.net/libdbusmenu-qt" TYPE OPTIONAL
                        PURPOSE "Support for notification area menus via the DBusMenu protocol")
-if (DBusMenuQt5_FOUND)
+if (dbusmenu-qt5_FOUND)
+   message("dbusmenu-qt5_FOUND")
    set(HAVE_DBUSMENUQT 1)
-   include_directories(${DBusMenuQt5_INCLUDE_DIRS})
+   include_directories(${dbusmenu-qt5_INCLUDE_DIRS})
 else()
    set(HAVE_DBUSMENUQT 0)
 endif()
@@ -70,7 +71,7 @@ if(X11_XTest_FOUND)
 endif()
 
 if(HAVE_DBUSMENUQT)
-  target_link_libraries(KF5Notifications PRIVATE ${DBusMenuQt5_LIBRARIES})
+  target_link_libraries(KF5Notifications PRIVATE dbusmenu-qt5)
 endif()
 
 set_target_properties(KF5Notifications PROPERTIES VERSION   ${KNOTIFICATIONS_VERSION_STRING}

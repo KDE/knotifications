@@ -1,3 +1,4 @@
+include_directories(${PHONON_INCLUDE_DIR})
 
 set(knotifications_SRCS
   knotification.cpp

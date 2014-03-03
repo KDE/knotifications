@@ -1,3 +1,4 @@
+include_directories(${PHONON_INCLUDE_DIR})
 
 set(knotifications_SRCS
   knotification.cpp
@@ -6,6 +7,16 @@ set(knotifications_SRCS
   kstatusnotifieritem.cpp
   kstatusnotifieritemdbus_p.cpp
   knotificationrestrictions.cpp
+
+  knotifyconfig.cpp
+  knotifyplugin.cpp
+  notifybypopup.cpp
+  imageconverter.cpp #needed to marshal images for sending over dbus by NotifyByPopup
+  notifybypopupgrowl.cpp
+  notifybyexecute.cpp
+#   notifybylogfile.cpp
+  notifybytaskbar.cpp
+  notifybyaudio.cpp
 )
 
 find_package(DBusMenuQt5)
@@ -18,9 +29,6 @@ if (DBusMenuQt5_FOUND)
 else()
    set(HAVE_DBUSMENUQT 0)
 endif()
-
-qt5_add_dbus_interface(knotifications_SRCS org.kde.KNotify.xml knotify_interface)
-
 
 qt5_add_dbus_adaptor(knotifications_SRCS     org.kde.StatusNotifierItem.xml
                      kstatusnotifieritemdbus_p.h KStatusNotifierItemDBus)
@@ -43,7 +51,13 @@ target_link_libraries(KF5Notifications PUBLIC
    Qt5::Widgets
 )
 target_link_libraries(KF5Notifications PRIVATE
+   ${PHONON_LIBRARIES}
+   KF5::CoreAddons
+   KF5::IconThemes
+   KF5::Service
+   KF5::ConfigCore
    KF5::WindowSystem
+   KF5::Codecs
    Qt5::DBus
 )
 

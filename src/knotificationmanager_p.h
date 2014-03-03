@@ -25,6 +25,7 @@
 class KNotification;
 class QPixmap;
 class QStringList;
+class KNotifyPlugin;
 
 /**
  * @internal
@@ -37,11 +38,12 @@ public:
     static KNotificationManager *self();
     ~KNotificationManager();
 
+    void addPlugin(KNotifyPlugin *notifyPlugin);
+
     /**
      * send the dbus call to the knotify server
      */
-    bool notify(KNotification *n, const QPixmap &pix, const QStringList &action,
-                const KNotification::ContextList &contexts, const QString &appname);
+    int notify(KNotification *n);
 
     /**
      * send the close dcop call to the knotify server for the notification with the identifier @p id .
@@ -52,23 +54,19 @@ public:
     void close(int id, bool force = false);
 
     /**
-     * Insert the notification and its id in the internal map
-     */
-    void insert(KNotification *n, int id);
-
-    /**
      * update one notification text and pixmap and actions
      */
-    void update(KNotification *n, int id);
+    void update(KNotification *n);
 
     /**
      * re-emit the notification, eventually with new contexts
      */
-    void reemit(KNotification *n, int id);
+    void reemit(KNotification *n);
 
 private Q_SLOTS:
-    void notificationClosed(int id);
+    void notificationClosed(KNotification *notification);
     void notificationActivated(int id,  int action);
+    void notifyPluginFinished(KNotification *notification);
 
 private:
     struct Private;

@@ -410,6 +410,18 @@ public:
      */
     void setComponentName(const QString &componentName);
 
+    /**
+     * @internal
+     * the id given by the notification manager
+     */
+    int id();
+
+    /**
+     * @internal
+     * appname used for the dbus object
+     */
+    QString appName() const;
+
 Q_SIGNALS:
     /**
      * Emit only when the default activation has occurred
@@ -492,10 +504,6 @@ public Q_SLOTS:
      * update the texts, the icon, and the actions of one existing notification
      */
     void update();
-
-private Q_SLOTS:
-    void slotReceivedId(int);
-    void slotReceivedIdError(const QDBusError &);
 
 private:
     struct Private;

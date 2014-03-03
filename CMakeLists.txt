@@ -39,6 +39,16 @@ if(X11_FOUND)
 endif()
 
 find_package(KF5WindowSystem ${KF5_VERSION} REQUIRED)
+find_package(KF5Service ${KF5_VERSION} REQUIRED)
+find_package(KF5Config ${KF5_VERSION} REQUIRED)
+find_package(KF5IconThemes ${KF5_VERSION} REQUIRED)
+find_package(KF5Codecs ${KF5_VERSION} REQUIRED)
+find_package(KF5CoreAddons ${KF5_VERSION} REQUIRED)
+
+find_package(Phonon4Qt5 4.6.60 REQUIRED NO_MODULE)
+set_package_properties(Phonon4Qt5 PROPERTIES
+   DESCRIPTION "Qt-based audio library"
+   TYPE REQUIRED)
 
 remove_definitions(-DQT_NO_CAST_TO_ASCII)
 remove_definitions(-DQT_NO_CAST_FROM_ASCII)

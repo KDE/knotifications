@@ -106,7 +106,7 @@ void KNotificationManager::addPlugin(KNotifyPlugin *notifyPlugin)
 
 void KNotificationManager::notifyPluginFinished(KNotification *notification)
 {
-    if (notification && !d->notifications.contains(notification->id())) {
+    if (!notification || !d->notifications.contains(notification->id())) {
         return;
     }
 

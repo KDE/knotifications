@@ -449,6 +449,12 @@ void NotifyByPopup::onGalagoNotificationClosed(uint dbus_id, uint reason)
     }
     d->galagoNotifications.remove(dbus_id);
     finished(n);
+    // The popup bubble is the only user facing part of a notification,
+    // if the user closes the popup, it means he wants to get rid
+    // of the notification completely, including playing sound etc
+    // Therefore we close the KNotification completely after closing
+    // the popup
+    n->close();
 }
 
 void NotifyByPopup::onGalagoServerReply(QDBusPendingCallWatcher *watcher)

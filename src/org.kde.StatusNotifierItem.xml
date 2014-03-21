@@ -20,13 +20,13 @@
 
     <!--struct containing width, height and image data-->
     <property name="IconPixmap" type="(iiay)" access="read">
-      <annotation name="com.trolltech.QtDBus.QtTypeName" value="KDbusImageVector"/>
+      <annotation name="org.qtproject.QtDBus.QtTypeName" value="KDbusImageVector"/>
     </property>
 
     <property name="OverlayIconName" type="s" access="read"/>
 
     <property name="OverlayIconPixmap" type="(iiay)" access="read">
-      <annotation name="com.trolltech.QtDBus.QtTypeName" value="KDbusImageVector"/>
+      <annotation name="org.qtproject.QtDBus.QtTypeName" value="KDbusImageVector"/>
     </property>
 
 
@@ -35,7 +35,7 @@
 
     <!--same definition as image-->
     <property name="AttentionIconPixmap" type="(iiay)" access="read">
-      <annotation name="com.trolltech.QtDBus.QtTypeName" value="KDbusImageVector"/>
+      <annotation name="org.qtproject.QtDBus.QtTypeName" value="KDbusImageVector"/>
     </property>
 
     <property name="AttentionMovieName" type="s" access="read"/>
@@ -46,7 +46,7 @@
 
     <!--(iiay) is an image-->
     <property name="ToolTip" type="(s(iiay)ss)" access="read">
-      <annotation name="com.trolltech.QtDBus.QtTypeName" value="KDbusToolTipStruct"/>
+      <annotation name="org.qtproject.QtDBus.QtTypeName" value="KDbusToolTipStruct"/>
     </property>
 
 

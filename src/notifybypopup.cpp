@@ -647,7 +647,9 @@ bool NotifyByPopupPrivate::sendNotificationToGalagoServer(KNotification *notific
 
 void NotifyByPopupPrivate::closeGalagoNotification(KNotification *notification)
 {
-    if (notification->id() == 0) {
+    uint galagoId = galagoNotifications.key(notification, 0);
+
+    if (galagoId == 0) {
         qDebug() << "not found dbus id to close" << notification->id();
         return;
     }
@@ -655,7 +657,7 @@ void NotifyByPopupPrivate::closeGalagoNotification(KNotification *notification)
     QDBusMessage m = QDBusMessage::createMethodCall(dbusServiceName, dbusPath,
                                                     dbusInterfaceName, "CloseNotification");
     QList<QVariant> args;
-    args.append(notification->id());
+    args.append(galagoId);
     m.setArguments(args);
 
     // send(..) does not block

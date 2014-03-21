@@ -118,8 +118,8 @@ void KNotificationManager::notificationActivated(int id, int action)
     if (d->notifications.contains(id)) {
         qDebug() << id << " " << action;
         KNotification *n = d->notifications[id];
-        d->notifications.remove(id);
         n->activate(action);
+        close(id);
     }
 }
 

@@ -17,6 +17,7 @@ set(knotifications_SRCS
 #   notifybylogfile.cpp
   notifybytaskbar.cpp
   notifybyaudio.cpp
+  ${knotifications_QM_LOADER}
 )
 
 find_package(dbusmenu-qt5 CONFIG)

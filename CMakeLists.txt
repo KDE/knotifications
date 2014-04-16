@@ -11,6 +11,8 @@ include(GenerateExportHeader)
 include(ECMSetupVersion)
 include(ECMGenerateHeaders)
 
+include(ECMCreateQmFromPoFiles)
+
 set(KF5_VERSION "4.98.0")
 
 ecm_setup_version(${KF5_VERSION}
@@ -54,14 +56,9 @@ remove_definitions(-DQT_NO_CAST_TO_ASCII)
 remove_definitions(-DQT_NO_CAST_FROM_ASCII)
 remove_definitions(-DQT_NO_CAST_FROM_BYTEARRAY)
 
-if (EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/po)
-  include(ECMCreateQmFromPoFiles)
-  ecm_create_qm_from_po_files(
-    PO_DIR po
-    POT_NAME knotifications5.pot
-    DATA_INSTALL_SUB_DIR knotifications
-    CREATE_LOADER knotifications_QM_LOADER
-  )
+file(GLOB PO_FILES "po/*.po")
+if (PO_FILES)
+  ecm_create_qm_from_po_files(PO_FILES ${PO_FILES} CATALOG_NAME knotifications5)
 endif()
 
 add_subdirectory(src)

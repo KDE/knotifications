@@ -1,5 +1,7 @@
 include_directories(${PHONON_INCLUDE_DIR})
 
+ecm_create_qm_loader(knotifications_QM_LOADER knotifications5)
+
 set(knotifications_SRCS
   knotification.cpp
   knotificationmanager.cpp

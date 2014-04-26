@@ -13,7 +13,8 @@ include(ECMGenerateHeaders)
 
 include(ECMCreateQmFromPoFiles)
 
-set(KF5_VERSION "4.98.0")
+set(KF5_VERSION "4.98.0") # handled by release scripts # handled by release scripts
+set(KF5_DEP_VERSION "4.98.0") # handled by release scripts
 
 ecm_setup_version(${KF5_VERSION}
   VARIABLE_PREFIX KNOTIFICATIONS
@@ -40,12 +41,12 @@ if(X11_FOUND)
    find_package(Qt5X11Extras 5.2.0 REQUIRED NO_MODULE)
 endif()
 
-find_package(KF5WindowSystem ${KF5_VERSION} REQUIRED)
-find_package(KF5Service ${KF5_VERSION} REQUIRED)
-find_package(KF5Config ${KF5_VERSION} REQUIRED)
-find_package(KF5IconThemes ${KF5_VERSION} REQUIRED)
-find_package(KF5Codecs ${KF5_VERSION} REQUIRED)
-find_package(KF5CoreAddons ${KF5_VERSION} REQUIRED)
+find_package(KF5WindowSystem ${KF5_DEP_VERSION} REQUIRED)
+find_package(KF5Service ${KF5_DEP_VERSION} REQUIRED)
+find_package(KF5Config ${KF5_DEP_VERSION} REQUIRED)
+find_package(KF5IconThemes ${KF5_DEP_VERSION} REQUIRED)
+find_package(KF5Codecs ${KF5_DEP_VERSION} REQUIRED)
+find_package(KF5CoreAddons ${KF5_DEP_VERSION} REQUIRED)
 
 find_package(Phonon4Qt5 4.6.60 REQUIRED NO_MODULE)
 set_package_properties(Phonon4Qt5 PROPERTIES

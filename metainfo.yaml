@@ -1,1 +1,8 @@
+maintainer: mklapetek
+description: Abstraction for system notifications
 tier: 3
+type: solution
+platforms:
+portingAid: false
+deprecated: false
+release: true

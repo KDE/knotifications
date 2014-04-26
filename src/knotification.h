@@ -64,11 +64,11 @@ class QDBusError;
  * The returned KNotification pointer may be used to connect signals or slots
  *
  * \section file The global config file
- * Your application should install a file called:
- *  <em>$KDEDIR/share/apps/appname/appname.notifyrc</em>
+ * Your application should install a file called <em>knotifications5/appname.notifyrc</em>
+ * in a QStandardPaths::GenericDataLocation directory.
  *
  * You can do this with the following CMake command:
- * install( FILES appname.notifyrc  DESTINATION ${DATA_INSTALL_DIR}/appname))
+ * install(FILES appname.notifyrc  DESTINATION ${KNOTIFYRC_INSTALL_DIR}))
  *
  *  This file contains  mainly 3 parts
  *   <ol><li>\ref global "Global information"</li>

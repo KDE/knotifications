@@ -1,0 +1,44 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: knotifications5_qt\n"
+"PO-Revision-Date: 2014-04-28 09:02+0000\n"
+"Last-Translator: transxx.py program <null@kde.org>\n"
+"Language-Team: KDE Test Language <kde-i18n-doc@kde.org>\n"
+"Language: x-test\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Qt-Contexts: true\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+
+#: ../../home/scripty/prod/git-unstable/frameworks_knotifications/src/knotificationrestrictions.cpp:184
+msgctxt "KNotificationRestrictions|"
+msgid "Unknown Application"
+msgstr "xxUnknown Applicationxx"
+
+#: ../../home/scripty/prod/git-unstable/frameworks_knotifications/src/kstatusnotifieritem.cpp:459
+#: ../../home/scripty/prod/git-unstable/frameworks_knotifications/src/kstatusnotifieritem.cpp:899
+msgctxt "KStatusNotifierItem|"
+msgid "&Minimize"
+msgstr "xx&Minimizexx"
+
+#: ../../home/scripty/prod/git-unstable/frameworks_knotifications/src/kstatusnotifieritem.cpp:724
+msgctxt "KStatusNotifierItem|"
+msgid "Quit"
+msgstr "xxQuitxx"
+
+#: ../../home/scripty/prod/git-unstable/frameworks_knotifications/src/kstatusnotifieritem.cpp:897
+msgctxt "KStatusNotifierItem|"
+msgid "&Restore"
+msgstr "xx&Restorexx"
+
+#: ../../home/scripty/prod/git-unstable/frameworks_knotifications/src/kstatusnotifieritem.cpp:911
+#, qt-format
+msgctxt "KStatusNotifierItem|"
+msgid "<qt>Are you sure you want to quit <b>%1</b>?</qt>"
+msgstr "xx<qt>Are you sure you want to quit <b>%1</b>?</qt>xx"
+
+#: ../../home/scripty/prod/git-unstable/frameworks_knotifications/src/kstatusnotifieritem.cpp:914
+msgctxt "KStatusNotifierItem|"
+msgid "Confirm Quit From System Tray"
+msgstr "xxConfirm Quit From System Trayxx"

@@ -329,6 +329,7 @@ void KNotification::deref()
 {
     d->ref--;
     if (d->ref == 0) {
+        d->id = -2;
         close();
     }
 }

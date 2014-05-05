@@ -227,9 +227,7 @@ void KNotification::activate(unsigned int action)
         break;
     }
     emit activated(action);
-    if (d->id != -1) {
-        deleteLater();
-    }
+
     d->id = -2;
 }
 

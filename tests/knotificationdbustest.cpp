@@ -96,8 +96,8 @@ int main(int argc, char *argv[])
                          QStringList(),
                          true);
 
-    return app.exec();
-
     QTimer::singleShot(2000, &app, SLOT(quit()));
+
+    return app.exec();
 }
 

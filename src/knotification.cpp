@@ -232,7 +232,7 @@ void KNotification::activate(unsigned int action)
     // in closing the notification
     emit activated(action);
 
-    d->id = -2;
+    d->id = -1;
 }
 
 void KNotification::close()
@@ -241,10 +241,12 @@ void KNotification::close()
         KNotificationManager::self()->close(d->id);
     }
 
-    d->id = -2;
+    if (d->id == -1) {
+        d->id = -2;
+        emit closed();
+        deleteLater();
+    }
 
-    emit closed();
-    deleteLater();
 }
 
 void KNotification::raiseWidget()
@@ -333,7 +335,7 @@ void KNotification::deref()
 {
     d->ref--;
     if (d->ref == 0) {
-        d->id = -2;
+        d->id = -1;
         close();
     }
 }

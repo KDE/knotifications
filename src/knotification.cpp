@@ -226,6 +226,10 @@ void KNotification::activate(unsigned int action)
         emit action3Activated();
         break;
     }
+
+    // emitting activated() makes the Manager close all the active plugins
+    // which will deref() the KNotification object, which will result
+    // in closing the notification
     emit activated(action);
 
     d->id = -2;

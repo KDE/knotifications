@@ -153,6 +153,12 @@ int KNotificationManager::notify(KNotification *n)
     QString notifyActions = notifyConfig->readEntry("Action");
     qDebug() << "Got notification \"" << n->eventId() <<"\" with actions:" << notifyActions;
 
+    if (notifyActions.isEmpty() || notifyActions == QLatin1String("None")) {
+        // this will cause KNotification closing itself fast
+        n->deref();
+        return -1;
+    }
+
     d->notifications.insert(++d->notifyIdCounter, n);
 
     Q_FOREACH (const QString &action, notifyActions.split('|')) {

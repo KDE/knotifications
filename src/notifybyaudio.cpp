@@ -43,6 +43,8 @@ NotifyByAudio::NotifyByAudio(QObject *parent)
 
 NotifyByAudio::~NotifyByAudio()
 {
+    qDeleteAll(m_reusablePhonons);
+    delete m_audioOutput;
 }
 
 void NotifyByAudio::notify(KNotification *notification, KNotifyConfig *config)

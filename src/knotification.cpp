@@ -365,7 +365,7 @@ QString KNotification::appName() const
     QString appname;
 
     if (d->flags & DefaultEvent) {
-        appname = QLatin1String("kde");
+        appname = QLatin1String("plasma_workspace");
     } else if (!d->componentName.isEmpty()) {
         appname = d->componentName;
     } else {

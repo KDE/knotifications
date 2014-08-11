@@ -20,8 +20,8 @@
 */
 
 
-#ifndef NOTIFYBYLOGFILE_H
-#define NOTIFYBYLOGFILE_H
+#ifndef NOTIFYBYAUDIO_H
+#define NOTIFYBYAUDIO_H
 
 #include "knotifyplugin.h"
 

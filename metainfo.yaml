@@ -6,3 +6,7 @@ platforms:
 portingAid: false
 deprecated: false
 release: true
+libraries:
+ - qmake: KNotifications
+   cmake: "KF5::Notifications"
+cmakename: KF5Notifications

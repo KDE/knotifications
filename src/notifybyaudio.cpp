@@ -57,13 +57,16 @@ void NotifyByAudio::notify(KNotification *notification, KNotifyConfig *config)
         return;
     }
 
-    QString soundFilePath = QStandardPaths::locate(QStandardPaths::GenericDataLocation, QStringLiteral("sounds/") + soundFilename);
+    QUrl soundURL = QUrl(soundFilename); // this CTOR accepts both absolute paths (/usr/share/sounds/blabla.ogg and blabla.ogg) w/o screwing the scheme
+    if (soundURL.isRelative() && !soundURL.toString().startsWith('/')) { // QUrl considers url.scheme.isEmpty() == url.isRelative()
+        soundURL = QUrl::fromLocalFile(QStandardPaths::locate(QStandardPaths::GenericDataLocation, QStringLiteral("sounds/") + soundFilename));
 
-    if (soundFilePath.isEmpty()) {
-        qWarning() << "Audio notification requested, but sound file from notifyrc file was not found, aborting audio notification";
+        if (soundURL.isEmpty()) {
+            qWarning() << "Audio notification requested, but sound file from notifyrc file was not found, aborting audio notification";
 
-        finish(notification);
-        return;
+            finish(notification);
+            return;
+        }
     }
 
     Phonon::MediaObject *m;
@@ -77,7 +80,7 @@ void NotifyByAudio::notify(KNotification *notification, KNotifyConfig *config)
         m = m_reusablePhonons.takeFirst();
     }
 
-    m->setCurrentSource(soundFilePath);
+    m->setCurrentSource(soundURL);
     m->play();
 
     if (notification->flags() & KNotification::Persistent) {
@@ -91,9 +94,9 @@ void NotifyByAudio::notify(KNotification *notification, KNotifyConfig *config)
         //
         // And so we queue it three times at least; doesn't cost anything and keeps us safe.
 
-        m->enqueue(soundFilePath);
-        m->enqueue(soundFilePath);
-        m->enqueue(soundFilePath);
+        m->enqueue(soundURL);
+        m->enqueue(soundURL);
+        m->enqueue(soundURL);
 
         connect(m, SIGNAL(currentSourceChanged(Phonon::MediaSource)), SLOT(onAudioSourceChanged(Phonon::MediaSource)));
     }

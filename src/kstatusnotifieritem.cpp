@@ -911,7 +911,7 @@ void KStatusNotifierItemPrivate::maybeQuit()
     QString query = KStatusNotifierItem::tr("<qt>Are you sure you want to quit <b>%1</b>?</qt>").arg(caption);
 
     if (QMessageBox::question(associatedWidget,
-                              KStatusNotifierItem::tr("Confirm Quit From System Tray"), query)) {
+                              KStatusNotifierItem::tr("Confirm Quit From System Tray"), query) == QMessageBox::Yes) {
         qApp->quit();
     }
 

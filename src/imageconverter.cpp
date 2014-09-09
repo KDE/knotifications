@@ -64,30 +64,9 @@ QVariant variantForImage(const QImage &_image)
 {
 	qDBusRegisterMetaType<SpecImage>();
 
-	QImage image = _image.convertToFormat(QImage::Format_ARGB32);
+	QImage image = _image.convertToFormat(QImage::Format_RGBA8888);
 
-	int rowStride = image.width() * 4;
-
-	// Notification spec stores pixels in R,G,B,A order, regardless of
-	// endianess
-	// Qt represents pixels as 32 bit unsigned int. So the order depend on
-	// endianess:
-	// - In big endian the order is A,R,G,B
-	// - In little endian the order is B,G,R,A
-	QByteArray data;
-	data.resize(rowStride * image.height());
-	char* dst = data.data();
-	for (int y=0; y<image.height(); ++y) {
-		QRgb* src = (QRgb*)image.scanLine(y);
-		QRgb* end = src + image.width();
-		for (;src != end; ++src) {
-			// Probably slow, but free of endianess issues
-			*dst++ = qRed(*src);
-			*dst++ = qGreen(*src);
-			*dst++ = qBlue(*src);
-			*dst++ = qAlpha(*src);
-		}
-	}
+	QByteArray data(image.constBits(), image.byteCount());
 
 	SpecImage specImage;
 	specImage.width = image.width();

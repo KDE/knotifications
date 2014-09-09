@@ -66,12 +66,12 @@ QVariant variantForImage(const QImage &_image)
 
 	QImage image = _image.convertToFormat(QImage::Format_RGBA8888);
 
-	QByteArray data(image.constBits(), image.byteCount());
+	QByteArray data((const char*)image.constBits(), image.byteCount());
 
 	SpecImage specImage;
 	specImage.width = image.width();
 	specImage.height = image.height();
-	specImage.rowStride = rowStride;
+	specImage.rowStride = image.bytesPerLine();
 	specImage.hasAlpha = true;
 	specImage.bitsPerSample = 8;
 	specImage.channels = 4;

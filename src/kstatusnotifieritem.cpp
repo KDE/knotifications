@@ -815,7 +815,11 @@ void KStatusNotifierItemPrivate::setLegacySystemTrayEnabled(bool enabled)
         return;
     }
 
+
     if (enabled) {
+        if (!QSystemTrayIcon::isSystemTrayAvailable()) {
+            return;
+        }
         if (!systemTrayIcon) {
             systemTrayIcon = new KStatusNotifierLegacyIcon(associatedWidget);
             syncLegacySystemTrayIcon();

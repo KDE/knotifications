@@ -783,10 +783,6 @@ void KStatusNotifierItemPrivate::checkForRegisteredHosts()
 
 void KStatusNotifierItemPrivate::setLegacyMode(bool legacy)
 {
-    if (legacy == (systemTrayIcon != 0)) {
-        return;
-    }
-
     if (legacy) {
         //unregistered
         setLegacySystemTrayEnabled(true);

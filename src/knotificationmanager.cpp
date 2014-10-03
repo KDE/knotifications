@@ -151,7 +151,6 @@ int KNotificationManager::notify(KNotification *n)
     KNotifyConfig *notifyConfig = new KNotifyConfig(n->appName(), n->contexts(), n->eventId());
 
     QString notifyActions = notifyConfig->readEntry("Action");
-    qDebug() << "Got notification \"" << n->eventId() <<"\" with actions:" << notifyActions;
 
     if (notifyActions.isEmpty() || notifyActions == QLatin1String("None")) {
         // this will cause KNotification closing itself fast
@@ -169,7 +168,7 @@ int KNotificationManager::notify(KNotification *n)
 
         KNotifyPlugin *notifyPlugin = d->notifyPlugins[action];
         n->ref();
-        qDebug() << "calling notify on" << notifyPlugin->optionName();
+        qDebug() << "Calling notify on" << notifyPlugin->optionName();
         notifyPlugin->notify(n, notifyConfig);
     }
 

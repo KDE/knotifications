@@ -61,10 +61,6 @@ KNotifyConfig::KNotifyConfig(const QString &_appname, const ContextList &_contex
 {
     eventsfile = retrieve_from_cache(QStringLiteral("knotifications5/") + _appname + QStringLiteral(".notifyrc"), QStandardPaths::GenericDataLocation);
     configfile = retrieve_from_cache(_appname + QStringLiteral(".notifyrc"));
-
-    qDebug() << "Got configs" << eventsfile->name() << configfile->name();
-    qDebug() << "Got groups" << eventsfile->groupList();
-//    kDebug() << appname << " , " << eventid;
 }
 
 KNotifyConfig::~KNotifyConfig()

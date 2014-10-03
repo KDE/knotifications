@@ -102,6 +102,7 @@ int main(int argc, char **argv)
         //tray->setIconByPixmap(QIcon::fromTheme("konqueror"));
         //tray->setAttentionIconByName("kmail");
         tray->setOverlayIconByName("emblem-important");
+        tray->setStatus(KStatusNotifierItem::Active);
 
         tray->setToolTipIconByName("konqueror");
         tray->setToolTipTitle("DBus System tray test");

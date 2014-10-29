@@ -572,7 +572,7 @@ public:
      * @param pixmap is a picture which may be shown in the popup.
      * @param widget is a widget where the notification reports to
      * @param flags is a bitmask of NotificationFlag
-     * @param componentData used to determine the location of the config file.  by default, kapp is used
+     * @param componentName used to determine the location of the config file.  by default, plasma_workspace is used
      */
     static KNotification *event(const QString &eventId, const QString &text = QString(),
                                 const QPixmap &pixmap = QPixmap(), QWidget *widget = 0L,
@@ -614,6 +614,27 @@ public:
     static KNotification *event(StandardEvent eventId, const QString &title, const QString &text,
                                 const QPixmap &pixmap = QPixmap(), QWidget *widget = 0L,
                                 const NotificationFlags &flags = CloseOnTimeout);
+
+    /**
+     * @brief emit a standard event with the possibility of setting an icon by icon name
+     *
+     * @overload
+     *
+     * This will emit a standard event
+     *
+     * @param eventId is the name of the event
+     * @param title is title of the notification to show in the popup.
+     * @param text is the text of the notification to show in the popup
+     * @param iconName a Freedesktop compatible icon name to be shown in the popup
+     * @param widget is a widget where the notification reports to
+     * @param flags is a bitmask of NotificationFlag
+     * @param componentName used to determine the location of the config file.  by default, plasma_workspace is used
+     * @since 5.4
+     */
+    static KNotification *event(const QString &eventId, const QString &title, const QString &text,
+                                const QString &iconName = QString(), QWidget *widget = 0L,
+                                const NotificationFlags &flags = CloseOnTimeout,
+                                const QString &componentName = QString());
 
     /**
      * This is a simple substitution for QApplication::beep()

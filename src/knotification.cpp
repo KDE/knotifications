@@ -341,6 +341,21 @@ KNotification *KNotification::event(StandardEvent eventid, const QString &text,
     return event(eventid, QString(), text, pixmap, widget, flags);
 }
 
+KNotification *KNotification::event(const QString &eventid, const QString &title, const QString &text,
+                                const QString &iconName, QWidget *widget,
+                                const NotificationFlags &flags, const QString &componentName)
+{
+    KNotification *notify = new KNotification(eventid, widget, flags);
+    notify->setTitle(title);
+    notify->setText(text);
+    notify->setIconName(iconName);
+    notify->setComponentName(flags & DefaultEvent ? QStringLiteral("plasma_workspace") : componentName);
+
+    QTimer::singleShot(0, notify, SLOT(sendEvent()));
+
+    return notify;
+}
+
 void KNotification::ref()
 {
     d->ref++;

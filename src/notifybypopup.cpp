@@ -256,6 +256,11 @@ void NotifyByPopup::notify(KNotification *notification, KNotifyConfig *notifyCon
         QString appCaption, iconName;
         d->getAppCaptionAndIconName(notifyConfig, &appCaption, &iconName);
 
+        //did the user override the icon name?
+        if (!notification->iconName().isEmpty()) {
+            iconName = notification->iconName();
+        }
+
         KIconLoader iconLoader(iconName);
         QPixmap appIcon = iconLoader.loadIcon(iconName, KIconLoader::Small);
 
@@ -587,6 +592,11 @@ bool NotifyByPopupPrivate::sendNotificationToGalagoServer(KNotification *notific
     QString appCaption;
     QString iconName;
     getAppCaptionAndIconName(notifyConfig_nocheck, &appCaption, &iconName);
+
+    //did the user override the icon name?
+    if (!notification->iconName().isEmpty()) {
+        iconName = notification->iconName();
+    }
 
     // FIXME: rename this to something better reflecting what this is doing...maybe
     ensurePopupCompatibility(notification);

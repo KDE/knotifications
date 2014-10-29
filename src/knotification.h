@@ -350,6 +350,20 @@ public:
     void setText(const QString &text);
 
     /**
+     * \return the icon shown in the popup
+     * \see setIconName
+     * \since 5.4
+     */
+    QString iconName() const;
+
+    /**
+     * set the icon that will be shown in the popup.
+     * @param icon the icon
+     * @since 5.4
+     */
+    void setIconName(const QString &icon);
+
+    /**
      * \return the pixmap shown in the popup
      * \see setPixmap
      */

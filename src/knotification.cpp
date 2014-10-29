@@ -49,6 +49,7 @@ struct KNotification::Private {
     QWidget *widget;
     QString title;
     QString text;
+    QString iconName;
     QStringList actions;
     QPixmap pixmap;
     ContextList contexts;
@@ -145,6 +146,20 @@ void KNotification::setText(const QString &text)
     if (d->id > 0) {
         d->updateTimer.start();
     }
+}
+
+void KNotification::setIconName(const QString &icon)
+{
+    d->needUpdate = true;
+    d->iconName = icon;
+    if (d->id > 0) {
+        d->updateTimer.start();
+    }
+}
+
+QString KNotification::iconName() const
+{
+    return d->iconName;
 }
 
 QPixmap KNotification::pixmap() const

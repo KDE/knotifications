@@ -632,7 +632,7 @@ public:
      * @since 5.4
      */
     static KNotification *event(const QString &eventId, const QString &title, const QString &text,
-                                const QString &iconName = QString(), QWidget *widget = 0L,
+                                const QString &iconName, QWidget *widget = 0L,
                                 const NotificationFlags &flags = CloseOnTimeout,
                                 const QString &componentName = QString());
 

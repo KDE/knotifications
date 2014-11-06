@@ -23,10 +23,10 @@
 #ifndef NOTIFYBYSOUND_H
 #define NOTIFYBYSOUND_H
 
-#include "knotifyplugin.h"
+#include "knotificationplugin.h"
 
 
-class NotifyBySound : public KNotifyPlugin
+class NotifyBySound : public KNotificationPlugin
 { Q_OBJECT
 	public:
 		NotifyBySound(QObject *parent=0l);

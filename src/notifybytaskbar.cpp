@@ -30,7 +30,7 @@
 #include <KWindowSystem>
 
 NotifyByTaskbar::NotifyByTaskbar(QObject *parent)
-    : KNotifyPlugin(parent)
+    : KNotificationPlugin(parent)
 {
 }
 

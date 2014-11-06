@@ -28,7 +28,7 @@
 #include <klocale.h>
 #include <knotifyconfig.h>
 
-NotifyByKTTS::NotifyByKTTS(QObject *parent) : KNotifyPlugin(parent),m_kspeech(0), tryToStartKttsd( false )
+NotifyByKTTS::NotifyByKTTS(QObject *parent) : KNotificationPlugin(parent),m_kspeech(0), tryToStartKttsd( false )
 {
 }
 

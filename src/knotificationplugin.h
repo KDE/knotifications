@@ -19,10 +19,8 @@
 
  */
 
-
-
-#ifndef KNOTIFYPLUGIN_H
-#define KNOTIFYPLUGIN_H
+#ifndef KNOTIFICATIONPLUGIN_H
+#define KNOTIFICATIONPLUGIN_H
 
 #include <QtCore/QObject>
 #include <KPluginFactory>
@@ -30,31 +28,31 @@
 #include "knotifications_export.h"
 
 class KNotification;
-class KNotifyPluginPrivate;
+class KNotificationPluginPrivate;
 class KNotifyConfig;
-
 
 /**
  * @brief abstract class for KNotify actions
  *
- * A KNotifyPlugin is responsible of one presentation.  You can subclass it to have your own knotify presentation.
+ * A KNotificationPlugin is responsible of notification presentation.
+ * You can subclass it to have your own presentation of a notification.
  *
- * You should reimplement the KNotifyPlugin::notify method to display the notification.
+ * You should reimplement the KNotificationPlugin::notify method to display the notification.
  *
  * @author Olivier Goffart <ogoffart at kde.org>
 */
-class KNOTIFICATIONS_EXPORT KNotifyPlugin : public QObject
+class KNOTIFICATIONS_EXPORT KNotificationPlugin : public QObject
 {
     Q_OBJECT
 
 public:
-    KNotifyPlugin(QObject *parent = 0, const QVariantList &args = QVariantList());
-    virtual ~KNotifyPlugin();
+    KNotificationPlugin(QObject *parent = 0, const QVariantList &args = QVariantList());
+    virtual ~KNotificationPlugin();
 
     /**
         * @brief return the name of this plugin.
         *
-        * this is the name that should appear in the .knotifyrc file,
+        * this is the name that should appear in the .notifyrc file,
         * in the field Action=... if a notification is set to use this plugin
         */
     virtual QString optionName() = 0;
@@ -64,7 +62,7 @@ public:
         * (or re-sent)
         * You should implement this function to display a notification
         *
-        * for each call to this function (even for re-notification), you MUST call finish(int)
+        * for each call to this function (even for re-notification), you MUST call finish(KNotification*)
         *
         * @param notification is the KNotification object
         * @param notifyConfig is the configuration of the notification
@@ -105,12 +103,8 @@ Q_SIGNALS:
     void actionInvoked(int id , int action);
 
 private:
-    KNotifyPluginPrivate *const d;
+    KNotificationPluginPrivate *const d;
 
 };
-
-#define K_EXPORT_KNOTIFY_METHOD(libname,classname) \
-K_PLUGIN_FACTORY(KNotifyMethodPluginFactory, registerPlugin<classname>();) \
-K_EXPORT_PLUGIN(KNotifyMethodPluginFactory("knotify_method_" #libname))
 
 #endif

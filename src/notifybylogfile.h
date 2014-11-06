@@ -24,11 +24,11 @@
 #ifndef NOTIFYBYLOGFILE_H
 #define NOTIFYBYLOGFILE_H
 
-#include "knotifyplugin.h"
+#include "knotificationplugin.h"
 
 class KNotification;
 
-class NotifyByLogfile : public KNotifyPlugin
+class NotifyByLogfile : public KNotificationPlugin
 {
     Q_OBJECT
 

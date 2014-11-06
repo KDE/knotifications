@@ -21,9 +21,9 @@
 
 #include <KPluginFactory>
 
-#include "knotifyplugin.h"
+#include "knotificationplugin.h"
 
-KNotifyPlugin::KNotifyPlugin(QObject *parent, const QVariantList &args)
+KNotificationPlugin::KNotificationPlugin(QObject *parent, const QVariantList &args)
     : QObject(parent),
       d(0)
 {
@@ -31,26 +31,24 @@ KNotifyPlugin::KNotifyPlugin(QObject *parent, const QVariantList &args)
 }
 
 
-KNotifyPlugin::~KNotifyPlugin()
+KNotificationPlugin::~KNotificationPlugin()
 {
 }
 
 
-void KNotifyPlugin::update(KNotification *notification, KNotifyConfig *config)
+void KNotificationPlugin::update(KNotification *notification, KNotifyConfig *config)
 {
     Q_UNUSED(notification);
     Q_UNUSED(config);
 }
 
-void KNotifyPlugin::close(KNotification *notification)
+void KNotificationPlugin::close(KNotification *notification)
 {
 	emit finished(notification);
 }
 
-void KNotifyPlugin::finish(KNotification *notification)
+void KNotificationPlugin::finish(KNotification *notification)
 {
 	emit finished(notification);
 }
-
-#include "knotifyplugin.moc"
 

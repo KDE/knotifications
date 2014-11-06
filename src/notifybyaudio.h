@@ -23,7 +23,7 @@
 #ifndef NOTIFYBYAUDIO_H
 #define NOTIFYBYAUDIO_H
 
-#include "knotifyplugin.h"
+#include "knotificationplugin.h"
 
 #include <phonon/MediaObject>
 
@@ -35,7 +35,7 @@ class AudioOutput;
 
 class KNotification;
 
-class NotifyByAudio : public KNotifyPlugin
+class NotifyByAudio : public KNotificationPlugin
 {
     Q_OBJECT
 

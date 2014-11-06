@@ -36,7 +36,7 @@
 #include <phonon/audiooutput.h>
 
 NotifyByAudio::NotifyByAudio(QObject *parent)
-    : KNotifyPlugin(parent)
+    : KNotificationPlugin(parent)
 {
     m_audioOutput = new Phonon::AudioOutput(Phonon::NotificationCategory, this);
 }

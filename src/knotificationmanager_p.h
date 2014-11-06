@@ -25,7 +25,7 @@
 class KNotification;
 class QPixmap;
 class QStringList;
-class KNotifyPlugin;
+class KNotificationPlugin;
 
 /**
  * @internal
@@ -38,7 +38,7 @@ public:
     static KNotificationManager *self();
     ~KNotificationManager();
 
-    void addPlugin(KNotifyPlugin *notifyPlugin);
+    void addPlugin(KNotificationPlugin *notifyPlugin);
 
     /**
      * send the dbus call to the knotify server

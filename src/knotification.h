@@ -1,5 +1,6 @@
 /* This file is part of the KDE libraries
    Copyright (C) 2005-2006 Olivier Goffart <ogoffart at kde.org>
+   Copyright (C) 2013-2014 Martin Klapetek <mklapetek@kde.org>
 
    This library is free software; you can redistribute it and/or
    modify it under the terms of the GNU Library General Public
@@ -122,7 +123,7 @@ class QDBusError;
  *  </pre>
  *  These are the default settings for each notifiable event.
  *  Action is the string representing the action. Actions can be added to
- *  the KNotify daemon as plugins, by deriving from KNotifyPlugin.
+ *  KNotification as plugins, by deriving from KNotificationPlugin.
  *  At the time of writing, the following actions are available: Taskbar,
  *  Sound, Popup, Logfile, KTTS, Execute.
  *  Actions can be combined by seperating them with '|'.

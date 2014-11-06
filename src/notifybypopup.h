@@ -24,7 +24,7 @@
 #ifndef NOTIFYBYPOPUP_H
 #define NOTIFYBYPOPUP_H
 
-#include "knotifyplugin.h"
+#include "knotificationplugin.h"
 
 #include <QStringList>
 
@@ -33,7 +33,7 @@ class KPassivePopup;
 class QDBusPendingCallWatcher;
 class NotifyByPopupPrivate;
 
-class NotifyByPopup : public KNotifyPlugin
+class NotifyByPopup : public KNotificationPlugin
 {
     Q_OBJECT
 public:

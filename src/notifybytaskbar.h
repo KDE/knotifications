@@ -24,9 +24,9 @@
 #ifndef NOTIFYBYTASKBAR_H
 #define NOTIFYBYTASKBAR_H
 
-#include "knotifyplugin.h"
+#include "knotificationplugin.h"
 
-class NotifyByTaskbar : public KNotifyPlugin
+class NotifyByTaskbar : public KNotificationPlugin
 {
     Q_OBJECT
 public:

@@ -33,7 +33,7 @@
 #include "knotification.h"
 
 NotifyByLogfile::NotifyByLogfile(QObject *parent)
-    : KNotifyPlugin(parent)
+    : KNotificationPlugin(parent)
 {
 }
 

@@ -155,7 +155,7 @@ public:
 //---------------------------------------------------------------------------------------
 
 NotifyByPopup::NotifyByPopup(QObject *parent) 
-  : KNotifyPlugin(parent),
+  : KNotificationPlugin(parent),
     d(new NotifyByPopupPrivate(this))
 {
     d->animationTimer = 0;
@@ -314,7 +314,7 @@ void NotifyByPopup::onPassivePopupDestroyed()
 void NotifyByPopup::timerEvent(QTimerEvent *event)
 {
     if (event->timerId() != d->animationTimer) {
-        return KNotifyPlugin::timerEvent(event);
+        return KNotificationPlugin::timerEvent(event);
     }
 
     bool cont = false;

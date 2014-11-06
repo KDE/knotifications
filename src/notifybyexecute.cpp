@@ -32,7 +32,7 @@
 #include <kmacroexpander.h>
 
 NotifyByExecute::NotifyByExecute(QObject *parent)
-    : KNotifyPlugin(parent)
+    : KNotificationPlugin(parent)
 {
 }
 

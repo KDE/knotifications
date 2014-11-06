@@ -29,7 +29,7 @@
 #include <kservicetypetrader.h>
 
 #include "knotifyconfig.h"
-#include "knotifyplugin.h"
+#include "knotificationplugin.h"
 #include "notifybypopup.h"
 #include "notifybyaudio.h"
 #include "notifybylogfile.h"
@@ -40,7 +40,7 @@ typedef QHash<QString, QString> Dict;
 
 struct KNotificationManager::Private {
     QHash<int, KNotification *> notifications;
-    QHash<QString, KNotifyPlugin *> notifyPlugins;
+    QHash<QString, KNotificationPlugin *> notifyPlugins;
 
     // incremental ids for notifications
     int notifyIdCounter;
@@ -83,7 +83,7 @@ KNotificationManager::KNotificationManager()
     QString error;
 
     Q_FOREACH (const KService::Ptr service, offers) {
-        KNotifyPlugin *plugin = service->createInstance<KNotifyPlugin>(this, args, &error);
+        KNotificationPlugin *plugin = service->createInstance<KNotificationPlugin>(this, args, &error);
         if (plugin) {
             addPlugin(plugin);
         } else {
@@ -97,7 +97,7 @@ KNotificationManager::~KNotificationManager()
     delete d;
 }
 
-void KNotificationManager::addPlugin(KNotifyPlugin *notifyPlugin)
+void KNotificationManager::addPlugin(KNotificationPlugin *notifyPlugin)
 {
     d->notifyPlugins[notifyPlugin->optionName()] = notifyPlugin;
     connect(notifyPlugin, SIGNAL(finished(KNotification*)), this, SLOT(notifyPluginFinished(KNotification*)));
@@ -139,7 +139,7 @@ void KNotificationManager::close(int id, bool force)
         KNotification *n = d->notifications.take(id);
         qDebug() << "Closing notification" << id;
 
-        Q_FOREACH (KNotifyPlugin *plugin, d->notifyPlugins) {
+        Q_FOREACH (KNotificationPlugin *plugin, d->notifyPlugins) {
             plugin->close(n);
         }
     }
@@ -166,7 +166,7 @@ int KNotificationManager::notify(KNotification *n)
             continue;
         }
 
-        KNotifyPlugin *notifyPlugin = d->notifyPlugins[action];
+        KNotificationPlugin *notifyPlugin = d->notifyPlugins[action];
         n->ref();
         qDebug() << "Calling notify on" << notifyPlugin->optionName();
         notifyPlugin->notify(n, notifyConfig);
@@ -186,7 +186,7 @@ void KNotificationManager::update(KNotification *n)
 
     KNotifyConfig notifyConfig(n->appName(), n->contexts(), n->eventId());
 
-    Q_FOREACH (KNotifyPlugin *p, d->notifyPlugins) {
+    Q_FOREACH (KNotificationPlugin *p, d->notifyPlugins) {
         p->update(n, &notifyConfig);
     }
 }

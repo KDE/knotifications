@@ -25,11 +25,11 @@
 #ifndef NOTIFYBYKTTS_H
 #define NOTIFYBYKTTS_H
 
-#include "knotifyplugin.h"
+#include "knotificationplugin.h"
 
 #include "kspeechinterface.h"
 
-class NotifyByKTTS : public KNotifyPlugin
+class NotifyByKTTS : public KNotificationPlugin
 {
     Q_OBJECT
 public:

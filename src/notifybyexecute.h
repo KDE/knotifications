@@ -24,9 +24,9 @@
 #ifndef NOTIFYBYEXECUTE_H
 #define NOTIFYBYEXECUTE_H
 
-#include "knotifyplugin.h"
+#include "knotificationplugin.h"
 
-class NotifyByExecute : public KNotifyPlugin
+class NotifyByExecute : public KNotificationPlugin
 {
     Q_OBJECT
 public:

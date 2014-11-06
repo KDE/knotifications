@@ -146,7 +146,7 @@ class NotifyBySound::Private
 
 };
 
-NotifyBySound::NotifyBySound(QObject *parent) : KNotifyPlugin(parent),d(new Private)
+NotifyBySound::NotifyBySound(QObject *parent) : KNotificationPlugin(parent),d(new Private)
 {
 	d->signalmapper = new QSignalMapper(this);
 	connect(d->signalmapper, SIGNAL(mapped(int)), this, SLOT(slotSoundFinished(int)));
@@ -275,7 +275,7 @@ void NotifyBySound::timerEvent(QTimerEvent *e)
 		d->playerPool.clear();
 		return;
 	}
-	KNotifyPlugin::timerEvent(e);
+	KNotificationPlugin::timerEvent(e);
 }
 
 void NotifyBySound::slotSoundFinished(int id)

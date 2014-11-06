@@ -349,7 +349,7 @@ int KPassivePopup::timeout() const
 
 void KPassivePopup::setTimeout(int delay)
 {
-    d->hideDelay = delay;
+    d->hideDelay = delay < 0 ? DEFAULT_POPUP_TIME : delay;
     if (d->hideTimer->isActive()) {
         if (delay) {
             d->hideTimer->start(delay);
@@ -553,7 +553,7 @@ KPassivePopup *KPassivePopup::message(int popupStyle, const QString &caption, co
     pop->setPopupStyle(popupStyle);
     pop->setAutoDelete(true);
     pop->setView(caption, text, icon);
-    pop->d->hideDelay = timeout;
+    pop->d->hideDelay = timeout < 0 ? DEFAULT_POPUP_TIME : timeout;
     if (p.isNull()) {
         pop->show();
     } else {
@@ -581,7 +581,7 @@ KPassivePopup *KPassivePopup::message(int popupStyle, const QString &caption, co
     pop->setPopupStyle(popupStyle);
     pop->setAutoDelete(true);
     pop->setView(caption, text, icon);
-    pop->d->hideDelay = timeout;
+    pop->d->hideDelay = timeout < 0 ? DEFAULT_POPUP_TIME : timeout;
     if (p.isNull()) {
         pop->show();
     } else {
@@ -598,7 +598,7 @@ KPassivePopup *KPassivePopup::message(int popupStyle, const QString &caption, co
     pop->setPopupStyle(popupStyle);
     pop->setAutoDelete(true);
     pop->setView(caption, text, icon);
-    pop->d->hideDelay = timeout;
+    pop->d->hideDelay = timeout < 0 ? DEFAULT_POPUP_TIME : timeout;
     QPoint pos = pop->d->calculateNearbyPoint(parent->geometry());
     pop->show(pos);
     pop->moveNear(parent->geometry());

@@ -1,5 +1,6 @@
 /* This file is part of the KDE libraries
    Copyright (C) 2005-2006 Olivier Goffart <ogoffart at kde.org>
+   Copyright (C) 2013-2014 Martin Klapetek <mklapetek@kde.org>
 
    code from KNotify/KNotifyClient
    Copyright (c) 1997 Christian Esken (esken@kde.org)
@@ -40,6 +41,7 @@
 #include <QTabWidget>
 #include <QFile>
 #include <QStringList>
+#include <QDebug>
 
 struct KNotification::Private {
     QString eventId;
@@ -124,7 +126,7 @@ QWidget *KNotification::widget() const
 void KNotification::setWidget(QWidget *wid)
 {
     d->widget = wid;
-    setParent(wid);
+//     setParent(wid);
     if (wid && d->flags &  CloseWhenWidgetActivated) {
         wid->installEventFilter(this);
     }
@@ -413,8 +415,10 @@ void KNotification::update()
 bool KNotification::eventFilter(QObject *watched, QEvent *event)
 {
     if (watched == d->widget) {
+        qDebug() << "event occured:" << event->type();
         if (event->type() == QEvent::WindowActivate) {
             if (d->flags &  CloseWhenWidgetActivated) {
+                qDebug() << "closing";
                 QTimer::singleShot(500, this, SLOT(close()));
             }
         }

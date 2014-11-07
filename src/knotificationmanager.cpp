@@ -77,7 +77,7 @@ KNotificationManager::KNotificationManager()
     #endif
 //     addPlugin(new NotifyByKTTS(this));
 
-    KService::List offers = KServiceTypeTrader::self()->query("KNotify/NotifyMethod");
+    KService::List offers = KServiceTypeTrader::self()->query("KNotification/NotifyPlugin");
 
     QVariantList args;
     QString error;

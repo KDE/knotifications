@@ -32,7 +32,7 @@ class KNotificationPluginPrivate;
 class KNotifyConfig;
 
 /**
- * @brief abstract class for KNotify actions
+ * @brief abstract class for KNotification actions
  *
  * A KNotificationPlugin is responsible of notification presentation.
  * You can subclass it to have your own presentation of a notification.

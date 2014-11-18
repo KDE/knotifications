@@ -291,7 +291,7 @@ public:
     //ToolTip handling
     /**
      * Sets a new toolTip or this icon, a toolTip is composed of an icon,
-     * a title ad a text, all fields are optional.
+     * a title and a text, all fields are optional.
      *
      * @param iconName a QIcon::fromTheme compatible name for the tootip icon
      * @param title tootip title

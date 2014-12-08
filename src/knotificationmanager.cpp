@@ -66,9 +66,8 @@ KNotificationManager::KNotificationManager()
     qDeleteAll(d->notifyPlugins);
     d->notifyPlugins.clear();
     addPlugin(new NotifyByPopup(this));
-    //FIXME: port and reenable
-//     addPlugin(new NotifyBySound(this));
     addPlugin(new NotifyByExecute(this));
+    //FIXME: port and reenable
 //     addPlugin(new NotifyByLogfile(this));
     addPlugin(new NotifyByAudio(this));
     //TODO reactivate on Mac/Win when KWindowSystem::demandAttention will implemented on this system.

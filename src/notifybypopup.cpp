@@ -154,7 +154,7 @@ public:
 
 //---------------------------------------------------------------------------------------
 
-NotifyByPopup::NotifyByPopup(QObject *parent) 
+NotifyByPopup::NotifyByPopup(QObject *parent)
   : KNotificationPlugin(parent),
     d(new NotifyByPopupPrivate(this))
 {
@@ -652,7 +652,8 @@ bool NotifyByPopupPrivate::sendNotificationToGalagoServer(KNotification *notific
 
     QDBusPendingCall notificationCall = QDBusConnection::sessionBus().asyncCall(dbusNotificationMessage, -1);
 
-    QDBusPendingCallWatcher *watcher = new QDBusPendingCallWatcher(notificationCall, q);
+    //parent is set to the notification so that no-one ever accesses a dangling pointer on the notificationObject property
+    QDBusPendingCallWatcher *watcher = new QDBusPendingCallWatcher(notificationCall, notification);
     watcher->setProperty("notificationObject", QVariant::fromValue<KNotification*>(notification));
 
     QObject::connect(watcher, SIGNAL(finished(QDBusPendingCallWatcher*)),

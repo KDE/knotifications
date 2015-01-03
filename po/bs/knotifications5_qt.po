@@ -1,0 +1,73 @@
+# translation of kdelibs4.po to bosanski
+# Marko Rosic <roske@kde.org.yu>, 2003.
+# Toplica Tanaskovic <toptan@kde.org.yu>, 2003, 2004, 2005.
+# Chusslove Illich <caslav.ilic@gmx.net>, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010.
+# Dalibor Djuric <dalibor.djuric@mozilla-srbija.org>, 2009, 2010.
+# Dalibor Djuric <daliborddjuric@gmail.com>, 2010.
+# KDE 4 <megaribi@epn.ba>, 2011.
+# Bosnian translation of kdelibs4
+# Initially converted from translation of kdelibs4.po by
+# Samir Ribić <Samir.ribic@etf.unsa.ba>
+msgid ""
+msgstr ""
+"Project-Id-Version: kdelibs4\n"
+"Report-Msgid-Bugs-To: http://bugs.kde.org\n"
+"POT-Creation-Date: 2014-03-23 01:50+0000\n"
+"PO-Revision-Date: 2013-12-21 17:26+0000\n"
+"Last-Translator: Ademovic Saudin <sademovic1@etf.unsa.ba>\n"
+"Language-Team: bosanski <bs@li.org>\n"
+"Language: bosnian\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=3; plural=n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
+"%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2;\n"
+"X-Generator: Launchpad (build 16872)\n"
+"X-Launchpad-Export-Date: 2013-12-22 05:52+0000\n"
+"X-Accelerator-Marker: &\n"
+"X-Text-Markup: kde4\n"
+"X-Environment: kde\n"
+"X-Qt-Contexts: true\n"
+
+# >> @item in message source specification
+#: knotificationrestrictions.cpp:184
+#, fuzzy
+#| msgid "Unknown Application"
+msgctxt "KNotificationRestrictions|"
+msgid "Unknown Application"
+msgstr "nepoznat program"
+
+#: kstatusnotifieritem.cpp:459 kstatusnotifieritem.cpp:899
+#, fuzzy
+#| msgid "&Minimize"
+msgctxt "KStatusNotifierItem|"
+msgid "&Minimize"
+msgstr "&Minimizuj"
+
+#: kstatusnotifieritem.cpp:724
+#, fuzzy
+#| msgid "Quit"
+msgctxt "KStatusNotifierItem|"
+msgid "Quit"
+msgstr "Izlaz"
+
+#: kstatusnotifieritem.cpp:897
+#, fuzzy
+#| msgid "&Restore"
+msgctxt "KStatusNotifierItem|"
+msgid "&Restore"
+msgstr "&Obnovi"
+
+#: kstatusnotifieritem.cpp:911
+#, fuzzy, qt-format
+#| msgid "<qt>Are you sure you want to quit <b>%1</b>?</qt>"
+msgctxt "KStatusNotifierItem|"
+msgid "<qt>Are you sure you want to quit <b>%1</b>?</qt>"
+msgstr "<qt>Želite li zaista da napustite <b>%1</b>?</qt>"
+
+#: kstatusnotifieritem.cpp:914
+#, fuzzy
+#| msgid "Confirm Quit From System Tray"
+msgctxt "KStatusNotifierItem|"
+msgid "Confirm Quit From System Tray"
+msgstr "Potvrdi napuštanje preko sistemske kasete"

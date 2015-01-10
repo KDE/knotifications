@@ -49,7 +49,7 @@ add_library(KF5Notifications ${knotifications_SRCS})
 generate_export_header(KF5Notifications BASE_NAME KNotifications)
 add_library(KF5::Notifications ALIAS KF5Notifications)
 
-target_include_directories(KF5Notifications INTERFACE "$<INSTALL_INTERFACE:${KF5_INCLUDE_INSTALL_DIR}/KNotifications>")
+target_include_directories(KF5Notifications INTERFACE "$<INSTALL_INTERFACE:${KDE_INSTALL_INCLUDEDIR_KF5}/KNotifications>")
 
 target_link_libraries(KF5Notifications PUBLIC
    Qt5::Widgets
@@ -98,24 +98,24 @@ install(TARGETS KF5Notifications EXPORT KF5NotificationsTargets ${KF5_INSTALL_TA
 install(FILES
   ${CMAKE_CURRENT_BINARY_DIR}/knotifications_export.h
   ${KNotifications_HEADERS}
-  DESTINATION ${KF5_INCLUDE_INSTALL_DIR}/KNotifications COMPONENT Devel
+  DESTINATION ${KDE_INSTALL_INCLUDEDIR_KF5}/KNotifications COMPONENT Devel
 )
 
 install(FILES
     org.kde.StatusNotifierItem.xml
-    DESTINATION ${DBUS_INTERFACES_INSTALL_DIR}
+    DESTINATION ${KDE_INSTALL_DBUSINTERFACEDIR}
     RENAME kf5_org.kde.StatusNotifierItem.xml)
 
 install(FILES
     org.kde.StatusNotifierWatcher.xml
-    DESTINATION ${DBUS_INTERFACES_INSTALL_DIR}
+    DESTINATION ${KDE_INSTALL_DBUSINTERFACEDIR}
     RENAME kf5_org.kde.StatusNotifierWatcher.xml)
 
 install(FILES
     knotificationplugin.desktop
-    DESTINATION ${SERVICETYPES_INSTALL_DIR})
+    DESTINATION ${KDE_INSTALL_KSERVICETYPES5DIR})
 
 include(ECMGeneratePriFile)
-ecm_generate_pri_file(BASE_NAME KNotifications LIB_NAME KF5Notifications DEPS "widgets" FILENAME_VAR PRI_FILENAME INCLUDE_INSTALL_DIR ${KF5_INCLUDE_INSTALL_DIR}/KNotifications)
+ecm_generate_pri_file(BASE_NAME KNotifications LIB_NAME KF5Notifications DEPS "widgets" FILENAME_VAR PRI_FILENAME INCLUDE_INSTALL_DIR ${KDE_INSTALL_INCLUDEDIR_KF5}/KNotifications)
 install(FILES ${PRI_FILENAME} DESTINATION ${ECM_MKSPECS_INSTALL_DIR})
 

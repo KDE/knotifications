@@ -150,4 +150,3 @@ void NotifyByAudio::onAudioSourceChanged(const Phonon::MediaSource &source)
     m->enqueue(source);
 }
 
-#include "notifybyaudio.moc"

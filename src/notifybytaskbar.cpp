@@ -50,4 +50,3 @@ void NotifyByTaskbar::notify(KNotification *notification, KNotifyConfig *config)
     finish(notification);
 }
 
-#include "notifybytaskbar.moc"

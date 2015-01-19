@@ -775,4 +775,3 @@ QString NotifyByPopupPrivate::HtmlEntityResolver::resolveUndeclaredEntity(const 
     return QString(ent);
 }
 
-#include "notifybypopup.moc"

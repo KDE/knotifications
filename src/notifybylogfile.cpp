@@ -73,4 +73,3 @@ void NotifyByLogfile::notify(KNotification *notification, KNotifyConfig *config)
     finish(notification);
 }
 
-#include "notifybylogfile.moc"

@@ -46,26 +46,6 @@ static const int s_legacyTrayIconSize = 24;
 
 #if HAVE_DBUSMENUQT
 #include <dbusmenuexporter.h>
-
-#include "statusnotifieritemadaptor.h"
-
-/**
- * Specialization to provide access to KDE icon names
- */
-class KDBusMenuExporter : public DBusMenuExporter
-{
-public:
-    KDBusMenuExporter(const QString &dbusObjectPath, QMenu *menu, const QDBusConnection &dbusConnection)
-        : DBusMenuExporter(dbusObjectPath, menu, dbusConnection)
-    {}
-
-protected:
-    virtual QString iconNameForAction(QAction *action)
-    {
-        QIcon icon(action->icon());
-        return icon.isNull() ? QString() : icon.name();
-    }
-};
 #endif //HAVE_DBUSMENUQT
 
 KStatusNotifierItem::KStatusNotifierItem(QObject *parent)
@@ -420,7 +400,7 @@ void KStatusNotifierItem::setContextMenu(QMenu *menu)
         } else {
             d->menuObjectPath = "/MenuBar";
 #if HAVE_DBUSMENUQT
-            new KDBusMenuExporter(d->menuObjectPath, menu, d->statusNotifierItemDBus->dbusConnection());
+            new DBusMenuExporter(d->menuObjectPath, menu, d->statusNotifierItemDBus->dbusConnection());
 #endif
         }
 

@@ -41,7 +41,6 @@
 #include <QTabWidget>
 #include <QFile>
 #include <QStringList>
-#include <QDebug>
 
 struct KNotification::Private {
     QString eventId;
@@ -415,10 +414,8 @@ void KNotification::update()
 bool KNotification::eventFilter(QObject *watched, QEvent *event)
 {
     if (watched == d->widget) {
-        qDebug() << "event occured:" << event->type();
         if (event->type() == QEvent::WindowActivate) {
             if (d->flags &  CloseWhenWidgetActivated) {
-                qDebug() << "closing";
                 QTimer::singleShot(500, this, SLOT(close()));
             }
         }

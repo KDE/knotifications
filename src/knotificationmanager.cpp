@@ -71,7 +71,7 @@ KNotificationManager::KNotificationManager()
 //     addPlugin(new NotifyByLogfile(this));
     addPlugin(new NotifyByAudio(this));
     //TODO reactivate on Mac/Win when KWindowSystem::demandAttention will implemented on this system.
-    #ifndef Q_WS_MAC
+    #ifndef Q_OS_MAC
     addPlugin(new NotifyByTaskbar(this));
     #endif
 //     addPlugin(new NotifyByKTTS(this));

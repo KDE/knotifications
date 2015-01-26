@@ -68,6 +68,9 @@ class QDBusError;
  * Your application should install a file called <em>knotifications5/appname.notifyrc</em>
  * in a QStandardPaths::GenericDataLocation directory.
  *
+ * The filename should either match QCoreApplication::applicationName or be specified as the
+ * component name to the KNotification object.
+ *
  * You can do this with the following CMake command:
  * install(FILES appname.notifyrc  DESTINATION ${KNOTIFYRC_INSTALL_DIR}))
  *

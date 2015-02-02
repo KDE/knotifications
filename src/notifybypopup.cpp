@@ -47,6 +47,8 @@
 #include <QMap>
 #include <QHash>
 #include <QXmlStreamEntityResolver>
+#include <QPointer>
+#include <QMutableListIterator>
 
 #include <kconfiggroup.h>
 #include <KIconThemes/KIconLoader>
@@ -137,7 +139,8 @@ public:
      * As we communicate with the notification server over dbus
      * we use only ids, this is for fast KNotifications lookup
      */
-    QHash<uint, KNotification*> galagoNotifications;
+    QHash<uint, QPointer<KNotification>> galagoNotifications;
+
 
     NotifyByPopup * const q;
 
@@ -363,6 +366,15 @@ void NotifyByPopup::close(KNotification *notification)
         // which will call finish() on the notification
         d->passivePopups[notification]->deleteLater();
     }
+
+    QMutableListIterator<QPair<KNotification*, KNotifyConfig*> > iter(d->notificationQueue);
+    while (iter.hasNext()) {
+        auto &item = iter.next();
+        if (item.first == notification) {
+            delete item.second;
+            iter.remove();
+        }
+    }
 }
 
 void NotifyByPopup::update(KNotification *notification, KNotifyConfig *notifyConfig)
@@ -390,7 +402,9 @@ void NotifyByPopup::onServiceOwnerChanged(const QString &serviceName, const QStr
 {
     // close all notifications we currently hold reference to
     Q_FOREACH (KNotification *n, d->galagoNotifications.values()) {
-        finished(n);
+        if (n) {
+            finished(n);
+        }
     }
     Q_FOREACH (KNotification *n, d->passivePopups.keys()) {
         finished(n);
@@ -432,38 +446,49 @@ void NotifyByPopup::onServiceOwnerChanged(const QString &serviceName, const QStr
 
 void NotifyByPopup::onGalagoNotificationActionInvoked(uint notificationId, const QString &actionKey)
 {
-    KNotification *n = d->galagoNotifications[notificationId];
-    if (n == 0) {
+    auto iter = d->galagoNotifications.find(notificationId);
+    if (iter == d->galagoNotifications.end()) {
         qWarning() << "Failed to find KNotification id for dbus_id" << notificationId << "- action not triggered";
         return;
     }
 
-    emit actionInvoked(n->id(), actionKey.toUInt());
-    // now close notification - similar to popup behaviour
-    // (popups are hidden after link activation - see 'connects' of linkActivated signal above)
-    d->closeGalagoNotification(n);
+    KNotification *n = *iter;
+    if (n) {
+        emit actionInvoked(n->id(), actionKey.toUInt());
+        // now close notification - similar to popup behaviour
+        // (popups are hidden after link activation - see 'connects' of linkActivated signal above)
+        d->closeGalagoNotification(n);
+    } else {
+        d->galagoNotifications.erase(iter);
+    }
 }
 
 void NotifyByPopup::onGalagoNotificationClosed(uint dbus_id, uint reason)
 {
     Q_UNUSED(reason)
-    KNotification *n = d->galagoNotifications[dbus_id];
-    if (n == 0) {
+    auto iter = d->galagoNotifications.find(dbus_id);
+    if (iter == d->galagoNotifications.end()) {
         qWarning() << "Failed to find KNotification for dbus_id" << dbus_id;
         return;
     }
+    KNotification *n = *iter;
     d->galagoNotifications.remove(dbus_id);
-    finished(n);
-    // The popup bubble is the only user facing part of a notification,
-    // if the user closes the popup, it means he wants to get rid
-    // of the notification completely, including playing sound etc
-    // Therefore we close the KNotification completely after closing
-    // the popup
-    n->close();
+
+    if (n) {
+        finished(n);
+        // The popup bubble is the only user facing part of a notification,
+        // if the user closes the popup, it means he wants to get rid
+        // of the notification completely, including playing sound etc
+        // Therefore we close the KNotification completely after closing
+        // the popup
+        n->close();
+    }
 }
 
 void NotifyByPopup::onGalagoServerReply(QDBusPendingCallWatcher *watcher)
 {
+    // call deleteLater first, since we might return in the middle of the function
+    watcher->deleteLater();
     KNotification *notification = watcher->property("notificationObject").value<KNotification*>();
     if (!notification) {
         qWarning() << "Invalid notification object passed in DBus reply watcher; notification will probably break";
@@ -473,7 +498,6 @@ void NotifyByPopup::onGalagoServerReply(QDBusPendingCallWatcher *watcher)
     QDBusPendingReply<uint> reply = *watcher;
 
     d->galagoNotifications.insert(reply.argumentAt<0>(), notification);
-    watcher->deleteLater();
 }
 
 void NotifyByPopup::onGalagoServerCapabilitiesReceived(const QStringList &capabilities)

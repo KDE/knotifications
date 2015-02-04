@@ -22,37 +22,13 @@
 #ifndef KNOTIFYCONFIG_H
 #define KNOTIFYCONFIG_H
 
-#include <ksharedconfig.h>
-
 #include <QPair>
-#include <QPixmap>
-#include <QObject> //for Wid
+#include <QList>
+#include <QString>
 
 #include "knotifications_export.h"
 
 typedef QList< QPair<QString,QString> > ContextList;
-
-/**
- * An image with lazy loading from the byte array
- */
-class KNOTIFICATIONS_EXPORT KNotifyImage
-{
-    public:
-        KNotifyImage() : dirty(false) {}
-        KNotifyImage(const QByteArray &data) : source(data), dirty(true) {}
-        QImage toImage();
-        bool isNull() {
-            return dirty ? source.isEmpty() : image.isNull();
-        }
-        QByteArray data() const {
-            return source;
-        }
-    private:
-        QByteArray source;
-        QImage image;
-        bool dirty;
-};
-
 
 /**
  * Represent the configuration for an event
@@ -62,9 +38,10 @@ class KNOTIFICATIONS_EXPORT KNotifyConfig
 {
 public:
     KNotifyConfig(const QString &appname, const ContextList &_contexts , const QString &_eventid);
+    KNotifyConfig(const KNotifyConfig& other);
     ~KNotifyConfig();
 
-    KNotifyConfig *copy() const;
+    KNotifyConfig& operator=(const KNotifyConfig& other);
 
     /**
         * @return entry from the knotifyrc file
@@ -74,33 +51,36 @@ public:
         *
         * return a null string if the entry doesn't exist
         */
-    QString readEntry(const QString &entry , bool path = false);
-
-    /**
-        * the pixmap to put on the notification
-        */
-    KNotifyImage image;
+    QString readEntry(const QString &entry , bool path = false) const;
 
     /**
         * the name of the application that triggered the notification
         */
-    QString appname;
-
-    /**
-        * @internal
-        */
-    KSharedConfig::Ptr eventsfile,configfile;
-    ContextList contexts;
+    const QString &appName() const;
 
     /**
         * the name of the notification
         */
-    QString eventid;
+    const QString &eventId() const;
+
+    /**
+     * Name obtained from notify configuration
+     */
+    QString appConfigName() const;
+
+    /**
+     * the icon name of current event obtained from notify configuration
+     */
+    QString iconName() const;
 
     /**
         * reparse the cached configs.  to be used when the config may have changed
         */
     static void reparseConfiguration();
+
+private:
+    struct Private;
+    Private *const d;
 };
 
 #endif

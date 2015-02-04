@@ -89,6 +89,7 @@ ecm_generate_headers(KNotifications_HEADERS
   KStatusNotifierItem
   KNotificationRestrictions
   KNotificationPlugin
+  KNotifyConfig
 
   REQUIRED_HEADERS KNotifications_HEADERS
 )

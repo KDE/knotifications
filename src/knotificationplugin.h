@@ -57,6 +57,7 @@ public:
         */
     virtual QString optionName() = 0;
 
+    // TODO KF6 make notifyConfig const reference
     /**
         * This function is called when the notification is sent.
         * (or re-sent)
@@ -69,6 +70,7 @@ public:
         */
     virtual void notify(KNotification *notification, KNotifyConfig *notifyConfig) = 0;
 
+    // TODO KF6 make config const reference
     /**
         * This function is called when the notification has changed (such as the text or the icon)
         */

@@ -30,6 +30,19 @@
 #include <QStandardPaths>
 #include <QDebug>
 
+struct KNotifyConfig::Private
+{
+    QString appName;
+    QString eventId;
+
+    /**
+        * @internal
+        */
+    KSharedConfig::Ptr eventsFile,configFile;
+    ContextList contexts;
+
+};
+
 typedef QCache<QString, KSharedConfig::Ptr> ConfigCache;
 Q_GLOBAL_STATIC_WITH_ARGS(ConfigCache , static_cache, (15))
 
@@ -55,43 +68,79 @@ void KNotifyConfig::reparseConfiguration()
 }
 
 KNotifyConfig::KNotifyConfig(const QString &_appname, const ContextList &_contexts, const QString &_eventid)
-    : appname (_appname),
-      contexts(_contexts),
-      eventid(_eventid)
+    : d(new Private)
 {
-    eventsfile = retrieve_from_cache(QStringLiteral("knotifications5/") + _appname + QStringLiteral(".notifyrc"), QStandardPaths::GenericDataLocation);
-    configfile = retrieve_from_cache(_appname + QStringLiteral(".notifyrc"));
+    d->appName = _appname;
+    d->eventId = _eventid;
+    d->eventsFile = retrieve_from_cache(QStringLiteral("knotifications5/") + _appname + QStringLiteral(".notifyrc"), QStandardPaths::GenericDataLocation);
+    d->configFile = retrieve_from_cache(_appname + QStringLiteral(".notifyrc"));
+    d->contexts = _contexts;
+}
+
+KNotifyConfig::KNotifyConfig(const KNotifyConfig &other)
+    : d(new Private)
+{
+    d->appName = other.d->appName;
+    d->eventId = other.d->eventId;
+    d->eventsFile = other.d->eventsFile;
+    d->configFile = other.d->configFile;
+    d->contexts = other.d->contexts;
 }
 
 KNotifyConfig::~KNotifyConfig()
 {
+    delete d;
 }
 
-KNotifyConfig *KNotifyConfig::copy() const
+KNotifyConfig &KNotifyConfig::operator=(const KNotifyConfig &other)
 {
-    KNotifyConfig *config = new KNotifyConfig(appname, contexts, eventid);
-//     config->title      = title;
-//     config->text       = text;
-//     config->image      = KNotifyImage(image.data);
-//     config->timeout    = timeout;
-//     config->winId      = winId;
-//     config->actions    = actions;
-    config->eventsfile = eventsfile;
-    config->configfile = configfile;
-    // appname, contexts, eventid already done in constructor
+    d->appName = other.d->appName;
+    d->eventId = other.d->eventId;
+    d->eventsFile = other.d->eventsFile;
+    d->configFile = other.d->configFile;
+    d->contexts = other.d->contexts;
 
-    return config;
+    return *this;
 }
 
-QString KNotifyConfig::readEntry(const QString &entry, bool path)
+
+QString KNotifyConfig::appConfigName() const
+{
+    if (d->eventsFile->hasGroup("Global")) {
+        KConfigGroup globalgroup(d->eventsFile, QString("Global"));
+        return globalgroup.readEntry("Name", globalgroup.readEntry("Comment", d->appName));
+    }
+
+    return d->appName;
+}
+
+QString KNotifyConfig::iconName() const
+{
+    const QString group = "Event/" + d->eventId;
+    if (d->eventsFile->hasGroup(group)) {
+        KConfigGroup eventGroup(d->eventsFile, group);
+        if (eventGroup.hasKey("IconName")) {
+            return eventGroup.readEntry("IconName", d->appName);
+        }
+    }
+
+    if (d->eventsFile->hasGroup("Global")) {
+        KConfigGroup globalgroup(d->eventsFile, QString("Global"));
+        return globalgroup.readEntry("IconName", d->appName);
+    }
+
+    return d->appName;
+}
+
+QString KNotifyConfig::readEntry(const QString &entry, bool path) const
 {
     QPair<QString, QString> context;
 
-    Q_FOREACH (context, contexts) {
-        const QString group = "Event/" + eventid + '/' + context.first + '/' + context.second;
+    Q_FOREACH (context, d->contexts) {
+        const QString group = "Event/" + d->eventId + '/' + context.first + '/' + context.second;
 
-        if (configfile->hasGroup(group)) {
-            KConfigGroup cg(configfile, group);
+        if (d->configFile->hasGroup(group)) {
+            KConfigGroup cg(d->configFile, group);
             QString p = path ? cg.readPathEntry(entry, QString()) : cg.readEntry(entry, QString());
 
             if (!p.isNull()) {
@@ -99,8 +148,8 @@ QString KNotifyConfig::readEntry(const QString &entry, bool path)
             }
         }
 
-        if (eventsfile->hasGroup(group)) {
-            KConfigGroup cg(eventsfile, group);
+        if (d->eventsFile->hasGroup(group)) {
+            KConfigGroup cg(d->eventsFile, group);
             QString p = path ? cg.readPathEntry(entry, QString()) : cg.readEntry(entry, QString());
 
             if (!p.isNull()) {
@@ -109,10 +158,10 @@ QString KNotifyConfig::readEntry(const QString &entry, bool path)
         }
     }
 //    kDebug() << entry << " not found in contexts ";
-    const QString group = "Event/" + eventid;
+    const QString group = "Event/" + d->eventId;
 
-    if (configfile->hasGroup(group)) {
-        KConfigGroup cg(configfile, group);
+    if (d->configFile->hasGroup(group)) {
+        KConfigGroup cg(d->configFile, group);
         QString p = path ? cg.readPathEntry(entry, QString()) : cg.readEntry(entry, QString());
 
         if (!p.isNull()) {
@@ -120,8 +169,8 @@ QString KNotifyConfig::readEntry(const QString &entry, bool path)
         }
     }
 //    kDebug() << entry << " not found in config ";
-    if (eventsfile->hasGroup(group)) {
-        KConfigGroup cg(eventsfile, group);
+    if (d->eventsFile->hasGroup(group)) {
+        KConfigGroup cg(d->eventsFile, group);
         QString p = path ? cg.readPathEntry(entry, QString()) : cg.readEntry(entry, QString());
 
         if (!p.isNull()) {
@@ -133,13 +182,14 @@ QString KNotifyConfig::readEntry(const QString &entry, bool path)
     return QString();
 }
 
-QImage KNotifyImage::toImage() 
+
+const QString &KNotifyConfig::appName() const
 {
-    if (dirty) {
-        if (source.size() > 4) { // no way an image can fit in less than 4 bytes
-            image.loadFromData(source);
-        }
-        dirty = false;
-    }
-    return image;
+    return d->appName;
 }
+
+const QString &KNotifyConfig::eventId() const
+{
+    return d->eventId;
+}
+

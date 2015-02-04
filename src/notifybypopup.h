@@ -63,6 +63,10 @@ private Q_SLOTS:
     void onGalagoServerCapabilitiesReceived(const QStringList &capabilities);
 
 private:
+    // TODO KF6, replace current public notify/update
+    void notify(KNotification *notification, const KNotifyConfig &notifyConfig);
+    void update(KNotification *notification, const KNotifyConfig &notifyConfig);
+
     NotifyByPopupPrivate * const d;
 };
 

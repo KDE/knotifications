@@ -27,7 +27,6 @@
 #include <QTextStream>
 #include <QUrl>
 #include <QString>
-#include <QStandardPaths>
 
 #include "knotifyconfig.h"
 #include "knotification.h"

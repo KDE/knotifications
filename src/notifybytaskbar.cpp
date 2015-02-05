@@ -40,6 +40,7 @@ NotifyByTaskbar::~NotifyByTaskbar()
 
 void NotifyByTaskbar::notify(KNotification *notification, KNotifyConfig *config)
 {
+    Q_UNUSED(config);
     qDebug() << notification->id() << notification->widget()->topLevelWidget()->winId();
 
     WId win = notification->widget()->topLevelWidget()->winId();

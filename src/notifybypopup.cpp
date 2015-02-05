@@ -65,7 +65,7 @@ public:
      * @internal
      * Fills the KPassivePopup with data
      */
-    void fillPopup(KPassivePopup *popup, KNotification *notification, KNotifyConfig *config);
+    void fillPopup(KPassivePopup *popup, KNotification *notification, const KNotifyConfig &config);
     /**
      * Make sure a popup is completely supported by the notification backend.
      * Changes the popup to be compatible if needed.
@@ -88,7 +88,7 @@ public:
      *               Otherwise will put new notification on screen
      * @return true for success or false if there was an error.
      */
-    bool sendNotificationToGalagoServer(KNotification *notification, KNotifyConfig *config, bool update = false);
+    bool sendNotificationToGalagoServer(KNotification *notification, const KNotifyConfig &config, bool update = false);
     /**
      * Sends request to close Notification with id to DBus "org.freedesktop.notifications" interface
      *  @param id knotify-side notification ID to close
@@ -97,7 +97,7 @@ public:
     /**
      * Find the caption and the icon name of the application
      */
-    void getAppCaptionAndIconName(KNotifyConfig *config, QString *appCaption, QString *iconName);
+    void getAppCaptionAndIconName(const KNotifyConfig &config, QString *appCaption, QString *iconName);
     /*
      * Query the dbus server for notification capabilities
      * If no DBus server is present, use fallback capabilities for KPassivePopup
@@ -124,7 +124,7 @@ public:
      * so we queue all notifications while waiting for the capabilities
      * to return, then process them from this queue
      */
-    QList<QPair<KNotification*, KNotifyConfig*> > notificationQueue;
+    QList<QPair<KNotification*, KNotifyConfig> > notificationQueue;
     /**
      * Whether the DBus notification daemon capability cache is up-to-date.
      */
@@ -226,6 +226,11 @@ NotifyByPopup::~NotifyByPopup()
 
 void NotifyByPopup::notify(KNotification *notification, KNotifyConfig *notifyConfig)
 {
+    notify(notification, *notifyConfig);
+}
+
+void NotifyByPopup::notify(KNotification *notification, const KNotifyConfig &notifyConfig)
+{
     if (d->passivePopups.contains(notification) || d->galagoNotifications.contains(notification->id())) {
         // notification is alrady on the screen, do nothing
         finish(notification);
@@ -271,7 +276,6 @@ void NotifyByPopup::notify(KNotification *notification, KNotifyConfig *notifyCon
 
         // Finish immediately, because current NotifyByPopupGrowl can't callback
         finish(notification);
-        delete notifyConfig;
         return;
     }
 
@@ -367,17 +371,21 @@ void NotifyByPopup::close(KNotification *notification)
         d->passivePopups[notification]->deleteLater();
     }
 
-    QMutableListIterator<QPair<KNotification*, KNotifyConfig*> > iter(d->notificationQueue);
+    QMutableListIterator<QPair<KNotification*, KNotifyConfig> > iter(d->notificationQueue);
     while (iter.hasNext()) {
         auto &item = iter.next();
         if (item.first == notification) {
-            delete item.second;
             iter.remove();
         }
     }
 }
 
 void NotifyByPopup::update(KNotification *notification, KNotifyConfig *notifyConfig)
+{
+    update(notification, *notifyConfig);
+}
+
+void NotifyByPopup::update(KNotification *notification, const KNotifyConfig &notifyConfig)
 {
     if (d->passivePopups.contains(notification)) {
         KPassivePopup *p = d->passivePopups[notification];
@@ -400,6 +408,7 @@ void NotifyByPopup::update(KNotification *notification, KNotifyConfig *notifyCon
 
 void NotifyByPopup::onServiceOwnerChanged(const QString &serviceName, const QString &oldOwner, const QString &newOwner)
 {
+    Q_UNUSED(serviceName);
     // close all notifications we currently hold reference to
     Q_FOREACH (KNotification *n, d->galagoNotifications.values()) {
         if (n) {
@@ -513,20 +522,20 @@ void NotifyByPopup::onGalagoServerCapabilitiesReceived(const QStringList &capabi
     d->notificationQueue.clear();
 }
 
-void NotifyByPopupPrivate::getAppCaptionAndIconName(KNotifyConfig *notifyConfig, QString *appCaption, QString *iconName)
+void NotifyByPopupPrivate::getAppCaptionAndIconName(const KNotifyConfig &notifyConfig, QString *appCaption, QString *iconName)
 {
-    KConfigGroup globalgroup(&(*notifyConfig->eventsfile), QString("Global"));
-    *appCaption = globalgroup.readEntry("Name", globalgroup.readEntry("Comment", notifyConfig->appname));
+    KConfigGroup globalgroup(&(*notifyConfig.eventsfile), QString("Global"));
+    *appCaption = globalgroup.readEntry("Name", globalgroup.readEntry("Comment", notifyConfig.appname));
 
-    KConfigGroup eventGroup(&(*notifyConfig->eventsfile), QString("Event/%1").arg(notifyConfig->eventid));
+    KConfigGroup eventGroup(&(*notifyConfig.eventsfile), QString("Event/%1").arg(notifyConfig.eventid));
     if (eventGroup.hasKey("IconName")) {
-        *iconName = eventGroup.readEntry("IconName", notifyConfig->appname);
+        *iconName = eventGroup.readEntry("IconName", notifyConfig.appname);
     } else {
-        *iconName = globalgroup.readEntry("IconName", notifyConfig->appname);
+        *iconName = globalgroup.readEntry("IconName", notifyConfig.appname);
     }
 }
 
-void NotifyByPopupPrivate::fillPopup(KPassivePopup *popup, KNotification *notification, KNotifyConfig *notifyConfig)
+void NotifyByPopupPrivate::fillPopup(KPassivePopup *popup, KNotification *notification, const KNotifyConfig &notifyConfig)
 {
     QString appCaption;
     QString iconName;
@@ -597,7 +606,7 @@ void NotifyByPopupPrivate::fillPopup(KPassivePopup *popup, KNotification *notifi
     popup->setView( vb );
 }
 
-bool NotifyByPopupPrivate::sendNotificationToGalagoServer(KNotification *notification, KNotifyConfig *notifyConfig_nocheck, bool update)
+bool NotifyByPopupPrivate::sendNotificationToGalagoServer(KNotification *notification, const KNotifyConfig &notifyConfig_nocheck, bool update)
 {
     uint updateId = galagoNotifications.key(notification, 0);
 

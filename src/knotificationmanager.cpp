@@ -146,10 +146,9 @@ void KNotificationManager::close(int id, bool force)
 
 int KNotificationManager::notify(KNotification *n)
 {
-    //FIXME: leaking?
-    KNotifyConfig *notifyConfig = new KNotifyConfig(n->appName(), n->contexts(), n->eventId());
+    KNotifyConfig notifyConfig(n->appName(), n->contexts(), n->eventId());
 
-    QString notifyActions = notifyConfig->readEntry("Action");
+    QString notifyActions = notifyConfig.readEntry("Action");
 
     if (notifyActions.isEmpty() || notifyActions == QLatin1String("None")) {
         // this will cause KNotification closing itself fast
@@ -168,7 +167,7 @@ int KNotificationManager::notify(KNotification *n)
         KNotificationPlugin *notifyPlugin = d->notifyPlugins[action];
         n->ref();
         qDebug() << "Calling notify on" << notifyPlugin->optionName();
-        notifyPlugin->notify(n, notifyConfig);
+        notifyPlugin->notify(n, &notifyConfig);
     }
 
     return d->notifyIdCounter;

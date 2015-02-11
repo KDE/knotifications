@@ -36,9 +36,9 @@
 #include <phonon/audiooutput.h>
 
 NotifyByAudio::NotifyByAudio(QObject *parent)
-    : KNotificationPlugin(parent)
+    : KNotificationPlugin(parent),
+      m_audioOutput(nullptr)
 {
-    m_audioOutput = new Phonon::AudioOutput(Phonon::NotificationCategory, this);
 }
 
 NotifyByAudio::~NotifyByAudio()
@@ -49,6 +49,9 @@ NotifyByAudio::~NotifyByAudio()
 
 void NotifyByAudio::notify(KNotification *notification, KNotifyConfig *config)
 {
+    if (!m_audioOutput) {
+        m_audioOutput = new Phonon::AudioOutput(Phonon::NotificationCategory, this);
+    }
     QString soundFilename = config->readEntry("Sound");
     if (soundFilename.isEmpty()) {
         qWarning() << "Audio notification requested, but no sound file provided in notifyrc file, aborting audio notification";

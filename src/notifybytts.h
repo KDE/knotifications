@@ -22,32 +22,25 @@
 
 
 
-#ifndef NOTIFYBYKTTS_H
-#define NOTIFYBYKTTS_H
+#ifndef NOTIFYBYTTS_H
+#define NOTIFYBYTTS_H
 
 #include "knotificationplugin.h"
 
-#include "kspeechinterface.h"
+class QTextToSpeech;
 
-class NotifyByKTTS : public KNotificationPlugin
+class NotifyByTTS : public KNotificationPlugin
 {
     Q_OBJECT
 public:
-    NotifyByKTTS(QObject *parent=0l);
-    virtual ~NotifyByKTTS();
+    NotifyByTTS(QObject *parent=0l);
+    virtual ~NotifyByTTS();
 
-    virtual QString optionName() { return "KTTS"; }
-    virtual void notify(int id , KNotifyConfig *config);
-
-private slots:
-    void removeSpeech();
+    virtual QString optionName() { return "TTS"; }
+    virtual void notify(KNotification *notification, KNotifyConfig *config);
 
 private:
-    void setupKttsd();
-
-private:
-    org::kde::KSpeech *m_kspeech;
-    bool tryToStartKttsd;
+    QTextToSpeech *m_speech;
 };
 
 #endif

@@ -27,6 +27,13 @@ ecm_setup_version(${KF5_VERSION}
 set(REQUIRED_QT_VERSION "5.2.0")
 
 find_package(Qt5 ${REQUIRED_QT_VERSION} CONFIG REQUIRED Widgets DBus)
+find_package(Qt5 ${REQUIRED_QT_VERSION} QUIET OPTIONAL_COMPONENTS TextToSpeech)
+if (NOT Qt5TextToSpeech_FOUND)
+  message(STATUS "Qt5TextToSpeech not found, notifications by tts will not be built")
+else()
+  add_definitions(-DHAVE_SPEECH)
+endif()
+
 include(KDEInstallDirs)
 include(KDEFrameworkCompilerSettings)
 include(KDECMakeSettings)

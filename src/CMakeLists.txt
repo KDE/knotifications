@@ -22,6 +22,11 @@ set(knotifications_SRCS
   ${knotifications_QM_LOADER}
 )
 
+if (Qt5TextToSpeech_FOUND)
+  set(knotifications_SRCS ${knotifications_SRCS}
+    notifybytts.cpp)
+endif()
+
 find_package(dbusmenu-qt5 CONFIG)
 set_package_properties(dbusmenu-qt5 PROPERTIES DESCRIPTION "DBusMenuQt"
                        URL "https://launchpad.net/libdbusmenu-qt" TYPE OPTIONAL
@@ -64,6 +69,10 @@ target_link_libraries(KF5Notifications PRIVATE
    KF5::Codecs
    Qt5::DBus
 )
+
+if (Qt5TextToSpeech_FOUND)
+    target_link_libraries(KF5Notifications PRIVATE Qt5::TextToSpeech)
+endif()
 
 if(X11_FOUND)
    target_link_libraries(KF5Notifications PRIVATE ${X11_X11_LIB} Qt5::X11Extras)

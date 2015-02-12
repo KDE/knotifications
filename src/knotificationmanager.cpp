@@ -36,6 +36,10 @@
 #include "notifybytaskbar.h"
 #include "notifybyexecute.h"
 
+#ifdef HAVE_SPEECH
+#include "notifybytts.h"
+#endif
+
 typedef QHash<QString, QString> Dict;
 
 struct KNotificationManager::Private {
@@ -74,7 +78,10 @@ KNotificationManager::KNotificationManager()
     #ifndef Q_OS_MAC
     addPlugin(new NotifyByTaskbar(this));
     #endif
-//     addPlugin(new NotifyByKTTS(this));
+
+#ifdef HAVE_SPEECH
+    addPlugin(new NotifyByTTS(this));
+#endif
 
     KService::List offers = KServiceTypeTrader::self()->query("KNotification/NotifyPlugin");
 

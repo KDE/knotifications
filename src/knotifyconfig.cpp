@@ -134,7 +134,7 @@ QString KNotifyConfig::readEntry(const QString &entry, bool path)
     return QString();
 }
 
-QImage KNotifyImage::toImage() 
+QImage KNotifyImage::toImage()
 {
     if (dirty) {
         if (source.size() > 4) { // no way an image can fit in less than 4 bytes

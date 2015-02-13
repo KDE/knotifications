@@ -43,9 +43,9 @@ public:
     NotifyByAudio(QObject *parent = 0);
     virtual ~NotifyByAudio();
 
-    virtual QString optionName() { return QStringLiteral("Sound"); }
-    virtual void notify(KNotification *notification, KNotifyConfig *config);
-    virtual void close(KNotification *notification);
+    QString optionName() Q_DECL_OVERRIDE { return QStringLiteral("Sound"); }
+    void notify(KNotification *notification, KNotifyConfig *config) Q_DECL_OVERRIDE;
+    void close(KNotification *notification) Q_DECL_OVERRIDE;
 
 private Q_SLOTS:
     void onAudioFinished();

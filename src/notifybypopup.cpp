@@ -150,7 +150,7 @@ public:
      */
     class HtmlEntityResolver : public QXmlStreamEntityResolver
     {
-        QString resolveUndeclaredEntity(const QString &name);
+        QString resolveUndeclaredEntity(const QString &name) Q_DECL_OVERRIDE;
     };
 
 };

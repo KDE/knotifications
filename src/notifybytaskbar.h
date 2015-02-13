@@ -33,8 +33,8 @@ public:
     NotifyByTaskbar(QObject *parent = 0);
     virtual ~NotifyByTaskbar();
 
-    virtual QString optionName() { return QStringLiteral("Taskbar"); }
-    virtual void notify(KNotification *notification, KNotifyConfig *config);
+    QString optionName() Q_DECL_OVERRIDE { return QStringLiteral("Taskbar"); }
+    void notify(KNotification *notification, KNotifyConfig *config) Q_DECL_OVERRIDE;
 };
 
 #endif

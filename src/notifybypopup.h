@@ -40,13 +40,13 @@ public:
     NotifyByPopup(QObject *parent = 0l);
     virtual ~NotifyByPopup();
 
-    virtual QString optionName() { return "Popup"; }
-    virtual void notify(KNotification *notification, KNotifyConfig *notifyConfig);
-    virtual void close(KNotification *notification);
-    virtual void update(KNotification *notification, KNotifyConfig *config);
+    QString optionName() Q_DECL_OVERRIDE { return "Popup"; }
+    void notify(KNotification *notification, KNotifyConfig *notifyConfig) Q_DECL_OVERRIDE;
+    void close(KNotification *notification) Q_DECL_OVERRIDE;
+    void update(KNotification *notification, KNotifyConfig *config) Q_DECL_OVERRIDE;
 
 protected:
-    void timerEvent(QTimerEvent *event);
+    void timerEvent(QTimerEvent *event) Q_DECL_OVERRIDE;
 
 private Q_SLOTS:
     void onPassivePopupDestroyed();

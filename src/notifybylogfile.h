@@ -36,8 +36,8 @@ public:
     NotifyByLogfile(QObject *parent = 0);
     virtual ~NotifyByLogfile();
 
-    virtual QString optionName() { return QStringLiteral("Logfile"); }
-    virtual void notify(KNotification *notification, KNotifyConfig *config);
+    QString optionName() Q_DECL_OVERRIDE { return QStringLiteral("Logfile"); }
+    void notify(KNotification *notification, KNotifyConfig *config) Q_DECL_OVERRIDE;
 };
 
 #endif

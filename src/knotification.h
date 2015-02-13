@@ -531,7 +531,7 @@ protected:
     /**
      * reimplemented for internal reasons
      */
-    virtual bool eventFilter(QObject *watched, QEvent *event);
+    bool eventFilter(QObject *watched, QEvent *event) Q_DECL_OVERRIDE;
 
 public:
     /**

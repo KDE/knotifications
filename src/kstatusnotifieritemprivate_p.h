@@ -54,7 +54,7 @@ public:
     {
     }
 
-    bool event(QEvent *e)
+    bool event(QEvent *e) Q_DECL_OVERRIDE
     {
         if (e->type() == QEvent::Wheel) {
             QWheelEvent *wheelEvent = static_cast<QWheelEvent *>(e);

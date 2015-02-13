@@ -33,8 +33,8 @@ public:
     NotifyByExecute(QObject *parent = 0);
     virtual ~NotifyByExecute();
 
-    virtual QString optionName() { return QStringLiteral("Execute"); }
-    virtual void notify(KNotification *notification, KNotifyConfig *config);
+    QString optionName() Q_DECL_OVERRIDE { return QStringLiteral("Execute"); }
+    void notify(KNotification *notification, KNotifyConfig *config) Q_DECL_OVERRIDE;
 };
 
 #endif

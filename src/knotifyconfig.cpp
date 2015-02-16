@@ -37,6 +37,7 @@ static KSharedConfig::Ptr retrieve_from_cache(const QString &filename, QStandard
 {
     QCache<QString, KSharedConfig::Ptr> &cache = *static_cache;
     if (cache.contains(filename)) {
+        (*cache[filename])->reparseConfiguration();
         return *cache[filename];
     }
 

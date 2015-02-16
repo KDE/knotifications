@@ -122,6 +122,7 @@ void NotifyByAudio::close(KNotification *notification)
 
     // this should call onAudioFinished() which also does finish() on the notification
     m->stop();
+    m_reusablePhonons.append(m);
 }
 
 void NotifyByAudio::onAudioFinished()

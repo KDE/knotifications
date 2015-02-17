@@ -396,7 +396,7 @@ public:
     void addAction(const QString &name, QAction *action);
 
     /**
-     * Removes an action to the collection
+     * Removes an action from the collection
      *
      * @param name the name of the action
      */

@@ -1,0 +1,59 @@
+# translation of kdelibs4.po to Spanish
+# Translation of kdelibs4 to Spanish
+# Copyright (C) 2000-2007
+#
+# Pablo de Vicente <vicente@oan.es>, 2000-2002,2003, 2004.
+# Pablo de Vicente <vicnte@oan.es>, 2003.
+# Pablo de Vicente <p.devicente@wanadoo.es>, 2004, 2005.
+# Eloy Cuadra <ecuadra@eloihr.net>, 2005, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014.
+# Pablo de Vicente <pablo.devicente@gmail.com>, 2005, 2006, 2007.
+# Enrique Matias Sanchez (aka Quique) <cronopios@gmail.com>, 2007.
+# Jaime Robles <jaime@kde.org>, 2007.
+# Javier Viñal <fjvinal@gmail.com>, 2013.
+msgid ""
+msgstr ""
+"Project-Id-Version: kdelibs4\n"
+"Report-Msgid-Bugs-To: http://bugs.kde.org\n"
+"POT-Creation-Date: 2014-03-23 01:50+0000\n"
+"PO-Revision-Date: 2014-03-29 17:44+0100\n"
+"Last-Translator: Eloy Cuadra <ecuadra@eloihr.net>\n"
+"Language-Team: Spanish <kde-l10n-es@kde.org>\n"
+"Language: es\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"First-Translator: Boris Wesslowski <Boris@Wesslowski.com>\n"
+"X-Generator: Lokalize 1.5\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Qt-Contexts: true\n"
+
+#: knotificationrestrictions.cpp:184
+msgctxt "KNotificationRestrictions|"
+msgid "Unknown Application"
+msgstr "Aplicación desconocida"
+
+#: kstatusnotifieritem.cpp:439 kstatusnotifieritem.cpp:879
+msgctxt "KStatusNotifierItem|"
+msgid "&Minimize"
+msgstr "&Minimizar"
+
+#: kstatusnotifieritem.cpp:704
+msgctxt "KStatusNotifierItem|"
+msgid "Quit"
+msgstr "Salir"
+
+#: kstatusnotifieritem.cpp:877
+msgctxt "KStatusNotifierItem|"
+msgid "&Restore"
+msgstr "&Restaurar"
+
+#: kstatusnotifieritem.cpp:891
+#, qt-format
+msgctxt "KStatusNotifierItem|"
+msgid "<qt>Are you sure you want to quit <b>%1</b>?</qt>"
+msgstr "<qt>¿Está seguro de que desea salir de <b>%1</b>?</qt>"
+
+#: kstatusnotifieritem.cpp:894
+msgctxt "KStatusNotifierItem|"
+msgid "Confirm Quit From System Tray"
+msgstr "Confirmar salir desde la bandeja del sistema"

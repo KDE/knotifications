@@ -317,23 +317,8 @@ KNotification *KNotification::event(const QString &eventid, const QString &text,
 KNotification *KNotification::event(StandardEvent eventid, const QString &title, const QString &text,
                                     const QPixmap &pixmap, QWidget *widget, const NotificationFlags &flags)
 {
-    QString message;
-    switch (eventid) {
-    case Warning:
-        message = QLatin1String("warning");
-        break;
-    case Error:
-        message = QLatin1String("fatalerror");
-        break;
-    case Catastrophe:
-        message = QLatin1String("catastrophe");
-        break;
-    case Notification: // fall through
-    default:
-        message = QLatin1String("notification");
-        break;
-    }
-    return event(message, title, text, pixmap, widget, flags | DefaultEvent);
+
+    return event(standardEventToEventId(eventid), title, text, pixmap, widget, flags | DefaultEvent);
 }
 
 KNotification *KNotification::event(StandardEvent eventid, const QString &text,
@@ -355,6 +340,13 @@ KNotification *KNotification::event(const QString &eventid, const QString &title
     QTimer::singleShot(0, notify, SLOT(sendEvent()));
 
     return notify;
+}
+
+KNotification *KNotification::event(StandardEvent eventid, const QString &title, const QString &text,
+                                    const QString &iconName, QWidget *widget,
+                                    const NotificationFlags &flags)
+{
+    return event(standardEventToEventId(eventid), title, text, iconName, widget, flags | DefaultEvent);
 }
 
 void KNotification::ref()
@@ -422,5 +414,26 @@ bool KNotification::eventFilter(QObject *watched, QEvent *event)
     }
 
     return false;
+}
+
+QString KNotification::standardEventToEventId(KNotification::StandardEvent event)
+{
+    QString eventId;
+    switch (event) {
+        case Warning:
+            eventId = QLatin1String("warning");
+            break;
+        case Error:
+            eventId = QLatin1String("fatalerror");
+            break;
+        case Catastrophe:
+            eventId = QLatin1String("catastrophe");
+            break;
+        case Notification: // fall through
+        default:
+            eventId = QLatin1String("notification");
+            break;
+    }
+    return eventId;
 }
 

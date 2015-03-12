@@ -532,6 +532,7 @@ protected:
      * reimplemented for internal reasons
      */
     bool eventFilter(QObject *watched, QEvent *event) Q_DECL_OVERRIDE;
+    static QString standardEventToEventId(StandardEvent event);
 
 public:
     /**
@@ -639,6 +640,25 @@ public:
                                 const QString &iconName, QWidget *widget = 0L,
                                 const NotificationFlags &flags = CloseOnTimeout,
                                 const QString &componentName = QString());
+
+    /**
+     * @brief emit a standard event with the possibility of setting an icon by icon name
+     *
+     * @overload
+     *
+     * This will emit a standard event
+     *
+     * @param eventId the type of the standard (not app-defined) event
+     * @param title is title of the notification to show in the popup.
+     * @param text is the text of the notification to show in the popup
+     * @param iconName a Freedesktop compatible icon name to be shown in the popup
+     * @param widget is a widget where the notification reports to
+     * @param flags is a bitmask of NotificationFlag
+     * @since 5.9
+     */
+    static KNotification *event(StandardEvent eventId, const QString &title, const QString &text,
+                                const QString &iconName, QWidget *widget = 0L,
+                                const NotificationFlags &flags = CloseOnTimeout);
 
     /**
      * This is a simple substitution for QApplication::beep()

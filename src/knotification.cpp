@@ -349,6 +349,12 @@ KNotification *KNotification::event(StandardEvent eventid, const QString &title,
     return event(standardEventToEventId(eventid), title, text, iconName, widget, flags | DefaultEvent);
 }
 
+KNotification* KNotification::event(StandardEvent eventid, const QString &title, const QString &text,
+                                    QWidget *widget, const NotificationFlags &flags)
+{
+    return event(standardEventToEventId(eventid), title, text, standardEventToIconName(eventid), widget, flags | DefaultEvent);
+}
+
 void KNotification::ref()
 {
     d->ref++;
@@ -365,7 +371,7 @@ void KNotification::deref()
 
 void KNotification::beep(const QString &reason, QWidget *widget)
 {
-    event(QLatin1String("beep"), reason, QPixmap(), widget, CloseOnTimeout | DefaultEvent);
+    event(QStringLiteral("beep"), reason, QPixmap(), widget, CloseOnTimeout | DefaultEvent);
 }
 
 void KNotification::sendEvent()
@@ -388,7 +394,7 @@ QString KNotification::appName() const
     QString appname;
 
     if (d->flags & DefaultEvent) {
-        appname = QLatin1String("plasma_workspace");
+        appname = QStringLiteral("plasma_workspace");
     } else if (!d->componentName.isEmpty()) {
         appname = d->componentName;
     } else {
@@ -421,19 +427,41 @@ QString KNotification::standardEventToEventId(KNotification::StandardEvent event
     QString eventId;
     switch (event) {
         case Warning:
-            eventId = QLatin1String("warning");
+            eventId = QStringLiteral("warning");
             break;
         case Error:
-            eventId = QLatin1String("fatalerror");
+            eventId = QStringLiteral("fatalerror");
             break;
         case Catastrophe:
-            eventId = QLatin1String("catastrophe");
+            eventId = QStringLiteral("catastrophe");
             break;
         case Notification: // fall through
         default:
-            eventId = QLatin1String("notification");
+            eventId = QStringLiteral("notification");
             break;
     }
     return eventId;
+}
+
+
+QString KNotification::standardEventToIconName(KNotification::StandardEvent event)
+{
+    QString iconName;
+    switch (event) {
+        case Warning:
+            iconName = QStringLiteral("dialog-warning");
+            break;
+        case Error:
+            iconName = QStringLiteral("dialog-error");
+            break;
+        case Catastrophe:
+            iconName = QStringLiteral("dialog-error");
+            break;
+        case Notification: // fall through
+        default:
+            iconName = QStringLiteral("dialog-information");
+            break;
+    }
+    return iconName;
 }
 

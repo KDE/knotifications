@@ -533,6 +533,7 @@ protected:
      */
     bool eventFilter(QObject *watched, QEvent *event) Q_DECL_OVERRIDE;
     static QString standardEventToEventId(StandardEvent event);
+    static QString standardEventToIconName(StandardEvent event);
 
 public:
     /**
@@ -617,7 +618,7 @@ public:
      * @since 4.4
      */
     static KNotification *event(StandardEvent eventId, const QString &title, const QString &text,
-                                const QPixmap &pixmap = QPixmap(), QWidget *widget = 0L,
+                                const QPixmap &pixmap, QWidget *widget = 0L,
                                 const NotificationFlags &flags = CloseOnTimeout);
 
     /**
@@ -646,7 +647,7 @@ public:
      *
      * @overload
      *
-     * This will emit a standard event
+     * This will emit a standard event with a custom icon
      *
      * @param eventId the type of the standard (not app-defined) event
      * @param title is title of the notification to show in the popup.
@@ -659,6 +660,24 @@ public:
     static KNotification *event(StandardEvent eventId, const QString &title, const QString &text,
                                 const QString &iconName, QWidget *widget = 0L,
                                 const NotificationFlags &flags = CloseOnTimeout);
+
+    /**
+     * @brief emit a standard event
+     *
+     * @overload
+     *
+     * This will emit a standard event with its standard icon
+     *
+     * @param eventId the type of the standard (not app-defined) event
+     * @param title is title of the notification to show in the popup.
+     * @param text is the text of the notification to show in the popup
+     * @param widget is a widget where the notification reports to
+     * @param flags is a bitmask of NotificationFlag
+     * @since 5.9
+     */
+    static KNotification *event(StandardEvent eventId, const QString &title, const QString &text,
+                                QWidget *widget = 0L, const NotificationFlags &flags = CloseOnTimeout);
+
 
     /**
      * This is a simple substitution for QApplication::beep()

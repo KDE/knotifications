@@ -356,7 +356,10 @@ public:
      * the menu will be shown with a contextMenu(int,int)
      * call by the systemtray over dbus
      * usually you don't need to call this unless you want to use
-     * a custom QMenu subclass as context menu
+     * a custom QMenu subclass as context menu.
+     *
+     * The KStatusNotifierItem instance takes ownerhip of the menu,
+     * and will delete it upon its destruction.
      */
     void setContextMenu(QMenu *menu);
 

@@ -41,6 +41,12 @@ NotifyByTaskbar::~NotifyByTaskbar()
 void NotifyByTaskbar::notify(KNotification *notification, KNotifyConfig *config)
 {
     Q_UNUSED(config);
+    if (!notification->widget()) {
+        qWarning() << "Could not notify " << notification->eventId() << "by taskbar, notification has no associated widget";
+        finish(notification);
+        return;
+    }
+
     qDebug() << notification->id() << notification->widget()->topLevelWidget()->winId();
 
     WId win = notification->widget()->topLevelWidget()->winId();

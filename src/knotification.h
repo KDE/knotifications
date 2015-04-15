@@ -1,6 +1,6 @@
 /* This file is part of the KDE libraries
    Copyright (C) 2005-2006 Olivier Goffart <ogoffart at kde.org>
-   Copyright (C) 2013-2014 Martin Klapetek <mklapetek@kde.org>
+   Copyright (C) 2013-2015 Martin Klapetek <mklapetek@kde.org>
 
    This library is free software; you can redistribute it and/or
    modify it under the terms of the GNU Library General Public
@@ -237,6 +237,11 @@ public:
          * @todo make it work with tabulated widget
          */
         CloseWhenWidgetActivated = 0x04,
+
+        /**
+         * The audio plugin will loop the sound until the notification is closed
+         */
+        LoopSound = 0x08,
 
         /**
          * @internal

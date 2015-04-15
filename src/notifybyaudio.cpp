@@ -1,5 +1,5 @@
 /* This file is part of the KDE libraries
-   Copyright 2014 by Martin Klapetek <mklapetek@kde.org>
+   Copyright (C) 2014-2015 by Martin Klapetek <mklapetek@kde.org>
 
    This library is free software; you can redistribute it and/or
    modify it under the terms of the GNU Lesser General Public
@@ -86,7 +86,7 @@ void NotifyByAudio::notify(KNotification *notification, KNotifyConfig *config)
     m->setCurrentSource(soundURL);
     m->play();
 
-    if (notification->flags() & KNotification::Persistent) {
+    if (notification->flags() & KNotification::LoopSound) {
         // Enqueing essentially prevents the subsystem pipeline from partial teardown
         // which is the most desired thing in terms of load and delay between loop cycles.
         // All of this is timing dependent, which is why we want at least one source queued;

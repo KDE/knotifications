@@ -135,6 +135,14 @@ void NotifyByAudio::onAudioFinished()
 
     KNotification *notification = m_notifications.value(m);
 
+    //if the sound is short enough, we can't guarantee new sounds are
+    //enqueued before finished is emitted.
+    //so to make sure we are looping restart it when the sound finished
+    if (notification->flags() & KNotification::LoopSound) {
+        m->play();
+        return;
+    }
+
     finish(notification);
 
     disconnect(m, SIGNAL(currentSourceChanged(Phonon::MediaSource)), this, SLOT(onAudioSourceChanged(Phonon::MediaSource)));

@@ -67,12 +67,6 @@ public:
      */
     void fillPopup(KPassivePopup *popup, KNotification *notification, const KNotifyConfig &config);
     /**
-     * Make sure a popup is completely supported by the notification backend.
-     * Changes the popup to be compatible if needed.
-     * @param notification the notification data to check
-     */
-    void ensurePopupCompatibility(KNotification *notification);
-    /**
      * Removes HTML from a given string. Replaces line breaks with \n and
      * HTML entities by their 'normal forms'.
      * @param string the HTML to remove.
@@ -259,10 +253,10 @@ void NotifyByPopup::notify(KNotification *notification, const KNotifyConfig &not
 
     // if Growl can display our popups, use that instead
     if (NotifyByPopupGrowl::canPopup()) {
-        d->ensurePopupCompatibility(notification);
 
         QString appCaption, iconName;
         d->getAppCaptionAndIconName(notifyConfig, &appCaption, &iconName);
+        appCaption = d->stripHtml(appCaption);
 
         //did the user override the icon name?
         if (!notification->iconName().isEmpty()) {
@@ -272,7 +266,12 @@ void NotifyByPopup::notify(KNotification *notification, const KNotifyConfig &not
         KIconLoader iconLoader(iconName);
         QPixmap appIcon = iconLoader.loadIcon(iconName, KIconLoader::Small);
 
-        NotifyByPopupGrowl::popup(&appIcon, timeout, appCaption, notification->text());
+        // Our growl implementation does not support html stuff
+        // so strip it off right away
+        QString text = notification->text();
+        text = d->stripHtml(text);
+
+        NotifyByPopupGrowl::popup(&appIcon, timeout, appCaption, text);
 
         // Finish immediately, because current NotifyByPopupGrowl can't callback
         finish(notification);
@@ -547,7 +546,6 @@ void NotifyByPopupPrivate::fillPopup(KPassivePopup *popup, KNotification *notifi
     // capabilities immediately, so we don't need to wait for callback as in the case
     // of galago notifications
     queryPopupServerCapabilities();
-    ensurePopupCompatibility(notification);
 
     KIconLoader iconLoader(iconName);
     QPixmap appIcon = iconLoader.loadIcon(iconName, KIconLoader::Small);
@@ -631,25 +629,38 @@ bool NotifyByPopupPrivate::sendNotificationToGalagoServer(KNotification *notific
         iconName = notification->iconName();
     }
 
-    // FIXME: rename this to something better reflecting what this is doing...maybe
-    ensurePopupCompatibility(notification);
-
     args.append(appCaption); // app_name
     args.append(updateId);  // notification to update
     args.append(iconName); // app_icon
-    args.append(notification->title().isEmpty() ? appCaption : notification->title()); // summary
-    args.append(notification->text()); // body
+
+    QString title = notification->title().isEmpty() ? appCaption : notification->title();
+    QString text = notification->text();
+
+    if (!popupServerCapabilities.contains("body-markup")) {
+        if (title.startsWith("<html>")) {
+            title = stripHtml(title);
+        }
+        if (text.startsWith("<html>")) {
+            text = stripHtml(text);
+        }
+    }
+
+    args.append(title); // summary
+    args.append(text); // body
+
     // galago spec defines action list to be list like
     // (act_id1, action1, act_id2, action2, ...)
     //
     // assign id's to actions like it's done in fillPopup() method
     // (i.e. starting from 1)
     QStringList actionList;
-    int actId = 0;
-    Q_FOREACH (const QString &actionName, notification->actions()) {
-        actId++;
-        actionList.append(QString::number(actId));
-        actionList.append(actionName);
+    if (popupServerCapabilities.contains("actions")) {
+        int actId = 0;
+        Q_FOREACH (const QString &actionName, notification->actions()) {
+            actId++;
+            actionList.append(QString::number(actId));
+            actionList.append(actionName);
+        }
     }
 
     args.append(actionList); // actions
@@ -742,22 +753,6 @@ void NotifyByPopupPrivate::queryPopupServerCapabilities()
                                                        SLOT(onGalagoServerCapabilitiesReceived(QStringList)),
                                                        0,
                                                        -1);
-    }
-}
-
-void NotifyByPopupPrivate::ensurePopupCompatibility(KNotification *notification)
-{
-    if (!popupServerCapabilities.contains("actions")) {
-        notification->setActions(QStringList());
-    }
-
-    if (!popupServerCapabilities.contains("body-markup")) {
-        if (notification->title().startsWith("<html>")) {
-            notification->setTitle(stripHtml(notification->title()));
-        }
-        if (notification->text().startsWith("<html>")) {
-            notification->setText(stripHtml(notification->text()));
-        }
     }
 }
 

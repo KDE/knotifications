@@ -133,6 +133,10 @@ void KNotification::setWidget(QWidget *wid)
 
 void KNotification::setTitle(const QString &title)
 {
+    if (title == d->title) {
+        return;
+    }
+
     d->needUpdate = true;
     d->title = title;
     if (d->id > 0) {
@@ -142,6 +146,10 @@ void KNotification::setTitle(const QString &title)
 
 void KNotification::setText(const QString &text)
 {
+    if (text == d->text) {
+        return;
+    }
+
     d->needUpdate = true;
     d->text = text;
     if (d->id > 0) {
@@ -151,6 +159,10 @@ void KNotification::setText(const QString &text)
 
 void KNotification::setIconName(const QString &icon)
 {
+    if (icon == d->iconName) {
+        return;
+    }
+
     d->needUpdate = true;
     d->iconName = icon;
     if (d->id > 0) {
@@ -184,6 +196,10 @@ QStringList KNotification::actions() const
 
 void KNotification::setActions(const QStringList &as)
 {
+    if (as == d->actions) {
+        return;
+    }
+
     d->needUpdate = true;
     d->actions = as;
     if (d->id > 0) {

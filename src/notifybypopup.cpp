@@ -49,6 +49,7 @@
 #include <QXmlStreamEntityResolver>
 #include <QPointer>
 #include <QMutableListIterator>
+#include <QThread>
 
 #include <kconfiggroup.h>
 #include <KIconThemes/KIconLoader>
@@ -158,9 +159,7 @@ NotifyByPopup::NotifyByPopup(QObject *parent)
     d->animationTimer = 0;
     d->dbusServiceExists = false;
     d->dbusServiceCapCacheDirty = true;
-
-    QRect screen = QApplication::desktop()->availableGeometry();
-    d->nextPosition = screen.top();
+    d->nextPosition = -1;
 
     // check if service already exists on plugin instantiation
     QDBusConnectionInterface *interface = QDBusConnection::sessionBus().interface();
@@ -276,6 +275,18 @@ void NotifyByPopup::notify(KNotification *notification, const KNotifyConfig &not
         // Finish immediately, because current NotifyByPopupGrowl can't callback
         finish(notification);
         return;
+    }
+
+    // Check if this object lives in the GUI thread and return if it doesn't
+    // as Qt cannot create/handle widgets in non-GUI threads
+    if (QThread::currentThread() != qApp->thread()) {
+        qWarning() << "KNotification did not detect any running org.freedesktop.Notifications server and fallback notifications cannot be used from non-GUI thread!";
+        return;
+    }
+
+    if (d->nextPosition == -1) {
+        QRect screen = QApplication::desktop()->availableGeometry();
+        d->nextPosition = screen.top();
     }
 
     // last fallback - display the popup using KPassivePopup

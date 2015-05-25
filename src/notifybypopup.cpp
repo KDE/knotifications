@@ -482,7 +482,6 @@ void NotifyByPopup::onGalagoNotificationActionInvoked(uint notificationId, const
 
 void NotifyByPopup::onGalagoNotificationClosed(uint dbus_id, uint reason)
 {
-    Q_UNUSED(reason)
     auto iter = d->galagoNotifications.find(dbus_id);
     if (iter == d->galagoNotifications.end()) {
         qWarning() << "Failed to find KNotification for dbus_id" << dbus_id;
@@ -497,8 +496,10 @@ void NotifyByPopup::onGalagoNotificationClosed(uint dbus_id, uint reason)
         // if the user closes the popup, it means he wants to get rid
         // of the notification completely, including playing sound etc
         // Therefore we close the KNotification completely after closing
-        // the popup
-        n->close();
+        // the popup, but only if the reason is 2, which means "user closed"
+        if (reason == 2) {
+            n->close();
+        }
     }
 }
 

@@ -129,13 +129,19 @@ void KNotificationManager::notificationActivated(int id, int action)
     }
 }
 
-void KNotificationManager::notificationClosed(KNotification *notification)
+void KNotificationManager::notificationClosed()
 {
-    if (d->notifications.contains(notification->id())) {
-        qDebug() << notification->id();
-        KNotification *n = d->notifications[notification->id()];
-        d->notifications.remove(notification->id());
-        n->close();
+    KNotification *notification = qobject_cast<KNotification*>(sender());
+    if (!notification) {
+        return;
+    }
+    // We cannot do d->notifications.find(notification->id()); here because the
+    // notification->id() is -1 or -2 at this point, so we need to look for value
+    for (auto iter = d->notifications.begin(); iter != d->notifications.end(); ++iter) {
+        if (iter.value() == notification) {
+            d->notifications.erase(iter);
+            break;
+        }
     }
 }
 
@@ -177,6 +183,7 @@ int KNotificationManager::notify(KNotification *n)
         notifyPlugin->notify(n, &notifyConfig);
     }
 
+    connect(n, &KNotification::closed, this, &KNotificationManager::notificationClosed);
     return d->notifyIdCounter;
 }
 

@@ -64,7 +64,7 @@ public:
     void reemit(KNotification *n);
 
 private Q_SLOTS:
-    void notificationClosed(KNotification *notification);
+    void notificationClosed();
     void notificationActivated(int id,  int action);
     void notifyPluginFinished(KNotification *notification);
 

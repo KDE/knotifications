@@ -402,6 +402,9 @@ void KNotification::sendEvent()
 
 int KNotification::id()
 {
+    if (!d) {
+        return -1;
+    }
     return d->id;
 }
 

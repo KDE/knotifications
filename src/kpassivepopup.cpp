@@ -22,17 +22,16 @@
 #include <config-knotifications.h>
 
 // Qt
-#include <QApplication>
+#include <QGuiApplication>
 #include <QBitmap>
 #include <QDebug>
-#include <QDesktopWidget>
+#include <QScreen>
 #include <QLabel>
 #include <QLayout>
 #include <QBoxLayout>
 #include <QMouseEvent>
 #include <QPainter>
 #include <QPainterPath>
-#include <QDesktopWidget>
 #include <QPolygonF>
 #include <QStyle>
 #include <QTimer>
@@ -103,7 +102,7 @@ public:
     {
         // get screen-geometry for screen our anchor is on
         // (geometry can differ from screen to screen!
-        QRect deskRect = QApplication::desktop()->screenGeometry(anchor);
+        QRect deskRect = desktopRectForPoint(anchor);
 
         const int width = q->width();
         const int height = q->height();
@@ -192,7 +191,7 @@ public:
         int w = q->minimumSizeHint().width();
         int h = q->minimumSizeHint().height();
 
-        QRect r = QApplication::desktop()->screenGeometry(QPoint(x + w / 2, y + h / 2));
+        QRect r = desktopRectForPoint(QPoint(x + w / 2, y + h / 2));
 
         if (popupStyle == Balloon) {
             // find a point to anchor to
@@ -228,6 +227,19 @@ public:
         }
 
         return QPoint(x, y);
+    }
+
+    QRect desktopRectForPoint(const QPoint &point)
+    {
+        QList<QScreen*> screens = QGuiApplication::screens();
+        Q_FOREACH(const QScreen *screen, screens) {
+            if (screen->geometry().contains(point)) {
+                return screen->geometry();
+            }
+        }
+
+        // If no screen was found, return the primary screen's geometry
+        return QGuiApplication::primaryScreen()->geometry();
     }
 };
 
@@ -427,7 +439,7 @@ void KPassivePopup::hideEvent(QHideEvent *)
 
 QPoint KPassivePopup::defaultLocation() const
 {
-    const QRect r = QApplication::desktop()->availableGeometry();
+    const QRect r = QGuiApplication::primaryScreen()->availableGeometry();
     return QPoint(r.left(), r.top());
 }
 

@@ -34,7 +34,6 @@
 #include <QLabel>
 #include <QTextDocument>
 #include <QApplication>
-#include <QDesktopWidget>
 #include <QBoxLayout>
 #include <QLayout>
 #include <QDBusConnection>
@@ -50,6 +49,7 @@
 #include <QPointer>
 #include <QMutableListIterator>
 #include <QThread>
+#include <QScreen>
 
 #include <kconfiggroup.h>
 #include <KIconThemes/KIconLoader>
@@ -284,17 +284,15 @@ void NotifyByPopup::notify(KNotification *notification, const KNotifyConfig &not
         return;
     }
 
-    if (d->nextPosition == -1) {
-        QRect screen = QApplication::desktop()->availableGeometry();
-        d->nextPosition = screen.top();
-    }
-
     // last fallback - display the popup using KPassivePopup
     KPassivePopup *pop = new KPassivePopup(notification->widget());
     d->passivePopups.insert(notification, pop);
     d->fillPopup(pop, notification, notifyConfig);
 
-    QRect screen = QApplication::desktop()->availableGeometry();
+    QRect screen = QGuiApplication::primaryScreen()->availableGeometry();
+    if (d->nextPosition == -1) {
+        d->nextPosition = screen.y() + screen.height() - 32;
+    }
     pop->setAutoDelete(true);
     connect(pop, SIGNAL(destroyed()), this, SLOT(onPassivePopupDestroyed()));
 
@@ -335,7 +333,7 @@ void NotifyByPopup::timerEvent(QTimerEvent *event)
     }
 
     bool cont = false;
-    QRect screen = QApplication::desktop()->availableGeometry();
+    QRect screen = QGuiApplication::primaryScreen()->availableGeometry();
     d->nextPosition = screen.top();
 
     Q_FOREACH (KPassivePopup *popup, d->passivePopups)

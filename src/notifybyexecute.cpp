@@ -45,14 +45,16 @@ void NotifyByExecute::notify(KNotification *notification, KNotifyConfig *config)
 {
     QString command = config->readEntry(QStringLiteral("Execute"));
 
-    qDebug() << command;
-
     if (!command.isEmpty()) {
         QHash<QChar,QString> subst;
         subst.insert('e', notification->eventId());
         subst.insert('a', notification->appName());
         subst.insert('s', notification->text());
-        subst.insert('w', QString::number(notification->widget()->topLevelWidget()->winId()));
+        if (notification->widget()) {
+            subst.insert('w', QString::number(notification->widget()->topLevelWidget()->winId()));
+        } else {
+            subst.insert('w', QStringLiteral("0"));
+        }
         subst.insert('i', QString::number(notification->id()));
 
         QString execLine = KMacroExpander::expandMacrosShellQuote(command, subst);
@@ -63,7 +65,7 @@ void NotifyByExecute::notify(KNotification *notification, KNotifyConfig *config)
         KProcess proc;
         proc.setShellCommand(execLine.trimmed());
         if (!proc.startDetached()) {
-            qDebug() << "KNotify: Could not start process!";
+            qDebug() << "KProcess returned an error while trying to execute this command:" << execLine;
         }
     }
 

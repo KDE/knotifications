@@ -92,6 +92,7 @@ KNotification::KNotification(
     connect(&d->updateTimer, SIGNAL(timeout()), this, SLOT(update()));
     d->updateTimer.setSingleShot(true);
     d->updateTimer.setInterval(100);
+    d->widget = nullptr;
 }
 
 KNotification::~KNotification()

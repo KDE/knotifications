@@ -337,7 +337,7 @@ public:
      * Set the title of the notification popup.
      * If no title is set, the application name will be used.
      *
-     * @param title the title
+     * @param title The title of the notification
      * @since 4.3
      */
     void setTitle(const QString &title);
@@ -351,10 +351,13 @@ public:
     /**
      * Set the notification text that will appear in the popup.
      *
-     * The text is shown in a QLabel, you should make sure to escape any html that is needed.
-     * You can use some of the qt basic html tags.
+     * In Plasma workspace, the text is shown in a QML label which uses Text.StyledText,
+     * ie. it supports a small subset of HTML entities (mostly just formatting tags)
      *
-     * @param text the text
+     * If the notifications server does not advertise "body-markup" capability,
+     * all HTML tags are stripped before sending it to the server
+     *
+     * @param text The text to display in the notification popup
      */
     void setText(const QString &text);
 
@@ -366,7 +369,8 @@ public:
     QString iconName() const;
 
     /**
-     * set the icon that will be shown in the popup.
+     * Set the icon that will be shown in the popup.
+     *
      * @param icon the icon
      * @since 5.4
      */
@@ -378,7 +382,8 @@ public:
      */
     QPixmap pixmap() const;
     /**
-     * set the pixmap that will be shown in the popup.
+     * Set the pixmap that will be shown in the popup.
+     *
      * @param pix the pixmap
      */
     void setPixmap(const QPixmap &pix);
@@ -389,8 +394,16 @@ public:
     QStringList actions() const;
 
     /**
-     * Set the list of actions link shown in the popup.
-     * @param actions the list of actions
+     * Set the list of actions shown in the popup. The strings passed
+     * in that QStringList will be used as labels for those actions,
+     * so ideally they should be wrapped in i18n() or tr() calls.
+     * In Plasma workspace, these will be shown as buttons inside
+     * the notification popup.
+     *
+     * The visual representation of actions however depends
+     * on the notification server
+     *
+     * @param actions List of strings used as action labels
      */
     void setActions(const QStringList &actions);
 
@@ -423,12 +436,15 @@ public:
 
     /**
      * Set the notification flags.
-     * should be called before sendEvent().
+     * These must be set before calling sendEvent()
      */
     void setFlags(const NotificationFlags &flags);
 
     /**
-     * The componentData is used to determine the location of the config file.  By default, the app name is used
+     * The componentData is used to determine the location of the config file.
+     *
+     * If no componentName is set, the app name is used by default
+     *
      * @param componentName the new component name
      */
     void setComponentName(const QString &componentName);
@@ -447,12 +463,16 @@ public:
 
 Q_SIGNALS:
     /**
-     * Emit only when the default activation has occurred
+     * Emitted only when the default activation has occurred
      */
     void activated();
     /**
-     * Emit when an action has been activated.
-     * @param action will be 0 is the default aciton was activated, or any action id
+     * Emitted when an action has been activated.
+     *
+     * The parameter passed by the signal is the index of the action
+     * in the QStringList set by setActions() call.
+     *
+     * @param action will be 0 is the default aciton was activated, or the index of the action in the actions QStringList
      */
     void activated(unsigned int action);
 
@@ -472,7 +492,10 @@ Q_SIGNALS:
     void action3Activated();
 
     /**
-     * Emitted when the notification is closed. Both when it is activated or if it is just ignored.
+     * Emitted when the notification is closed.
+     *
+     * Can be closed either by the user clicking the close button,
+     * the timeout running out or when an action was triggered.
      */
     void closed();
 
@@ -506,19 +529,24 @@ public Q_SLOTS:
      * if you want to show your own presentation in your application, you should use this
      * function, so it will not be automatically closed when there is nothing to show.
      *
-     * don't forgot to deref, or the notification may be never closed if there is no timeout.
-     * @see ref
+     * Don't forgot to deref, or the notification may be never closed if there is no timeout.
+     *
+     * @see deref
      */
     void ref();
     /**
-     * remove a reference made with ref()
-     * the notification may be closed when calling this.
+     * Remove a reference made with ref(). If the ref counter hits zero,
+     * the notification will be closed and deleted.
+     *
      * @see ref
      */
     void deref();
 
     /**
-     * Emit or re-emit the event.
+     * Send the notification to the server.
+     *
+     * This will cause all the configured plugins to execute their actions on this notification
+     * (eg. a sound will play, a popup will show, a command will be executed etc).
      */
     void sendEvent();
 

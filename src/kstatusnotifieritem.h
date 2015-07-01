@@ -406,6 +406,15 @@ public:
     void removeAction(const QString &name);
 
     /**
+     * Retrieves an action from the action collection
+     * by the action name
+     *
+     * @param name the name of the action to retrieve
+     * @since 5.12
+     */
+    QAction *action(const QString &name) const;
+
+    /**
      * Sets whether to show the standard items in the menu, such as Quit
      */
     void setStandardActionsEnabled(bool enabled);

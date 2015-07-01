@@ -474,6 +474,11 @@ void KStatusNotifierItem::removeAction(const QString &name)
     d->actionCollection.remove(name);
 }
 
+QAction* KStatusNotifierItem::action(const QString &name) const
+{
+    return d->actionCollection.value(name);
+}
+
 void KStatusNotifierItem::setStandardActionsEnabled(bool enabled)
 {
     if (d->standardActionsEnabled == enabled) {

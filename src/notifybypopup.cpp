@@ -465,7 +465,6 @@ void NotifyByPopup::onGalagoNotificationActionInvoked(uint notificationId, const
 {
     auto iter = d->galagoNotifications.find(notificationId);
     if (iter == d->galagoNotifications.end()) {
-        qWarning() << "Failed to find KNotification id for dbus_id" << notificationId << "- action not triggered";
         return;
     }
 
@@ -484,7 +483,6 @@ void NotifyByPopup::onGalagoNotificationClosed(uint dbus_id, uint reason)
 {
     auto iter = d->galagoNotifications.find(dbus_id);
     if (iter == d->galagoNotifications.end()) {
-        qWarning() << "Failed to find KNotification for dbus_id" << dbus_id;
         return;
     }
     KNotification *n = *iter;

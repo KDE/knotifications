@@ -291,7 +291,7 @@ void NotifyByPopup::notify(KNotification *notification, const KNotifyConfig &not
 
     QRect screen = QGuiApplication::primaryScreen()->availableGeometry();
     if (d->nextPosition == -1) {
-        d->nextPosition = screen.y() + screen.height() - 32;
+        d->nextPosition = screen.top();
     }
     pop->setAutoDelete(true);
     connect(pop, SIGNAL(destroyed()), this, SLOT(onPassivePopupDestroyed()));

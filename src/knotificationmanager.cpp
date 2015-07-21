@@ -25,8 +25,7 @@
 #include <QDBusConnection>
 #include <QPointer>
 #include <QBuffer>
-
-#include <kservicetypetrader.h>
+#include <KPluginLoader>
 
 #include "knotifyconfig.h"
 #include "knotificationplugin.h"
@@ -83,17 +82,17 @@ KNotificationManager::KNotificationManager()
     addPlugin(new NotifyByTTS(this));
 #endif
 
-    KService::List offers = KServiceTypeTrader::self()->query("KNotification/NotifyPlugin");
+    QList<QObject*> plugins = KPluginLoader::instantiatePlugins(QStringLiteral("knotification/notifyplugins"),
+                                                                std::function<bool(const KPluginMetaData &)>(),
+                                                                this);
 
-    QVariantList args;
-    QString error;
-
-    Q_FOREACH (const KService::Ptr service, offers) {
-        KNotificationPlugin *plugin = service->createInstance<KNotificationPlugin>(this, args, &error);
-        if (plugin) {
-            addPlugin(plugin);
+    Q_FOREACH (QObject *plugin, plugins) {
+        KNotificationPlugin *notifyPlugin = qobject_cast<KNotificationPlugin*>(plugin);
+        if (notifyPlugin) {
+            addPlugin(notifyPlugin);
         } else {
-            qDebug() << "Could not load plugin" << service->name() << "due to:" << error;
+            // not our/valid plugin, so delete the created object
+            plugin->deleteLater();
         }
     }
 }

@@ -33,7 +33,7 @@
 #include <QImage>
 #include <QLabel>
 #include <QTextDocument>
-#include <QApplication>
+#include <QGuiApplication>
 #include <QBoxLayout>
 #include <QLayout>
 #include <QDBusConnection>
@@ -50,9 +50,10 @@
 #include <QMutableListIterator>
 #include <QThread>
 #include <QScreen>
+#include <QFontMetrics>
+#include <QIcon>
 
 #include <kconfiggroup.h>
-#include <KIconThemes/KIconLoader>
 #include <KCodecs/KCharsets>
 
 static const char dbusServiceName[] = "org.freedesktop.Notifications";
@@ -262,15 +263,14 @@ void NotifyByPopup::notify(KNotification *notification, const KNotifyConfig &not
             iconName = notification->iconName();
         }
 
-        KIconLoader iconLoader(iconName);
-        QPixmap appIcon = iconLoader.loadIcon(iconName, KIconLoader::Small);
-
         // Our growl implementation does not support html stuff
         // so strip it off right away
         QString text = notification->text();
         text = d->stripHtml(text);
 
-        NotifyByPopupGrowl::popup(&appIcon, timeout, appCaption, text);
+        // The first arg is QPixmap*, however that pixmap is not used
+        // at all (it has Q_UNUSED) so just set it to 0
+        NotifyByPopupGrowl::popup(Q_NULLPTR, timeout, appCaption, text);
 
         // Finish immediately, because current NotifyByPopupGrowl can't callback
         finish(notification);
@@ -555,8 +555,8 @@ void NotifyByPopupPrivate::fillPopup(KPassivePopup *popup, KNotification *notifi
     // of galago notifications
     queryPopupServerCapabilities();
 
-    KIconLoader iconLoader(iconName);
-    QPixmap appIcon = iconLoader.loadIcon(iconName, KIconLoader::Small);
+    int iconDimension = QFontMetrics(QFont()).height();
+    QPixmap appIcon = QIcon::fromTheme(iconName).pixmap(iconDimension, iconDimension);
 
     QWidget *vb = popup->standardView(notification->title().isEmpty() ? appCaption : notification->title(),
                                       notification->pixmap().isNull() ? notification->text() : QString(),

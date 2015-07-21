@@ -1,6 +1,6 @@
 maintainer: mklapetek
 description: Abstraction for system notifications
-tier: 3
+tier: 2
 type: solution
 platforms:
 portingAid: false

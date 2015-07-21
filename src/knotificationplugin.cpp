@@ -19,8 +19,6 @@
 
  */
 
-#include <KPluginFactory>
-
 #include "knotificationplugin.h"
 
 KNotificationPlugin::KNotificationPlugin(QObject *parent, const QVariantList &args)

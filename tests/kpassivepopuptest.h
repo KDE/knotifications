@@ -19,6 +19,7 @@ public Q_SLOTS:
     void showIt4();
     void showIt5();
     void showIt6();
+    void showIt7();
     void showItIcon(QSystemTrayIcon::ActivationReason);
 };
 

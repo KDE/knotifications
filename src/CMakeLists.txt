@@ -62,8 +62,6 @@ target_link_libraries(KF5Notifications PUBLIC
 target_link_libraries(KF5Notifications PRIVATE
    ${PHONON_LIBRARIES}
    KF5::CoreAddons
-   KF5::IconThemes
-   KF5::Service
    KF5::ConfigCore
    KF5::WindowSystem
    KF5::Codecs

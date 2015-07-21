@@ -13,6 +13,7 @@ QPushButton *pb3;
 QPushButton *pb4;
 QPushButton *pb5;
 QPushButton *pb6;
+QPushButton *pb7;
 QSystemTrayIcon *icon;
 
 void Test::showIt()
@@ -47,6 +48,12 @@ void Test::showIt6()
     KPassivePopup::message(KPassivePopup::Boxed, QLatin1String("The caption is..."), QLatin1String("Hello World"), pb6);
 }
 
+void Test::showIt7()
+{
+    int iconDimension = QApplication::fontMetrics().height();
+    KPassivePopup::message(QLatin1String("The caption is..."), QLatin1String("Hello World"), QIcon::fromTheme("dialog-ok").pixmap(iconDimension, iconDimension), pb2);
+}
+
 void Test::showItIcon(QSystemTrayIcon::ActivationReason reason)
 {
     if (reason == QSystemTrayIcon::Trigger) {
@@ -58,6 +65,7 @@ int main(int argc, char **argv)
 {
     QApplication::setApplicationName(QLatin1String("test"));
     QApplication app(argc, argv);
+    QCoreApplication::setAttribute(Qt::AA_UseHighDpiPixmaps);
 
     Test *t = new Test();
 
@@ -92,6 +100,11 @@ int main(int argc, char **argv)
     pb6->connect(pb6, SIGNAL(clicked()), t, SLOT(showIt6()));
     pb6->show();
     KWindowSystem::setState(pb6->effectiveWinId(), NET::SkipTaskbar);
+
+    pb7 = new QPushButton();
+    pb7->setText(QLatin1String("By taskbar entry (with caption and icon, default style)"));
+    pb7->connect(pb7, SIGNAL(clicked()), t, SLOT(showIt7()));
+    pb7->show();
 
     icon = new QSystemTrayIcon();
     // TODO icon->setIcon(icon->loadIcon("xorg"));

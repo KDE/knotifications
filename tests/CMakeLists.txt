@@ -6,7 +6,7 @@ set_package_properties(ECM PROPERTIES TYPE REQUIRED DESCRIPTION "Extra CMake Mod
 feature_summary(WHAT REQUIRED_PACKAGES_NOT_FOUND FATAL_ON_MISSING_REQUIRED_PACKAGES)
 
 
-find_package(Qt5 5.2.0 CONFIG REQUIRED Test)
+find_package(Qt5 ${REQUIRED_QT_VERSION} CONFIG REQUIRED Test)
 
 macro(knotifications_executable_tests)
   foreach(_testname ${ARGN})

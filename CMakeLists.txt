@@ -28,7 +28,7 @@ ecm_setup_version(${KF5_VERSION}
                         SOVERSION 5)
 
 # Dependencies
-set(REQUIRED_QT_VERSION "5.2.0")
+set(REQUIRED_QT_VERSION "5.3.0")
 
 find_package(Qt5 ${REQUIRED_QT_VERSION} CONFIG REQUIRED Widgets DBus)
 find_package(Qt5 ${REQUIRED_QT_VERSION} QUIET OPTIONAL_COMPONENTS TextToSpeech)
@@ -49,7 +49,7 @@ endif()
 set(HAVE_X11 ${X11_FOUND})
 set(HAVE_XTEST ${X11_XTest_FOUND})
 if(X11_FOUND)
-   find_package(Qt5X11Extras 5.2.0 REQUIRED NO_MODULE)
+   find_package(Qt5X11Extras ${REQUIRED_QT_VERSION} REQUIRED NO_MODULE)
 endif()
 
 find_package(KF5WindowSystem ${KF5_DEP_VERSION} REQUIRED)

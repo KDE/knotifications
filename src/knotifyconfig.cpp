@@ -28,7 +28,6 @@
 #include <QCache>
 #include <QDataStream>
 #include <QStandardPaths>
-#include <QDebug>
 
 typedef QCache<QString, KSharedConfig::Ptr> ConfigCache;
 Q_GLOBAL_STATIC_WITH_ARGS(ConfigCache , static_cache, (15))

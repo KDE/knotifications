@@ -20,11 +20,11 @@
 #include "kpassivepopup.h"
 
 #include <config-knotifications.h>
+#include "debug_p.h"
 
 // Qt
 #include <QGuiApplication>
 #include <QBitmap>
-#include <QDebug>
 #include <QScreen>
 #include <QLabel>
 #include <QLayout>
@@ -293,7 +293,7 @@ void KPassivePopup::setView(QWidget *child)
 void KPassivePopup::setView(const QString &caption, const QString &text,
                             const QPixmap &icon)
 {
-    // qDebug() << "KPassivePopup::setView " << caption << ", " << text;
+    // qCDebug(LOG_KNOTIFICATIONS) << "KPassivePopup::setView " << caption << ", " << text;
     setView(standardView(caption, text, icon, this));
 }
 

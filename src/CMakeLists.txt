@@ -3,6 +3,8 @@ include_directories(${PHONON_INCLUDE_DIR})
 ecm_create_qm_loader(knotifications_QM_LOADER knotifications5_qt)
 
 set(knotifications_SRCS
+  debug_p.cpp
+
   knotification.cpp
   knotificationmanager.cpp
   kpassivepopup.cpp

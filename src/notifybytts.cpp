@@ -26,6 +26,7 @@
 #include <KMacroExpander>
 #include "knotifyconfig.h"
 #include "knotification.h"
+#include "debug_p.h"
 
 #include <QtDebug>
 
@@ -67,6 +68,6 @@ void NotifyByTTS::notify(KNotification *notification, KNotifyConfig *config )
 
         finished(notification);
     } else {
-        qDebug() << "Speech backend has an error, not speaking";
+        qCDebug(LOG_KNOTIFICATIONS) << "Speech backend has an error, not speaking";
     }
 }

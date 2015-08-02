@@ -22,12 +22,12 @@
 #include "notifybyexecute.h"
 
 #include <QHash>
-#include <QDebug>
 #include <QWidget>
 
 #include <KProcess>
 #include <knotifyconfig.h>
 #include "knotification.h"
+#include "debug_p.h"
 
 #include <kmacroexpander.h>
 
@@ -65,7 +65,7 @@ void NotifyByExecute::notify(KNotification *notification, KNotifyConfig *config)
         KProcess proc;
         proc.setShellCommand(execLine.trimmed());
         if (!proc.startDetached()) {
-            qDebug() << "KProcess returned an error while trying to execute this command:" << execLine;
+            qCDebug(LOG_KNOTIFICATIONS) << "KProcess returned an error while trying to execute this command:" << execLine;
         }
     }
 

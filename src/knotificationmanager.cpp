@@ -19,7 +19,6 @@
 #include "knotificationmanager_p.h"
 #include "knotification.h"
 
-#include <QDebug>
 #include <QHash>
 #include <QWidget>
 #include <QDBusConnection>
@@ -34,6 +33,7 @@
 #include "notifybylogfile.h"
 #include "notifybytaskbar.h"
 #include "notifybyexecute.h"
+#include "debug_p.h"
 
 #ifdef HAVE_SPEECH
 #include "notifybytts.h"
@@ -121,7 +121,7 @@ void KNotificationManager::notifyPluginFinished(KNotification *notification)
 void KNotificationManager::notificationActivated(int id, int action)
 {
     if (d->notifications.contains(id)) {
-        qDebug() << id << " " << action;
+        qCDebug(LOG_KNOTIFICATIONS) << id << " " << action;
         KNotification *n = d->notifications[id];
         n->activate(action);
         close(id);
@@ -148,7 +148,7 @@ void KNotificationManager::close(int id, bool force)
 {
     if (force || d->notifications.contains(id)) {
         KNotification *n = d->notifications.take(id);
-        qDebug() << "Closing notification" << id;
+        qCDebug(LOG_KNOTIFICATIONS) << "Closing notification" << id;
 
         Q_FOREACH (KNotificationPlugin *plugin, d->notifyPlugins) {
             plugin->close(n);
@@ -172,13 +172,13 @@ int KNotificationManager::notify(KNotification *n)
 
     Q_FOREACH (const QString &action, notifyActions.split('|')) {
         if (!d->notifyPlugins.contains(action)) {
-            qDebug() << "No plugin for action" << action;
+            qCDebug(LOG_KNOTIFICATIONS) << "No plugin for action" << action;
             continue;
         }
 
         KNotificationPlugin *notifyPlugin = d->notifyPlugins[action];
         n->ref();
-        qDebug() << "Calling notify on" << notifyPlugin->optionName();
+        qCDebug(LOG_KNOTIFICATIONS) << "Calling notify on" << notifyPlugin->optionName();
         notifyPlugin->notify(n, &notifyConfig);
     }
 

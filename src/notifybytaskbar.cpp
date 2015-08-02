@@ -23,8 +23,8 @@
 #include "notifybytaskbar.h"
 #include "knotifyconfig.h"
 #include "knotification.h"
+#include "debug_p.h"
 
-#include <QDebug>
 #include <QWidget>
 
 #include <KWindowSystem>
@@ -42,12 +42,12 @@ void NotifyByTaskbar::notify(KNotification *notification, KNotifyConfig *config)
 {
     Q_UNUSED(config);
     if (!notification->widget()) {
-        qWarning() << "Could not notify " << notification->eventId() << "by taskbar, notification has no associated widget";
+        qCWarning(LOG_KNOTIFICATIONS) << "Could not notify " << notification->eventId() << "by taskbar, notification has no associated widget";
         finish(notification);
         return;
     }
 
-    qDebug() << notification->id() << notification->widget()->topLevelWidget()->winId();
+    qCDebug(LOG_KNOTIFICATIONS) << notification->id() << notification->widget()->topLevelWidget()->winId();
 
     WId win = notification->widget()->topLevelWidget()->winId();
     if (win != 0) {

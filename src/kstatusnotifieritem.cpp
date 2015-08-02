@@ -21,11 +21,11 @@
 #include "kstatusnotifieritem.h"
 #include "kstatusnotifieritemprivate_p.h"
 #include "kstatusnotifieritemdbus_p.h"
+#include "debug_p.h"
 
 #include <QDBusConnection>
 #include <QtEndian>
 #include <QMessageBox>
-#include <QDebug>
 #include <QPixmap>
 #include <QImage>
 #include <QApplication>
@@ -75,7 +75,7 @@ KStatusNotifierItem::~KStatusNotifierItem()
 
 QString KStatusNotifierItem::id() const
 {
-    //qDebug() << "id requested" << d->id;
+    //qCDebug(LOG_KNOTIFICATIONS) << "id requested" << d->id;
     return d->id;
 }
 
@@ -724,7 +724,7 @@ void KStatusNotifierItemPrivate::init(const QString &extraId)
 
 void KStatusNotifierItemPrivate::registerToDaemon()
 {
-    qDebug() << "Registering a client interface to the KStatusNotifierWatcher";
+    qCDebug(LOG_KNOTIFICATIONS) << "Registering a client interface to the KStatusNotifierWatcher";
     if (!statusNotifierWatcher) {
         statusNotifierWatcher = new org::kde::StatusNotifierWatcher(s_statusNotifierWatcherServiceName, "/StatusNotifierWatcher",
                 QDBusConnection::sessionBus());
@@ -740,7 +740,7 @@ void KStatusNotifierItemPrivate::registerToDaemon()
         statusNotifierWatcher->RegisterStatusNotifierItem(statusNotifierItemDBus->service());
         setLegacySystemTrayEnabled(false);
     } else {
-        qDebug() << "KStatusNotifierWatcher not reachable";
+        qCDebug(LOG_KNOTIFICATIONS) << "KStatusNotifierWatcher not reachable";
         setLegacySystemTrayEnabled(true);
     }
 }
@@ -750,7 +750,7 @@ void KStatusNotifierItemPrivate::serviceChange(const QString &name, const QStrin
     Q_UNUSED(name)
     if (newOwner.isEmpty()) {
         //unregistered
-        qDebug() << "Connection to the KStatusNotifierWatcher lost";
+        qCDebug(LOG_KNOTIFICATIONS) << "Connection to the KStatusNotifierWatcher lost";
         setLegacyMode(true);
         delete statusNotifierWatcher;
         statusNotifierWatcher = 0;

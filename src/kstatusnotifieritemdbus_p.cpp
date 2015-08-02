@@ -21,12 +21,12 @@
 #include "kstatusnotifieritemdbus_p.h"
 #include "kstatusnotifieritemprivate_p.h"
 #include "kstatusnotifieritem.h"
+#include "debug_p.h"
 
 #include <QDBusConnection>
 #include <QPixmap>
 #include <QImage>
 #include <QApplication>
-#include <QDebug>
 #include <QMenu>
 #include <QMovie>
 
@@ -155,7 +155,7 @@ KStatusNotifierItemDBus::KStatusNotifierItemDBus(KStatusNotifierItem *parent)
       m_dbus(QDBusConnection::connectToBus(QDBusConnection::SessionBus, m_service))
 {
     new StatusNotifierItemAdaptor(this);
-    qDebug() << "service is" << m_service;
+    qCDebug(LOG_KNOTIFICATIONS) << "service is" << m_service;
     m_dbus.registerService(m_service);
     m_dbus.registerObject("/StatusNotifierItem", this);
 }

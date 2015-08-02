@@ -28,6 +28,7 @@
 #include "kpassivepopup.h"
 #include "knotifyconfig.h"
 #include "knotification.h"
+#include "debug_p.h"
 
 #include <QBuffer>
 #include <QImage>
@@ -42,7 +43,6 @@
 #include <QDBusError>
 #include <QDBusMessage>
 #include <QXmlStreamReader>
-#include <QDebug>
 #include <QMap>
 #include <QHash>
 #include <QXmlStreamEntityResolver>
@@ -280,7 +280,7 @@ void NotifyByPopup::notify(KNotification *notification, const KNotifyConfig &not
     // Check if this object lives in the GUI thread and return if it doesn't
     // as Qt cannot create/handle widgets in non-GUI threads
     if (QThread::currentThread() != qApp->thread()) {
-        qWarning() << "KNotification did not detect any running org.freedesktop.Notifications server and fallback notifications cannot be used from non-GUI thread!";
+        qCWarning(LOG_KNOTIFICATIONS) << "KNotification did not detect any running org.freedesktop.Notifications server and fallback notifications cannot be used from non-GUI thread!";
         return;
     }
 
@@ -446,7 +446,7 @@ void NotifyByPopup::onServiceOwnerChanged(const QString &serviceName, const QStr
                                                                this,
                                                                SLOT(onGalagoNotificationActionInvoked(uint,QString)));
         if (!connected) {
-            qWarning() << "warning: failed to connect to ActionInvoked dbus signal";
+            qCWarning(LOG_KNOTIFICATIONS) << "warning: failed to connect to ActionInvoked dbus signal";
         }
 
         connected = QDBusConnection::sessionBus().connect(QString(), // from any service
@@ -456,7 +456,7 @@ void NotifyByPopup::onServiceOwnerChanged(const QString &serviceName, const QStr
                                                           this,
                                                           SLOT(onGalagoNotificationClosed(uint,uint)));
         if (!connected) {
-            qWarning() << "warning: failed to connect to NotificationClosed dbus signal";
+            qCWarning(LOG_KNOTIFICATIONS) << "warning: failed to connect to NotificationClosed dbus signal";
         }
     }
 }
@@ -507,7 +507,7 @@ void NotifyByPopup::onGalagoServerReply(QDBusPendingCallWatcher *watcher)
     watcher->deleteLater();
     KNotification *notification = watcher->property("notificationObject").value<KNotification*>();
     if (!notification) {
-        qWarning() << "Invalid notification object passed in DBus reply watcher; notification will probably break";
+        qCWarning(LOG_KNOTIFICATIONS) << "Invalid notification object passed in DBus reply watcher; notification will probably break";
         return;
     }
 
@@ -719,7 +719,7 @@ void NotifyByPopupPrivate::closeGalagoNotification(KNotification *notification)
     uint galagoId = galagoNotifications.key(notification, 0);
 
     if (galagoId == 0) {
-        qDebug() << "not found dbus id to close" << notification->id();
+        qCDebug(LOG_KNOTIFICATIONS) << "not found dbus id to close" << notification->id();
         return;
     }
 
@@ -733,7 +733,7 @@ void NotifyByPopupPrivate::closeGalagoNotification(KNotification *notification)
     bool queued = QDBusConnection::sessionBus().send(m);
 
     if (!queued) {
-        qWarning() << "Failed to queue dbus message for closing a notification";
+        qCWarning(LOG_KNOTIFICATIONS) << "Failed to queue dbus message for closing a notification";
     }
 
 }
@@ -781,7 +781,7 @@ QString NotifyByPopupPrivate::stripHtml(const QString &text)
 
     if (r.hasError()) {
         // XML error in the given text, just return the original string
-        qWarning() << "Notification to send to backend which does "
+        qCWarning(LOG_KNOTIFICATIONS) << "Notification to send to backend which does "
                          "not support HTML, contains invalid XML:"
                       << r.errorString() << "line" << r.lineNumber()
                       << "col" << r.columnNumber();
@@ -802,7 +802,7 @@ QString NotifyByPopupPrivate::HtmlEntityResolver::resolveUndeclaredEntity(const 
     QChar ent = KCharsets::fromEntity('&' + name);
 
     if (ent.isNull()) {
-        qWarning() << "Notification to send to backend which does "
+        qCWarning(LOG_KNOTIFICATIONS) << "Notification to send to backend which does "
                       "not support HTML, contains invalid entity: "
                    << name;
         ent = ' ';

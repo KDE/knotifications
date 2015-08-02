@@ -20,8 +20,8 @@
 */
 
 #include "notifybyaudio.h"
+#include "debug_p.h"
 
-#include <QDebug>
 #include <QDateTime>
 #include <QFile>
 #include <QTextStream>
@@ -54,7 +54,7 @@ void NotifyByAudio::notify(KNotification *notification, KNotifyConfig *config)
     }
     QString soundFilename = config->readEntry("Sound");
     if (soundFilename.isEmpty()) {
-        qWarning() << "Audio notification requested, but no sound file provided in notifyrc file, aborting audio notification";
+        qCWarning(LOG_KNOTIFICATIONS) << "Audio notification requested, but no sound file provided in notifyrc file, aborting audio notification";
 
         finish(notification);
         return;
@@ -65,7 +65,7 @@ void NotifyByAudio::notify(KNotification *notification, KNotifyConfig *config)
         soundURL = QUrl::fromLocalFile(QStandardPaths::locate(QStandardPaths::GenericDataLocation, QStringLiteral("sounds/") + soundFilename));
 
         if (soundURL.isEmpty()) {
-            qWarning() << "Audio notification requested, but sound file from notifyrc file was not found, aborting audio notification";
+            qCWarning(LOG_KNOTIFICATIONS) << "Audio notification requested, but sound file from notifyrc file was not found, aborting audio notification";
 
             finish(notification);
             return;
@@ -109,7 +109,7 @@ void NotifyByAudio::notify(KNotification *notification, KNotifyConfig *config)
 
 void NotifyByAudio::stateChanged(Phonon::State newState, Phonon::State oldState)
 {
-    qDebug() << "Changing audio state from" << oldState << "to" << newState;
+    qCDebug(LOG_KNOTIFICATIONS) << "Changing audio state from" << oldState << "to" << newState;
 }
 
 void NotifyByAudio::close(KNotification *notification)

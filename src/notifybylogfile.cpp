@@ -22,7 +22,6 @@
 
 #include "notifybylogfile.h"
 
-#include <QDebug>
 #include <QDateTime>
 #include <QFile>
 #include <QTextStream>

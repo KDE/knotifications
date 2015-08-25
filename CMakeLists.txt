@@ -4,7 +4,7 @@ project(KNotifications)
 
 # ECM setup
 include(FeatureSummary)
-find_package(ECM 5.13.0  NO_MODULE)
+find_package(ECM 5.14.0  NO_MODULE)
 set_package_properties(ECM PROPERTIES TYPE REQUIRED DESCRIPTION "Extra CMake Modules." URL "https://projects.kde.org/projects/kdesupport/extra-cmake-modules")
 feature_summary(WHAT REQUIRED_PACKAGES_NOT_FOUND FATAL_ON_MISSING_REQUIRED_PACKAGES)
 
@@ -14,7 +14,7 @@ set(CMAKE_MODULE_PATH ${ECM_MODULE_PATH} ${ECM_KDE_MODULE_DIR})
 include(GenerateExportHeader)
 include(ECMSetupVersion)
 include(ECMGenerateHeaders)
-
+include(ECMQtDeclareLoggingCategory)
 include(ECMPoQmTools)
 
 set(KF5_VERSION "5.14.0") # handled by release scripts

@@ -3,7 +3,6 @@ include_directories(${PHONON_INCLUDE_DIR})
 ecm_create_qm_loader(knotifications_QM_LOADER knotifications5_qt)
 
 set(knotifications_SRCS
-  debug_p.cpp
 
   knotification.cpp
   knotificationmanager.cpp
@@ -23,6 +22,8 @@ set(knotifications_SRCS
   notifybyaudio.cpp
   ${knotifications_QM_LOADER}
 )
+
+ecm_qt_declare_logging_category(knotifications_SRCS HEADER debug_p.h IDENTIFIER LOG_KNOTIFICATIONS CATEGORY_NAME org.kde.knotifications)
 
 if (Qt5TextToSpeech_FOUND)
   set(knotifications_SRCS ${knotifications_SRCS}

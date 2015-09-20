@@ -42,7 +42,7 @@ include(KDEInstallDirs)
 include(KDEFrameworkCompilerSettings)
 include(KDECMakeSettings)
 
-if (NOT APPLE)
+if (NOT APPLE AND NOT WIN32)
     find_package(X11)
 endif()
 

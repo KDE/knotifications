@@ -1,5 +1,6 @@
 /* This file is part of the KDE libraries
    Copyright (C) 2005 Olivier Goffart <ogoffart at kde.org>
+   Copyright (C) 2013-2015 Martin Klapetek <mklapetek@kde.org>
 
    This library is free software; you can redistribute it and/or
    modify it under the terms of the GNU Library General Public
@@ -47,6 +48,7 @@ struct KNotificationManager::Private {
 
     // incremental ids for notifications
     int notifyIdCounter;
+    QStringList dirtyConfigCache;
 };
 
 class KNotificationManagerSingleton
@@ -95,6 +97,14 @@ KNotificationManager::KNotificationManager()
             plugin->deleteLater();
         }
     }
+
+    QDBusConnection::sessionBus().connect(QString(),
+                                          QStringLiteral("/Config"),
+                                          QStringLiteral("org.kde.knotification"),
+                                          QStringLiteral("reparseConfiguration"),
+                                          this,
+                                          SLOT(reparseConfiguration(QString)));
+
 }
 
 KNotificationManager::~KNotificationManager()
@@ -160,6 +170,11 @@ int KNotificationManager::notify(KNotification *n)
 {
     KNotifyConfig notifyConfig(n->appName(), n->contexts(), n->eventId());
 
+    if (d->dirtyConfigCache.contains(n->appName())) {
+        notifyConfig.reparseSingleConfiguration(n->appName());
+        d->dirtyConfigCache.removeOne(n->appName());
+    }
+
     QString notifyActions = notifyConfig.readEntry("Action");
 
     if (notifyActions.isEmpty() || notifyActions == QLatin1String("None")) {
@@ -214,6 +229,13 @@ void KNotificationManager::reemit(KNotification *n)
 
 
     notify(n);
+}
+
+void KNotificationManager::reparseConfiguration(const QString &app)
+{
+    if (!d->dirtyConfigCache.contains(app)) {
+        d->dirtyConfigCache << app;
+    }
 }
 
 #include "moc_knotificationmanager_p.cpp"

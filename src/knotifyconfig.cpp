@@ -23,8 +23,6 @@
 
 #include <ksharedconfig.h>
 #include <kconfiggroup.h>
-// #include <kdebug.h>
-// #include <kglobal.h>
 #include <QCache>
 #include <QDataStream>
 #include <QStandardPaths>
@@ -36,7 +34,6 @@ static KSharedConfig::Ptr retrieve_from_cache(const QString &filename, QStandard
 {
     QCache<QString, KSharedConfig::Ptr> &cache = *static_cache;
     if (cache.contains(filename)) {
-        (*cache[filename])->reparseConfiguration();
         return *cache[filename];
     }
 
@@ -51,6 +48,15 @@ void KNotifyConfig::reparseConfiguration()
     QCache<QString, KSharedConfig::Ptr> &cache = *static_cache;
     Q_FOREACH (const QString &filename, cache.keys()) {
         (*cache[filename])->reparseConfiguration();
+    }
+}
+
+void KNotifyConfig::reparseSingleConfiguration(const QString &app)
+{
+    QCache<QString, KSharedConfig::Ptr> &cache = *static_cache;
+    const QString appCacheKey = app + QStringLiteral(".notifyrc");
+    if (cache.contains(appCacheKey)) {
+        (*cache[appCacheKey])->reparseConfiguration();
     }
 }
 

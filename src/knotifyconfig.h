@@ -101,6 +101,8 @@ public:
         * reparse the cached configs.  to be used when the config may have changed
         */
     static void reparseConfiguration();
+
+    static void reparseSingleConfiguration(const QString &app);
 };
 
 #endif

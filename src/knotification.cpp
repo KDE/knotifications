@@ -426,7 +426,9 @@ QString KNotification::appName() const
 
 void KNotification::update()
 {
-    KNotificationManager::self()->update(this);
+    if (d->needUpdate) {
+        KNotificationManager::self()->update(this);
+    }
 }
 
 bool KNotification::eventFilter(QObject *watched, QEvent *event)

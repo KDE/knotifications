@@ -30,11 +30,15 @@
 #include "knotifyconfig.h"
 #include "knotificationplugin.h"
 #include "notifybypopup.h"
-#include "notifybyaudio.h"
+
 #include "notifybylogfile.h"
 #include "notifybytaskbar.h"
 #include "notifybyexecute.h"
 #include "debug_p.h"
+
+#ifdef HAVE_PHONON4QT5
+#include "notifybyaudio.h"
+#endif
 
 #ifdef HAVE_SPEECH
 #include "notifybytts.h"
@@ -74,7 +78,11 @@ KNotificationManager::KNotificationManager()
     addPlugin(new NotifyByExecute(this));
     //FIXME: port and reenable
 //     addPlugin(new NotifyByLogfile(this));
+
+#ifdef HAVE_PHONON4QT5
     addPlugin(new NotifyByAudio(this));
+#endif
+
     //TODO reactivate on Mac/Win when KWindowSystem::demandAttention will implemented on this system.
     #ifndef Q_OS_MAC
     addPlugin(new NotifyByTaskbar(this));

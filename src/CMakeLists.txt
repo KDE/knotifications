@@ -1,4 +1,6 @@
-include_directories(${PHONON_INCLUDE_DIR})
+if (Phonon4Qt5_FOUND)
+    include_directories(${PHONON_INCLUDE_DIR})
+endif()
 
 ecm_create_qm_loader(knotifications_QM_LOADER knotifications5_qt)
 
@@ -19,11 +21,15 @@ set(knotifications_SRCS
   notifybyexecute.cpp
 #   notifybylogfile.cpp
   notifybytaskbar.cpp
-  notifybyaudio.cpp
   ${knotifications_QM_LOADER}
 )
 
 ecm_qt_declare_logging_category(knotifications_SRCS HEADER debug_p.h IDENTIFIER LOG_KNOTIFICATIONS CATEGORY_NAME org.kde.knotifications)
+
+if (Phonon4Qt5_FOUND)
+  set(knotifications_SRCS ${knotifications_SRCS}
+  notifybyaudio.cpp)
+endif()
 
 if (Qt5TextToSpeech_FOUND)
   set(knotifications_SRCS ${knotifications_SRCS}
@@ -63,13 +69,17 @@ target_link_libraries(KF5Notifications PUBLIC
    Qt5::Widgets
 )
 target_link_libraries(KF5Notifications PRIVATE
-   ${PHONON_LIBRARIES}
    KF5::CoreAddons
    KF5::ConfigCore
    KF5::WindowSystem
    KF5::Codecs
    Qt5::DBus
 )
+
+if (Phonon4Qt5_FOUND)
+    target_link_libraries(KF5Notifications PRIVATE
+        ${PHONON_LIBRARIES})
+endif()
 
 if (Qt5TextToSpeech_FOUND)
     target_link_libraries(KF5Notifications PRIVATE Qt5::TextToSpeech)

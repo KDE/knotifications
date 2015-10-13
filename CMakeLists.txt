@@ -34,10 +34,8 @@ find_package(Qt5 ${REQUIRED_QT_VERSION} CONFIG REQUIRED Widgets DBus)
 find_package(Qt5 ${REQUIRED_QT_VERSION} QUIET OPTIONAL_COMPONENTS TextToSpeech)
 set_package_properties(Qt5TextToSpeech PROPERTIES
    DESCRIPTION "Qt text to speech module"
-   TYPE OPTIONAL)
-set_package_properties(Qt5TextToSpeech PROPERTIES
-   PURPOSE "Required to build text to speech notification support"
-   TYPE OPTIONAL)
+   TYPE OPTIONAL
+   PURPOSE "Required to build text to speech notification support")
 if (Qt5TextToSpeech_FOUND)
   add_definitions(-DHAVE_SPEECH)
 endif()
@@ -64,10 +62,8 @@ find_package(KF5CoreAddons ${KF5_DEP_VERSION} REQUIRED)
 find_package(Phonon4Qt5 4.6.60 NO_MODULE)
 set_package_properties(Phonon4Qt5 PROPERTIES
    DESCRIPTION "Qt-based audio library"
-   TYPE OPTIONAL)
-set_package_properties(Phonon4Qt5 PROPERTIES
-   PURPOSE "Required to build audio notification support"
-   TYPE OPTIONAL)
+   TYPE OPTIONAL
+   PURPOSE "Required to build audio notification support")
 if (Phonon4Qt5_FOUND)
   add_definitions(-DHAVE_PHONON4QT5)
 endif()

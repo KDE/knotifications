@@ -52,7 +52,7 @@ void NotifyByAudio::notify(KNotification *notification, KNotifyConfig *config)
     if (!m_audioOutput) {
         m_audioOutput = new Phonon::AudioOutput(Phonon::NotificationCategory, this);
     }
-    QString soundFilename = config->readEntry("Sound");
+    QString soundFilename = config->readEntry(QStringLiteral("Sound"));
     if (soundFilename.isEmpty()) {
         qCWarning(LOG_KNOTIFICATIONS) << "Audio notification requested, but no sound file provided in notifyrc file, aborting audio notification";
 

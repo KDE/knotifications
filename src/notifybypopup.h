@@ -40,7 +40,7 @@ public:
     NotifyByPopup(QObject *parent = 0l);
     virtual ~NotifyByPopup();
 
-    QString optionName() Q_DECL_OVERRIDE { return "Popup"; }
+    QString optionName() Q_DECL_OVERRIDE { return QStringLiteral("Popup"); }
     void notify(KNotification *notification, KNotifyConfig *notifyConfig) Q_DECL_OVERRIDE;
     void close(KNotification *notification) Q_DECL_OVERRIDE;
     void update(KNotification *notification, KNotifyConfig *config) Q_DECL_OVERRIDE;

@@ -395,10 +395,10 @@ void KStatusNotifierItem::setContextMenu(QMenu *menu)
             // application. The string "/NO_DBUSMENU" must be the same as in
             // DBusSystemTrayWidget::findDBusMenuInterface() in the Plasma
             // systemtray applet.
-            d->menuObjectPath = "/NO_DBUSMENU";
+            d->menuObjectPath = QStringLiteral("/NO_DBUSMENU");
             menu->installEventFilter(this);
         } else {
-            d->menuObjectPath = "/MenuBar";
+            d->menuObjectPath = QStringLiteral("/MenuBar");
 #if HAVE_DBUSMENUQT
             new DBusMenuExporter(d->menuObjectPath, menu, d->statusNotifierItemDBus->dbusConnection());
 #endif
@@ -431,11 +431,11 @@ void KStatusNotifierItem::setAssociatedWidget(QWidget *associatedWidget)
     }
 
     if (d->associatedWidget && d->associatedWidget != d->menu) {
-        QAction *action = d->actionCollection.value("minimizeRestore");
+        QAction *action = d->actionCollection.value(QStringLiteral("minimizeRestore"));
 
         if (!action) {
             action = new QAction(this);
-            d->actionCollection.insert("minimizeRestore", action);
+            d->actionCollection.insert(QStringLiteral("minimizeRestore"), action);
             action->setText(tr("&Minimize"));
             connect(action, SIGNAL(triggered(bool)), this, SLOT(minimizeRestore()));
         }
@@ -444,7 +444,7 @@ void KStatusNotifierItem::setAssociatedWidget(QWidget *associatedWidget)
         d->onAllDesktops = info.onAllDesktops();
     } else {
         if (d->menu && d->hasQuit) {
-            QAction *action = d->actionCollection.value("minimizeRestore");
+            QAction *action = d->actionCollection.value(QStringLiteral("minimizeRestore"));
             if (action) {
                 d->menu->removeAction(action);
             }
@@ -488,12 +488,12 @@ void KStatusNotifierItem::setStandardActionsEnabled(bool enabled)
     d->standardActionsEnabled = enabled;
 
     if (d->menu && !enabled && d->hasQuit) {
-        QAction *action = d->actionCollection.value("minimizeRestore");
+        QAction *action = d->actionCollection.value(QStringLiteral("minimizeRestore"));
         if (action) {
             d->menu->removeAction(action);
         }
 
-        action = d->actionCollection.value("quit");
+        action = d->actionCollection.value(QStringLiteral("quit"));
         if (action) {
             d->menu->removeAction(action);
         }
@@ -510,7 +510,7 @@ bool KStatusNotifierItem::standardActionsEnabled() const
 void KStatusNotifierItem::showMessage(const QString &title, const QString &message, const QString &icon, int timeout)
 {
     if (!d->notificationsClient) {
-        d->notificationsClient = new org::freedesktop::Notifications("org.freedesktop.Notifications", "/org/freedesktop/Notifications",
+        d->notificationsClient = new org::freedesktop::Notifications(QStringLiteral("org.freedesktop.Notifications"), QStringLiteral("/org/freedesktop/Notifications"),
                 QDBusConnection::sessionBus());
     }
 
@@ -707,9 +707,9 @@ void KStatusNotifierItemPrivate::init(const QString &extraId)
 
     QAction *action = new QAction(q);
     action->setText(KStatusNotifierItem::tr("Quit"));
-    action->setIcon(QIcon::fromTheme("application-exit"));
+    action->setIcon(QIcon::fromTheme(QStringLiteral("application-exit")));
     QObject::connect(action, SIGNAL(triggered()), q, SLOT(maybeQuit()));
-    actionCollection.insert("quit", action);
+    actionCollection.insert(QStringLiteral("quit"), action);
 
     id = title;
     if (!extraId.isEmpty()) {
@@ -717,7 +717,7 @@ void KStatusNotifierItemPrivate::init(const QString &extraId)
     }
 
     // Init iconThemePath to the app folder for now
-    iconThemePath = QStandardPaths::locate(QStandardPaths::DataLocation, "icons", QStandardPaths::LocateDirectory);
+    iconThemePath = QStandardPaths::locate(QStandardPaths::DataLocation, QStringLiteral("icons"), QStandardPaths::LocateDirectory);
 
     registerToDaemon();
 }
@@ -726,7 +726,7 @@ void KStatusNotifierItemPrivate::registerToDaemon()
 {
     qCDebug(LOG_KNOTIFICATIONS) << "Registering a client interface to the KStatusNotifierWatcher";
     if (!statusNotifierWatcher) {
-        statusNotifierWatcher = new org::kde::StatusNotifierWatcher(s_statusNotifierWatcherServiceName, "/StatusNotifierWatcher",
+        statusNotifierWatcher = new org::kde::StatusNotifierWatcher(s_statusNotifierWatcherServiceName, QStringLiteral("/StatusNotifierWatcher"),
                 QDBusConnection::sessionBus());
         QObject::connect(statusNotifierWatcher, SIGNAL(StatusNotifierHostRegistered()),
                          q, SLOT(checkForRegisteredHosts()));
@@ -779,7 +779,7 @@ void KStatusNotifierItemPrivate::setLegacyMode(bool legacy)
 
 void KStatusNotifierItemPrivate::legacyWheelEvent(int delta)
 {
-    statusNotifierItemDBus->Scroll(delta, "vertical");
+    statusNotifierItemDBus->Scroll(delta, QStringLiteral("vertical"));
 }
 
 void KStatusNotifierItemPrivate::legacyActivated(QSystemTrayIcon::ActivationReason reason)
@@ -860,14 +860,14 @@ void KStatusNotifierItemPrivate::contextMenuAboutToShow()
         // appear at the _END_ of the menu
         menu->addSeparator();
         if (associatedWidget && associatedWidget != menu) {
-            QAction *action = actionCollection.value("minimizeRestore");
+            QAction *action = actionCollection.value(QStringLiteral("minimizeRestore"));
 
             if (action) {
                 menu->addAction(action);
             }
         }
 
-        QAction *action = actionCollection.value("quit");
+        QAction *action = actionCollection.value(QStringLiteral("quit"));
 
         if (action) {
             menu->addAction(action);
@@ -877,7 +877,7 @@ void KStatusNotifierItemPrivate::contextMenuAboutToShow()
     }
 
     if (associatedWidget && associatedWidget != menu) {
-        QAction *action = actionCollection.value("minimizeRestore");
+        QAction *action = actionCollection.value(QStringLiteral("minimizeRestore"));
         if (checkVisibility(QPoint(0, 0), false)) {
             action->setText(KStatusNotifierItem::tr("&Restore"));
         } else {

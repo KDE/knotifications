@@ -18,91 +18,91 @@ QSystemTrayIcon *icon;
 
 void Test::showIt()
 {
-    KPassivePopup::message(QLatin1String("Hello World"), pb);
+    KPassivePopup::message(QStringLiteral("Hello World"), pb);
 }
 
 void Test::showIt2()
 {
-    KPassivePopup::message(QLatin1String("The caption is..."), QLatin1String("Hello World"), pb2);
+    KPassivePopup::message(QStringLiteral("The caption is..."), QStringLiteral("Hello World"), pb2);
 }
 
 void Test::showIt3()
 {
     KPassivePopup *pop = new KPassivePopup();
-    pop->setView(QLatin1String("Caption"), QLatin1String("test"));
+    pop->setView(QStringLiteral("Caption"), QStringLiteral("test"));
     pop->show();
 }
 
 void Test::showIt4()
 {
-    KPassivePopup::message(KPassivePopup::Boxed, QLatin1String("The caption is..."), QLatin1String("Hello World"), pb4);
+    KPassivePopup::message(KPassivePopup::Boxed, QStringLiteral("The caption is..."), QStringLiteral("Hello World"), pb4);
 }
 
 void Test::showIt5()
 {
-    KPassivePopup::message(KPassivePopup::Balloon, QLatin1String("The caption is..."), QLatin1String("Hello World"), pb5);
+    KPassivePopup::message(KPassivePopup::Balloon, QStringLiteral("The caption is..."), QStringLiteral("Hello World"), pb5);
 }
 
 void Test::showIt6()
 {
-    KPassivePopup::message(KPassivePopup::Boxed, QLatin1String("The caption is..."), QLatin1String("Hello World"), pb6);
+    KPassivePopup::message(KPassivePopup::Boxed, QStringLiteral("The caption is..."), QStringLiteral("Hello World"), pb6);
 }
 
 void Test::showIt7()
 {
     int iconDimension = QApplication::fontMetrics().height();
-    KPassivePopup::message(QLatin1String("The caption is..."), QLatin1String("Hello World"), QIcon::fromTheme("dialog-ok").pixmap(iconDimension, iconDimension), pb2);
+    KPassivePopup::message(QStringLiteral("The caption is..."), QStringLiteral("Hello World"), QIcon::fromTheme(QStringLiteral("dialog-ok")).pixmap(iconDimension, iconDimension), pb2);
 }
 
 void Test::showItIcon(QSystemTrayIcon::ActivationReason reason)
 {
     if (reason == QSystemTrayIcon::Trigger) {
-        KPassivePopup::message(QLatin1String("QSystemTrayIcon test"), QLatin1String("Hello World"), icon);
+        KPassivePopup::message(QStringLiteral("QSystemTrayIcon test"), QStringLiteral("Hello World"), icon);
     }
 }
 
 int main(int argc, char **argv)
 {
-    QApplication::setApplicationName(QLatin1String("test"));
+    QApplication::setApplicationName(QStringLiteral("test"));
     QApplication app(argc, argv);
     QCoreApplication::setAttribute(Qt::AA_UseHighDpiPixmaps);
 
     Test *t = new Test();
 
     pb = new QPushButton();
-    pb->setText(QLatin1String("By taskbar entry (no caption, default style)"));
+    pb->setText(QStringLiteral("By taskbar entry (no caption, default style)"));
     pb->connect(pb, SIGNAL(clicked()), t, SLOT(showIt()));
     pb->show();
 
     pb2 = new QPushButton();
-    pb2->setText(QLatin1String("By taskbar entry (with caption, default style)"));
+    pb2->setText(QStringLiteral("By taskbar entry (with caption, default style)"));
     pb2->connect(pb2, SIGNAL(clicked()), t, SLOT(showIt2()));
     pb2->show();
 
     pb3 = new QPushButton();
-    pb3->setText(QLatin1String("Without WinID"));
+    pb3->setText(QStringLiteral("Without WinID"));
     pb3->connect(pb3, SIGNAL(clicked()), t, SLOT(showIt3()));
     pb3->show();
 
     pb4 = new QPushButton();
-    pb4->setText(QLatin1String("By taskbar entry (with caption, boxed)"));
+    pb4->setText(QStringLiteral("By taskbar entry (with caption, boxed)"));
     pb4->connect(pb4, SIGNAL(clicked()), t, SLOT(showIt4()));
     pb4->show();
 
     pb5 = new QPushButton();
-    pb5->setText(QLatin1String("By taskbar entry (with caption, balloon)"));
+    pb5->setText(QStringLiteral("By taskbar entry (with caption, balloon)"));
     pb5->connect(pb5, SIGNAL(clicked()), t, SLOT(showIt5()));
     pb5->show();
 
     // this test depends on X11
     pb6 = new QPushButton();
-    pb6->setText(QLatin1String("By window (with caption, balloon)"));
+    pb6->setText(QStringLiteral("By window (with caption, balloon)"));
     pb6->connect(pb6, SIGNAL(clicked()), t, SLOT(showIt6()));
     pb6->show();
     KWindowSystem::setState(pb6->effectiveWinId(), NET::SkipTaskbar);
 
     pb7 = new QPushButton();
-    pb7->setText(QLatin1String("By taskbar entry (with caption and icon, default style)"));
+    pb7->setText(QStringLiteral("By taskbar entry (with caption and icon, default style)"));
     pb7->connect(pb7, SIGNAL(clicked()), t, SLOT(showIt7()));
     pb7->show();
 

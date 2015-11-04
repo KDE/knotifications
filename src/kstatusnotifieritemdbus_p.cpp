@@ -149,7 +149,7 @@ int KStatusNotifierItemDBus::s_serviceCount = 0;
 KStatusNotifierItemDBus::KStatusNotifierItemDBus(KStatusNotifierItem *parent)
     : QObject(parent),
       m_statusNotifierItem(parent),
-      m_service(QString("org.kde.StatusNotifierItem-%1-%2")
+      m_service(QStringLiteral("org.kde.StatusNotifierItem-%1-%2")
                 .arg(QCoreApplication::applicationPid())
                 .arg(++s_serviceCount)),
       m_dbus(QDBusConnection::connectToBus(QDBusConnection::SessionBus, m_service))
@@ -157,12 +157,12 @@ KStatusNotifierItemDBus::KStatusNotifierItemDBus(KStatusNotifierItem *parent)
     new StatusNotifierItemAdaptor(this);
     qCDebug(LOG_KNOTIFICATIONS) << "service is" << m_service;
     m_dbus.registerService(m_service);
-    m_dbus.registerObject("/StatusNotifierItem", this);
+    m_dbus.registerObject(QStringLiteral("/StatusNotifierItem"), this);
 }
 
 KStatusNotifierItemDBus::~KStatusNotifierItemDBus()
 {
-    m_dbus.unregisterObject("/StatusNotifierItem");
+    m_dbus.unregisterObject(QStringLiteral("/StatusNotifierItem"));
     m_dbus.unregisterService(m_service);
     m_dbus.disconnectFromBus(m_service);
 }
@@ -308,7 +308,7 @@ void KStatusNotifierItemDBus::SecondaryActivate(int x, int y)
 
 void KStatusNotifierItemDBus::Scroll(int delta, const QString &orientation)
 {
-    Qt::Orientation dir = (orientation.toLower() == "horizontal" ? Qt::Horizontal : Qt::Vertical);
+    Qt::Orientation dir = (orientation.toLower() == QLatin1String("horizontal") ? Qt::Horizontal : Qt::Vertical);
     emit m_statusNotifierItem->scrollRequested(delta, dir);
 }
 

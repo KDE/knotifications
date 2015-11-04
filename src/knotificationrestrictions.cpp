@@ -108,7 +108,7 @@ void KNotificationRestrictions::Private::startScreenSaverPrevention()
     qCDebug(LOG_KNOTIFICATIONS);
 
     QDBusMessage message = QDBusMessage::createMethodCall(
-                               "org.freedesktop.ScreenSaver", "/ScreenSaver", "org.freedesktop.ScreenSaver", "Inhibit");
+                               QStringLiteral("org.freedesktop.ScreenSaver"), QStringLiteral("/ScreenSaver"), QStringLiteral("org.freedesktop.ScreenSaver"), QStringLiteral("Inhibit"));
     message << determineProgramName();
     message << reason;
     QDBusReply<uint> reply = QDBusConnection::sessionBus().call(message);
@@ -158,7 +158,7 @@ void KNotificationRestrictions::Private::stopScreenSaverPrevention()
 
     if (screenSaverDbusCookie != -1) {
         QDBusMessage message = QDBusMessage::createMethodCall(
-                                   "org.freedesktop.ScreenSaver", "/ScreenSaver", "org.freedesktop.ScreenSaver", "UnInhibit");
+                                   QStringLiteral("org.freedesktop.ScreenSaver"), QStringLiteral("/ScreenSaver"), QStringLiteral("org.freedesktop.ScreenSaver"), QStringLiteral("UnInhibit"));
         message << static_cast<uint>(screenSaverDbusCookie);
         screenSaverDbusCookie = -1;
         if (QDBusConnection::sessionBus().send(message)) {

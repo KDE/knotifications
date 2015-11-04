@@ -47,7 +47,7 @@ NotifyByTTS::~NotifyByTTS()
 void NotifyByTTS::notify(KNotification *notification, KNotifyConfig *config )
 {
     if (m_speech->state() != QTextToSpeech::BackendError) {
-        QString say = config->readEntry( "TTS" );
+        QString say = config->readEntry( QStringLiteral("TTS") );
 
         if (!say.isEmpty()) {
             // Create a hash of characters to strings to expand text into the notification text.

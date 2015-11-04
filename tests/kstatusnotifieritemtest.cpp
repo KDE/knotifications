@@ -37,9 +37,9 @@ KStatusNotifierItemTest::KStatusNotifierItemTest(QObject *parent, KStatusNotifie
     QMenu *menu = tray->contextMenu();
     m_tray = tray;
 
-    QAction *needsAttention = new QAction("Set needs attention", menu);
-    QAction *active = new QAction("Set active", menu);
-    QAction *passive = new QAction("Set passive", menu);
+    QAction *needsAttention = new QAction(QStringLiteral("Set needs attention"), menu);
+    QAction *active = new QAction(QStringLiteral("Set active"), menu);
+    QAction *passive = new QAction(QStringLiteral("Set passive"), menu);
 
     menu->addAction(needsAttention);
     menu->addAction(active);
@@ -53,7 +53,7 @@ KStatusNotifierItemTest::KStatusNotifierItemTest(QObject *parent, KStatusNotifie
 void KStatusNotifierItemTest::setNeedsAttention()
 {
     qDebug() << "Asking for attention";
-    m_tray->showMessage("message test", "Test of the new systemtray notifications wrapper", "konqueror", 3000);
+    m_tray->showMessage(QStringLiteral("message test"), QStringLiteral("Test of the new systemtray notifications wrapper"), QStringLiteral("konqueror"), 3000);
     m_tray->setStatus(KStatusNotifierItem::NeedsAttention);
 }
 
@@ -79,38 +79,38 @@ int main(int argc, char **argv)
         QCommandLineParser parser;
         parser.setApplicationDescription(QCoreApplication::translate("main", "KStatusNotifierItemtest"));
         parser.addHelpOption();
-        parser.addOption(QCommandLineOption(QStringList() << "active-icon", QCoreApplication::translate("main", "Name of active icon"), "name", "konqueror"));
-        parser.addOption(QCommandLineOption(QStringList() << "ksni-count", QCoreApplication::translate("main", "How many instances of KStatusNotifierItem to create"), "count", "1"));
+        parser.addOption(QCommandLineOption(QStringList() << QStringLiteral("active-icon"), QCoreApplication::translate("main", "Name of active icon"), QStringLiteral("name"), QStringLiteral("konqueror")));
+        parser.addOption(QCommandLineOption(QStringList() << QStringLiteral("ksni-count"), QCoreApplication::translate("main", "How many instances of KStatusNotifierItem to create"), QStringLiteral("count"), QStringLiteral("1")));
         parser.process(app);
 
         if (parser.positionalArguments().count() != 0) {
             parser.showHelp();
             return (1);
         }
-        ksniCount = parser.value("ksni-count").toInt();
-        iconName = parser.value("active-icon");
+        ksniCount = parser.value(QStringLiteral("ksni-count")).toInt();
+        iconName = parser.value(QStringLiteral("active-icon"));
     }
 
-    QLabel *l = new QLabel("System Tray Main Window", 0L);
+    QLabel *l = new QLabel(QStringLiteral("System Tray Main Window"), 0L);
     for (int x = 0; x < ksniCount; ++x) {
         KStatusNotifierItem *tray = new KStatusNotifierItem(l);
 
         new KStatusNotifierItemTest(0, tray);
 
-        tray->setTitle("DBus System tray test");
+        tray->setTitle(QStringLiteral("DBus System tray test"));
         tray->setIconByName(iconName);
         //tray->setIconByPixmap(QIcon::fromTheme("konqueror"));
         //tray->setAttentionIconByName("kmail");
-        tray->setOverlayIconByName("emblem-important");
+        tray->setOverlayIconByName(QStringLiteral("emblem-important"));
         tray->setStatus(KStatusNotifierItem::Active);
 
-        tray->setToolTipIconByName("konqueror");
-        tray->setToolTipTitle("DBus System tray test");
-        tray->setToolTipSubTitle("This is a test of the new systemtray specification");
+        tray->setToolTipIconByName(QStringLiteral("konqueror"));
+        tray->setToolTipTitle(QStringLiteral("DBus System tray test"));
+        tray->setToolTipSubTitle(QStringLiteral("This is a test of the new systemtray specification"));
 
-        tray->setToolTip("konqueror", QString("DBus System tray test #%1").arg(x + 1), "This is a test of the new systemtray specification");
+        tray->setToolTip(QStringLiteral("konqueror"), QStringLiteral("DBus System tray test #%1").arg(x + 1), QStringLiteral("This is a test of the new systemtray specification"));
 
-        tray->showMessage("message test", "Test of the new systemtray notifications wrapper", "konqueror", 3000);
+        tray->showMessage(QStringLiteral("message test"), QStringLiteral("Test of the new systemtray notifications wrapper"), QStringLiteral("konqueror"), 3000);
         //tray->setStandardActionsEnabled(false);
     }
 

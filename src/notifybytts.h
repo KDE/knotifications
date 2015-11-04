@@ -36,7 +36,7 @@ public:
     NotifyByTTS(QObject *parent=0l);
     virtual ~NotifyByTTS();
 
-    virtual QString optionName() { return "TTS"; }
+    virtual QString optionName() { return QStringLiteral("TTS"); }
     virtual void notify(KNotification *notification, KNotifyConfig *config);
 
 private:

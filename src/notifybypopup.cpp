@@ -167,7 +167,7 @@ NotifyByPopup::NotifyByPopup(QObject *parent)
     d->dbusServiceExists = interface && interface->isServiceRegistered(dbusServiceName);
 
     if (d->dbusServiceExists) {
-        onServiceOwnerChanged(dbusServiceName, QString(), "_"); //connect signals
+        onServiceOwnerChanged(dbusServiceName, QString(), QStringLiteral("_")); //connect signals
     }
 
     // to catch register/unregister events from service in runtime
@@ -184,10 +184,10 @@ NotifyByPopup::NotifyByPopup(QObject *parent)
         startfdo = true;
 #else
         if (qgetenv("KDE_FULL_SESSION").isEmpty()) {
-            QDBusMessage message = QDBusMessage::createMethodCall("org.freedesktop.DBus",
-                                                                  "/org/freedesktop/DBus",
-                                                                  "org.freedesktop.DBus",
-                                                                  "ListActivatableNames");
+            QDBusMessage message = QDBusMessage::createMethodCall(QStringLiteral("org.freedesktop.DBus"),
+                                                                  QStringLiteral("/org/freedesktop/DBus"),
+                                                                  QStringLiteral("org.freedesktop.DBus"),
+                                                                  QStringLiteral("ListActivatableNames"));
 
             // FIXME - this should be async
             QDBusReply<QStringList> reply = QDBusConnection::sessionBus().call(message);
@@ -442,7 +442,7 @@ void NotifyByPopup::onServiceOwnerChanged(const QString &serviceName, const QStr
         bool connected = QDBusConnection::sessionBus().connect(QString(), // from any service
                                                                dbusPath,
                                                                dbusInterfaceName,
-                                                               "ActionInvoked",
+                                                               QStringLiteral("ActionInvoked"),
                                                                this,
                                                                SLOT(onGalagoNotificationActionInvoked(uint,QString)));
         if (!connected) {
@@ -452,7 +452,7 @@ void NotifyByPopup::onServiceOwnerChanged(const QString &serviceName, const QStr
         connected = QDBusConnection::sessionBus().connect(QString(), // from any service
                                                           dbusPath,
                                                           dbusInterfaceName,
-                                                          "NotificationClosed",
+                                                          QStringLiteral("NotificationClosed"),
                                                           this,
                                                           SLOT(onGalagoNotificationClosed(uint,uint)));
         if (!connected) {
@@ -531,10 +531,10 @@ void NotifyByPopup::onGalagoServerCapabilitiesReceived(const QStringList &capabi
 
 void NotifyByPopupPrivate::getAppCaptionAndIconName(const KNotifyConfig &notifyConfig, QString *appCaption, QString *iconName)
 {
-    KConfigGroup globalgroup(&(*notifyConfig.eventsfile), QString("Global"));
+    KConfigGroup globalgroup(&(*notifyConfig.eventsfile), QStringLiteral("Global"));
     *appCaption = globalgroup.readEntry("Name", globalgroup.readEntry("Comment", notifyConfig.appname));
 
-    KConfigGroup eventGroup(&(*notifyConfig.eventsfile), QString("Event/%1").arg(notifyConfig.eventid));
+    KConfigGroup eventGroup(&(*notifyConfig.eventsfile), QStringLiteral("Event/%1").arg(notifyConfig.eventid));
     if (eventGroup.hasKey("IconName")) {
         *iconName = eventGroup.readEntry("IconName", notifyConfig.appname);
     } else {
@@ -593,14 +593,14 @@ void NotifyByPopupPrivate::fillPopup(KPassivePopup *popup, KNotification *notifi
 
 
     if (!notification->actions().isEmpty()) {
-        QString linkCode = QString::fromLatin1("<p align=\"right\">");
+        QString linkCode = QStringLiteral("<p align=\"right\">");
         int i = 0;
         Q_FOREACH (const QString &it, notification->actions()) {
             i++;
-            linkCode += QString::fromLatin1("&nbsp;<a href=\"%1/%2\">%3</a>").arg(QString::number(notification->id()), QString::number(i), it.toHtmlEscaped());
+            linkCode += QStringLiteral("&nbsp;<a href=\"%1/%2\">%3</a>").arg(QString::number(notification->id()), QString::number(i), it.toHtmlEscaped());
         }
 
-        linkCode += QString::fromLatin1("</p>");
+        linkCode += QLatin1String("</p>");
         QLabel *link = new QLabel(linkCode , vb );
         link->setTextInteractionFlags(Qt::LinksAccessibleByMouse);
         link->setOpenExternalLinks(false);
@@ -624,7 +624,7 @@ bool NotifyByPopupPrivate::sendNotificationToGalagoServer(KNotification *notific
         }
     }
 
-    QDBusMessage dbusNotificationMessage = QDBusMessage::createMethodCall(dbusServiceName, dbusPath, dbusInterfaceName, "Notify");
+    QDBusMessage dbusNotificationMessage = QDBusMessage::createMethodCall(dbusServiceName, dbusPath, dbusInterfaceName, QStringLiteral("Notify"));
 
     QList<QVariant> args;
 
@@ -644,11 +644,11 @@ bool NotifyByPopupPrivate::sendNotificationToGalagoServer(KNotification *notific
     QString title = notification->title().isEmpty() ? appCaption : notification->title();
     QString text = notification->text();
 
-    if (!popupServerCapabilities.contains("body-markup")) {
-        if (title.startsWith("<html>")) {
+    if (!popupServerCapabilities.contains(QStringLiteral("body-markup"))) {
+        if (title.startsWith(QLatin1String("<html>"))) {
             title = stripHtml(title);
         }
-        if (text.startsWith("<html>")) {
+        if (text.startsWith(QLatin1String("<html>"))) {
             text = stripHtml(text);
         }
     }
@@ -662,7 +662,7 @@ bool NotifyByPopupPrivate::sendNotificationToGalagoServer(KNotification *notific
     // assign id's to actions like it's done in fillPopup() method
     // (i.e. starting from 1)
     QStringList actionList;
-    if (popupServerCapabilities.contains("actions")) {
+    if (popupServerCapabilities.contains(QStringLiteral("actions"))) {
         int actId = 0;
         Q_FOREACH (const QString &actionName, notification->actions()) {
             actId++;
@@ -678,7 +678,7 @@ bool NotifyByPopupPrivate::sendNotificationToGalagoServer(KNotification *notific
     // According to fdo spec, the app_name is supposed to be the applicaton's "pretty name"
     // but in some places it's handy to know the application name itself
     if (!notification->appName().isEmpty()) {
-        hintsMap["x-kde-appname"] = notification->appName();
+        hintsMap[QStringLiteral("x-kde-appname")] = notification->appName();
     }
 
     //FIXME - reenable/fix
@@ -689,7 +689,7 @@ bool NotifyByPopupPrivate::sendNotificationToGalagoServer(KNotification *notific
         buffer.open(QIODevice::WriteOnly);
         notification->pixmap().save(&buffer, "PNG");
         buffer.close();
-        hintsMap["image_data"] = ImageConverter::variantForImage(QImage::fromData(pixmapData));
+        hintsMap[QStringLiteral("image_data")] = ImageConverter::variantForImage(QImage::fromData(pixmapData));
     }
 
     args.append(hintsMap); // hints
@@ -724,7 +724,7 @@ void NotifyByPopupPrivate::closeGalagoNotification(KNotification *notification)
     }
 
     QDBusMessage m = QDBusMessage::createMethodCall(dbusServiceName, dbusPath,
-                                                    dbusInterfaceName, "CloseNotification");
+                                                    dbusInterfaceName, QStringLiteral("CloseNotification"));
     QList<QVariant> args;
     args.append(galagoId);
     m.setArguments(args);
@@ -745,8 +745,8 @@ void NotifyByPopupPrivate::queryPopupServerCapabilities()
             popupServerCapabilities = NotifyByPopupGrowl::capabilities();
         } else {
             // Return capabilities of the KPassivePopup implementation
-            popupServerCapabilities = QStringList() << "actions" << "body" << "body-hyperlinks"
-                                                      << "body-markup" << "icon-static";
+            popupServerCapabilities = QStringList() << QStringLiteral("actions") << QStringLiteral("body") << QStringLiteral("body-hyperlinks")
+                                                      << QStringLiteral("body-markup") << QStringLiteral("icon-static");
         }
     }
 
@@ -754,7 +754,7 @@ void NotifyByPopupPrivate::queryPopupServerCapabilities()
         QDBusMessage m = QDBusMessage::createMethodCall(dbusServiceName,
                                                         dbusPath,
                                                         dbusInterfaceName,
-                                                        "GetCapabilities");
+                                                        QStringLiteral("GetCapabilities"));
 
         QDBusConnection::sessionBus().callWithCallback(m,
                                                        q,

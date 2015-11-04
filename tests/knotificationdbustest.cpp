@@ -32,7 +32,7 @@ static const char dbusPath[] = "/org/freedesktop/Notifications";
 
 void notificationDBusCall(const QString &iconName, const QString &title, const QString &body, const QStringList &actions, bool persistent = false)
 {
-    QDBusMessage dbusNotificationMessage = QDBusMessage::createMethodCall(dbusServiceName, dbusPath, dbusInterfaceName, "Notify");
+    QDBusMessage dbusNotificationMessage = QDBusMessage::createMethodCall(dbusServiceName, dbusPath, dbusInterfaceName, QStringLiteral("Notify"));
 
     QList<QVariant> args;
 
@@ -72,27 +72,27 @@ int main(int argc, char *argv[])
 {
     QApplication app(argc, argv);
 
-    notificationDBusCall("amarok",
-                         "Testing notification #1",
-                         "Lorem ipsum dolor sit amet, consectetur adipiscing elit. In condimentum",
-                         QStringList() << "action1" << "action2");
+    notificationDBusCall(QStringLiteral("amarok"),
+                         QStringLiteral("Testing notification #1"),
+                         QStringLiteral("Lorem ipsum dolor sit amet, consectetur adipiscing elit. In condimentum"),
+                         QStringList() << QStringLiteral("action1") << QStringLiteral("action2"));
 
     // wait a little before sending another notification
     QEventLoop a;
     QTimer::singleShot(500, &a, SLOT(quit()));
     a.exec();
 
-    notificationDBusCall("kwalletmanager",
-                         "Testing notification #2",
-                         "Praesent odio ipsum, posuere a magna ac, egestas vehicula lectus",
-                         QStringList() << "action1" << "action2");
+    notificationDBusCall(QStringLiteral("kwalletmanager"),
+                         QStringLiteral("Testing notification #2"),
+                         QStringLiteral("Praesent odio ipsum, posuere a magna ac, egestas vehicula lectus"),
+                         QStringList() << QStringLiteral("action1") << QStringLiteral("action2"));
 
     QTimer::singleShot(1000, &a, SLOT(quit()));
     a.exec();
 
-    notificationDBusCall("preferences-desktop-accessibility",
-                         "Testing notification #3",
-                         "Fusce hendrerit egestas pellentesque",
+    notificationDBusCall(QStringLiteral("preferences-desktop-accessibility"),
+                         QStringLiteral("Testing notification #3"),
+                         QStringLiteral("Fusce hendrerit egestas pellentesque"),
                          QStringList(),
                          true);
 

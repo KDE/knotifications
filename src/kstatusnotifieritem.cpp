@@ -801,13 +801,20 @@ void KStatusNotifierItemPrivate::setLegacySystemTrayEnabled(bool enabled)
         if (!QSystemTrayIcon::isSystemTrayAvailable()) {
             return;
         }
-        if (!systemTrayIcon) {
+        bool isKde = !qEnvironmentVariableIsEmpty("KDE_FULL_SESSION") || qgetenv("XDG_CURRENT_DESKTOP") == "KDE";
+        if (!systemTrayIcon && !isKde) {
             systemTrayIcon = new KStatusNotifierLegacyIcon(associatedWidget);
             syncLegacySystemTrayIcon();
             systemTrayIcon->setToolTip(toolTipTitle);
             systemTrayIcon->show();
             QObject::connect(systemTrayIcon, SIGNAL(wheel(int)), q, SLOT(legacyWheelEvent(int)));
             QObject::connect(systemTrayIcon, SIGNAL(activated(QSystemTrayIcon::ActivationReason)), q, SLOT(legacyActivated(QSystemTrayIcon::ActivationReason)));
+        } else if (isKde) {
+            // prevent infinite recursion if the KDE platform plugin is loaded
+            // but SNI is not available; see bug 350785
+            qCWarning(LOG_KNOTIFICATIONS) << "env says KDE is running but SNI unavailable -- check "
+                                             "KDE_FULL_SESSION and XDG_CURRENT_DESKTOP";
+            return;
         }
 
         if (menu) {

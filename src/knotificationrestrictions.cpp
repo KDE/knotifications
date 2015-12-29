@@ -42,6 +42,7 @@ public:
         : q(qq),
           control(c)
           , screenSaverDbusCookie(-1)
+          , reason("no_reason_specified")
 #if HAVE_XTEST
           , screensaverTimer(0),
           haveXTest(0),

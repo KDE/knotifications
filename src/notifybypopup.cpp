@@ -681,6 +681,10 @@ bool NotifyByPopupPrivate::sendNotificationToGalagoServer(KNotification *notific
         hintsMap[QStringLiteral("x-kde-appname")] = notification->appName();
     }
 
+    if (notification->flags() & KNotification::SkipGrouping) {
+        hintsMap["x-kde-skipGrouping"] = 1;
+    }
+
     //FIXME - reenable/fix
     // let's see if we've got an image, and store the image in the hints map
     if (!notification->pixmap().isNull()) {

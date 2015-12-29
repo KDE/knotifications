@@ -244,6 +244,13 @@ public:
         LoopSound = 0x08,
 
         /**
+         * Sends a hint to Plasma to skip grouping for this notification
+         *
+         * @since: 5.18
+         */
+        SkipGrouping = 0x16,
+
+        /**
          * @internal
          * The event is a standard kde event, and not an event of the application
          */

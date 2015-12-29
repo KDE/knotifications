@@ -248,7 +248,7 @@ public:
          *
          * @since: 5.18
          */
-        SkipGrouping = 0x16,
+        SkipGrouping = 0x10,
 
         /**
          * @internal

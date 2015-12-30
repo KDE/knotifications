@@ -681,6 +681,10 @@ bool NotifyByPopupPrivate::sendNotificationToGalagoServer(KNotification *notific
         hintsMap[QStringLiteral("x-kde-appname")] = notification->appName();
     }
 
+    if (!notification->eventId().isEmpty()) {
+        hintsMap[QStringLiteral("x-kde-eventId")] = notification->eventId();
+    }
+
     if (notification->flags() & KNotification::SkipGrouping) {
         hintsMap["x-kde-skipGrouping"] = 1;
     }

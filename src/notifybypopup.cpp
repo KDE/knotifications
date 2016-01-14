@@ -183,7 +183,7 @@ NotifyByPopup::NotifyByPopup(QObject *parent)
 #ifdef Q_WS_WIN
         startfdo = true;
 #else
-        if (qgetenv("KDE_FULL_SESSION").isEmpty()) {
+        if (qEnvironmentVariableIsEmpty("KDE_FULL_SESSION")) {
             QDBusMessage message = QDBusMessage::createMethodCall(QStringLiteral("org.freedesktop.DBus"),
                                                                   QStringLiteral("/org/freedesktop/DBus"),
                                                                   QStringLiteral("org.freedesktop.DBus"),
@@ -686,7 +686,7 @@ bool NotifyByPopupPrivate::sendNotificationToGalagoServer(KNotification *notific
     }
 
     if (notification->flags() & KNotification::SkipGrouping) {
-        hintsMap["x-kde-skipGrouping"] = 1;
+        hintsMap[QStringLiteral("x-kde-skipGrouping")] = 1;
     }
 
     //FIXME - reenable/fix

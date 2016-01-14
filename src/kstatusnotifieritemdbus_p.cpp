@@ -186,7 +186,7 @@ bool KStatusNotifierItemDBus::ItemIsMenu() const
 
 QString KStatusNotifierItemDBus::Category() const
 {
-    return m_statusNotifierItem->metaObject()->enumerator(m_statusNotifierItem->metaObject()->indexOfEnumerator("ItemCategory")).valueToKey(m_statusNotifierItem->category());
+    return QLatin1String(m_statusNotifierItem->metaObject()->enumerator(m_statusNotifierItem->metaObject()->indexOfEnumerator("ItemCategory")).valueToKey(m_statusNotifierItem->category()));
 }
 
 QString KStatusNotifierItemDBus::Title() const
@@ -201,7 +201,7 @@ QString KStatusNotifierItemDBus::Id() const
 
 QString KStatusNotifierItemDBus::Status() const
 {
-    return m_statusNotifierItem->metaObject()->enumerator(m_statusNotifierItem->metaObject()->indexOfEnumerator("ItemStatus")).valueToKey(m_statusNotifierItem->status());
+    return QLatin1String(m_statusNotifierItem->metaObject()->enumerator(m_statusNotifierItem->metaObject()->indexOfEnumerator("ItemStatus")).valueToKey(m_statusNotifierItem->status()));
 }
 
 int KStatusNotifierItemDBus::WindowId() const

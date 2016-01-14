@@ -106,7 +106,7 @@ void KStatusNotifierItem::setStatus(const ItemStatus status)
     }
 
     d->status = status;
-    emit d->statusNotifierItemDBus->NewStatus(metaObject()->enumerator(metaObject()->indexOfEnumerator("ItemStatus")).valueToKey(d->status));
+    emit d->statusNotifierItemDBus->NewStatus(QString::fromLatin1(metaObject()->enumerator(metaObject()->indexOfEnumerator("ItemStatus")).valueToKey(d->status)));
 
     if (d->systemTrayIcon) {
         d->syncLegacySystemTrayIcon();
@@ -529,7 +529,7 @@ void KStatusNotifierItem::activate(const QPoint &pos)
     //FIXME: always true?
     if (d->status == NeedsAttention) {
         d->status = Active;
-        emit d->statusNotifierItemDBus->NewStatus(metaObject()->enumerator(metaObject()->indexOfEnumerator("ItemStatus")).valueToKey(d->status));
+        emit d->statusNotifierItemDBus->NewStatus(QString::fromLatin1(metaObject()->enumerator(metaObject()->indexOfEnumerator("ItemStatus")).valueToKey(d->status)));
     }
 
     if (d->associatedWidget == d->menu) {
@@ -971,7 +971,7 @@ KDbusImageVector KStatusNotifierItemPrivate::iconToVector(const QIcon &icon)
     QPixmap iconPixmap;
 
     //if an icon exactly that size wasn't found don't add it to the vector
-    foreach (const QSize &size, icon.availableSizes()) {
+    foreach (QSize size, icon.availableSizes()) {
         iconPixmap = icon.pixmap(size);
         iconVector.append(imageToStruct(iconPixmap.toImage()));
     }

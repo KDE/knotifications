@@ -35,8 +35,8 @@
  */
 bool NotifyByPopupGrowl::canPopup()
 {
-    return QFile::exists(GROWL_LOCATION_MACOSX)
-        || QFile::exists(GROWL_LOCATION_WIN32);
+    return QFile::exists(QStringLiteral(GROWL_LOCATION_MACOSX))
+        || QFile::exists(QStringLiteral(GROWL_LOCATION_WIN32));
 }
 
 /**

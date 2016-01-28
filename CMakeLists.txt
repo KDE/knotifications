@@ -41,7 +41,7 @@ if (Qt5TextToSpeech_FOUND)
 endif()
 
 include(KDEInstallDirs)
-include(KDEFrameworkCompilerSettings)
+include(KDEFrameworkCompilerSettings NO_POLICY_SCOPE)
 include(KDECMakeSettings)
 
 if (NOT APPLE AND NOT WIN32)

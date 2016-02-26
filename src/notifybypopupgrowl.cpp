@@ -23,8 +23,7 @@
 #include <QFile>
 #include <QSystemTrayIcon>
 
-#define GROWL_LOCATION_MACOSX "/Library/PreferencePanes/Growl.prefPane/" \
-                              "Contents/MacOS/Growl"
+#define GROWL_LOCATION_MACOSX "/Library/PreferencePanes/Growl.prefPane/Contents/MacOS/Growl"
 #define GROWL_LOCATION_WIN32 "C:/Program Files/Growl for Windows/Growl.exe"
 
 /**

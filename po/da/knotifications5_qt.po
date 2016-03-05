@@ -1,0 +1,54 @@
+# translation of kdelibs4.po to
+# Copyright (C) YEAR This_file_is_part_of_KDE
+# This file is distributed under the same license as the PACKAGE package.
+#
+# Martin Schlander, 2008.
+# Martin Schlander <mschlander@opensuse.org>, 2008.
+# Martin Schlander <mschlander@opensuse.org>, 2008, 2009, 2010, 2011, 2012, 2013, 2014.
+# Keld Simonsen <keld@keldix.com>, 2010.
+msgid ""
+msgstr ""
+"Project-Id-Version: kdelibs4\n"
+"Report-Msgid-Bugs-To: http://bugs.kde.org\n"
+"POT-Creation-Date: 2014-03-23 01:50+0000\n"
+"PO-Revision-Date: 2014-09-21 15:44+0200\n"
+"Last-Translator: Martin Schlander <mschlander@opensuse.org>\n"
+"Language-Team: Danish <kde-i18n-doc@kde.org>\n"
+"Language: da\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: Lokalize 1.5\n"
+"X-Qt-Contexts: true\n"
+
+#: knotificationrestrictions.cpp:185
+msgctxt "KNotificationRestrictions|"
+msgid "Unknown Application"
+msgstr "Ukendt program"
+
+#: kstatusnotifieritem.cpp:439 kstatusnotifieritem.cpp:891
+msgctxt "KStatusNotifierItem|"
+msgid "&Minimize"
+msgstr "&Minimér"
+
+#: kstatusnotifieritem.cpp:709
+msgctxt "KStatusNotifierItem|"
+msgid "Quit"
+msgstr "Afslut"
+
+#: kstatusnotifieritem.cpp:889
+msgctxt "KStatusNotifierItem|"
+msgid "&Restore"
+msgstr "&Genskab"
+
+#: kstatusnotifieritem.cpp:903
+#, qt-format
+msgctxt "KStatusNotifierItem|"
+msgid "<qt>Are you sure you want to quit <b>%1</b>?</qt>"
+msgstr "<qt>Vil du virkelig afslutte <b>%1</b>?</qt>"
+
+#: kstatusnotifieritem.cpp:906
+msgctxt "KStatusNotifierItem|"
+msgid "Confirm Quit From System Tray"
+msgstr "Bekræft afslutning fra statusområdet"

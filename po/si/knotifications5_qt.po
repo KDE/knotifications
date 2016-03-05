@@ -1,0 +1,60 @@
+# This file is distributed under the same license as the PACKAGE package.
+#
+# Danishka Navin <danishka@gmail.com>, 2008, 2009, 2010, 2011.
+msgid ""
+msgstr ""
+"Project-Id-Version: kdelibs4\n"
+"Report-Msgid-Bugs-To: http://bugs.kde.org\n"
+"POT-Creation-Date: 2014-03-23 01:50+0000\n"
+"PO-Revision-Date: 2011-07-25 07:45+0530\n"
+"Last-Translator: Danishka Navin <danishka@gmail.com>\n"
+"Language-Team: Sinhala <danishka@gmail.com>\n"
+"Language: si\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Lokalize 1.2\n"
+"X-Qt-Contexts: true\n"
+
+#: knotificationrestrictions.cpp:185
+#, fuzzy
+#| msgid "Unknown Application"
+msgctxt "KNotificationRestrictions|"
+msgid "Unknown Application"
+msgstr "නොදන්නා යෙදුමක්"
+
+#: kstatusnotifieritem.cpp:439 kstatusnotifieritem.cpp:891
+#, fuzzy
+#| msgid "&Minimize"
+msgctxt "KStatusNotifierItem|"
+msgid "&Minimize"
+msgstr "හකුලන්න &M"
+
+#: kstatusnotifieritem.cpp:709
+#, fuzzy
+#| msgid "Quit"
+msgctxt "KStatusNotifierItem|"
+msgid "Quit"
+msgstr "ඉවත් වීම"
+
+#: kstatusnotifieritem.cpp:889
+#, fuzzy
+#| msgid "&Restore"
+msgctxt "KStatusNotifierItem|"
+msgid "&Restore"
+msgstr "යළි පිහිටුවීම (&R)"
+
+#: kstatusnotifieritem.cpp:903
+#, fuzzy, qt-format
+#| msgid "<qt>Are you sure you want to quit <b>%1</b>?</qt>"
+msgctxt "KStatusNotifierItem|"
+msgid "<qt>Are you sure you want to quit <b>%1</b>?</qt>"
+msgstr "<qt>ඔබට <b>%1</b> වෙතින් ඉවත් වීමට අවශ්‍යම ද?</qt>"
+
+#: kstatusnotifieritem.cpp:906
+#, fuzzy
+#| msgid "Confirm Quit From System Tray"
+msgctxt "KStatusNotifierItem|"
+msgid "Confirm Quit From System Tray"
+msgstr "පද්ධති තැටියෙන් ඉවත් වීම ස්තිර කරන්න"

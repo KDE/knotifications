@@ -47,7 +47,7 @@
 
 static const int DEFAULT_POPUP_TYPE = KPassivePopup::Boxed;
 static const int DEFAULT_POPUP_TIME = 6 * 1000;
-static const Qt::WindowFlags POPUP_FLAGS = Qt::Tool | Qt::X11BypassWindowManagerHint | Qt::WindowStaysOnTopHint | Qt::FramelessWindowHint;
+static const Qt::WindowFlags POPUP_FLAGS = Qt::Tool | Qt::WindowStaysOnTopHint | Qt::FramelessWindowHint;
 
 class KPassivePopup::Private
 {
@@ -62,7 +62,13 @@ public:
           hideTimer(new QTimer(q)),
           autoDelete(false)
     {
-        q->setWindowFlags(POPUP_FLAGS);
+#if HAVE_X11
+        if (QX11Info::isPlatformX11()) {
+            q->setWindowFlags(POPUP_FLAGS | Qt::X11BypassWindowManagerHint);
+        } else
+#else
+            q->setWindowFlags(POPUP_FLAGS);
+#endif
         q->setFrameStyle(QFrame::Box | QFrame::Plain);
         q->setLineWidth(2);
 

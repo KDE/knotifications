@@ -786,6 +786,8 @@ void KStatusNotifierItemPrivate::legacyActivated(QSystemTrayIcon::ActivationReas
 {
     if (reason == QSystemTrayIcon::MiddleClick) {
         emit q->secondaryActivateRequested(systemTrayIcon->geometry().topLeft());
+    } else if (reason == QSystemTrayIcon::Trigger) {
+        q->activate();
     }
 }
 

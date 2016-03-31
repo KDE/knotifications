@@ -60,7 +60,7 @@ struct KNotification::Private {
     QTimer updateTimer;
     bool needUpdate;
 
-    Private() : id(0), ref(0), widget(0l), needUpdate(false) {}
+    Private() : id(-1), ref(0), widget(0l), needUpdate(false) {}
     /**
      * recursive function that raise the widget. @p w
      *
@@ -97,7 +97,7 @@ KNotification::KNotification(
 
 KNotification::~KNotification()
 {
-    if (d->id > 0) {
+    if (d->id >= 0) {
         KNotificationManager::self()->close(d->id);
     }
     delete d;
@@ -140,7 +140,7 @@ void KNotification::setTitle(const QString &title)
 
     d->needUpdate = true;
     d->title = title;
-    if (d->id > 0) {
+    if (d->id >= 0) {
         d->updateTimer.start();
     }
 }
@@ -153,7 +153,7 @@ void KNotification::setText(const QString &text)
 
     d->needUpdate = true;
     d->text = text;
-    if (d->id > 0) {
+    if (d->id >= 0) {
         d->updateTimer.start();
     }
 }
@@ -166,7 +166,7 @@ void KNotification::setIconName(const QString &icon)
 
     d->needUpdate = true;
     d->iconName = icon;
-    if (d->id > 0) {
+    if (d->id >= 0) {
         d->updateTimer.start();
     }
 }
@@ -185,7 +185,7 @@ void KNotification::setPixmap(const QPixmap &pix)
 {
     d->needUpdate = true;
     d->pixmap = pix;
-    if (d->id > 0) {
+    if (d->id >= 0) {
         d->updateTimer.start();
     }
 }
@@ -203,7 +203,7 @@ void KNotification::setActions(const QStringList &as)
 
     d->needUpdate = true;
     d->actions = as;
-    if (d->id > 0) {
+    if (d->id >= 0) {
         d->updateTimer.start();
     }
 }
@@ -264,8 +264,6 @@ void KNotification::activate(unsigned int action)
     // which will deref() the KNotification object, which will result
     // in closing the notification
     emit activated(action);
-
-    d->id = -1;
 }
 
 void KNotification::close()
@@ -279,7 +277,6 @@ void KNotification::close()
         emit closed();
         deleteLater();
     }
-
 }
 
 void KNotification::raiseWidget()
@@ -376,7 +373,6 @@ void KNotification::ref()
 {
     d->ref++;
 }
-
 void KNotification::deref()
 {
     d->ref--;
@@ -394,9 +390,9 @@ void KNotification::beep(const QString &reason, QWidget *widget)
 void KNotification::sendEvent()
 {
     d->needUpdate = false;
-    if (d->id == 0) {
+    if (d->id == -1) {
         d->id = KNotificationManager::self()->notify(this);
-    } else if (d->id > 0) {
+    } else if (d->id >= 0) {
         KNotificationManager::self()->reemit(this);
     }
 }

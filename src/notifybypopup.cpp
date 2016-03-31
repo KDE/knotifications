@@ -471,9 +471,6 @@ void NotifyByPopup::onGalagoNotificationActionInvoked(uint notificationId, const
     KNotification *n = *iter;
     if (n) {
         emit actionInvoked(n->id(), actionKey.toUInt());
-        // now close notification - similar to popup behaviour
-        // (popups are hidden after link activation - see 'connects' of linkActivated signal above)
-        d->closeGalagoNotification(n);
     } else {
         d->galagoNotifications.erase(iter);
     }
@@ -743,7 +740,6 @@ void NotifyByPopupPrivate::closeGalagoNotification(KNotification *notification)
     if (!queued) {
         qCWarning(LOG_KNOTIFICATIONS) << "Failed to queue dbus message for closing a notification";
     }
-
 }
 
 void NotifyByPopupPrivate::queryPopupServerCapabilities()

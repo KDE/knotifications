@@ -165,11 +165,26 @@ void KNotificationManager::notificationClosed()
 void KNotificationManager::close(int id, bool force)
 {
     if (force || d->notifications.contains(id)) {
-        KNotification *n = d->notifications.take(id);
+        KNotification *n = d->notifications.value(id);
         qCDebug(LOG_KNOTIFICATIONS) << "Closing notification" << id;
 
-        Q_FOREACH (KNotificationPlugin *plugin, d->notifyPlugins) {
-            plugin->close(n);
+        // Find plugins that are actually acting on this notification
+        // call close() only on those, otherwise each KNotificationPlugin::close()
+        // will call finish() which may close-and-delete the KNotification object
+        // before it finishes calling close on all the other plugins.
+        // For example: Action=Popup is a single actions but there is 5 loaded
+        // plugins, calling close() on the second would already close-and-delete
+        // the notification
+        KNotifyConfig notifyConfig(n->appName(), n->contexts(), n->eventId());
+        QString notifyActions = notifyConfig.readEntry(QStringLiteral("Action"));
+
+        Q_FOREACH (const QString &action, notifyActions.split('|')) {
+            if (!d->notifyPlugins.contains(action)) {
+                qCDebug(LOG_KNOTIFICATIONS) << "No plugin for action" << action;
+                continue;
+            }
+
+            d->notifyPlugins[action]->close(n);
         }
     }
 }
@@ -191,7 +206,7 @@ int KNotificationManager::notify(KNotification *n)
         return -1;
     }
 
-    d->notifications.insert(++d->notifyIdCounter, n);
+    d->notifications.insert(d->notifyIdCounter, n);
 
     Q_FOREACH (const QString &action, notifyActions.split('|')) {
         if (!d->notifyPlugins.contains(action)) {
@@ -206,7 +221,7 @@ int KNotificationManager::notify(KNotification *n)
     }
 
     connect(n, &KNotification::closed, this, &KNotificationManager::notificationClosed);
-    return d->notifyIdCounter;
+    return d->notifyIdCounter++;
 }
 
 void KNotificationManager::update(KNotification *n)

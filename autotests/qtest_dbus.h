@@ -36,7 +36,7 @@ int main(int argc, char *argv[]) \
         qFatal("Couldn't execute new dbus session"); \
     } \
     int pos = session.indexOf('='); \
-    setenv("DBUS_SESSION_BUS_ADDRESS", session.right(session.count() - pos - 1).trimmed().constData(), 1); \
+    qputenv("DBUS_SESSION_BUS_ADDRESS", session.right(session.count() - pos - 1).trimmed().constData()); \
     session = dbus.readLine(); \
     pos = session.indexOf('='); \
     QByteArray pid = session.right(session.count() - pos - 1).trimmed(); \

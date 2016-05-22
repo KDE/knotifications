@@ -10,3 +10,7 @@ libraries:
  - qmake: KNotifications
    cmake: "KF5::Notifications"
 cmakename: KF5Notifications
+
+public_lib: true
+group: Frameworks
+subgroup: Tier 2

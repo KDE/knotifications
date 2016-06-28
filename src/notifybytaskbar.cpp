@@ -25,9 +25,8 @@
 #include "knotification.h"
 #include "debug_p.h"
 
+#include <QApplication>
 #include <QWidget>
-
-#include <KWindowSystem>
 
 NotifyByTaskbar::NotifyByTaskbar(QObject *parent)
     : KNotificationPlugin(parent)
@@ -47,12 +46,7 @@ void NotifyByTaskbar::notify(KNotification *notification, KNotifyConfig *config)
         return;
     }
 
-    qCDebug(LOG_KNOTIFICATIONS) << notification->id() << notification->widget()->topLevelWidget()->winId();
-
-    WId win = notification->widget()->topLevelWidget()->winId();
-    if (win != 0) {
-        KWindowSystem::demandAttention(win);
-    }
+    QApplication::alert(notification->widget());
 
     finish(notification);
 }

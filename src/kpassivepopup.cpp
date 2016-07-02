@@ -315,7 +315,7 @@ QWidget *KPassivePopup::standardView(const QString &caption,
 
     QHBoxLayout *hb = 0;
     if (!icon.isNull()) {
-        hb = new QHBoxLayout(top);
+        hb = new QHBoxLayout;
         hb->setMargin(0);
         vb->addLayout(hb);
         d->ttlIcon = new QLabel(top);

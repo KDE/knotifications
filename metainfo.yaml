@@ -3,6 +3,9 @@ description: Abstraction for system notifications
 tier: 2
 type: solution
 platforms:
+    - name: Linux
+    - name: Windows
+    - name: MacOSX
 portingAid: false
 deprecated: false
 release: true

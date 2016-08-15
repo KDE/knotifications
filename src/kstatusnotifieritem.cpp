@@ -734,11 +734,35 @@ void KStatusNotifierItemPrivate::registerToDaemon()
                          q, SLOT(checkForRegisteredHosts()));
     }
 
-    if (statusNotifierWatcher->isValid() &&
-            statusNotifierWatcher->property("ProtocolVersion").toInt() == s_protocolVersion) {
-
-        statusNotifierWatcher->RegisterStatusNotifierItem(statusNotifierItemDBus->service());
-        setLegacySystemTrayEnabled(false);
+    if (statusNotifierWatcher->isValid()) {
+        // get protocol version in async way
+        QDBusMessage msg = QDBusMessage::createMethodCall(s_statusNotifierWatcherServiceName,
+                                                          QStringLiteral("/StatusNotifierWatcher"),
+                                                          QStringLiteral("org.freedesktop.DBus.Properties"),
+                                                          QStringLiteral("Get"));
+        msg.setArguments(QVariantList{QStringLiteral("org.kde.StatusNotifierWatcher"), QStringLiteral("ProtocolVersion")});
+        QDBusPendingCall async = QDBusConnection::sessionBus().asyncCall(msg);
+        QDBusPendingCallWatcher *watcher = new QDBusPendingCallWatcher(async, q);
+        QObject::connect(watcher, &QDBusPendingCallWatcher::finished, q,
+            [this, watcher] {
+                watcher->deleteLater();
+                QDBusPendingReply<QVariant> reply = *watcher;
+                if (reply.isError()) {
+                    qCDebug(LOG_KNOTIFICATIONS) << "Failed to read protocol version of KStatusNotifierWatcher";
+                    setLegacySystemTrayEnabled(true);
+                } else {
+                    bool ok = false;
+                    const int protocolVersion = reply.value().toInt(&ok);
+                    if (ok && protocolVersion == s_protocolVersion) {
+                        statusNotifierWatcher->RegisterStatusNotifierItem(statusNotifierItemDBus->service());
+                        setLegacySystemTrayEnabled(false);
+                    } else {
+                        qCDebug(LOG_KNOTIFICATIONS) << "KStatusNotifierWatcher has incorrect protocol version";
+                        setLegacySystemTrayEnabled(true);
+                    }
+                }
+            }
+        );
     } else {
         qCDebug(LOG_KNOTIFICATIONS) << "KStatusNotifierWatcher not reachable";
         setLegacySystemTrayEnabled(true);

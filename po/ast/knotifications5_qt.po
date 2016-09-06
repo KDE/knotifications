@@ -1,0 +1,51 @@
+# Copyright (C) YEAR This_file_is_part_of_KDE
+# This file is distributed under the same license as the PACKAGE package.
+#
+# enolp <enolp@softastur.org>, 2015.
+msgid ""
+msgstr ""
+"Project-Id-Version: kdelibs4-1\n"
+"Report-Msgid-Bugs-To: http://bugs.kde.org\n"
+"POT-Creation-Date: 2014-03-23 01:50+0000\n"
+"PO-Revision-Date: 2015-06-24 01:33+0100\n"
+"Last-Translator: enolp <enolp@softastur.org>\n"
+"Language-Team: Asturian <kde-i18n-doc@kde.org>\n"
+"Language: ast\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Poedit-Language: asturian\n"
+"X-Qt-Contexts: true\n"
+"X-Generator: Lokalize 2.0\n"
+
+#: knotificationrestrictions.cpp:185
+msgctxt "KNotificationRestrictions|"
+msgid "Unknown Application"
+msgstr "Aplicación desconocida"
+
+#: kstatusnotifieritem.cpp:439 kstatusnotifieritem.cpp:917
+msgctxt "KStatusNotifierItem|"
+msgid "&Minimize"
+msgstr "&Minimizar"
+
+#: kstatusnotifieritem.cpp:709
+msgctxt "KStatusNotifierItem|"
+msgid "Quit"
+msgstr "Colar"
+
+#: kstatusnotifieritem.cpp:915
+msgctxt "KStatusNotifierItem|"
+msgid "&Restore"
+msgstr "&Restaurar"
+
+#: kstatusnotifieritem.cpp:929
+#, qt-format
+msgctxt "KStatusNotifierItem|"
+msgid "<qt>Are you sure you want to quit <b>%1</b>?</qt>"
+msgstr "<qt>¿De xuru que quies colar de <b>%1</b>?</qt>"
+
+#: kstatusnotifieritem.cpp:932
+msgctxt "KStatusNotifierItem|"
+msgid "Confirm Quit From System Tray"
+msgstr "Confirmar salida dende la bandexa del sistema"

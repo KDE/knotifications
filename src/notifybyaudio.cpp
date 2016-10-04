@@ -111,6 +111,7 @@ void NotifyByAudio::notify(KNotification *notification, KNotifyConfig *config)
         connect(m, SIGNAL(currentSourceChanged(Phonon::MediaSource)), SLOT(onAudioSourceChanged(Phonon::MediaSource)));
     }
 
+    Q_ASSERT(!m_notifications.value(m));
     m_notifications.insert(m, notification);
 }
 
@@ -127,9 +128,8 @@ void NotifyByAudio::close(KNotification *notification)
         return;
     }
 
-    // this should call onAudioFinished() which also does finish() on the notification
     m->stop();
-    m_reusablePhonons.append(m);
+    finishNotification(notification, m);
 }
 
 void NotifyByAudio::onAudioFinished()
@@ -140,21 +140,29 @@ void NotifyByAudio::onAudioFinished()
         return;
     }
 
-    if (KNotification *notification = m_notifications.value(m, nullptr)) {
-        //if the sound is short enough, we can't guarantee new sounds are
-        //enqueued before finished is emitted.
-        //so to make sure we are looping restart it when the sound finished
-        if (notification->flags() & KNotification::LoopSound) {
-            m->play();
-            return;
-        }
+    KNotification *notification = m_notifications.value(m, nullptr);
 
+    //if the sound is short enough, we can't guarantee new sounds are
+    //enqueued before finished is emitted.
+    //so to make sure we are looping restart it when the sound finished
+    if (notification && (notification->flags() & KNotification::LoopSound)) {
+        m->play();
+        return;
+    }
+
+    finishNotification(notification, m);
+}
+
+void NotifyByAudio::finishNotification(KNotification *notification, Phonon::MediaObject *m)
+{
+    m_notifications.remove(m);
+
+    if (notification) {
         finish(notification);
     }
 
     disconnect(m, SIGNAL(currentSourceChanged(Phonon::MediaSource)), this, SLOT(onAudioSourceChanged(Phonon::MediaSource)));
 
-    m_notifications.remove(m);
     m_reusablePhonons.append(m);
 }
 

@@ -54,6 +54,8 @@ private Q_SLOTS:
 
 
 private:
+    void finishNotification(KNotification *notification, Phonon::MediaObject *m);
+
     QList<Phonon::MediaObject*> m_reusablePhonons;
     QHash<Phonon::MediaObject*, KNotification*> m_notifications;
     Phonon::AudioOutput *m_audioOutput;

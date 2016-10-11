@@ -199,6 +199,7 @@ int KNotificationManager::notify(KNotification *n)
 
     if (notifyActions.isEmpty() || notifyActions == QLatin1String("None")) {
         // this will cause KNotification closing itself fast
+        n->ref();
         n->deref();
         return -1;
     }

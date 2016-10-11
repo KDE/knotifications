@@ -375,6 +375,7 @@ void KNotification::ref()
 }
 void KNotification::deref()
 {
+    Q_ASSERT(d->ref > 0);
     d->ref--;
     if (d->ref == 0) {
         d->id = -1;

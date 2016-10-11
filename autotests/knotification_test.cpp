@@ -38,6 +38,7 @@ private Q_SLOTS:
     void serverCallTest();
     void serverCloseTest();
     void serverActionsTest();
+    void noActionsTest();
 
 private:
     NotificationsServer *m_server;
@@ -238,6 +239,18 @@ void KNotificationTest::serverActionsTest()
     // The argument must be 1, as was passed to the ActionInvoked
     QCOMPARE(nActivatedSpy.at(0).at(0).toInt(), 1);
     QCOMPARE(nClosedSpy.size(), 1);
+}
+
+void KNotificationTest::noActionsTest()
+{
+    //event doesn't exist in config, meaning it has no actions
+    QPointer<KNotification> n(new KNotification(QStringLiteral("noActionsEvent")));
+    QSignalSpy nClosedSpy(n, SIGNAL(closed()));
+    n->sendEvent();
+
+    nClosedSpy.wait(100);
+    QCOMPARE(nClosedSpy.size(), 1);
+    QVERIFY(n.isNull());
 }
 
 QTEST_GUILESS_MAIN_SYSTEM_DBUS(KNotificationTest)

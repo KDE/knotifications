@@ -30,6 +30,7 @@
 #include "knotification.h"
 #include "debug_p.h"
 
+#include <QApplication>
 #include <QBuffer>
 #include <QImage>
 #include <QLabel>
@@ -281,6 +282,11 @@ void NotifyByPopup::notify(KNotification *notification, const KNotifyConfig &not
     // as Qt cannot create/handle widgets in non-GUI threads
     if (QThread::currentThread() != qApp->thread()) {
         qCWarning(LOG_KNOTIFICATIONS) << "KNotification did not detect any running org.freedesktop.Notifications server and fallback notifications cannot be used from non-GUI thread!";
+        return;
+    }
+
+    if (!qobject_cast<QApplication *>(QCoreApplication::instance())) {
+        qCWarning(LOG_KNOTIFICATIONS) << "KNotification did not detect any running org.freedesktop.Notifications server and fallback notifications cannot be used without a QApplication!";
         return;
     }
 

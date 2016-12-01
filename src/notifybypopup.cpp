@@ -53,6 +53,7 @@
 #include <QScreen>
 #include <QFontMetrics>
 #include <QIcon>
+#include <QUrl>
 
 #include <kconfiggroup.h>
 #include <KCodecs/KCharsets>
@@ -690,6 +691,10 @@ bool NotifyByPopupPrivate::sendNotificationToGalagoServer(KNotification *notific
 
     if (notification->flags() & KNotification::SkipGrouping) {
         hintsMap[QStringLiteral("x-kde-skipGrouping")] = 1;
+    }
+
+    if (!notification->urls().isEmpty()) {
+        hintsMap[QStringLiteral("x-kde-urls")] = QUrl::toStringList(notification->urls());
     }
 
     //FIXME - reenable/fix

@@ -41,6 +41,7 @@
 #include <QTabWidget>
 #include <QFile>
 #include <QStringList>
+#include <QUrl>
 
 struct KNotification::Private {
     QString eventId;
@@ -56,6 +57,7 @@ struct KNotification::Private {
     ContextList contexts;
     NotificationFlags flags;
     QString componentName;
+    QList<QUrl> urls;
 
     QTimer updateTimer;
     bool needUpdate;
@@ -241,6 +243,16 @@ void KNotification::setFlags(const NotificationFlags &flags)
 void KNotification::setComponentName(const QString &c)
 {
     d->componentName = c;
+}
+
+QList<QUrl> KNotification::urls() const
+{
+    return d->urls;
+}
+
+void KNotification::setUrls(const QList<QUrl> &urls)
+{
+    d->urls = urls;
 }
 
 void KNotification::activate(unsigned int action)

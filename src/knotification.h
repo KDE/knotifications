@@ -24,7 +24,9 @@
 
 #include <QPixmap>
 #include <QtCore/QObject>
+#include <QtCore/QList>
 #include <QtCore/QPair>
+#include <QtCore/QUrl>
 
 class QWidget;
 class QDBusError;
@@ -455,6 +457,26 @@ public:
      * @param componentName the new component name
      */
     void setComponentName(const QString &componentName);
+
+    /**
+     * URLs associated with this notification
+     * @since 5.29
+     */
+    QList<QUrl> urls() const;
+
+    /**
+     * Sets URLs associated with this notification
+     *
+     * For example, a screenshot application might want to provide the
+     * URL to the file that was just taken so the notification service
+     * can show a preview.
+     *
+     * @note This feature might not be supported by the user's notification service
+     *
+     * @param urls A list of URLs
+     * @since 5.29
+     */
+    void setUrls(const QList<QUrl> &urls);
 
     /**
      * @internal

@@ -155,6 +155,7 @@ public:
     QMenu *menu;
     QHash<QString, QAction *> actionCollection;
     QWidget *associatedWidget;
+    QPoint associatedWidgetPos;
     QAction *titleAction;
     org::kde::StatusNotifierWatcher *statusNotifierWatcher;
     org::freedesktop::Notifications *notificationsClient;

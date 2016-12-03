@@ -70,6 +70,9 @@ KStatusNotifierItem::~KStatusNotifierItem()
     if (!qApp->closingDown()) {
         delete d->menu;
     }
+    if (d->associatedWidget) {
+        KWindowSystem::self()->disconnect(d->associatedWidget);
+    }
     delete d;
 }
 
@@ -420,7 +423,25 @@ void KStatusNotifierItem::setAssociatedWidget(QWidget *associatedWidget)
 {
     if (associatedWidget) {
         d->associatedWidget = associatedWidget->window();
-    } else {
+        d->associatedWidgetPos = QPoint(-1, -1);
+
+        QObject::connect(KWindowSystem::self(), &KWindowSystem::windowAdded,
+            d->associatedWidget, [this](WId id) {
+                if(d->associatedWidget->winId() == id) {
+                    d->associatedWidget->move(d->associatedWidgetPos);
+                }
+            }
+        );
+
+        QObject::connect(KWindowSystem::self(), &KWindowSystem::windowRemoved,
+            d->associatedWidget, [this](WId id) {
+                if(d->associatedWidget->winId() == id) {
+                    d->associatedWidgetPos = d->associatedWidget->pos();
+                }
+            }
+        );
+    } else if (d->associatedWidget) {
+        KWindowSystem::self()->disconnect(d->associatedWidget);
         d->associatedWidget = 0;
     }
 
@@ -668,6 +689,7 @@ KStatusNotifierItemPrivate::KStatusNotifierItemPrivate(KStatusNotifierItem *item
       status(KStatusNotifierItem::Passive),
       movie(0),
       menu(0),
+      associatedWidget(0),
       titleAction(0),
       statusNotifierWatcher(0),
       notificationsClient(0),
@@ -947,7 +969,7 @@ void KStatusNotifierItemPrivate::hideMenu()
 
 void KStatusNotifierItemPrivate::minimizeRestore(bool show)
 {
-    KWindowInfo info = KWindowSystem::windowInfo(associatedWidget->winId(), NET::WMDesktop | NET::WMFrameExtents);
+    KWindowInfo info(associatedWidget->winId(), NET::WMDesktop);
     if (show) {
         if (onAllDesktops) {
             KWindowSystem::setOnAllDesktops(associatedWidget->winId(), true);
@@ -955,11 +977,8 @@ void KStatusNotifierItemPrivate::minimizeRestore(bool show)
             KWindowSystem::setCurrentDesktop(info.desktop());
         }
 
-        associatedWidget->move(info.frameGeometry().topLeft()); // avoid placement policies
         associatedWidget->show();
         associatedWidget->raise();
-        KWindowSystem::raiseWindow(associatedWidget->winId());
-        KWindowSystem::forceActiveWindow(associatedWidget->winId());
     } else {
         onAllDesktops = info.onAllDesktops();
         associatedWidget->hide();

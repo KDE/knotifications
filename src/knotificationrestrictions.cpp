@@ -38,11 +38,11 @@
 class KNotificationRestrictions::Private
 {
 public:
-    Private(KNotificationRestrictions *qq, Services c)
+    Private(KNotificationRestrictions *qq, Services c, const QString &r)
         : q(qq),
           control(c)
           , screenSaverDbusCookie(-1)
-          , reason(QStringLiteral("no_reason_specified"))
+          , reason(r)
 #if HAVE_XTEST
           , screensaverTimer(0),
           haveXTest(0),
@@ -71,9 +71,16 @@ public:
 };
 
 KNotificationRestrictions::KNotificationRestrictions(Services control,
-        QObject *parent)
+                                                     QObject *parent)
+    : KNotificationRestrictions(control, QStringLiteral("no_reason_specified"), parent)
+{
+}
+
+KNotificationRestrictions::KNotificationRestrictions(Services control,
+                                                     const QString &reason,
+                                                     QObject *parent)
     : QObject(parent),
-      d(new Private(this, control))
+      d(new Private(this, control, reason))
 {
     if (d->control & ScreenSaver) {
         d->startScreenSaverPrevention();

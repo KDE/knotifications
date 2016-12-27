@@ -98,6 +98,18 @@ public:
                                        QObject *parent = 0);
     virtual ~KNotificationRestrictions();
 
+    /**
+     * Constructs a new service for restrict some services.
+     *
+     * @param control the services to be restricted
+     * @param reason the reason for restriction
+     * @param parent the parent of this object
+     */
+    // TODO KF6 make reason optional
+    explicit KNotificationRestrictions(Services control,
+                                       const QString &reason,
+                                       QObject *parent = 0);
+
 private:
     class Private;
     Private *const d;

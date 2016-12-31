@@ -19,6 +19,7 @@ endmacro()
 knotifications_executable_tests(
     knotificationrestrictionstest
     kpassivepopuptest
+    unitylaunchertest
     kstatusnotifieritemtest
     knotificationdbustest
 )

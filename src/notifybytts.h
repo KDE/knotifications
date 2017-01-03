@@ -36,8 +36,8 @@ public:
     NotifyByTTS(QObject *parent=0l);
     virtual ~NotifyByTTS();
 
-    virtual QString optionName() { return QStringLiteral("TTS"); }
-    virtual void notify(KNotification *notification, KNotifyConfig *config);
+    QString optionName() Q_DECL_OVERRIDE { return QStringLiteral("TTS"); }
+    void notify(KNotification *notification, KNotifyConfig *config) Q_DECL_OVERRIDE;
 
 private:
     QTextToSpeech *m_speech;

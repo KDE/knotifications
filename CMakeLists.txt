@@ -81,9 +81,9 @@ add_subdirectory(autotests)
 # create a Config.cmake and a ConfigVersion.cmake file and install them
 set(CMAKECONFIG_INSTALL_DIR "${KDE_INSTALL_CMAKEPACKAGEDIR}/KF5Notifications")
 
-include(ECMPackageConfigHelpers)
+include(CMakePackageConfigHelpers)
 
-ecm_configure_package_config_file(
+configure_package_config_file(
   "${CMAKE_CURRENT_SOURCE_DIR}/KF5NotificationsConfig.cmake.in"
   "${CMAKE_CURRENT_BINARY_DIR}/KF5NotificationsConfig.cmake"
   PATH_VARS KDE_INSTALL_DBUSINTERFACEDIR

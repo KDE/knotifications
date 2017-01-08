@@ -1,0 +1,45 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: kde5\n"
+"POT-Creation-Date: \n"
+"PO-Revision-Date: 2015-02-24 19:44+0100\n"
+"Last-Translator: Samir Ribić <megaribi@epn.ba>\n"
+"Language-Team: Bosnian\n"
+"Language: bs\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Qt-Contexts: true\n"
+"Plural-Forms: nplurals=3; plural=n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
+"%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2;\n"
+
+#: knotificationrestrictions.cpp:192
+msgctxt "KNotificationRestrictions|"
+msgid "Unknown Application"
+msgstr "Nepoznat program"
+
+#: kstatusnotifieritem.cpp:460 kstatusnotifieritem.cpp:939
+msgctxt "KStatusNotifierItem|"
+msgid "&Minimize"
+msgstr "&Minimizuj"
+
+#: kstatusnotifieritem.cpp:731
+msgctxt "KStatusNotifierItem|"
+msgid "Quit"
+msgstr "Izlaz"
+
+#: kstatusnotifieritem.cpp:937
+msgctxt "KStatusNotifierItem|"
+msgid "&Restore"
+msgstr "&Obnovi"
+
+#: kstatusnotifieritem.cpp:951
+#, qt-format
+msgctxt "KStatusNotifierItem|"
+msgid "<qt>Are you sure you want to quit <b>%1</b>?</qt>"
+msgstr "<qt>Želite li zaista da napustite <b>%1</b>?</qt>"
+
+#: kstatusnotifieritem.cpp:954
+msgctxt "KStatusNotifierItem|"
+msgid "Confirm Quit From System Tray"
+msgstr "Potvrdi napuštanje preko sistemske kasete"

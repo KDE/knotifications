@@ -71,8 +71,6 @@ class KNOTIFICATIONS_EXPORT KStatusNotifierItem : public QObject
 {
     Q_OBJECT
 
-    Q_ENUMS(ItemStatus)
-    Q_ENUMS(ItemCategory)
     Q_PROPERTY(ItemCategory category READ category WRITE setCategory)
     Q_PROPERTY(QString title READ title WRITE setTitle)
     Q_PROPERTY(ItemStatus status READ status WRITE setStatus)
@@ -100,6 +98,7 @@ public:
         /// battery running out or a new IM message was received
         NeedsAttention = 3
     };
+    Q_ENUM(ItemStatus)
 
     /**
      * Different kinds of applications announce their type to the systemtray,
@@ -119,6 +118,7 @@ public:
         Hardware = 4,
         Reserved = 129
     };
+    Q_ENUM(ItemCategory)
 
     /**
      * Construct a new status notifier item

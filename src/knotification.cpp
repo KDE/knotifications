@@ -52,6 +52,7 @@ struct KNotification::Private {
     QString title;
     QString text;
     QString iconName;
+    QString defaultAction;
     QStringList actions;
     QPixmap pixmap;
     ContextList contexts;
@@ -208,6 +209,24 @@ void KNotification::setActions(const QStringList &as)
     if (d->id >= 0) {
         d->updateTimer.start();
     }
+}
+
+void KNotification::setDefaultAction(const QString &defaultAction)
+{
+    if (defaultAction == d->defaultAction) {
+        return;
+    }
+
+    d->needUpdate = true;
+    d->defaultAction = defaultAction;
+    if (d->id >= 0) {
+        d->updateTimer.start();
+    }
+}
+
+QString KNotification::defaultAction() const
+{
+    return d->defaultAction;
 }
 
 KNotification::ContextList KNotification::contexts() const

@@ -398,8 +398,33 @@ public:
     void setPixmap(const QPixmap &pix);
 
     /**
+     * @return the default action, or an empty string if not set
+     */
+    QString defaultAction() const;
+
+    /**
+     * Set a default action that will be triggered when the notification is
+     * activated (typically, by clicking on the notification popup). The default
+     * action should raise a window belonging to the application that sent it.
+     *
+     * The string will be used as a label for the action, so ideally it should
+     * be wrapped in i18n() or tr() calls.
+     *
+     * The visual representation of actions depends on the notification server.
+     * In Plasma and Gnome desktops, the actions are performed by clicking on
+     * the notification popup, and the label is not presented to the user.
+     *
+     *
+     * @param action Label of the default action. The label might or might not
+     * be displayed to the user by the notification server, depending on the
+     * implementation. Passing an empty string disables the default action.
+     */
+    void setDefaultAction(const QString &defaultAction);
+
+    /**
      * @return the list of actions
      */
+    //KF6: Rename to "additionalActions"?
     QStringList actions() const;
 
     /**
@@ -414,6 +439,7 @@ public:
      *
      * @param actions List of strings used as action labels
      */
+    //KF6: Rename to "setAdditionalActions"?
     void setActions(const QStringList &actions);
 
     /**

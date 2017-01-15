@@ -477,7 +477,11 @@ void NotifyByPopup::onGalagoNotificationActionInvoked(uint notificationId, const
 
     KNotification *n = *iter;
     if (n) {
-        emit actionInvoked(n->id(), actionKey.toUInt());
+        if (actionKey == QStringLiteral("default")) {
+            emit actionInvoked(n->id(), 0);
+        } else {
+            emit actionInvoked(n->id(), actionKey.toUInt());
+        }
     } else {
         d->galagoNotifications.erase(iter);
     }
@@ -667,6 +671,11 @@ bool NotifyByPopupPrivate::sendNotificationToGalagoServer(KNotification *notific
     // (i.e. starting from 1)
     QStringList actionList;
     if (popupServerCapabilities.contains(QStringLiteral("actions"))) {
+        QString defaultAction = notification->defaultAction();
+        if (!defaultAction.isEmpty()) {
+            actionList.append(QStringLiteral("default"));
+            actionList.append(defaultAction);
+        }
         int actId = 0;
         Q_FOREACH (const QString &actionName, notification->actions()) {
             actId++;

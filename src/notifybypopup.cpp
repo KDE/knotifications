@@ -272,7 +272,7 @@ void NotifyByPopup::notify(KNotification *notification, const KNotifyConfig &not
 
         // The first arg is QPixmap*, however that pixmap is not used
         // at all (it has Q_UNUSED) so just set it to 0
-        NotifyByPopupGrowl::popup(Q_NULLPTR, timeout, appCaption, text);
+        NotifyByPopupGrowl::popup(nullptr, timeout, appCaption, text);
 
         // Finish immediately, because current NotifyByPopupGrowl can't callback
         finish(notification);

@@ -62,7 +62,7 @@ struct KNotification::Private {
     QTimer updateTimer;
     bool needUpdate;
 
-    Private() : id(-1), ref(0), widget(0l), needUpdate(false) {}
+    Private() : id(-1), ref(0), widget(nullptr), needUpdate(false) {}
     /**
      * recursive function that raise the widget. @p w
      *

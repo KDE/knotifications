@@ -29,7 +29,7 @@ int main(int argc, char *argv[])
     QLabel *mainWidget = new QLabel();
     mainWidget->setText(QStringLiteral("You should see on console debug outpout for KNotificationRestrictions"));
 
-    KNotificationRestrictions knr(KNotificationRestrictions::ScreenSaver, 0);
+    KNotificationRestrictions knr(KNotificationRestrictions::ScreenSaver, nullptr);
 
     mainWidget->show();
     return app.exec();

@@ -44,7 +44,7 @@ public:
           , screenSaverDbusCookie(-1)
           , reason(r)
 #if HAVE_XTEST
-          , screensaverTimer(0),
+          , screensaverTimer(nullptr),
           haveXTest(0),
           XTestKeyCode(0),
           isX11(QX11Info::isPlatformX11())
@@ -178,7 +178,7 @@ void KNotificationRestrictions::Private::stopScreenSaverPrevention()
         return;
     }
     delete screensaverTimer;
-    screensaverTimer = 0;
+    screensaverTimer = nullptr;
 #endif // HAVE_XTEST
 }
 

@@ -128,7 +128,7 @@ public:
      * represented by this icon and will be shown/hidden when an activation is requested.
      * @see associatedWidget
      **/
-    explicit KStatusNotifierItem(QObject *parent = 0);
+    explicit KStatusNotifierItem(QObject *parent = nullptr);
 
     /**
      * Construct a new status notifier item with a unique identifier.
@@ -148,7 +148,7 @@ public:
      * represented by this icon and will be shown/hidden when an activation is requested.
      * @see associatedWidget
      **/
-    explicit KStatusNotifierItem(const QString &id, QObject *parent = 0);
+    explicit KStatusNotifierItem(const QString &id, QObject *parent = nullptr);
 
     ~KStatusNotifierItem();
 

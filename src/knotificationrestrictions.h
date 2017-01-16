@@ -95,7 +95,7 @@ public:
      * @param parent the parent of this object
      */
     explicit KNotificationRestrictions(Services control = NonCriticalServices,
-                                       QObject *parent = 0);
+                                       QObject *parent = nullptr);
     virtual ~KNotificationRestrictions();
 
     /**
@@ -108,7 +108,7 @@ public:
     // TODO KF6 make reason optional
     explicit KNotificationRestrictions(Services control,
                                        const QString &reason,
-                                       QObject *parent = 0);
+                                       QObject *parent = nullptr);
 
 private:
     class Private;

@@ -282,7 +282,7 @@ public:
      * @param widget is a widget where the notification reports to
      * @param flags is a bitmask of NotificationFlag
      */
-    explicit KNotification(const QString &eventId, QWidget *widget = 0L, const NotificationFlags &flags = CloseOnTimeout);
+    explicit KNotification(const QString &eventId, QWidget *widget = nullptr, const NotificationFlags &flags = CloseOnTimeout);
 
     /**
      * Create a new notification.
@@ -307,7 +307,7 @@ public:
     // stay this way for now. The second argument CANNOT have a default
     // argument. if someone needs a widget associated with the notification he
     // should use setWidget after creating the object (or some xyz_cast magic)
-    explicit KNotification(const QString &eventId, const NotificationFlags &flags, QObject *parent = NULL);
+    explicit KNotification(const QString &eventId, const NotificationFlags &flags, QObject *parent = nullptr);
 
     ~KNotification();
 
@@ -624,7 +624,7 @@ public:
      * @since 4.4
      */
     static KNotification *event(const QString &eventId, const QString &title, const QString &text,
-                                const QPixmap &pixmap = QPixmap(), QWidget *widget = 0L,
+                                const QPixmap &pixmap = QPixmap(), QWidget *widget = nullptr,
                                 const NotificationFlags &flags = CloseOnTimeout,
                                 const QString &componentName = QString());
 
@@ -643,7 +643,7 @@ public:
      * @param componentName used to determine the location of the config file.  by default, plasma_workspace is used
      */
     static KNotification *event(const QString &eventId, const QString &text = QString(),
-                                const QPixmap &pixmap = QPixmap(), QWidget *widget = 0L,
+                                const QPixmap &pixmap = QPixmap(), QWidget *widget = nullptr,
                                 const NotificationFlags &flags = CloseOnTimeout,
                                 const QString &componentName = QString());
 
@@ -661,7 +661,7 @@ public:
      * @param flags is a bitmask of NotificationFlag
      */
     static KNotification *event(StandardEvent eventId, const QString &text = QString(),
-                                const QPixmap &pixmap = QPixmap(), QWidget *widget = 0L,
+                                const QPixmap &pixmap = QPixmap(), QWidget *widget = nullptr,
                                 const NotificationFlags &flags = CloseOnTimeout);
 
     /**
@@ -680,7 +680,7 @@ public:
      * @since 4.4
      */
     static KNotification *event(StandardEvent eventId, const QString &title, const QString &text,
-                                const QPixmap &pixmap, QWidget *widget = 0L,
+                                const QPixmap &pixmap, QWidget *widget = nullptr,
                                 const NotificationFlags &flags = CloseOnTimeout);
 
     /**
@@ -700,7 +700,7 @@ public:
      * @since 5.4
      */
     static KNotification *event(const QString &eventId, const QString &title, const QString &text,
-                                const QString &iconName, QWidget *widget = 0L,
+                                const QString &iconName, QWidget *widget = nullptr,
                                 const NotificationFlags &flags = CloseOnTimeout,
                                 const QString &componentName = QString());
 
@@ -720,7 +720,7 @@ public:
      * @since 5.9
      */
     static KNotification *event(StandardEvent eventId, const QString &title, const QString &text,
-                                const QString &iconName, QWidget *widget = 0L,
+                                const QString &iconName, QWidget *widget = nullptr,
                                 const NotificationFlags &flags = CloseOnTimeout);
 
     /**
@@ -738,7 +738,7 @@ public:
      * @since 5.9
      */
     static KNotification *event(StandardEvent eventId, const QString &title, const QString &text,
-                                QWidget *widget = 0L, const NotificationFlags &flags = CloseOnTimeout);
+                                QWidget *widget = nullptr, const NotificationFlags &flags = CloseOnTimeout);
 
 
     /**
@@ -747,7 +747,7 @@ public:
      * @param reason a short text explaining what has happened (may be empty)
      * @param widget the widget the notification refers to
      */
-    static void beep(const QString &reason = QString(), QWidget *widget = 0L);
+    static void beep(const QString &reason = QString(), QWidget *widget = nullptr);
 
     //prevent warning
     using QObject::event;

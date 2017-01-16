@@ -254,7 +254,7 @@ void KStatusNotifierItem::setAttentionMovieByName(const QString &name)
     d->movieName = name;
 
     delete d->movie;
-    d->movie = 0;
+    d->movie = nullptr;
 
     emit d->statusNotifierItemDBus->NewAttentionIcon();
 
@@ -386,7 +386,7 @@ void KStatusNotifierItem::setContextMenu(QMenu *menu)
     }
 
     if (!menu) {
-        d->menu = 0;
+        d->menu = nullptr;
         return;
     }
 
@@ -411,7 +411,7 @@ void KStatusNotifierItem::setContextMenu(QMenu *menu)
     }
 
     d->menu = menu;
-    d->menu->setParent(0);
+    d->menu->setParent(nullptr);
 }
 
 QMenu *KStatusNotifierItem::contextMenu() const
@@ -442,12 +442,12 @@ void KStatusNotifierItem::setAssociatedWidget(QWidget *associatedWidget)
         );
     } else if (d->associatedWidget) {
         KWindowSystem::self()->disconnect(d->associatedWidget);
-        d->associatedWidget = 0;
+        d->associatedWidget = nullptr;
     }
 
     if (d->systemTrayIcon) {
         delete d->systemTrayIcon;
-        d->systemTrayIcon = 0;
+        d->systemTrayIcon = nullptr;
         d->setLegacySystemTrayEnabled(true);
     }
 
@@ -668,7 +668,7 @@ bool KStatusNotifierItemPrivate::checkVisibility(QPoint pos, bool perform)
 
 bool KStatusNotifierItem::eventFilter(QObject *watched, QEvent *event)
 {
-    if (d->systemTrayIcon == 0) {
+    if (d->systemTrayIcon == nullptr) {
         //FIXME: ugly ugly workaround to weird QMenu's focus problems
         if (watched == d->menu &&
                 (event->type() == QEvent::WindowDeactivate || (event->type() == QEvent::MouseButtonRelease && static_cast<QMouseEvent *>(event)->button() == Qt::LeftButton))) {
@@ -687,13 +687,13 @@ KStatusNotifierItemPrivate::KStatusNotifierItemPrivate(KStatusNotifierItem *item
     : q(item),
       category(KStatusNotifierItem::ApplicationStatus),
       status(KStatusNotifierItem::Passive),
-      movie(0),
-      menu(0),
-      associatedWidget(0),
-      titleAction(0),
-      statusNotifierWatcher(0),
-      notificationsClient(0),
-      systemTrayIcon(0),
+      movie(nullptr),
+      menu(nullptr),
+      associatedWidget(nullptr),
+      titleAction(nullptr),
+      statusNotifierWatcher(nullptr),
+      notificationsClient(nullptr),
+      systemTrayIcon(nullptr),
       hasQuit(false),
       onAllDesktops(false),
       standardActionsEnabled(true)
@@ -799,7 +799,7 @@ void KStatusNotifierItemPrivate::serviceChange(const QString &name, const QStrin
         qCDebug(LOG_KNOTIFICATIONS) << "Connection to the KStatusNotifierWatcher lost";
         setLegacyMode(true);
         delete statusNotifierWatcher;
-        statusNotifierWatcher = 0;
+        statusNotifierWatcher = nullptr;
     } else if (oldOwner.isEmpty()) {
         //registered
         setLegacyMode(false);
@@ -839,7 +839,7 @@ void KStatusNotifierItemPrivate::legacyActivated(QSystemTrayIcon::ActivationReas
 
 void KStatusNotifierItemPrivate::setLegacySystemTrayEnabled(bool enabled)
 {
-    if (enabled == (systemTrayIcon != 0)) {
+    if (enabled == (systemTrayIcon != nullptr)) {
         // already in the correct state
         return;
     }
@@ -870,7 +870,7 @@ void KStatusNotifierItemPrivate::setLegacySystemTrayEnabled(bool enabled)
         }
     } else {
         delete systemTrayIcon;
-        systemTrayIcon = 0;
+        systemTrayIcon = nullptr;
 
         if (menu) {
             menu->setWindowFlags(Qt::Window);
@@ -879,7 +879,7 @@ void KStatusNotifierItemPrivate::setLegacySystemTrayEnabled(bool enabled)
 
     if (menu) {
         QMenu *m = menu;
-        menu = 0;
+        menu = nullptr;
         q->setContextMenu(m);
     }
 }

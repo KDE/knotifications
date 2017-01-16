@@ -774,7 +774,7 @@ void NotifyByPopupPrivate::queryPopupServerCapabilities()
         QDBusConnection::sessionBus().callWithCallback(m,
                                                        q,
                                                        SLOT(onGalagoServerCapabilitiesReceived(QStringList)),
-                                                       0,
+                                                       nullptr,
                                                        -1);
     }
 }

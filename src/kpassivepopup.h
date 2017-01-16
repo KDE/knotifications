@@ -100,7 +100,7 @@ public:
     /**
      * Creates a popup for the specified widget.
      */
-    explicit KPassivePopup(QWidget *parent = 0, Qt::WindowFlags f = 0);
+    explicit KPassivePopup(QWidget *parent = nullptr, Qt::WindowFlags f = nullptr);
 
     /**
      * Creates a popup for the specified window.
@@ -149,7 +149,7 @@ public:
      * @see setView( const QString&, const QString&, const QPixmap& )
      */
     QWidget *standardView(const QString &caption, const QString &text,
-                          const QPixmap &icon, QWidget *parent = 0L);
+                          const QPixmap &icon, QWidget *parent = nullptr);
 
     /**
      * Returns the main view.

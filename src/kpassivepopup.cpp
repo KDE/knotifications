@@ -56,8 +56,8 @@ public:
         : q(q),
           popupStyle(DEFAULT_POPUP_TYPE),
           window(winId),
-          msgView(0),
-          topLayout(0),
+          msgView(nullptr),
+          topLayout(nullptr),
           hideDelay(DEFAULT_POPUP_TIME),
           hideTimer(new QTimer(q)),
           autoDelete(false)
@@ -250,13 +250,13 @@ public:
 };
 
 KPassivePopup::KPassivePopup(QWidget *parent, Qt::WindowFlags f)
-    : QFrame(0, f ? f : POPUP_FLAGS),
+    : QFrame(nullptr, f ? f : POPUP_FLAGS),
       d(new Private(this, parent ? parent->effectiveWinId() : 0L))
 {
 }
 
 KPassivePopup::KPassivePopup(WId win)
-    : QFrame(0),
+    : QFrame(nullptr),
       d(new Private(this, win))
 {
 }
@@ -313,7 +313,7 @@ QWidget *KPassivePopup::standardView(const QString &caption,
     vb->setMargin(0);
     top->setLayout(vb);
 
-    QHBoxLayout *hb = 0;
+    QHBoxLayout *hb = nullptr;
     if (!icon.isNull()) {
         hb = new QHBoxLayout;
         hb->setMargin(0);

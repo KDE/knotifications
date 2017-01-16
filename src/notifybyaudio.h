@@ -40,7 +40,7 @@ class NotifyByAudio : public KNotificationPlugin
     Q_OBJECT
 
 public:
-    NotifyByAudio(QObject *parent = 0);
+    NotifyByAudio(QObject *parent = nullptr);
     virtual ~NotifyByAudio();
 
     QString optionName() Q_DECL_OVERRIDE { return QStringLiteral("Sound"); }

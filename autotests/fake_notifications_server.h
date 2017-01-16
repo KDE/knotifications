@@ -40,7 +40,7 @@ class NotificationsServer : public QObject
     Q_CLASSINFO("D-Bus Interface", "org.freedesktop.Notifications")
 
 public:
-    NotificationsServer(QObject *parent = 0);
+    NotificationsServer(QObject *parent = nullptr);
 
     uint counter;
     QList<NotificationItem> notifications;

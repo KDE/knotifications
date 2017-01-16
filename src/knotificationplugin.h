@@ -46,7 +46,7 @@ class KNOTIFICATIONS_EXPORT KNotificationPlugin : public QObject
     Q_OBJECT
 
 public:
-    KNotificationPlugin(QObject *parent = 0, const QVariantList &args = QVariantList());
+    KNotificationPlugin(QObject *parent = nullptr, const QVariantList &args = QVariantList());
     virtual ~KNotificationPlugin();
 
     /**

@@ -706,6 +706,10 @@ bool NotifyByPopupPrivate::sendNotificationToGalagoServer(KNotification *notific
         hintsMap[QStringLiteral("x-kde-urls")] = QUrl::toStringList(notification->urls());
     }
 
+    if (!(notification->flags() & KNotification::Persistent)) {
+        hintsMap[QStringLiteral("transient")] = true;
+    }
+
     //FIXME - reenable/fix
     // let's see if we've got an image, and store the image in the hints map
     if (!notification->pixmap().isNull()) {

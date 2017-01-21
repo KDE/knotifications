@@ -461,7 +461,7 @@ void KStatusNotifierItem::setAssociatedWidget(QWidget *associatedWidget)
             connect(action, SIGNAL(triggered(bool)), this, SLOT(minimizeRestore()));
         }
 
-        KWindowInfo info = KWindowSystem::windowInfo(d->associatedWidget->winId(), NET::WMDesktop);
+        KWindowInfo info(d->associatedWidget->winId(), NET::WMDesktop);
         d->onAllDesktops = info.onAllDesktops();
     } else {
         if (d->menu && d->hasQuit) {
@@ -587,7 +587,7 @@ bool KStatusNotifierItemPrivate::checkVisibility(QPoint pos, bool perform)
     }
 #endif
 #else
-    KWindowInfo info1 = KWindowSystem::windowInfo(associatedWidget->winId(), NET::XAWMState | NET::WMState | NET::WMDesktop);
+    KWindowInfo info1(associatedWidget->winId(), NET::XAWMState | NET::WMState | NET::WMDesktop);
     // mapped = visible (but possibly obscured)
     bool mapped = (info1.mappingState() == NET::Visible) && !info1.isMinimized();
 
@@ -612,8 +612,7 @@ bool KStatusNotifierItemPrivate::checkVisibility(QPoint pos, bool perform)
                 break;
             }
 
-            KWindowInfo info2 = KWindowSystem::windowInfo(id,
-                                NET::WMDesktop | NET::WMGeometry | NET::XAWMState | NET::WMState | NET::WMWindowType);
+            KWindowInfo info2(id, NET::WMDesktop | NET::WMGeometry | NET::XAWMState | NET::WMState | NET::WMWindowType);
 
             if (info2.mappingState() != NET::Visible) {
                 continue; // not visible on current desktop -> ignore

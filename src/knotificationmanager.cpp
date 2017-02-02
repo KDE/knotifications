@@ -76,8 +76,7 @@ KNotificationManager::KNotificationManager()
     d->notifyPlugins.clear();
     addPlugin(new NotifyByPopup(this));
     addPlugin(new NotifyByExecute(this));
-    //FIXME: port and reenable
-//     addPlugin(new NotifyByLogfile(this));
+    addPlugin(new NotifyByLogfile(this));
 
 #ifdef HAVE_PHONON4QT5
     addPlugin(new NotifyByAudio(this));

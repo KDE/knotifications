@@ -976,6 +976,8 @@ void KStatusNotifierItemPrivate::minimizeRestore(bool show)
             KWindowSystem::setCurrentDesktop(info.desktop());
         }
 
+        auto state = associatedWidget->windowState() & ~Qt::WindowMinimized;
+        associatedWidget->setWindowState(state);
         associatedWidget->show();
         associatedWidget->raise();
     } else {

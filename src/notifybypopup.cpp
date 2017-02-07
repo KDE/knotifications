@@ -710,6 +710,10 @@ bool NotifyByPopupPrivate::sendNotificationToGalagoServer(KNotification *notific
         hintsMap[QStringLiteral("transient")] = true;
     }
 
+    if (!qApp->desktopFileName().isEmpty()) {
+        hintsMap[QStringLiteral("desktop-entry")] = qApp->desktopFileName();
+    }
+
     //FIXME - reenable/fix
     // let's see if we've got an image, and store the image in the hints map
     if (!notification->pixmap().isNull()) {

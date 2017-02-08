@@ -19,6 +19,7 @@ set(knotifications_SRCS
   imageconverter.cpp #needed to marshal images for sending over dbus by NotifyByPopup
   notifybypopupgrowl.cpp
   notifybyexecute.cpp
+  notifybyflatpak.cpp
   notifybylogfile.cpp
   notifybytaskbar.cpp
   ${knotifications_QM_LOADER}

@@ -399,6 +399,7 @@ public:
 
     /**
      * @return the default action, or an empty string if not set
+     * @since 5.31
      */
     QString defaultAction() const;
 
@@ -418,6 +419,7 @@ public:
      * @param action Label of the default action. The label might or might not
      * be displayed to the user by the notification server, depending on the
      * implementation. Passing an empty string disables the default action.
+     * @since 5.31
      */
     void setDefaultAction(const QString &defaultAction);
 

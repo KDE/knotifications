@@ -248,13 +248,6 @@ int KNotificationManager::notify(KNotification *n)
 
 void KNotificationManager::update(KNotification *n)
 {
-    QByteArray pixmapData;
-    if (!n->pixmap().isNull()) {
-        QBuffer buffer(&pixmapData);
-        buffer.open(QIODevice::WriteOnly);
-        n->pixmap().save(&buffer, "PNG");
-    }
-
     KNotifyConfig notifyConfig(n->appName(), n->contexts(), n->eventId());
 
     Q_FOREACH (KNotificationPlugin *p, d->notifyPlugins) {
@@ -264,15 +257,6 @@ void KNotificationManager::update(KNotification *n)
 
 void KNotificationManager::reemit(KNotification *n)
 {
-    QVariantList contextList;
-    typedef QPair<QString, QString> Context;
-    foreach (const Context &ctx, n->contexts()) {
-        QVariantList vl;
-        vl << ctx.first << ctx.second;
-        contextList << vl;
-    }
-
-
     notify(n);
 }
 

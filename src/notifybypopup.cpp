@@ -185,23 +185,21 @@ NotifyByPopup::NotifyByPopup(QObject *parent)
 #ifdef Q_WS_WIN
         startfdo = true;
 #else
-        if (qEnvironmentVariableIsEmpty("KDE_FULL_SESSION")) {
-            QDBusMessage message = QDBusMessage::createMethodCall(QStringLiteral("org.freedesktop.DBus"),
-                                                                  QStringLiteral("/org/freedesktop/DBus"),
-                                                                  QStringLiteral("org.freedesktop.DBus"),
-                                                                  QStringLiteral("ListActivatableNames"));
+        QDBusMessage message = QDBusMessage::createMethodCall(QStringLiteral("org.freedesktop.DBus"),
+                                                                QStringLiteral("/org/freedesktop/DBus"),
+                                                                QStringLiteral("org.freedesktop.DBus"),
+                                                                QStringLiteral("ListActivatableNames"));
 
-            // FIXME - this should be async
-            QDBusReply<QStringList> reply = QDBusConnection::sessionBus().call(message);
-            if (reply.isValid() && reply.value().contains(dbusServiceName)) {
-                startfdo = true;
-                // We need to set d->dbusServiceExists to true because dbus might be too slow
-                // starting the service and the first call to NotifyByPopup::notify
-                // might not have had the service up, by setting this to true we
-                // guarantee it will still go through dbus and dbus will do the correct
-                // thing and wait for the service to go up
-                d->dbusServiceExists = true;
-            }
+        // FIXME - this should be async
+        QDBusReply<QStringList> reply = QDBusConnection::sessionBus().call(message);
+        if (reply.isValid() && reply.value().contains(dbusServiceName)) {
+            startfdo = true;
+            // We need to set d->dbusServiceExists to true because dbus might be too slow
+            // starting the service and the first call to NotifyByPopup::notify
+            // might not have had the service up, by setting this to true we
+            // guarantee it will still go through dbus and dbus will do the correct
+            // thing and wait for the service to go up
+            d->dbusServiceExists = true;
         }
 #endif
         if (startfdo) {
@@ -438,9 +436,9 @@ void NotifyByPopup::onServiceOwnerChanged(const QString &serviceName, const QStr
 
     d->dbusServiceCapCacheDirty = true;
     d->popupServerCapabilities.clear();
-    d->notificationQueue.clear();
 
     if (newOwner.isEmpty()) {
+        d->notificationQueue.clear();
         d->dbusServiceExists = false;
     } else if (oldOwner.isEmpty()) {
         d->dbusServiceExists = true;

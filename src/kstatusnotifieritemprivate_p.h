@@ -82,6 +82,14 @@ public:
         connect(movie, SIGNAL(frameChanged(int)), this, SLOT(slotNewFrame()));
     }
 
+    void setIconWithMask(QIcon &icon, bool isMask)
+    {
+#if QT_VERSION >= QT_VERSION_CHECK(5,6,0)
+        icon.setIsMask(isMask);
+#endif
+        QSystemTrayIcon::setIcon(icon);
+    }
+
 Q_SIGNALS:
     void wheel(int);
 

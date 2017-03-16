@@ -91,6 +91,10 @@ int main(int argc, char **argv)
         iconName = parser.value(QStringLiteral("active-icon"));
     }
 
+    if (!iconName.isEmpty()) {
+        app.setWindowIcon(QIcon::fromTheme(iconName));
+    }
+
     QLabel *l = new QLabel(QStringLiteral("System Tray Main Window"), nullptr);
     for (int x = 0; x < ksniCount; ++x) {
         KStatusNotifierItem *tray = new KStatusNotifierItem(l);

@@ -90,6 +90,10 @@ if(X11_FOUND)
    target_link_libraries(KF5Notifications PRIVATE ${X11_X11_LIB} Qt5::X11Extras)
 endif()
 
+if(APPLE)
+  target_link_libraries(KF5Notifications PRIVATE Qt5::MacExtras)
+endif()
+
 if(X11_XTest_FOUND)
   target_link_libraries(KF5Notifications PRIVATE ${X11_XTest_LIB})
 endif()

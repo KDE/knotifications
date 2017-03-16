@@ -33,6 +33,10 @@
 #include <QMovie>
 #include <QPainter>
 #include <qstandardpaths.h>
+#ifdef Q_OS_MACOS
+#include <qfontdatabase.h>>
+#include <QtMac>
+#endif
 
 #include <kwindowinfo.h>
 #include <kwindowsystem.h>
@@ -271,6 +275,36 @@ QString KStatusNotifierItem::attentionMovieName() const
 
 //ToolTip
 
+#ifdef Q_OS_MACOS
+static void setTrayToolTip(KStatusNotifierLegacyIcon *systemTrayIcon, const QString &title, const QString &subTitle)
+{
+    if (systemTrayIcon) {
+        bool tEmpty = title.isEmpty(),
+                    stEmpty = subTitle.isEmpty();
+                    if (tEmpty) {
+                        if (!stEmpty) {
+                            systemTrayIcon->setToolTip(subTitle);
+                        } else {
+                            systemTrayIcon->setToolTip(title);
+                        }
+                    } else {
+                        if (stEmpty) {
+                            systemTrayIcon->setToolTip(title);
+                        } else {
+                            systemTrayIcon->setToolTip(title + QStringLiteral("\n") + subTitle);
+                        }
+                    }
+    }
+}
+#else
+static void setTrayToolTip(KStatusNotifierLegacyIcon *systemTrayIcon, const QString &title, const QString &)
+{
+    if (systemTrayIcon) {
+        systemTrayIcon->setToolTip(title);
+    }
+}
+#endif
+
 void KStatusNotifierItem::setToolTip(const QString &iconName, const QString &title, const QString &subTitle)
 {
     if (d->toolTipIconName == iconName &&
@@ -283,10 +317,10 @@ void KStatusNotifierItem::setToolTip(const QString &iconName, const QString &tit
     d->toolTipIconName = iconName;
 
     d->toolTipTitle = title;
-    if (d->systemTrayIcon) {
-        d->systemTrayIcon->setToolTip(title);
-    }
-
+//     if (d->systemTrayIcon) {
+//         d->systemTrayIcon->setToolTip(title);
+//     }
+    setTrayToolTip(d->systemTrayIcon, title, subTitle);
     d->toolTipSubTitle = subTitle;
     emit d->statusNotifierItemDBus->NewToolTip();
 }
@@ -304,9 +338,10 @@ void KStatusNotifierItem::setToolTip(const QIcon &icon, const QString &title, co
     d->toolTipIcon = icon;
 
     d->toolTipTitle = title;
-    if (d->systemTrayIcon) {
-        d->systemTrayIcon->setToolTip(title);
-    }
+//     if (d->systemTrayIcon) {
+//         d->systemTrayIcon->setToolTip(title);
+//     }
+    setTrayToolTip(d->systemTrayIcon, title, subTitle);
 
     d->toolTipSubTitle = subTitle;
     emit d->statusNotifierItemDBus->NewToolTip();
@@ -353,9 +388,10 @@ void KStatusNotifierItem::setToolTipTitle(const QString &title)
 
     d->toolTipTitle = title;
     emit d->statusNotifierItemDBus->NewToolTip();
-    if (d->systemTrayIcon) {
-        d->systemTrayIcon->setToolTip(title);
-    }
+//     if (d->systemTrayIcon) {
+//         d->systemTrayIcon->setToolTip(title);
+//     }
+    setTrayToolTip(d->systemTrayIcon, title, d->toolTipSubTitle);
 }
 
 QString KStatusNotifierItem::toolTipTitle() const
@@ -370,6 +406,9 @@ void KStatusNotifierItem::setToolTipSubTitle(const QString &subTitle)
     }
 
     d->toolTipSubTitle = subTitle;
+#ifdef Q_OS_MACOS
+    setTrayToolTip(d->systemTrayIcon, d->toolTipTitle, subTitle);
+#endif
     emit d->statusNotifierItemDBus->NewToolTip();
 }
 
@@ -536,7 +575,15 @@ void KStatusNotifierItem::showMessage(const QString &title, const QString &messa
     }
 
     uint id = 0;
-    d->notificationsClient->Notify(d->title, id, icon, title, message, QStringList(), QVariantMap(), timeout);
+#ifdef Q_OS_MACOS
+    if (d->systemTrayIcon) {
+        // Growl is not needed anymore for QSystemTrayIcon::showMessage() since OS X 10.8
+        d->systemTrayIcon->showMessage(title, message, QSystemTrayIcon::Information, timeout);
+    } else
+#endif
+    {
+        d->notificationsClient->Notify(d->title, id, icon, title, message, QStringList(), QVariantMap(), timeout);
+    }
 }
 
 QString KStatusNotifierItem::title() const
@@ -550,6 +597,9 @@ void KStatusNotifierItem::activate(const QPoint &pos)
     //FIXME: always true?
     if (d->status == NeedsAttention) {
         d->status = Active;
+#ifdef Q_OS_MACOS
+        QtMac::setBadgeLabelText(QString());
+#endif
         emit d->statusNotifierItemDBus->NewStatus(QString::fromLatin1(metaObject()->enumerator(metaObject()->indexOfEnumerator("ItemStatus")).valueToKey(d->status)));
     }
 
@@ -722,8 +772,24 @@ void KStatusNotifierItemPrivate::init(const QString &extraId)
     if (title.isEmpty()) {
         title = QCoreApplication::applicationName();
     }
+#ifdef Q_OS_MACOS
+    // OS X doesn't have texted separators so we emulate QAction::addSection():
+    // we first add an action with the desired text (title) and icon
+    titleAction = m->addAction(qApp->windowIcon(), title);
+    // this action should be disabled
+    titleAction->setEnabled(false);
+    // Give the titleAction a visible menu icon:
+    // Systray icon and menu ("menu extra") are often used by applications that provide no other interface.
+    // It is thus reasonable to show the application icon in the menu; Finder, Dock and App Switcher
+    // all show it in addition to the application name (and Apple's input "menu extra" also shows icons).
+    titleAction->setIconVisibleInMenu(true);
+    m->addAction(titleAction);
+    // now add a regular separator
+    m->addSeparator();
+#else
     titleAction = m->addSection(qApp->windowIcon(), title);
     m->setTitle(title);
+#endif
     q->setContextMenu(m);
 
     QAction *action = new QAction(q);
@@ -886,22 +952,72 @@ void KStatusNotifierItemPrivate::setLegacySystemTrayEnabled(bool enabled)
 void KStatusNotifierItemPrivate::syncLegacySystemTrayIcon()
 {
     if (status == KStatusNotifierItem::NeedsAttention) {
-        if (!movieName.isNull()) {
-            if (!movie) {
-                movie = new QMovie(movieName);
+#ifdef Q_OS_MACOS
+        QtMac::setBadgeLabelText(QString(QChar(0x26a0))/*QStringLiteral("!")*/);
+        if (attentionIconName.isNull() && attentionIcon.isNull()) {
+            // code adapted from kmail's KMSystemTray::updateCount()
+            int overlaySize = 22;
+            QIcon attnIcon = qApp->windowIcon();
+            if (!attnIcon.availableSizes().isEmpty()) {
+                overlaySize = attnIcon.availableSizes().at(0).width();
             }
-            systemTrayIcon->setMovie(movie);
-        } else if (!attentionIconName.isNull()) {
-            systemTrayIcon->setIcon(QIcon::fromTheme(attentionIconName));
-        } else {
-            systemTrayIcon->setIcon(attentionIcon);
+            QFont labelFont = QFontDatabase::systemFont(QFontDatabase::GeneralFont);
+            labelFont.setBold(true);
+            QFontMetrics qfm(labelFont);
+            float attnHeight = overlaySize * 0.667;
+            if (qfm.height() > attnHeight) {
+                float labelSize = attnHeight;
+                labelFont.setPointSizeF(labelSize);
+            }
+            // Paint the label in a pixmap
+            QPixmap overlayPixmap(overlaySize, overlaySize);
+            overlayPixmap.fill(Qt::transparent);
+
+            QPainter p(&overlayPixmap);
+            p.setFont(labelFont);
+            p.setBrush(Qt::NoBrush);
+            // this sort of badge/label is red on OS X
+            p.setPen(QColor(224,0,0));
+            p.setOpacity(1.0);
+            // use U+2022, the Unicode bullet
+            p.drawText(overlayPixmap.rect(), Qt::AlignRight|Qt::AlignTop, QString(QChar(0x2022)));
+            p.end();
+
+            QPixmap iconPixmap = attnIcon.pixmap(overlaySize, overlaySize);
+            QPainter pp(&iconPixmap);
+            pp.drawPixmap(0, 0, overlayPixmap);
+            pp.end();
+            systemTrayIcon->setIcon(iconPixmap);
+        } else
+#endif
+        {
+            if (!movieName.isNull()) {
+                if (!movie) {
+                    movie = new QMovie(movieName);
+                }
+                systemTrayIcon->setMovie(movie);
+            } else if (!attentionIconName.isNull()) {
+                systemTrayIcon->setIcon(QIcon::fromTheme(attentionIconName));
+            } else {
+                systemTrayIcon->setIcon(attentionIcon);
+            }
         }
     } else {
+#ifdef Q_OS_MACOS
+        if (!iconName.isNull()) {
+            QIcon theIcon = QIcon::fromTheme(iconName);
+            systemTrayIcon->setIconWithMask(theIcon, status==KStatusNotifierItem::Passive);
+        } else {
+            systemTrayIcon->setIconWithMask(icon, status==KStatusNotifierItem::Passive);
+        }
+        QtMac::setBadgeLabelText(QString());
+#else
         if (!iconName.isNull()) {
             systemTrayIcon->setIcon(QIcon::fromTheme(iconName));
         } else {
             systemTrayIcon->setIcon(icon);
         }
+#endif
     }
 
     systemTrayIcon->setToolTip(toolTipTitle);

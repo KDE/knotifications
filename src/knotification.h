@@ -34,7 +34,7 @@ class QDBusError;
 /**
  * KNotification is used to notify the user of an event.
  *
- * \section introduction
+ * \section Introduction
  *
  * There are two main kinds of notifications:
  *
@@ -50,7 +50,7 @@ class QDBusError;
  *
  * Example of a persistent notification in an instant messaging application:
  * The application emits the notification when the message is actually received, and closes it only
- * when the user has read the message (when the message window has received the focus) using the close() slot
+ * when the user has read the message (when the message window has received the focus) using the close() slot.
  * Persistent notifications must have the Persistent flag.
  *
  * By default a notification will use the application name as title, but you
@@ -70,8 +70,9 @@ class QDBusError;
  * Your application should install a file called <em>knotifications5/appname.notifyrc</em>
  * in a QStandardPaths::GenericDataLocation directory.
  *
- * The filename should either match QCoreApplication::applicationName or be specified as the
+ * The filename must either match QCoreApplication::applicationName or be specified as the
  * component name to the KNotification object.
+ * @warning Notifications won't be visible otherwise.
  *
  * You can do this with the following CMake command:
  * install(FILES appname.notifyrc  DESTINATION ${KNOTIFYRC_INSTALL_DIR}))
@@ -529,7 +530,7 @@ Q_SIGNALS:
      * The parameter passed by the signal is the index of the action
      * in the QStringList set by setActions() call.
      *
-     * @param action will be 0 is the default aciton was activated, or the index of the action in the actions QStringList
+     * @param action will be 0 if the default aciton was activated, or the index of the action in the actions QStringList
      */
     void activated(unsigned int action);
 

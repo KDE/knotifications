@@ -152,8 +152,22 @@ KStatusNotifierItemDBus::KStatusNotifierItemDBus(KStatusNotifierItem *parent)
       m_service(QStringLiteral("org.kde.StatusNotifierItem-%1-%2")
                 .arg(QCoreApplication::applicationPid())
                 .arg(++s_serviceCount)),
-      m_dbus(QDBusConnection::connectToBus(QDBusConnection::SessionBus, m_service))
+      m_dbus(QDBusConnection(m_service))
 {
+    bool inSandbox = false;
+    if (!qEnvironmentVariableIsEmpty("XDG_RUNTIME_DIR")) {
+        const QByteArray runtimeDir = qgetenv("XDG_RUNTIME_DIR");
+        if (!runtimeDir.isEmpty()) {
+            inSandbox = QFileInfo::exists(QString::fromUtf8(runtimeDir) + QLatin1String("/flatpak-info"));
+        }
+    }
+
+    if (inSandbox) {
+        m_service = QStringLiteral("org.kde.StatusNotifierItem-%1-%2").arg(QCoreApplication::applicationName()).arg(s_serviceCount);
+    }
+
+    m_dbus = QDBusConnection::connectToBus(QDBusConnection::SessionBus, m_service);
+
     new StatusNotifierItemAdaptor(this);
     qCDebug(LOG_KNOTIFICATIONS) << "service is" << m_service;
     m_dbus.registerService(m_service);

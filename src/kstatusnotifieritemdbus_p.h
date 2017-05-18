@@ -223,7 +223,7 @@ Q_SIGNALS:
 
 private:
     KStatusNotifierItem *m_statusNotifierItem;
-    QString m_service;
+    QString m_connId;
     QDBusConnection m_dbus;
     static int s_serviceCount;
 };

@@ -149,36 +149,22 @@ int KStatusNotifierItemDBus::s_serviceCount = 0;
 KStatusNotifierItemDBus::KStatusNotifierItemDBus(KStatusNotifierItem *parent)
     : QObject(parent),
       m_statusNotifierItem(parent),
-      m_service(QStringLiteral("org.kde.StatusNotifierItem-%1-%2")
+      m_connId(QStringLiteral("org.kde.StatusNotifierItem-%1-%2")
                 .arg(QCoreApplication::applicationPid())
                 .arg(++s_serviceCount)),
-      m_dbus(QDBusConnection(m_service))
+      m_dbus(QDBusConnection(m_connId))
 {
-    bool inSandbox = false;
-    if (!qEnvironmentVariableIsEmpty("XDG_RUNTIME_DIR")) {
-        const QByteArray runtimeDir = qgetenv("XDG_RUNTIME_DIR");
-        if (!runtimeDir.isEmpty()) {
-            inSandbox = QFileInfo::exists(QString::fromUtf8(runtimeDir) + QLatin1String("/flatpak-info"));
-        }
-    }
-
-    if (inSandbox) {
-        m_service = QStringLiteral("org.kde.StatusNotifierItem-%1-%2").arg(QCoreApplication::applicationName()).arg(s_serviceCount);
-    }
-
-    m_dbus = QDBusConnection::connectToBus(QDBusConnection::SessionBus, m_service);
+    m_dbus = QDBusConnection::connectToBus(QDBusConnection::SessionBus, m_connId);
 
     new StatusNotifierItemAdaptor(this);
-    qCDebug(LOG_KNOTIFICATIONS) << "service is" << m_service;
-    m_dbus.registerService(m_service);
+    qCDebug(LOG_KNOTIFICATIONS) << "service is" << m_connId;
     m_dbus.registerObject(QStringLiteral("/StatusNotifierItem"), this);
 }
 
 KStatusNotifierItemDBus::~KStatusNotifierItemDBus()
 {
     m_dbus.unregisterObject(QStringLiteral("/StatusNotifierItem"));
-    m_dbus.unregisterService(m_service);
-    m_dbus.disconnectFromBus(m_service);
+    m_dbus.disconnectFromBus(m_connId);
 }
 
 QDBusConnection KStatusNotifierItemDBus::dbusConnection() const
@@ -188,7 +174,7 @@ QDBusConnection KStatusNotifierItemDBus::dbusConnection() const
 
 QString KStatusNotifierItemDBus::service() const
 {
-    return m_service;
+    return m_dbus.baseService();
 }
 
 bool KStatusNotifierItemDBus::ItemIsMenu() const

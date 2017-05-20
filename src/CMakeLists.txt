@@ -127,6 +127,29 @@ install(FILES
   DESTINATION ${KDE_INSTALL_INCLUDEDIR_KF5}/KNotifications COMPONENT Devel
 )
 
+if(BUILD_QCH)
+    ecm_add_qch(
+        KF5Notifications_QCH
+        NAME KNotifications
+        BASE_NAME KF5Notifications
+        VERSION ${KF5_VERSION}
+        ORG_DOMAIN org.kde
+        SOURCES # using only public headers, to cover only public API
+            ${KNotifications_HEADERS}
+        MD_MAINPAGE "${CMAKE_SOURCE_DIR}/README.md"
+        IMAGE_DIRS "${CMAKE_SOURCE_DIR}/docs/pics"
+        LINK_QCHS
+            Qt5Widgets_QCH
+        BLANK_MACROS
+            KNOTIFICATIONS_EXPORT
+            KNOTIFICATIONS_DEPRECATED
+            KNOTIFICATIONS_DEPRECATED_EXPORT
+        TAGFILE_INSTALL_DESTINATION ${KDE_INSTALL_QTQCHDIR}
+        QCH_INSTALL_DESTINATION ${KDE_INSTALL_QTQCHDIR}
+        COMPONENT Devel
+    )
+endif()
+
 install(FILES
     org.kde.StatusNotifierItem.xml
     DESTINATION ${KDE_INSTALL_DBUSINTERFACEDIR}

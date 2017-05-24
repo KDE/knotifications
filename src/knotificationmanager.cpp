@@ -82,9 +82,9 @@ KNotificationManager::KNotificationManager()
     bool portalDBusServiceExists = false;
 
     if (!qEnvironmentVariableIsEmpty("XDG_RUNTIME_DIR")) {
-        const QString runtimeDir = qgetenv("XDG_RUNTIME_DIR");
+        const QByteArray runtimeDir = qgetenv("XDG_RUNTIME_DIR");
         if (!runtimeDir.isEmpty()) {
-            inSandbox = QFileInfo::exists(runtimeDir + QLatin1String("/flatpak-info"));
+            inSandbox = QFileInfo::exists(QFile::encodeName(runtimeDir) + QLatin1String("/flatpak-info"));
         }
     }
 

@@ -34,6 +34,8 @@ class QMenu;
 class KStatusNotifierItemPrivate;
 
 /**
+ * @class KStatusNotifierItem kstatusnotifieritem.h KStatusNotifierItem
+ *
  * \brief %KDE Status notifier Item protocol implementation
  *
  * This class implements the Status notifier Item Dbus specification.

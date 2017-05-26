@@ -25,6 +25,8 @@
 #include <QtCore/QObject>
 
 /**
+ * @class KNotificationRestrictions knotificationrestrictions.h KNotificationRestrictions
+ *
  * KNotificationRestrictions provides a simple mechanism to avoid disruptions
  * during full screen presentations or other use cases where the screensaver or
  * desktop notifcations are inappropriate.

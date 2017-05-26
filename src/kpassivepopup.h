@@ -29,6 +29,8 @@
 class QSystemTrayIcon;
 
 /**
+ * @class KPassivePopup kpassivepopup.h KPassivePopup
+ *
  * @short A dialog-like popup that displays messages without interrupting the user.
  *
  * The simplest uses of KPassivePopup are by using the various message() static

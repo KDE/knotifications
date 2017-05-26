@@ -33,6 +33,8 @@
 typedef QList< QPair<QString,QString> > ContextList;
 
 /**
+ * @class KNotifyImage knotifyconfig.h KNotifyConfig
+ *
  * An image with lazy loading from the byte array
  */
 class KNOTIFICATIONS_EXPORT KNotifyImage
@@ -55,6 +57,8 @@ class KNOTIFICATIONS_EXPORT KNotifyImage
 
 
 /**
+ * @class KNotifyConfig knotifyconfig.h KNotifyConfig
+ *
  * Represent the configuration for an event
  * @author Olivier Goffart <ogoffart@kde.org>
 */

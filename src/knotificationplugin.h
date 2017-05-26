@@ -32,6 +32,8 @@ class KNotificationPluginPrivate;
 class KNotifyConfig;
 
 /**
+ * @class KNotificationPlugin knotificationplugin.h KNotificationPlugin
+ *
  * @brief abstract class for KNotification actions
  *
  * A KNotificationPlugin is responsible of notification presentation.

@@ -32,6 +32,8 @@ class QWidget;
 class QDBusError;
 
 /**
+ * @class KNotification knotification.h KNotification
+ *
  * KNotification is used to notify the user of an event.
  *
  * \section Introduction

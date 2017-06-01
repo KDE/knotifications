@@ -102,7 +102,7 @@ public:
     /**
      * Creates a popup for the specified widget.
      */
-    explicit KPassivePopup(QWidget *parent = nullptr, Qt::WindowFlags f = nullptr);
+    explicit KPassivePopup(QWidget *parent = nullptr, Qt::WindowFlags f = Qt::WindowFlags());
 
     /**
      * Creates a popup for the specified window.

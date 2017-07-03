@@ -36,7 +36,7 @@ class NotifyByFlatpak : public KNotificationPlugin
 {
     Q_OBJECT
 public:
-    NotifyByFlatpak(QObject *parent = 0l);
+    NotifyByFlatpak(QObject *parent = nullptr);
     virtual ~NotifyByFlatpak();
 
     QString optionName() Q_DECL_OVERRIDE { return QStringLiteral("Popup"); }

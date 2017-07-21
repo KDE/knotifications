@@ -517,7 +517,7 @@ public:
 
     /**
      * @internal
-     * appname used for the dbus object
+     * appname used for the D-Bus object
      */
     QString appName() const;
 

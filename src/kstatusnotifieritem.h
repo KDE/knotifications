@@ -38,7 +38,7 @@ class KStatusNotifierItemPrivate;
  *
  * \brief %KDE Status notifier Item protocol implementation
  *
- * This class implements the Status notifier Item Dbus specification.
+ * This class implements the Status notifier Item D-Bus specification.
  * It provides an icon similar to the classical systemtray icons,
  * with some key differences:
  *
@@ -57,7 +57,7 @@ class KStatusNotifierItemPrivate;
  * Whenever possible you should prefer passing icon by name rather than by
  * pixmap because:
  *
- * - it is much lighter on Dbus (no need to pass all image pixels).
+ * - it is much lighter on D-Bus (no need to pass all image pixels).
  *
  * - it makes it possible for the systemtray to load an icon of the appropriate
  *   size or to replace your icon with a systemtray specific icon which matches
@@ -356,7 +356,7 @@ public:
     /**
      * Sets a new context menu for this StatusNotifierItem.
      * the menu will be shown with a contextMenu(int,int)
-     * call by the systemtray over dbus
+     * call by the systemtray over D-Bus
      * usually you don't need to call this unless you want to use
      * a custom QMenu subclass as context menu.
      *

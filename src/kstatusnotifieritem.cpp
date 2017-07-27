@@ -34,7 +34,7 @@
 #include <QPainter>
 #include <qstandardpaths.h>
 #ifdef Q_OS_MACOS
-#include <qfontdatabase.h>>
+#include <qfontdatabase.h>
 #include <QtMac>
 #endif
 

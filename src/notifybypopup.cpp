@@ -109,6 +109,9 @@ public:
      * Specifies if DBus Notifications interface exists on session bus
      */
     bool dbusServiceExists;
+
+    bool dbusServiceActivatable;
+
     /**
      * DBus notification daemon capabilities cache.
      * Do not use this variable. Use #popupServerCapabilities() instead.
@@ -161,6 +164,7 @@ NotifyByPopup::NotifyByPopup(QObject *parent)
 {
     d->animationTimer = 0;
     d->dbusServiceExists = false;
+    d->dbusServiceActivatable = false;
     d->dbusServiceCapCacheDirty = true;
     d->nextPosition = -1;
 
@@ -180,32 +184,20 @@ NotifyByPopup::NotifyByPopup(QObject *parent)
     connect(watcher, SIGNAL(serviceOwnerChanged(QString,QString,QString)),
             SLOT(onServiceOwnerChanged(QString,QString,QString)));
 
+#ifndef Q_WS_WIN
     if (!d->dbusServiceExists) {
-        bool startfdo = false;
-#ifdef Q_WS_WIN
-        startfdo = true;
-#else
         QDBusMessage message = QDBusMessage::createMethodCall(QStringLiteral("org.freedesktop.DBus"),
                                                                 QStringLiteral("/org/freedesktop/DBus"),
                                                                 QStringLiteral("org.freedesktop.DBus"),
                                                                 QStringLiteral("ListActivatableNames"));
-
-        // FIXME - this should be async
         QDBusReply<QStringList> reply = QDBusConnection::sessionBus().call(message);
         if (reply.isValid() && reply.value().contains(dbusServiceName)) {
-            startfdo = true;
-            // We need to set d->dbusServiceExists to true because dbus might be too slow
-            // starting the service and the first call to NotifyByPopup::notify
-            // might not have had the service up, by setting this to true we
-            // guarantee it will still go through dbus and dbus will do the correct
-            // thing and wait for the service to go up
+            d->dbusServiceActivatable = true;
+            //if the service is activatable, we can assume it exists even if it is not currently running
             d->dbusServiceExists = true;
         }
-#endif
-        if (startfdo) {
-            QDBusConnection::sessionBus().interface()->startService(dbusServiceName);
-        }
     }
+#endif
 }
 
 
@@ -439,7 +431,9 @@ void NotifyByPopup::onServiceOwnerChanged(const QString &serviceName, const QStr
 
     if (newOwner.isEmpty()) {
         d->notificationQueue.clear();
-        d->dbusServiceExists = false;
+        if (!d->dbusServiceActivatable) {
+            d->dbusServiceExists = false;
+        }
     } else if (oldOwner.isEmpty()) {
         d->dbusServiceExists = true;
 

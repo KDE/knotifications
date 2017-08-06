@@ -1,0 +1,48 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: kdeorg\n"
+"Report-Msgid-Bugs-To: http://bugs.kde.org\n"
+"POT-Creation-Date: 2016-11-19 20:11+0100\n"
+"PO-Revision-Date: 2017-07-13 11:17-0400\n"
+"Last-Translator: guoyunhebrave <guoyunhebrave@gmail.com>\n"
+"Language-Team: Chinese Simplified\n"
+"Language: zh_CN\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"X-Generator: crowdin.com\n"
+"X-Crowdin-Project: kdeorg\n"
+"X-Crowdin-Language: zh-CN\n"
+"X-Crowdin-File: /kf5-trunk/messages/frameworks/baloo_file5.pot\n"
+
+#: knotificationrestrictions.cpp:192
+msgctxt "KNotificationRestrictions|"
+msgid "Unknown Application"
+msgstr "未知程序"
+
+#: kstatusnotifieritem.cpp:499 kstatusnotifieritem.cpp:1054
+msgctxt "KStatusNotifierItem|"
+msgid "&Minimize"
+msgstr "最小化(&M)"
+
+#: kstatusnotifieritem.cpp:796
+msgctxt "KStatusNotifierItem|"
+msgid "Quit"
+msgstr "退出"
+
+#: kstatusnotifieritem.cpp:1052
+msgctxt "KStatusNotifierItem|"
+msgid "&Restore"
+msgstr "恢复(&R)"
+
+#: kstatusnotifieritem.cpp:1066
+#, qt-format
+msgctxt "KStatusNotifierItem|"
+msgid "<qt>Are you sure you want to quit <b>%1</b>?</qt>"
+msgstr "<qt>您确定想要退出 <b>%1</b> 吗？</qt>"
+
+#: kstatusnotifieritem.cpp:1069
+msgctxt "KStatusNotifierItem|"
+msgid "Confirm Quit From System Tray"
+msgstr "确认从系统托盘退出"

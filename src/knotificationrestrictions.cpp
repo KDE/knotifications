@@ -35,7 +35,7 @@
 #include <X11/extensions/XTest.h>
 #endif // HAVE_XTEST
 
-class KNotificationRestrictions::Private
+class Q_DECL_HIDDEN KNotificationRestrictions::Private
 {
 public:
     Private(KNotificationRestrictions *qq, Services c, const QString &r)

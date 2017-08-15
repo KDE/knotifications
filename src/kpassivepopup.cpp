@@ -49,7 +49,7 @@ static const int DEFAULT_POPUP_TYPE = KPassivePopup::Boxed;
 static const int DEFAULT_POPUP_TIME = 6 * 1000;
 static const Qt::WindowFlags POPUP_FLAGS = Qt::Tool | Qt::WindowStaysOnTopHint | Qt::FramelessWindowHint;
 
-class KPassivePopup::Private
+class Q_DECL_HIDDEN KPassivePopup::Private
 {
 public:
     Private(KPassivePopup *q, WId winId)

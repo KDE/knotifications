@@ -49,7 +49,7 @@
 
 typedef QHash<QString, QString> Dict;
 
-struct KNotificationManager::Private {
+struct Q_DECL_HIDDEN KNotificationManager::Private {
     QHash<int, KNotification *> notifications;
     QHash<QString, KNotificationPlugin *> notifyPlugins;
 

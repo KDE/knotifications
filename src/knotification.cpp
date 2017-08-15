@@ -43,7 +43,7 @@
 #include <QStringList>
 #include <QUrl>
 
-struct KNotification::Private {
+struct Q_DECL_HIDDEN KNotification::Private {
     QString eventId;
     int id;
     int ref;

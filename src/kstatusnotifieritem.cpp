@@ -909,13 +909,12 @@ void KStatusNotifierItemPrivate::setLegacySystemTrayEnabled(bool enabled)
         return;
     }
 
-
     if (enabled) {
-        if (!QSystemTrayIcon::isSystemTrayAvailable()) {
-            return;
-        }
         bool isKde = !qEnvironmentVariableIsEmpty("KDE_FULL_SESSION") || qgetenv("XDG_CURRENT_DESKTOP") == "KDE";
         if (!systemTrayIcon && !isKde) {
+            if (!QSystemTrayIcon::isSystemTrayAvailable()) {
+                return;
+            }
             systemTrayIcon = new KStatusNotifierLegacyIcon(associatedWidget);
             syncLegacySystemTrayIcon();
             systemTrayIcon->setToolTip(toolTipTitle);

@@ -241,7 +241,7 @@ void NotifyByPopup::notify(KNotification *notification, const KNotifyConfig &not
 
     // Persistent     => 0  == infinite timeout
     // CloseOnTimeout => -1 == let the server decide
-    int timeout = notification->flags() & KNotification::Persistent ? 0 : -1;
+    int timeout = (notification->flags() & KNotification::Persistent) ? 0 : -1;
 
     // if Growl can display our popups, use that instead
     if (NotifyByPopupGrowl::canPopup()) {
@@ -723,7 +723,7 @@ bool NotifyByPopupPrivate::sendNotificationToGalagoServer(KNotification *notific
 
     // Persistent     => 0  == infinite timeout
     // CloseOnTimeout => -1 == let the server decide
-    int timeout = notification->flags() & KNotification::Persistent ? 0 : -1;
+    int timeout = (notification->flags() & KNotification::Persistent) ? 0 : -1;
 
     args.append(timeout); // expire timout
 

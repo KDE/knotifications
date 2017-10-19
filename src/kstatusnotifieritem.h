@@ -486,7 +486,6 @@ private:
     Q_PRIVATE_SLOT(d, void serviceChange(const QString &name,
                                          const QString &oldOwner,
                                          const QString &newOwner))
-    Q_PRIVATE_SLOT(d, void checkForRegisteredHosts())
     Q_PRIVATE_SLOT(d, void registerToDaemon())
     Q_PRIVATE_SLOT(d, void contextMenuAboutToShow())
     Q_PRIVATE_SLOT(d, void maybeQuit())

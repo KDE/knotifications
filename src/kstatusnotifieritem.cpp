@@ -815,10 +815,6 @@ void KStatusNotifierItemPrivate::registerToDaemon()
     if (!statusNotifierWatcher) {
         statusNotifierWatcher = new org::kde::StatusNotifierWatcher(s_statusNotifierWatcherServiceName, QStringLiteral("/StatusNotifierWatcher"),
                 QDBusConnection::sessionBus());
-        QObject::connect(statusNotifierWatcher, SIGNAL(StatusNotifierHostRegistered()),
-                         q, SLOT(checkForRegisteredHosts()));
-        QObject::connect(statusNotifierWatcher, SIGNAL(StatusNotifierHostUnregistered()),
-                         q, SLOT(checkForRegisteredHosts()));
     }
 
     if (statusNotifierWatcher->isValid()) {
@@ -869,12 +865,6 @@ void KStatusNotifierItemPrivate::serviceChange(const QString &name, const QStrin
         //registered
         setLegacyMode(false);
     }
-}
-
-void KStatusNotifierItemPrivate::checkForRegisteredHosts()
-{
-    setLegacyMode(!statusNotifierWatcher ||
-                  !statusNotifierWatcher->property("IsStatusNotifierHostRegistered").toBool());
 }
 
 void KStatusNotifierItemPrivate::setLegacyMode(bool legacy)

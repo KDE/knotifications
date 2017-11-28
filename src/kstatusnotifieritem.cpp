@@ -758,7 +758,7 @@ void KStatusNotifierItemPrivate::init(const QString &extraId)
     statusNotifierItemDBus = new KStatusNotifierItemDBus(q);
     q->setAssociatedWidget(qobject_cast<QWidget *>(q->parent()));
 
-    QDBusServiceWatcher *watcher = new QDBusServiceWatcher(s_statusNotifierWatcherServiceName,
+    QDBusServiceWatcher *watcher = new QDBusServiceWatcher(QString::fromLatin1(s_statusNotifierWatcherServiceName),
             QDBusConnection::sessionBus(),
             QDBusServiceWatcher::WatchForOwnerChange,
             q);
@@ -800,7 +800,7 @@ void KStatusNotifierItemPrivate::init(const QString &extraId)
 
     id = title;
     if (!extraId.isEmpty()) {
-        id.append('_').append(extraId);
+        id.append(QLatin1Char('_')).append(extraId);
     }
 
     // Init iconThemePath to the app folder for now
@@ -813,13 +813,13 @@ void KStatusNotifierItemPrivate::registerToDaemon()
 {
     qCDebug(LOG_KNOTIFICATIONS) << "Registering a client interface to the KStatusNotifierWatcher";
     if (!statusNotifierWatcher) {
-        statusNotifierWatcher = new org::kde::StatusNotifierWatcher(s_statusNotifierWatcherServiceName, QStringLiteral("/StatusNotifierWatcher"),
+        statusNotifierWatcher = new org::kde::StatusNotifierWatcher(QString::fromLatin1(s_statusNotifierWatcherServiceName), QStringLiteral("/StatusNotifierWatcher"),
                 QDBusConnection::sessionBus());
     }
 
     if (statusNotifierWatcher->isValid()) {
         // get protocol version in async way
-        QDBusMessage msg = QDBusMessage::createMethodCall(s_statusNotifierWatcherServiceName,
+        QDBusMessage msg = QDBusMessage::createMethodCall(QString::fromLatin1(s_statusNotifierWatcherServiceName),
                                                           QStringLiteral("/StatusNotifierWatcher"),
                                                           QStringLiteral("org.freedesktop.DBus.Properties"),
                                                           QStringLiteral("Get"));

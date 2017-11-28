@@ -42,7 +42,7 @@ NotifyByLogfile::~NotifyByLogfile()
 
 void NotifyByLogfile::notify(KNotification *notification, KNotifyConfig *config)
 {
-    QString file = config->readEntry("Logfile");
+    QString file = config->readEntry(QStringLiteral("Logfile"));
 
     if (file.isEmpty()) {
         finish(notification);

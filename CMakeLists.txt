@@ -74,7 +74,6 @@ if (Phonon4Qt5_FOUND)
   add_definitions(-DHAVE_PHONON4QT5)
 endif()
 
-remove_definitions(-DQT_NO_CAST_FROM_ASCII)
 remove_definitions(-DQT_NO_CAST_FROM_BYTEARRAY)
 
 if (IS_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/po")

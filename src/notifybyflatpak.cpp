@@ -36,7 +36,6 @@
 #include <QMap>
 
 #include <kconfiggroup.h>
-
 static const char portalDbusServiceName[] = "org.freedesktop.portal.Desktop";
 static const char portalDbusInterfaceName[] = "org.freedesktop.portal.Notification";
 static const char portalDbusPath[] = "/org/freedesktop/portal/desktop";
@@ -96,17 +95,17 @@ NotifyByFlatpak::NotifyByFlatpak(QObject *parent)
 {
     // check if service already exists on plugin instantiation
     QDBusConnectionInterface *interface = QDBusConnection::sessionBus().interface();
-    d->dbusServiceExists = interface && interface->isServiceRegistered(portalDbusServiceName);
+    d->dbusServiceExists = interface && interface->isServiceRegistered(QString::fromLatin1(portalDbusServiceName));
 
     if (d->dbusServiceExists) {
-        onServiceOwnerChanged(portalDbusServiceName, QString(), QStringLiteral("_")); //connect signals
+        onServiceOwnerChanged(QString::fromLatin1(portalDbusServiceName), QString(), QStringLiteral("_")); //connect signals
     }
 
     // to catch register/unregister events from service in runtime
     QDBusServiceWatcher *watcher = new QDBusServiceWatcher(this);
     watcher->setConnection(QDBusConnection::sessionBus());
     watcher->setWatchMode(QDBusServiceWatcher::WatchForOwnerChange);
-    watcher->addWatchedService(portalDbusServiceName);
+    watcher->addWatchedService(QString::fromLatin1(portalDbusServiceName));
     connect(watcher,&QDBusServiceWatcher::serviceOwnerChanged, this, &NotifyByFlatpak::onServiceOwnerChanged);
 }
 
@@ -171,8 +170,8 @@ void NotifyByFlatpak::onServiceOwnerChanged(const QString &serviceName, const QS
 
         // connect to action invocation signals
         bool connected = QDBusConnection::sessionBus().connect(QString(), // from any service
-                                                               portalDbusPath,
-                                                               portalDbusInterfaceName,
+                                                               QString::fromLatin1(portalDbusPath),
+                                                               QString::fromLatin1(portalDbusInterfaceName),
                                                                QStringLiteral("ActionInvoked"),
                                                                this,
                                                                SLOT(onPortalNotificationActionInvoked(QString,QString,QVariantList)));
@@ -215,9 +214,9 @@ void NotifyByFlatpakPrivate::getAppCaptionAndIconName(const KNotifyConfig &notif
 bool NotifyByFlatpakPrivate::sendNotificationToPortal(KNotification *notification, const KNotifyConfig &notifyConfig_nocheck)
 {
     QDBusMessage dbusNotificationMessage;
-    dbusNotificationMessage = QDBusMessage::createMethodCall(portalDbusServiceName,
-                                                             portalDbusPath,
-                                                             portalDbusInterfaceName,
+    dbusNotificationMessage = QDBusMessage::createMethodCall(QString::fromLatin1(portalDbusServiceName),
+                                                             QString::fromLatin1(portalDbusPath),
+                                                             QString::fromLatin1(portalDbusInterfaceName),
                                                              QStringLiteral("AddNotification"));
 
     QVariantList args;
@@ -284,9 +283,9 @@ void NotifyByFlatpakPrivate::closePortalNotification(KNotification *notification
         return;
     }
 
-    QDBusMessage m = QDBusMessage::createMethodCall(portalDbusServiceName,
-                                                    portalDbusPath,
-                                                    portalDbusInterfaceName,
+    QDBusMessage m = QDBusMessage::createMethodCall(QString::fromLatin1(portalDbusServiceName),
+                                                    QString::fromLatin1(portalDbusPath),
+                                                    QString::fromLatin1(portalDbusInterfaceName),
                                                     QStringLiteral("RemoveNotification"));
     m.setArguments({QString::number(id)});
 

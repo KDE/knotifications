@@ -170,17 +170,17 @@ NotifyByPopup::NotifyByPopup(QObject *parent)
 
     // check if service already exists on plugin instantiation
     QDBusConnectionInterface *interface = QDBusConnection::sessionBus().interface();
-    d->dbusServiceExists = interface && interface->isServiceRegistered(dbusServiceName);
+    d->dbusServiceExists = interface && interface->isServiceRegistered(QString::fromLatin1(dbusServiceName));
 
     if (d->dbusServiceExists) {
-        onServiceOwnerChanged(dbusServiceName, QString(), QStringLiteral("_")); //connect signals
+        onServiceOwnerChanged(QString::fromLatin1(dbusServiceName), QString(), QStringLiteral("_")); //connect signals
     }
 
     // to catch register/unregister events from service in runtime
     QDBusServiceWatcher *watcher = new QDBusServiceWatcher(this);
     watcher->setConnection(QDBusConnection::sessionBus());
     watcher->setWatchMode(QDBusServiceWatcher::WatchForOwnerChange);
-    watcher->addWatchedService(dbusServiceName);
+    watcher->addWatchedService(QString::fromLatin1(dbusServiceName));
     connect(watcher, SIGNAL(serviceOwnerChanged(QString,QString,QString)),
             SLOT(onServiceOwnerChanged(QString,QString,QString)));
 
@@ -191,7 +191,7 @@ NotifyByPopup::NotifyByPopup(QObject *parent)
                                                                 QStringLiteral("org.freedesktop.DBus"),
                                                                 QStringLiteral("ListActivatableNames"));
         QDBusReply<QStringList> reply = QDBusConnection::sessionBus().call(message);
-        if (reply.isValid() && reply.value().contains(dbusServiceName)) {
+        if (reply.isValid() && reply.value().contains(QString::fromLatin1(dbusServiceName))) {
             d->dbusServiceActivatable = true;
             //if the service is activatable, we can assume it exists even if it is not currently running
             d->dbusServiceExists = true;
@@ -354,8 +354,8 @@ void NotifyByPopup::timerEvent(QTimerEvent *event)
 
 void NotifyByPopup::onPassivePopupLinkClicked(const QString &link)
 {
-    unsigned int id = link.section('/' , 0 , 0).toUInt();
-    unsigned int action = link.section('/' , 1 , 1).toUInt();
+    unsigned int id = link.section(QLatin1Char('/') , 0 , 0).toUInt();
+    unsigned int action = link.section(QLatin1Char('/') , 1 , 1).toUInt();
 
     if (id == 0 || action == 0) {
         return;
@@ -439,8 +439,8 @@ void NotifyByPopup::onServiceOwnerChanged(const QString &serviceName, const QStr
 
         // connect to action invocation signals
         bool connected = QDBusConnection::sessionBus().connect(QString(), // from any service
-                                                               dbusPath,
-                                                               dbusInterfaceName,
+                                                               QString::fromLatin1(dbusPath),
+                                                               QString::fromLatin1(dbusInterfaceName),
                                                                QStringLiteral("ActionInvoked"),
                                                                this,
                                                                SLOT(onGalagoNotificationActionInvoked(uint,QString)));
@@ -449,8 +449,8 @@ void NotifyByPopup::onServiceOwnerChanged(const QString &serviceName, const QStr
         }
 
         connected = QDBusConnection::sessionBus().connect(QString(), // from any service
-                                                          dbusPath,
-                                                          dbusInterfaceName,
+                                                          QString::fromLatin1(dbusPath),
+                                                          QString::fromLatin1(dbusInterfaceName),
                                                           QStringLiteral("NotificationClosed"),
                                                           this,
                                                           SLOT(onGalagoNotificationClosed(uint,uint)));
@@ -624,7 +624,7 @@ bool NotifyByPopupPrivate::sendNotificationToGalagoServer(KNotification *notific
         }
     }
 
-    QDBusMessage dbusNotificationMessage = QDBusMessage::createMethodCall(dbusServiceName, dbusPath, dbusInterfaceName, QStringLiteral("Notify"));
+    QDBusMessage dbusNotificationMessage = QDBusMessage::createMethodCall(QString::fromLatin1(dbusServiceName), QString::fromLatin1(dbusPath), QString::fromLatin1(dbusInterfaceName), QStringLiteral("Notify"));
 
     QList<QVariant> args;
 
@@ -748,8 +748,8 @@ void NotifyByPopupPrivate::closeGalagoNotification(KNotification *notification)
         return;
     }
 
-    QDBusMessage m = QDBusMessage::createMethodCall(dbusServiceName, dbusPath,
-                                                    dbusInterfaceName, QStringLiteral("CloseNotification"));
+    QDBusMessage m = QDBusMessage::createMethodCall(QString::fromLatin1(dbusServiceName), QString::fromLatin1(dbusPath),
+                                                    QString::fromLatin1(dbusInterfaceName), QStringLiteral("CloseNotification"));
     QList<QVariant> args;
     args.append(galagoId);
     m.setArguments(args);
@@ -775,9 +775,9 @@ void NotifyByPopupPrivate::queryPopupServerCapabilities()
     }
 
     if (dbusServiceCapCacheDirty) {
-        QDBusMessage m = QDBusMessage::createMethodCall(dbusServiceName,
-                                                        dbusPath,
-                                                        dbusInterfaceName,
+        QDBusMessage m = QDBusMessage::createMethodCall(QString::fromLatin1(dbusServiceName),
+                                                        QString::fromLatin1(dbusPath),
+                                                        QString::fromLatin1(dbusInterfaceName),
                                                         QStringLiteral("GetCapabilities"));
 
         QDBusConnection::sessionBus().callWithCallback(m,
@@ -790,7 +790,7 @@ void NotifyByPopupPrivate::queryPopupServerCapabilities()
 
 QString NotifyByPopupPrivate::stripHtml(const QString &text)
 {
-    QXmlStreamReader r("<elem>" + text + "</elem>");
+    QXmlStreamReader r(QStringLiteral("<elem>") + text + QStringLiteral("</elem>"));
     HtmlEntityResolver resolver;
     r.setEntityResolver(&resolver);
     QString result;
@@ -798,8 +798,8 @@ QString NotifyByPopupPrivate::stripHtml(const QString &text)
         r.readNext();
         if (r.tokenType() == QXmlStreamReader::Characters) {
             result.append(r.text());
-        } else if (r.tokenType() == QXmlStreamReader::StartElement && r.name() == "br") {
-            result.append("\n");
+        } else if (r.tokenType() == QXmlStreamReader::StartElement && r.name() == QLatin1String("br")) {
+            result.append(QLatin1Char('\n'));
         }
     }
 
@@ -823,13 +823,13 @@ QString NotifyByPopupPrivate::HtmlEntityResolver::resolveUndeclaredEntity(const 
         return result;
     }
 
-    QChar ent = KCharsets::fromEntity('&' + name);
+    QChar ent = KCharsets::fromEntity(QLatin1Char('&') + name);
 
     if (ent.isNull()) {
         qCWarning(LOG_KNOTIFICATIONS) << "Notification to send to backend which does "
                       "not support HTML, contains invalid entity: "
                    << name;
-        ent = ' ';
+        ent = QLatin1Char(' ');
     }
 
     return QString(ent);

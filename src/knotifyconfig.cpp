@@ -94,7 +94,7 @@ QString KNotifyConfig::readEntry(const QString &entry, bool path)
     QPair<QString, QString> context;
 
     Q_FOREACH (context, contexts) {
-        const QString group = "Event/" + eventid + '/' + context.first + '/' + context.second;
+        const QString group = QStringLiteral("Event/") + eventid + QLatin1Char('/') + context.first + QLatin1Char('/') + context.second;
 
         if (configfile->hasGroup(group)) {
             KConfigGroup cg(configfile, group);
@@ -115,7 +115,7 @@ QString KNotifyConfig::readEntry(const QString &entry, bool path)
         }
     }
 //    kDebug() << entry << " not found in contexts ";
-    const QString group = "Event/" + eventid;
+    const QString group = QStringLiteral("Event/") + eventid;
 
     if (configfile->hasGroup(group)) {
         KConfigGroup cg(configfile, group);

@@ -84,7 +84,7 @@ KNotificationManager::KNotificationManager()
     if (!qEnvironmentVariableIsEmpty("XDG_RUNTIME_DIR")) {
         const QByteArray runtimeDir = qgetenv("XDG_RUNTIME_DIR");
         if (!runtimeDir.isEmpty()) {
-            inSandbox = QFileInfo::exists(QFile::encodeName(runtimeDir) + QLatin1String("/flatpak-info"));
+            inSandbox = QFileInfo::exists(QFile::decodeName(runtimeDir) + QLatin1String("/flatpak-info"));
         }
     }
 
@@ -199,7 +199,7 @@ void KNotificationManager::close(int id, bool force)
         KNotifyConfig notifyConfig(n->appName(), n->contexts(), n->eventId());
         QString notifyActions = notifyConfig.readEntry(QStringLiteral("Action"));
 
-        Q_FOREACH (const QString &action, notifyActions.split('|')) {
+        Q_FOREACH (const QString &action, notifyActions.split(QLatin1Char('|'))) {
             if (!d->notifyPlugins.contains(action)) {
                 qCDebug(LOG_KNOTIFICATIONS) << "No plugin for action" << action;
                 continue;
@@ -230,7 +230,7 @@ int KNotificationManager::notify(KNotification *n)
 
     d->notifications.insert(d->notifyIdCounter, n);
 
-    Q_FOREACH (const QString &action, notifyActions.split('|')) {
+    Q_FOREACH (const QString &action, notifyActions.split(QLatin1Char('|'))) {
         if (!d->notifyPlugins.contains(action)) {
             qCDebug(LOG_KNOTIFICATIONS) << "No plugin for action" << action;
             continue;

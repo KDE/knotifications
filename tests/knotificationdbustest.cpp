@@ -26,13 +26,9 @@
 #include <QtDBus/QDBusConnection>
 #include <QtDBus/QDBusMessage>
 
-static const char dbusServiceName[] = "org.freedesktop.Notifications";
-static const char dbusInterfaceName[] = "org.freedesktop.Notifications";
-static const char dbusPath[] = "/org/freedesktop/Notifications";
-
 void notificationDBusCall(const QString &iconName, const QString &title, const QString &body, const QStringList &actions, bool persistent = false)
 {
-    QDBusMessage dbusNotificationMessage = QDBusMessage::createMethodCall(dbusServiceName, dbusPath, dbusInterfaceName, QStringLiteral("Notify"));
+    QDBusMessage dbusNotificationMessage = QDBusMessage::createMethodCall(QStringLiteral("org.freedesktop.Notifications"), QStringLiteral("/org/freedesktop/Notifications"), QStringLiteral("org.freedesktop.Notifications"), QStringLiteral("Notify"));
 
     QList<QVariant> args;
 

@@ -64,7 +64,7 @@ void NotifyByAudio::notify(KNotification *notification, KNotifyConfig *config)
     const auto dataLocations = QStandardPaths::standardLocations(QStandardPaths::GenericDataLocation);
     foreach (const QString &dataLocation, dataLocations) {
         soundURL = QUrl::fromUserInput(soundFilename,
-                                       dataLocation + "/sounds",
+                                       dataLocation + QStringLiteral("/sounds"),
                                        QUrl::AssumeLocalFile);
         if (soundURL.isLocalFile() && QFile::exists(soundURL.toLocalFile())) {
             break;

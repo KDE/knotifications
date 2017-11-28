@@ -37,7 +37,7 @@ class NotifyByPopup : public KNotificationPlugin
 {
     Q_OBJECT
 public:
-    NotifyByPopup(QObject *parent = nullptr);
+    explicit NotifyByPopup(QObject *parent = nullptr);
     virtual ~NotifyByPopup();
 
     QString optionName() Q_DECL_OVERRIDE { return QStringLiteral("Popup"); }

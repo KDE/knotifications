@@ -33,7 +33,7 @@ class NotifyByTTS : public KNotificationPlugin
 {
     Q_OBJECT
 public:
-    NotifyByTTS(QObject *parent=0l);
+    explicit NotifyByTTS(QObject *parent = nullptr);
     virtual ~NotifyByTTS();
 
     QString optionName() Q_DECL_OVERRIDE { return QStringLiteral("TTS"); }

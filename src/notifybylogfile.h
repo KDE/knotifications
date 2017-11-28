@@ -33,7 +33,7 @@ class NotifyByLogfile : public KNotificationPlugin
     Q_OBJECT
 
 public:
-    NotifyByLogfile(QObject *parent = nullptr);
+    explicit NotifyByLogfile(QObject *parent = nullptr);
     virtual ~NotifyByLogfile();
 
     QString optionName() Q_DECL_OVERRIDE { return QStringLiteral("Logfile"); }

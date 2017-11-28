@@ -30,7 +30,7 @@ class NotifyByExecute : public KNotificationPlugin
 {
     Q_OBJECT
 public:
-    NotifyByExecute(QObject *parent = nullptr);
+    explicit NotifyByExecute(QObject *parent = nullptr);
     virtual ~NotifyByExecute();
 
     QString optionName() Q_DECL_OVERRIDE { return QStringLiteral("Execute"); }

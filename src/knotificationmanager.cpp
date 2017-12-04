@@ -159,10 +159,10 @@ KNotificationPlugin *KNotificationManager::pluginForAction(const QString &action
             [&action, &pluginFound](const KPluginMetaData &data) {
                 // KPluginLoader::instantiatePlugins loops over the plugins it
                 // found and calls this function to determine whether to
-                // instanciate them. We use a `pluginFound` var outside the
+                // instantiate them. We use a `pluginFound` var outside the
                 // lambda to break out of the loop once we got a match.
                 // The reason we can't just use KPluginLoader::findPlugins,
-                // loop over the meta data and instanciate only one plugin
+                // loop over the meta data and instantiate only one plugin
                 // is because the X-KDE-KNotification-OptionName field is
                 // optional (see TODO note below) and the matching plugin
                 // may be among the plugins which don't have it.
@@ -173,7 +173,7 @@ KNotificationPlugin *KNotificationManager::pluginForAction(const QString &action
                 const QJsonObject &rawData = data.rawData();
 
                 // This field is new-ish and optional. If it's not set we always
-                // instanciate the plugin, unless we already got a match.
+                // instantiate the plugin, unless we already got a match.
                 // TODO KF6: Require X-KDE-KNotification-OptionName be set and
                 // reject plugins without it.
                 if (rawData.contains(QStringLiteral("X-KDE-KNotification-OptionName"))) {
@@ -192,7 +192,7 @@ KNotificationPlugin *KNotificationManager::pluginForAction(const QString &action
             KNotificationPlugin *notifyPlugin = qobject_cast<KNotificationPlugin*>(pluginObj);
 
             if (notifyPlugin) {
-                // We try to avoid unnecessary instanciations (see above), but
+                // We try to avoid unnecessary instantiations (see above), but
                 // when they happen keep the resulting plugins around.
                 addPlugin(notifyPlugin);
 

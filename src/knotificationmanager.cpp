@@ -157,6 +157,15 @@ KNotificationPlugin *KNotificationManager::pluginForAction(const QString &action
 
         QList<QObject*> plugins = KPluginLoader::instantiatePlugins(QStringLiteral("knotification/notifyplugins"),
             [&action, &pluginFound](const KPluginMetaData &data) {
+                // KPluginLoader::instantiatePlugins loops over the plugins it
+                // found and calls this function to determine whether to
+                // instanciate them. We use a `pluginFound` var outside the
+                // lambda to break out of the loop once we got a match.
+                // The reason we can't just use KPluginLoader::findPlugins,
+                // loop over the meta data and instanciate only one plugin
+                // is because the X-KDE-KNotification-OptionName field is
+                // optional (see TODO note below) and the matching plugin
+                // may be among the plugins which don't have it.
                 if (pluginFound) {
                     return false;
                 }

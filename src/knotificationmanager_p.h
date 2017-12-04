@@ -38,7 +38,7 @@ public:
     static KNotificationManager *self();
     ~KNotificationManager();
 
-    void addPlugin(KNotificationPlugin *notifyPlugin);
+    KNotificationPlugin *pluginForAction(const QString& action);
 
     /**
      * send the dbus call to the knotify server

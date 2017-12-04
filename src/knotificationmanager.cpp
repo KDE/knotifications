@@ -1,6 +1,7 @@
 /* This file is part of the KDE libraries
    Copyright (C) 2005 Olivier Goffart <ogoffart at kde.org>
    Copyright (C) 2013-2015 Martin Klapetek <mklapetek@kde.org>
+   Copyright (C) 2017 Eike Hein <hein@kde.org>
 
    This library is free software; you can redistribute it and/or
    modify it under the terms of the GNU Library General Public
@@ -28,6 +29,7 @@
 #include <QFileInfo>
 #include <QDBusConnectionInterface>
 #include <KPluginLoader>
+#include <KPluginMetaData>
 
 #include "knotifyconfig.h"
 #include "knotificationplugin.h"
@@ -56,6 +58,8 @@ struct Q_DECL_HIDDEN KNotificationManager::Private {
     // incremental ids for notifications
     int notifyIdCounter;
     QStringList dirtyConfigCache;
+    bool inSandbox = false;
+    bool portalDBusServiceExists = false;
 };
 
 class KNotificationManagerSingleton
@@ -78,53 +82,16 @@ KNotificationManager::KNotificationManager()
     qDeleteAll(d->notifyPlugins);
     d->notifyPlugins.clear();
 
-    bool inSandbox = false;
-    bool portalDBusServiceExists = false;
-
     if (!qEnvironmentVariableIsEmpty("XDG_RUNTIME_DIR")) {
         const QByteArray runtimeDir = qgetenv("XDG_RUNTIME_DIR");
         if (!runtimeDir.isEmpty()) {
-            inSandbox = QFileInfo::exists(QFile::decodeName(runtimeDir) + QLatin1String("/flatpak-info"));
+            d->inSandbox = QFileInfo::exists(QFile::decodeName(runtimeDir) + QLatin1String("/flatpak-info"));
         }
     }
 
-    if (inSandbox) {
+    if (d->inSandbox) {
         QDBusConnectionInterface *interface = QDBusConnection::sessionBus().interface();
-        portalDBusServiceExists = interface->isServiceRegistered(QStringLiteral("org.freedesktop.portal.Desktop"));
-    }
-
-    // If we are running in sandbox and flatpak portal dbus service is available send popup notifications
-    // through the portal
-    if (inSandbox && portalDBusServiceExists) {
-        addPlugin(new NotifyByFlatpak(this));
-    } else {
-        addPlugin(new NotifyByPopup(this));
-    }
-    addPlugin(new NotifyByExecute(this));
-    addPlugin(new NotifyByLogfile(this));
-
-#ifdef HAVE_PHONON4QT5
-    addPlugin(new NotifyByAudio(this));
-#endif
-
-    addPlugin(new NotifyByTaskbar(this));
-
-#ifdef HAVE_SPEECH
-    addPlugin(new NotifyByTTS(this));
-#endif
-
-    QList<QObject*> plugins = KPluginLoader::instantiatePlugins(QStringLiteral("knotification/notifyplugins"),
-                                                                std::function<bool(const KPluginMetaData &)>(),
-                                                                this);
-
-    Q_FOREACH (QObject *plugin, plugins) {
-        KNotificationPlugin *notifyPlugin = qobject_cast<KNotificationPlugin*>(plugin);
-        if (notifyPlugin) {
-            addPlugin(notifyPlugin);
-        } else {
-            // not our/valid plugin, so delete the created object
-            plugin->deleteLater();
-        }
+        d->portalDBusServiceExists = interface->isServiceRegistered(QStringLiteral("org.freedesktop.portal.Desktop"));
     }
 
     QDBusConnection::sessionBus().connect(QString(),
@@ -133,7 +100,6 @@ KNotificationManager::KNotificationManager()
                                           QStringLiteral("reparseConfiguration"),
                                           this,
                                           SLOT(reparseConfiguration(QString)));
-
 }
 
 KNotificationManager::~KNotificationManager()
@@ -141,11 +107,98 @@ KNotificationManager::~KNotificationManager()
     delete d;
 }
 
-void KNotificationManager::addPlugin(KNotificationPlugin *notifyPlugin)
+KNotificationPlugin *KNotificationManager::pluginForAction(const QString &action)
 {
-    d->notifyPlugins[notifyPlugin->optionName()] = notifyPlugin;
-    connect(notifyPlugin, SIGNAL(finished(KNotification*)), this, SLOT(notifyPluginFinished(KNotification*)));
-    connect(notifyPlugin, SIGNAL(actionInvoked(int, int)), this, SLOT(notificationActivated(int, int)));
+    KNotificationPlugin *plugin = d->notifyPlugins.value(action);
+
+    // We already loaded a plugin for this action.
+    if (plugin) {
+        return plugin;
+    }
+
+    auto addPlugin = [this](KNotificationPlugin *plugin) {
+        d->notifyPlugins[plugin->optionName()] = plugin;
+        connect(plugin, SIGNAL(finished(KNotification*)), this, SLOT(notifyPluginFinished(KNotification*)));
+        connect(plugin, SIGNAL(actionInvoked(int, int)), this, SLOT(notificationActivated(int, int)));
+    };
+
+    // Load plugin.
+    // We have a series of built-ins up first, and fall back to trying
+    // to instanciate an externally supplied plugin.
+    if (action == QLatin1String("Popup")) {
+            if (d->inSandbox && d->portalDBusServiceExists) {
+                plugin = new NotifyByFlatpak(this);
+            } else {
+                plugin = new NotifyByPopup(this);
+            }
+
+        addPlugin(plugin);
+    } else if (action == QLatin1String("Taskbar")) {
+        plugin = new NotifyByTaskbar(this);
+        addPlugin(plugin);
+    } else if (action == QLatin1String("Sound")) {
+#ifdef HAVE_PHONON4QT5
+        plugin = new NotifyByAudio(this);
+        addPlugin(plugin);
+#endif
+    } else if (action == QLatin1String("Execute")) {
+        plugin = new NotifyByLogfile(this);
+        addPlugin(plugin);
+    } else if (action == QLatin1String("Logfile")) {
+        plugin = new NotifyByLogfile(this);
+        addPlugin(plugin);
+    } else if (action == QLatin1String("TTS")) {
+#ifdef HAVE_SPEECH
+        plugin = new NotifyByTTS(this);
+        addPlugin(plugin);
+#endif
+    } else {
+        bool pluginFound = false;
+
+        QList<QObject*> plugins = KPluginLoader::instantiatePlugins(QStringLiteral("knotification/notifyplugins"),
+            [&action, &pluginFound](const KPluginMetaData &data) {
+                if (pluginFound) {
+                    return false;
+                }
+
+                const QJsonObject &rawData = data.rawData();
+
+                // This field is new-ish and optional. If it's not set we always
+                // instanciate the plugin, unless we already got a match.
+                // TODO KF6: Require X-KDE-KNotification-OptionName be set and
+                // reject plugins without it.
+                if (rawData.contains(QStringLiteral("X-KDE-KNotification-OptionName"))) {
+                    if (rawData.value(QStringLiteral("X-KDE-KNotification-OptionName")) == action) {
+                        pluginFound = true;
+                    } else {
+                        return false;
+                    }
+                }
+
+                return true;
+            },
+            this);
+
+        Q_FOREACH (QObject *pluginObj, plugins) {
+            KNotificationPlugin *notifyPlugin = qobject_cast<KNotificationPlugin*>(pluginObj);
+
+            if (notifyPlugin) {
+                // We try to avoid unnecessary instanciations (see above), but
+                // when they happen keep the resulting plugins around.
+                addPlugin(notifyPlugin);
+
+                // Get ready to return the plugin we got asked for.
+                if (notifyPlugin->optionName() == action) {
+                    plugin = notifyPlugin;
+                }
+            } else {
+                // Not our/valid plugin, so delete the created object.
+                pluginObj->deleteLater();
+            }
+        }
+    }
+
+    return plugin;
 }
 
 void KNotificationManager::notifyPluginFinished(KNotification *notification)
@@ -231,12 +284,13 @@ int KNotificationManager::notify(KNotification *n)
     d->notifications.insert(d->notifyIdCounter, n);
 
     Q_FOREACH (const QString &action, notifyActions.split(QLatin1Char('|'))) {
-        if (!d->notifyPlugins.contains(action)) {
+        KNotificationPlugin *notifyPlugin = pluginForAction(action);
+
+        if (!notifyPlugin) {
             qCDebug(LOG_KNOTIFICATIONS) << "No plugin for action" << action;
             continue;
         }
 
-        KNotificationPlugin *notifyPlugin = d->notifyPlugins[action];
         n->ref();
         qCDebug(LOG_KNOTIFICATIONS) << "Calling notify on" << notifyPlugin->optionName();
         notifyPlugin->notify(n, &notifyConfig);

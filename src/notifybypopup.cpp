@@ -307,8 +307,7 @@ void NotifyByPopup::onPassivePopupDestroyed()
         return;
     }
 
-    QMap<KNotification*, KPassivePopup*>::iterator it;
-    for (it = d->passivePopups.begin(); it != d->passivePopups.end(); ++it) {
+    for (QMap<KNotification*, KPassivePopup*>::iterator it = d->passivePopups.begin(); it != d->passivePopups.end(); ++it) {
         QObject *popup = it.value();
         if (popup && popup == destroyedPopup) {
             finish(it.key());
@@ -522,7 +521,7 @@ void NotifyByPopup::onGalagoServerCapabilitiesReceived(const QStringList &capabi
     d->dbusServiceCapCacheDirty = false;
 
     // re-run notify() on all enqueued notifications
-    for (int i = 0; i < d->notificationQueue.size(); i++) {
+    for (int i = 0, total = d->notificationQueue.size(); i < total; ++i) {
         notify(d->notificationQueue.at(i).first, d->notificationQueue.at(i).second);
     }
 

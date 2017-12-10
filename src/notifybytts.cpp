@@ -32,7 +32,7 @@
 
 NotifyByTTS::NotifyByTTS(QObject *parent)
     : KNotificationPlugin(parent),
-      m_speech(0)
+      m_speech(nullptr)
 {
     m_speech = new QTextToSpeech(this);
 }
@@ -41,7 +41,7 @@ NotifyByTTS::NotifyByTTS(QObject *parent)
 NotifyByTTS::~NotifyByTTS()
 {
     delete m_speech;
-    m_speech = 0;
+    m_speech = nullptr;
 }
 
 void NotifyByTTS::notify(KNotification *notification, KNotifyConfig *config )

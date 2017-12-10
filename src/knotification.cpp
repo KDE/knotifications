@@ -92,7 +92,7 @@ KNotification::KNotification(
 {
     d->eventId = eventId;
     d->flags = flags;
-    connect(&d->updateTimer, SIGNAL(timeout()), this, SLOT(update()));
+    connect(&d->updateTimer, &QTimer::timeout, this, &KNotification::update);
     d->updateTimer.setSingleShot(true);
     d->updateTimer.setInterval(100);
     d->widget = nullptr;
@@ -463,7 +463,7 @@ bool KNotification::eventFilter(QObject *watched, QEvent *event)
     if (watched == d->widget) {
         if (event->type() == QEvent::WindowActivate) {
             if (d->flags &  CloseWhenWidgetActivated) {
-                QTimer::singleShot(500, this, SLOT(close()));
+                QTimer::singleShot(500, this, &KNotification::close);
             }
         }
     }

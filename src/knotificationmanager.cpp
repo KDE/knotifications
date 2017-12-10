@@ -281,7 +281,7 @@ int KNotificationManager::notify(KNotification *n)
         d->dirtyConfigCache.removeOne(n->appName());
     }
 
-    QString notifyActions = notifyConfig.readEntry(QStringLiteral("Action"));
+    const QString notifyActions = notifyConfig.readEntry(QStringLiteral("Action"));
 
     if (notifyActions.isEmpty() || notifyActions == QLatin1String("None")) {
         // this will cause KNotification closing itself fast

@@ -450,7 +450,9 @@ void KStatusNotifierItem::setContextMenu(QMenu *menu)
     }
 
     d->menu = menu;
+    Qt::WindowFlags oldFlags = d->menu->windowFlags();
     d->menu->setParent(nullptr);
+    d->menu->setWindowFlags(oldFlags);
 }
 
 QMenu *KStatusNotifierItem::contextMenu() const

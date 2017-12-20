@@ -1065,7 +1065,7 @@ void KStatusNotifierItemPrivate::maybeQuit()
 
 void KStatusNotifierItemPrivate::minimizeRestore()
 {
-    q->activate(QPoint(0, 0));
+    q->activate(systemTrayIcon ? systemTrayIcon->geometry().topLeft() : QPoint(0, 0));
 }
 
 void KStatusNotifierItemPrivate::hideMenu()

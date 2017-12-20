@@ -468,7 +468,7 @@ void KStatusNotifierItem::setAssociatedWidget(QWidget *associatedWidget)
 
         QObject::connect(KWindowSystem::self(), &KWindowSystem::windowAdded,
             d->associatedWidget, [this](WId id) {
-                if(d->associatedWidget->winId() == id) {
+                if(d->associatedWidget->winId() == id && d->associatedWidgetPos != QPoint(-1, -1)) {
                     d->associatedWidget->move(d->associatedWidgetPos);
                 }
             }

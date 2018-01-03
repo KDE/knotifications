@@ -78,7 +78,7 @@ public:
         } else if (popupStyle == Balloon) {
             q->setPalette(QToolTip::palette());
         }
-        connect(hideTimer, SIGNAL(timeout()), q, SLOT(hide()));
+        connect(hideTimer, &QTimer::timeout, q, &QWidget::hide);
         connect(q, SIGNAL(clicked()), q, SLOT(hide()));
     }
 

@@ -724,7 +724,7 @@ bool KStatusNotifierItem::eventFilter(QObject *watched, QEvent *event)
         if (watched == d->menu &&
                 (event->type() == QEvent::WindowDeactivate || (event->type() == QEvent::MouseButtonRelease && static_cast<QMouseEvent *>(event)->button() == Qt::LeftButton))) {
             //put at the back of even queue to let the action activate anyways
-            QTimer::singleShot(0, this, SLOT(hideMenu()));
+            QTimer::singleShot(0, this, [this]() { d->hideMenu(); });
         }
     }
     return false;

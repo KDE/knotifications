@@ -83,8 +83,8 @@ void NotifyByAudio::notify(KNotification *notification, KNotifyConfig *config)
 
     if (m_reusablePhonons.isEmpty()) {
         m = new Phonon::MediaObject(this);
-        connect(m, SIGNAL(finished()), SLOT(onAudioFinished()));
-        connect(m, SIGNAL(stateChanged(Phonon::State,Phonon::State)), SLOT(stateChanged(Phonon::State,Phonon::State)));
+        connect(m, &Phonon::MediaObject::finished, this, &NotifyByAudio::onAudioFinished);
+        connect(m, &Phonon::MediaObject::stateChanged, this, &NotifyByAudio::stateChanged);
         Phonon::createPath(m, m_audioOutput);
     } else {
         m = m_reusablePhonons.takeFirst();

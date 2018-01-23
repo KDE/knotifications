@@ -142,7 +142,7 @@ KNotificationPlugin *KNotificationManager::pluginForAction(const QString &action
         addPlugin(plugin);
 #endif
     } else if (action == QLatin1String("Execute")) {
-        plugin = new NotifyByLogfile(this);
+        plugin = new NotifyByExecute(this);
         addPlugin(plugin);
     } else if (action == QLatin1String("Logfile")) {
         plugin = new NotifyByLogfile(this);

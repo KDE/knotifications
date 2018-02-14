@@ -639,9 +639,8 @@ bool KStatusNotifierItemPrivate::checkVisibility(QPoint pos, bool perform)
     }
 #endif
 #else
-    KWindowInfo info1(associatedWidget->winId(), NET::XAWMState | NET::WMState | NET::WMDesktop);
     // mapped = visible (but possibly obscured)
-    bool mapped = (info1.mappingState() == NET::Visible) && !info1.isMinimized();
+    const bool mapped = associatedWidget->isVisible() && !associatedWidget->isMinimized();
 
 //    - not mapped -> show, raise, focus
 //    - mapped
@@ -655,7 +654,8 @@ bool KStatusNotifierItemPrivate::checkVisibility(QPoint pos, bool perform)
         }
 
         return true;
-    } else {
+    } else if (QGuiApplication::platformName() == QLatin1String("xcb")) {
+        const KWindowInfo info1(associatedWidget->winId(), NET::XAWMState | NET::WMState | NET::WMDesktop);
         QListIterator< WId > it(KWindowSystem::stackingOrder());
         it.toBack();
         while (it.hasPrevious()) {
@@ -710,6 +710,12 @@ bool KStatusNotifierItemPrivate::checkVisibility(QPoint pos, bool perform)
             emit q->activateRequested(false, pos);
         }
 
+        return false;
+    } else {
+        if (perform) {
+            minimizeRestore(false); // hide
+            emit q->activateRequested(false, pos);
+        }
         return false;
     }
 #endif

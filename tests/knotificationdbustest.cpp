@@ -23,8 +23,8 @@
 #include <QApplication>
 #include <QLabel>
 #include <QDebug>
-#include <QtDBus/QDBusConnection>
-#include <QtDBus/QDBusMessage>
+#include <QDBusConnection>
+#include <QDBusMessage>
 
 void notificationDBusCall(const QString &iconName, const QString &title, const QString &body, const QStringList &actions, bool persistent = false)
 {

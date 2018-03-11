@@ -20,9 +20,9 @@
 #include "knotificationrestrictions.h"
 
 #include <QApplication>
-#include <QtDBus/QDBusConnection>
-#include <QtDBus/QDBusMessage>
-#include <QtDBus/QDBusReply>
+#include <QDBusConnection>
+#include <QDBusMessage>
+#include <QDBusReply>
 
 #include <config-knotifications.h>
 #include "debug_p.h"

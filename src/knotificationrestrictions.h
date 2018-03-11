@@ -22,7 +22,7 @@
 
 #include <knotifications_export.h>
 
-#include <QtCore/QObject>
+#include <QObject>
 
 /**
  * @class KNotificationRestrictions knotificationrestrictions.h KNotificationRestrictions

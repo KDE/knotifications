@@ -1,7 +1,7 @@
 #ifndef KPASSIVEPOPUPTEST_H
 #define KPASSIVEPOPUPTEST_H
 
-#include <QtCore/QObject>
+#include <QObject>
 #include <QSystemTrayIcon>
 
 class Test : public QObject

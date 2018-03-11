@@ -23,10 +23,10 @@
 #include <knotifications_export.h>
 
 #include <QPixmap>
-#include <QtCore/QObject>
-#include <QtCore/QList>
-#include <QtCore/QPair>
-#include <QtCore/QUrl>
+#include <QObject>
+#include <QList>
+#include <QPair>
+#include <QUrl>
 
 class QWidget;
 class QDBusError;

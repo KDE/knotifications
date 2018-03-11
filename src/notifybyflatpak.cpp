@@ -27,7 +27,7 @@
 #include "knotification.h"
 #include "debug_p.h"
 
-#include <QtDBus/QtDBus>
+#include <QtDBus>
 #include <QDBusConnection>
 #include <QDBusConnectionInterface>
 #include <QDBusServiceWatcher>

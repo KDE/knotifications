@@ -22,7 +22,7 @@
 #ifndef KNOTIFICATIONPLUGIN_H
 #define KNOTIFICATIONPLUGIN_H
 
-#include <QtCore/QObject>
+#include <QObject>
 #include <KPluginFactory>
 
 #include "knotifications_export.h"

@@ -21,10 +21,10 @@
 #ifndef KSTATUSNOTIFIERITEM_H
 #define KSTATUSNOTIFIERITEM_H
 
-#include <QtCore/QObject>
-#include <QtCore/QString>
-#include <QtDBus/QDBusArgument>
-#include <QtCore/QPoint>
+#include <QObject>
+#include <QString>
+#include <QDBusArgument>
+#include <QPoint>
 
 #include <knotifications_export.h>
 

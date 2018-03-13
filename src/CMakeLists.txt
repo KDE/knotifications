@@ -68,13 +68,13 @@ target_include_directories(KF5Notifications INTERFACE "$<INSTALL_INTERFACE:${KDE
 
 target_link_libraries(KF5Notifications PUBLIC
    Qt5::Widgets
+   Qt5::DBus
 )
 target_link_libraries(KF5Notifications PRIVATE
    KF5::CoreAddons
    KF5::ConfigCore
    KF5::WindowSystem
    KF5::Codecs
-   Qt5::DBus
 )
 
 if (Phonon4Qt5_FOUND)

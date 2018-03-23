@@ -31,10 +31,10 @@ class NotifyByTaskbar : public KNotificationPlugin
     Q_OBJECT
 public:
     explicit NotifyByTaskbar(QObject *parent = nullptr);
-    virtual ~NotifyByTaskbar();
+    ~NotifyByTaskbar() override;
 
-    QString optionName() Q_DECL_OVERRIDE { return QStringLiteral("Taskbar"); }
-    void notify(KNotification *notification, KNotifyConfig *config) Q_DECL_OVERRIDE;
+    QString optionName() override { return QStringLiteral("Taskbar"); }
+    void notify(KNotification *notification, KNotifyConfig *config) override;
 };
 
 #endif

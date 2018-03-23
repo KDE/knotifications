@@ -38,15 +38,15 @@ class NotifyByPopup : public KNotificationPlugin
     Q_OBJECT
 public:
     explicit NotifyByPopup(QObject *parent = nullptr);
-    virtual ~NotifyByPopup();
+    ~NotifyByPopup() override;
 
-    QString optionName() Q_DECL_OVERRIDE { return QStringLiteral("Popup"); }
-    void notify(KNotification *notification, KNotifyConfig *notifyConfig) Q_DECL_OVERRIDE;
-    void close(KNotification *notification) Q_DECL_OVERRIDE;
-    void update(KNotification *notification, KNotifyConfig *config) Q_DECL_OVERRIDE;
+    QString optionName() override { return QStringLiteral("Popup"); }
+    void notify(KNotification *notification, KNotifyConfig *notifyConfig) override;
+    void close(KNotification *notification) override;
+    void update(KNotification *notification, KNotifyConfig *config) override;
 
 protected:
-    void timerEvent(QTimerEvent *event) Q_DECL_OVERRIDE;
+    void timerEvent(QTimerEvent *event) override;
 
 private Q_SLOTS:
     void onPassivePopupDestroyed();

@@ -31,8 +31,7 @@
 #include <QtDebug>
 
 NotifyByTTS::NotifyByTTS(QObject *parent)
-    : KNotificationPlugin(parent),
-      m_speech(nullptr)
+    : KNotificationPlugin(parent)
 {
     m_speech = new QTextToSpeech(this);
 }

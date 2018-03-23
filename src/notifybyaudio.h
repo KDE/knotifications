@@ -41,11 +41,11 @@ class NotifyByAudio : public KNotificationPlugin
 
 public:
     explicit NotifyByAudio(QObject *parent = nullptr);
-    virtual ~NotifyByAudio();
+    ~NotifyByAudio() override;
 
-    QString optionName() Q_DECL_OVERRIDE { return QStringLiteral("Sound"); }
-    void notify(KNotification *notification, KNotifyConfig *config) Q_DECL_OVERRIDE;
-    void close(KNotification *notification) Q_DECL_OVERRIDE;
+    QString optionName() override { return QStringLiteral("Sound"); }
+    void notify(KNotification *notification, KNotifyConfig *config) override;
+    void close(KNotification *notification) override;
 
 private Q_SLOTS:
     void onAudioFinished();

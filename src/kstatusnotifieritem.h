@@ -152,7 +152,7 @@ public:
      **/
     explicit KStatusNotifierItem(const QString &id, QObject *parent = nullptr);
 
-    ~KStatusNotifierItem();
+    ~KStatusNotifierItem() override;
 
     /**
      * @return The id which was specified in the constructor. This should be

@@ -37,12 +37,12 @@ class NotifyByFlatpak : public KNotificationPlugin
     Q_OBJECT
 public:
     explicit NotifyByFlatpak(QObject *parent = nullptr);
-    virtual ~NotifyByFlatpak();
+    ~NotifyByFlatpak() override;
 
-    QString optionName() Q_DECL_OVERRIDE { return QStringLiteral("Popup"); }
-    void notify(KNotification *notification, KNotifyConfig *notifyConfig) Q_DECL_OVERRIDE;
-    void close(KNotification *notification) Q_DECL_OVERRIDE;
-    void update(KNotification *notification, KNotifyConfig *config) Q_DECL_OVERRIDE;
+    QString optionName() override { return QStringLiteral("Popup"); }
+    void notify(KNotification *notification, KNotifyConfig *notifyConfig) override;
+    void close(KNotification *notification) override;
+    void update(KNotification *notification, KNotifyConfig *config) override;
 
 private Q_SLOTS:
 

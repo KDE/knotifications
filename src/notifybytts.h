@@ -34,13 +34,13 @@ class NotifyByTTS : public KNotificationPlugin
     Q_OBJECT
 public:
     explicit NotifyByTTS(QObject *parent = nullptr);
-    virtual ~NotifyByTTS();
+    ~NotifyByTTS() override;
 
-    QString optionName() Q_DECL_OVERRIDE { return QStringLiteral("TTS"); }
-    void notify(KNotification *notification, KNotifyConfig *config) Q_DECL_OVERRIDE;
+    QString optionName() override { return QStringLiteral("TTS"); }
+    void notify(KNotification *notification, KNotifyConfig *config) override;
 
 private:
-    QTextToSpeech *m_speech;
+    QTextToSpeech *m_speech = nullptr;
 };
 
 #endif

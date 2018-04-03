@@ -142,6 +142,15 @@ void NotifyByAudio::onAudioFinished()
 
     KNotification *notification = m_notifications.value(m, nullptr);
 
+    if (!notification) {
+        // This means that close was called already so there's nothing else to do.
+        // Ideally we should not be getting here if close has already been called
+        // since stoping a mediaobject means it won't emit finished() *BUT*
+        // since the finished signal is a queued connection in phonon it can happen
+        // that the playing had already finished and we just had not got the signal yet
+        return;
+    }
+
     //if the sound is short enough, we can't guarantee new sounds are
     //enqueued before finished is emitted.
     //so to make sure we are looping restart it when the sound finished

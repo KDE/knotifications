@@ -69,7 +69,7 @@ class KStatusNotifierItemDBus : public QObject
 
     friend class KStatusNotifierItem;
 public:
-    KStatusNotifierItemDBus(KStatusNotifierItem *parent);
+    explicit KStatusNotifierItemDBus(KStatusNotifierItem *parent);
     ~KStatusNotifierItemDBus();
 
     /**

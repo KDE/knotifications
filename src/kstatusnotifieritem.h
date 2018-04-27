@@ -478,7 +478,7 @@ Q_SIGNALS:
     void secondaryActivateRequested(const QPoint &pos);
 
 protected:
-    bool eventFilter(QObject *watched, QEvent *event) Q_DECL_OVERRIDE;
+    bool eventFilter(QObject *watched, QEvent *event) override;
 
 private:
     KStatusNotifierItemPrivate *const d;

@@ -624,7 +624,7 @@ protected:
     /**
      * reimplemented for internal reasons
      */
-    bool eventFilter(QObject *watched, QEvent *event) Q_DECL_OVERRIDE;
+    bool eventFilter(QObject *watched, QEvent *event) override;
     static QString standardEventToEventId(StandardEvent event);
     static QString standardEventToIconName(StandardEvent event);
 

@@ -1,0 +1,45 @@
+# enolp <enolp@softastur.org>, 2016.
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"PO-Revision-Date: 2016-12-20 21:22+0100\n"
+"Last-Translator: enolp <enolp@softastur.org>\n"
+"Language-Team: Asturian <alministradores@softastur.org>\n"
+"Language: ast\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Qt-Contexts: true\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: Lokalize 2.0\n"
+
+#: knotificationrestrictions.cpp:192
+msgctxt "KNotificationRestrictions|"
+msgid "Unknown Application"
+msgstr "Aplicación desconocida"
+
+#: kstatusnotifieritem.cpp:501 kstatusnotifieritem.cpp:1051
+msgctxt "KStatusNotifierItem|"
+msgid "&Minimize"
+msgstr "&Minimizar"
+
+#: kstatusnotifieritem.cpp:804
+msgctxt "KStatusNotifierItem|"
+msgid "Quit"
+msgstr "Colar"
+
+#: kstatusnotifieritem.cpp:1049
+msgctxt "KStatusNotifierItem|"
+msgid "&Restore"
+msgstr "&Restaurar"
+
+#: kstatusnotifieritem.cpp:1063
+#, qt-format
+msgctxt "KStatusNotifierItem|"
+msgid "<qt>Are you sure you want to quit <b>%1</b>?</qt>"
+msgstr "<qt>¿De xuru que quies colar <b>%1</b>?</qt>"
+
+#: kstatusnotifieritem.cpp:1066
+msgctxt "KStatusNotifierItem|"
+msgid "Confirm Quit From System Tray"
+msgstr "Confirmación de colar de la bandexa del sistema"

@@ -41,8 +41,10 @@
 #include "notifybyflatpak.h"
 #include "debug_p.h"
 
-#ifdef HAVE_PHONON4QT5
-#include "notifybyaudio.h"
+#if defined(HAVE_CANBERRA)
+#include "notifybyaudio_canberra.h"
+#elif defined(HAVE_PHONON4QT5)
+#include "notifybyaudio_phonon.h"
 #endif
 
 #ifdef HAVE_SPEECH
@@ -137,7 +139,7 @@ KNotificationPlugin *KNotificationManager::pluginForAction(const QString &action
         plugin = new NotifyByTaskbar(this);
         addPlugin(plugin);
     } else if (action == QLatin1String("Sound")) {
-#ifdef HAVE_PHONON4QT5
+#if defined(HAVE_PHONON4QT5) || defined(HAVE_CANBERRA)
         plugin = new NotifyByAudio(this);
         addPlugin(plugin);
 #endif

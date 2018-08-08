@@ -10,7 +10,7 @@ find_package(ECM 5.49.0  NO_MODULE)
 set_package_properties(ECM PROPERTIES TYPE REQUIRED DESCRIPTION "Extra CMake Modules." URL "https://projects.kde.org/projects/kdesupport/extra-cmake-modules")
 feature_summary(WHAT REQUIRED_PACKAGES_NOT_FOUND FATAL_ON_MISSING_REQUIRED_PACKAGES)
 
-set(CMAKE_MODULE_PATH ${ECM_MODULE_PATH} ${ECM_KDE_MODULE_DIR})
+set(CMAKE_MODULE_PATH ${ECM_MODULE_PATH} ${ECM_KDE_MODULE_DIR} ${CMAKE_CURRENT_SOURCE_DIR}/cmake/modules)
 
 
 include(GenerateExportHeader)
@@ -65,13 +65,23 @@ find_package(KF5Config ${KF5_DEP_VERSION} REQUIRED)
 find_package(KF5Codecs ${KF5_DEP_VERSION} REQUIRED)
 find_package(KF5CoreAddons ${KF5_DEP_VERSION} REQUIRED)
 
-find_package(Phonon4Qt5 4.6.60 REQUIRED NO_MODULE)
-set_package_properties(Phonon4Qt5 PROPERTIES
-   DESCRIPTION "Qt-based audio library"
-   TYPE REQUIRED
-   PURPOSE "Required to build audio notification support")
-if (Phonon4Qt5_FOUND)
-  add_definitions(-DHAVE_PHONON4QT5)
+find_package(Canberra)
+set_package_properties(Canberra PROPERTIES DESCRIPTION "Library for generating event sounds"
+    PURPOSE "Needed to build audio notification support"
+    URL "http://0pointer.de/lennart/projects/libcanberra"
+    TYPE OPTIONAL)
+if (CANBERRA_FOUND)
+    add_definitions(-DHAVE_CANBERRA)
+else()
+    find_package(Phonon4Qt5 4.6.60 NO_MODULE)
+    set_package_properties(Phonon4Qt5 PROPERTIES
+        DESCRIPTION "Qt-based audio library"
+        # This is REQUIRED since you cannot tell CMake "either one of those two optional ones are required"
+        TYPE REQUIRED
+        PURPOSE "Needed to build audio notification support when Canberra isn't available")
+    if (Phonon4Qt5_FOUND)
+        add_definitions(-DHAVE_PHONON4QT5)
+    endif()
 endif()
 
 remove_definitions(-DQT_NO_CAST_FROM_BYTEARRAY)

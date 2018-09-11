@@ -16,6 +16,9 @@
    Boston, MA 02110-1301, USA.
 */
 
+#ifndef FAKE_NOTIFICATION_SERVER_H
+#define FAKE_NOTIFICATION_SERVER_H
+
 #include <QObject>
 #include <QHash>
 #include <QVariantMap>
@@ -67,3 +70,5 @@ Q_SIGNALS:
 
     void newNotification();
 };
+
+#endif

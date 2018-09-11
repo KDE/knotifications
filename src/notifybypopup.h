@@ -51,7 +51,7 @@ protected:
 private Q_SLOTS:
     void onPassivePopupDestroyed();
     void onPassivePopupLinkClicked(const QString &link);
-    // slot to catch appearance or dissapearance of Notifications DBus service
+    // slot to catch appearance or disappearance of Notifications DBus service
     void onServiceOwnerChanged(const QString &, const QString &, const QString &);
     // slot which gets called when DBus signals that some notification action was invoked
     void onGalagoNotificationActionInvoked(uint notificationId, const QString &actionKey);

@@ -134,7 +134,7 @@ class QDBusError;
  *  KNotification as plugins, by deriving from KNotificationPlugin.
  *  At the time of writing, the following actions are available: Taskbar,
  *  Sound, Popup, Logfile, TTS, Execute.
- *  Actions can be combined by seperating them with '|'.
+ *  Actions can be combined by separating them with '|'.
  *
  *  Contexts is a comma separated list of possible context for this event.
  *
@@ -317,7 +317,7 @@ public:
     /**
      * @brief the widget associated to the notification
      *
-     * If the widget is destroyed, the notification will be automatically cancelled.
+     * If the widget is destroyed, the notification will be automatically canceled.
      * If the widget is activated, the notification will be automatically closed if the NotificationFlags specify that
      *
      * When the notification is activated, the widget might be raised.
@@ -532,7 +532,7 @@ Q_SIGNALS:
      * The parameter passed by the signal is the index of the action
      * in the QStringList set by setActions() call.
      *
-     * @param action will be 0 if the default aciton was activated, or the index of the action in the actions QStringList
+     * @param action will be 0 if the default action was activated, or the index of the action in the actions QStringList
      */
     void activated(unsigned int action);
 

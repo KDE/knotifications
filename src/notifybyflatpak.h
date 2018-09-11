@@ -46,7 +46,7 @@ public:
 
 private Q_SLOTS:
 
-    // slot to catch appearance or dissapearance of org.freedesktop.Desktop DBus service
+    // slot to catch appearance or disappearance of org.freedesktop.Desktop DBus service
     void onServiceOwnerChanged(const QString &, const QString &, const QString &);
 
     void onPortalNotificationActionInvoked(const QString &, const QString &, const QVariantList &);

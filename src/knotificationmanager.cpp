@@ -126,7 +126,7 @@ KNotificationPlugin *KNotificationManager::pluginForAction(const QString &action
 
     // Load plugin.
     // We have a series of built-ins up first, and fall back to trying
-    // to instanciate an externally supplied plugin.
+    // to instantiate an externally supplied plugin.
     if (action == QLatin1String("Popup")) {
             if (d->inSandbox && d->portalDBusServiceExists) {
                 plugin = new NotifyByFlatpak(this);

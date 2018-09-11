@@ -360,7 +360,7 @@ public:
      * usually you don't need to call this unless you want to use
      * a custom QMenu subclass as context menu.
      *
-     * The KStatusNotifierItem instance takes ownerhip of the menu,
+     * The KStatusNotifierItem instance takes ownership of the menu,
      * and will delete it upon its destruction.
      */
     void setContextMenu(QMenu *menu);
@@ -460,7 +460,7 @@ Q_SIGNALS:
      * Inform the host application that an activation has been requested,
      *           for instance left mouse click, but this is not guaranteed since
      *           it's dependent from the visualization
-     * @param active if it's true the application asked for the activatin
+     * @param active if it's true the application asked for the activation
      *              of the main window, if it's false it asked for hiding
      * @param pos the position in the screen where the user clicked to
      *  trigger this signal, QPoint() if it's not the consequence of a mouse click.

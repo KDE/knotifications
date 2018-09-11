@@ -131,7 +131,7 @@ void NotifyByFlatpak::notify(KNotification *notification, const KNotifyConfig &n
     // check if Notifications DBus service exists on bus, use it if it does
     if (d->dbusServiceExists) {
         if (!d->sendNotificationToPortal(notification, notifyConfig)) {
-            finish(notification); //an error ocurred.
+            finish(notification); //an error occurred.
         }
     }
 }

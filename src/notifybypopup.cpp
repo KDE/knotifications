@@ -218,7 +218,7 @@ void NotifyByPopup::notify(KNotification *notification, KNotifyConfig *notifyCon
 void NotifyByPopup::notify(KNotification *notification, const KNotifyConfig &notifyConfig)
 {
     if (d->passivePopups.contains(notification) || d->galagoNotifications.contains(notification->id())) {
-        // notification is alrady on the screen, do nothing
+        // notification is already on the screen, do nothing
         finish(notification);
         return;
     }
@@ -233,7 +233,7 @@ void NotifyByPopup::notify(KNotification *notification, const KNotifyConfig &not
             d->queryPopupServerCapabilities();
         } else {
             if (!d->sendNotificationToGalagoServer(notification, notifyConfig)) {
-                finish(notification); //an error ocurred.
+                finish(notification); //an error occurred.
             }
         }
         return;

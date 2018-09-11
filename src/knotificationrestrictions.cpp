@@ -155,7 +155,7 @@ void KNotificationRestrictions::Private::startScreenSaverPrevention()
 
     qCDebug(LOG_KNOTIFICATIONS) << "---- using XTest";
     // send a fake event right away in case this got started after a period of
-    // innactivity leading to the screensaver set to activate in <55s
+    // inactivity leading to the screensaver set to activate in <55s
     screensaverFakeKeyEvent();
     screensaverTimer->start(55000);
 #endif // HAVE_XTEST

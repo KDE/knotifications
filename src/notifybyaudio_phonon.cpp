@@ -94,12 +94,12 @@ void NotifyByAudio::notify(KNotification *notification, KNotifyConfig *config)
     m->play();
 
     if (notification->flags() & KNotification::LoopSound) {
-        // Enqueing essentially prevents the subsystem pipeline from partial teardown
+        // Enqueuing essentially prevents the subsystem pipeline from partial teardown
         // which is the most desired thing in terms of load and delay between loop cycles.
         // All of this is timing dependent, which is why we want at least one source queued;
         // in reality the shorter the source the more sources we want to be queued to prevent
         // the MO from running out of sources.
-        // Point being that all phonon signals are forcefully queued (becuase qthread has problems detecting !pthread threads),
+        // Point being that all phonon signals are forcefully queued (because qthread has problems detecting !pthread threads),
         // so when you get for example the aboutToFinish signal the MO might already have stopped playing.
         //
         // And so we queue it three times at least; doesn't cost anything and keeps us safe.
@@ -145,7 +145,7 @@ void NotifyByAudio::onAudioFinished()
     if (!notification) {
         // This means that close was called already so there's nothing else to do.
         // Ideally we should not be getting here if close has already been called
-        // since stoping a mediaobject means it won't emit finished() *BUT*
+        // since stopping a mediaobject means it won't emit finished() *BUT*
         // since the finished signal is a queued connection in phonon it can happen
         // that the playing had already finished and we just had not got the signal yet
         return;

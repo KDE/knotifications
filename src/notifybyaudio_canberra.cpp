@@ -148,6 +148,10 @@ void NotifyByAudio::ca_finish_callback(ca_context *c, uint32_t id, int error_cod
 void NotifyByAudio::finishCallback(uint32_t id, int error_code)
 {
     KNotification *notification = m_notifications.value(id, nullptr);
+    if (!notification) {
+        // We may have gotten a late finish callback.
+        return;
+    }
 
     if (error_code == CA_SUCCESS) {
         // Loop the sound now if we have one
@@ -179,8 +183,14 @@ void NotifyByAudio::close(KNotification *notification)
             return;
         }
     }
-}
 
+    // Consider the notification finished. ca_context_cancel schedules a cancel
+    // but we need to stop using the noficiation immediately or we could access
+    // a notification past its lifetime (close() may, or indeed must,
+    // schedule deletion of the notification).
+    // https://bugs.kde.org/show_bug.cgi?id=398695
+    finishNotification(notification, id);
+}
 
 void NotifyByAudio::finishNotification(KNotification *notification, quint32 id)
 {

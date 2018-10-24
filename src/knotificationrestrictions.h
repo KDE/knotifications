@@ -115,8 +115,6 @@ public:
 private:
     class Private;
     Private *const d;
-
-    Q_PRIVATE_SLOT(d, void screensaverFakeKeyEvent())
 };
 
 Q_DECLARE_OPERATORS_FOR_FLAGS(KNotificationRestrictions::Services)

@@ -79,7 +79,7 @@ public:
 
         movie->setParent(this);
         movie->setCacheMode(QMovie::CacheAll);
-        connect(movie, SIGNAL(frameChanged(int)), this, SLOT(slotNewFrame()));
+        connect(movie, &QMovie::frameChanged, this, &KStatusNotifierLegacyIcon::slotNewFrame);
     }
 
     void setIconWithMask(QIcon &icon, bool isMask)

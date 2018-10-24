@@ -79,7 +79,7 @@ public:
             q->setPalette(QToolTip::palette());
         }
         connect(hideTimer, &QTimer::timeout, q, &QWidget::hide);
-        connect(q, SIGNAL(clicked()), q, SLOT(hide()));
+        connect(q, QOverload<>::of(&KPassivePopup::clicked), q, &QWidget::hide);
     }
 
     KPassivePopup *q;

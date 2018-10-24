@@ -78,7 +78,7 @@ KNotification::KNotification(const QString &eventId, QWidget *parent, const Noti
     d->eventId = eventId;
     d->flags = flags;
     setWidget(parent);
-    connect(&d->updateTimer, SIGNAL(timeout()), this, SLOT(update()));
+    connect(&d->updateTimer, &QTimer::timeout, this, &KNotification::update);
     d->updateTimer.setSingleShot(true);
     d->updateTimer.setInterval(100);
 }
@@ -347,7 +347,7 @@ KNotification *KNotification::event(const QString &eventid, const QString &title
     notify->setPixmap(pixmap);
     notify->setComponentName((flags & DefaultEvent) ? QStringLiteral("plasma_workspace") : componentName);
 
-    QTimer::singleShot(0, notify, SLOT(sendEvent()));
+    QTimer::singleShot(0, notify, &KNotification::sendEvent);
 
     return notify;
 }
@@ -381,7 +381,7 @@ KNotification *KNotification::event(const QString &eventid, const QString &title
     notify->setIconName(iconName);
     notify->setComponentName((flags & DefaultEvent) ? QStringLiteral("plasma_workspace") : componentName);
 
-    QTimer::singleShot(0, notify, SLOT(sendEvent()));
+    QTimer::singleShot(0, notify, &KNotification::sendEvent);
 
     return notify;
 }

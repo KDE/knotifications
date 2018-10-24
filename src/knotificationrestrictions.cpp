@@ -149,8 +149,8 @@ void KNotificationRestrictions::Private::startScreenSaverPrevention()
 
     if (!screensaverTimer) {
         screensaverTimer = new QTimer(q);
-        connect(screensaverTimer, SIGNAL(timeout()),
-                q, SLOT(screensaverFakeKeyEvent()));
+        connect(screensaverTimer, &QTimer::timeout,
+                q, [this]() { screensaverFakeKeyEvent(); });
     }
 
     qCDebug(LOG_KNOTIFICATIONS) << "---- using XTest";
@@ -193,5 +193,3 @@ QString KNotificationRestrictions::Private::determineProgramName()
     }
     return appName;
 }
-
-#include "moc_knotificationrestrictions.cpp"

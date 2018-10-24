@@ -446,7 +446,7 @@ void KStatusNotifierItem::setContextMenu(QMenu *menu)
 #endif
         }
 
-        connect(menu, SIGNAL(aboutToShow()), this, SLOT(contextMenuAboutToShow()));
+        connect(menu, &QMenu::aboutToShow, this, [this]() { d->contextMenuAboutToShow(); });
     }
 
     d->menu = menu;
@@ -499,7 +499,7 @@ void KStatusNotifierItem::setAssociatedWidget(QWidget *associatedWidget)
             action = new QAction(this);
             d->actionCollection.insert(QStringLiteral("minimizeRestore"), action);
             action->setText(tr("&Minimize"));
-            connect(action, SIGNAL(triggered(bool)), this, SLOT(minimizeRestore()));
+            connect(action, &QAction::triggered, this, [this]() { d->minimizeRestore(); });
         }
 
         KWindowInfo info(d->associatedWidget->winId(), NET::WMDesktop);
@@ -770,8 +770,10 @@ void KStatusNotifierItemPrivate::init(const QString &extraId)
             QDBusConnection::sessionBus(),
             QDBusServiceWatcher::WatchForOwnerChange,
             q);
-    QObject::connect(watcher, SIGNAL(serviceOwnerChanged(QString,QString,QString)),
-                     q, SLOT(serviceChange(QString,QString,QString)));
+    QObject::connect(watcher, &QDBusServiceWatcher::serviceOwnerChanged,
+                     q, [this](const QString &name, const QString &oldOwner, const QString &newOwner) {
+                         serviceChange(name, oldOwner, newOwner);
+                     });
 
     //create a default menu, just like in KSystemtrayIcon
     QMenu *m = new QMenu(associatedWidget);
@@ -803,6 +805,10 @@ void KStatusNotifierItemPrivate::init(const QString &extraId)
     QAction *action = new QAction(q);
     action->setText(KStatusNotifierItem::tr("Quit"));
     action->setIcon(QIcon::fromTheme(QStringLiteral("application-exit")));
+    // cannot yet convert to function-pointer-based connect:
+    // some apps like kalarm or korgac have a hack to rewire the connection
+    // of the "quit" action to a own slot, and rely on the name-based slot to disconnect
+    // TODO: extend KStatusNotifierItem API to support such needs
     QObject::connect(action, SIGNAL(triggered()), q, SLOT(maybeQuit()));
     actionCollection.insert(QStringLiteral("quit"), action);
 
@@ -917,8 +923,10 @@ void KStatusNotifierItemPrivate::setLegacySystemTrayEnabled(bool enabled)
             syncLegacySystemTrayIcon();
             systemTrayIcon->setToolTip(toolTipTitle);
             systemTrayIcon->show();
-            QObject::connect(systemTrayIcon, SIGNAL(wheel(int)), q, SLOT(legacyWheelEvent(int)));
-            QObject::connect(systemTrayIcon, SIGNAL(activated(QSystemTrayIcon::ActivationReason)), q, SLOT(legacyActivated(QSystemTrayIcon::ActivationReason)));
+            QObject::connect(systemTrayIcon, &KStatusNotifierLegacyIcon::wheel,
+                             q, [this](int delta) { legacyWheelEvent(delta); });
+            QObject::connect(systemTrayIcon, &QSystemTrayIcon::activated,
+                             q, [this](QSystemTrayIcon::ActivationReason reason) { legacyActivated(reason); });
         } else if (isKde) {
             // prevent infinite recursion if the KDE platform plugin is loaded
             // but SNI is not available; see bug 350785

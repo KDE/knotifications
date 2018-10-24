@@ -68,6 +68,7 @@ private:
     void update(KNotification *notification, const KNotifyConfig &notifyConfig);
 
     NotifyByPopupPrivate * const d;
+    friend class NotifyByPopupPrivate;
 };
 
 #endif

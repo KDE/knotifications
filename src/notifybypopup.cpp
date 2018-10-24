@@ -181,8 +181,8 @@ NotifyByPopup::NotifyByPopup(QObject *parent)
     watcher->setConnection(QDBusConnection::sessionBus());
     watcher->setWatchMode(QDBusServiceWatcher::WatchForOwnerChange);
     watcher->addWatchedService(QString::fromLatin1(dbusServiceName));
-    connect(watcher, SIGNAL(serviceOwnerChanged(QString,QString,QString)),
-            SLOT(onServiceOwnerChanged(QString,QString,QString)));
+    connect(watcher, &QDBusServiceWatcher::serviceOwnerChanged,
+            this, &NotifyByPopup::onServiceOwnerChanged);
 
 #ifndef Q_WS_WIN
     if (!d->dbusServiceExists) {
@@ -291,7 +291,7 @@ void NotifyByPopup::notify(KNotification *notification, const KNotifyConfig &not
         d->nextPosition = screen.top();
     }
     pop->setAutoDelete(true);
-    connect(pop, SIGNAL(destroyed()), this, SLOT(onPassivePopupDestroyed()));
+    connect(pop, &QObject::destroyed, this, &NotifyByPopup::onPassivePopupDestroyed);
 
     pop->setTimeout(timeout);
     pop->adjustSize();
@@ -605,8 +605,10 @@ void NotifyByPopupPrivate::fillPopup(KPassivePopup *popup, KNotification *notifi
         link->setTextInteractionFlags(Qt::LinksAccessibleByMouse);
         link->setOpenExternalLinks(false);
         //link->setAlignment( AlignRight );
-        QObject::connect(link, SIGNAL(linkActivated(const QString &)), q, SLOT(onPassivePopupLinkClicked(const QString& ) ) );
-        QObject::connect(link, SIGNAL(linkActivated(const QString &)), popup, SLOT(hide()));
+        QObject::connect(link, &QLabel::linkActivated,
+                         q, &NotifyByPopup::onPassivePopupLinkClicked);
+        QObject::connect(link, &QLabel::linkActivated,
+                         popup, &QWidget::hide);
     }
 
     popup->setView( vb );
@@ -733,8 +735,8 @@ bool NotifyByPopupPrivate::sendNotificationToGalagoServer(KNotification *notific
     QDBusPendingCallWatcher *watcher = new QDBusPendingCallWatcher(notificationCall, notification);
     watcher->setProperty("notificationObject", QVariant::fromValue<KNotification*>(notification));
 
-    QObject::connect(watcher, SIGNAL(finished(QDBusPendingCallWatcher*)),
-                     q, SLOT(onGalagoServerReply(QDBusPendingCallWatcher*)));
+    QObject::connect(watcher, &QDBusPendingCallWatcher::finished,
+                     q, &NotifyByPopup::onGalagoServerReply);
 
     return true;
 }

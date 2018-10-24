@@ -120,8 +120,10 @@ KNotificationPlugin *KNotificationManager::pluginForAction(const QString &action
 
     auto addPlugin = [this](KNotificationPlugin *plugin) {
         d->notifyPlugins[plugin->optionName()] = plugin;
-        connect(plugin, SIGNAL(finished(KNotification*)), this, SLOT(notifyPluginFinished(KNotification*)));
-        connect(plugin, SIGNAL(actionInvoked(int, int)), this, SLOT(notificationActivated(int, int)));
+        connect(plugin, &KNotificationPlugin::finished,
+                this, &KNotificationManager::notifyPluginFinished);
+        connect(plugin, &KNotificationPlugin::actionInvoked,
+                this, &KNotificationManager::notificationActivated);
     };
 
     // Load plugin.

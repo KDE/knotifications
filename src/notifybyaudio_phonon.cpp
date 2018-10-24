@@ -108,7 +108,8 @@ void NotifyByAudio::notify(KNotification *notification, KNotifyConfig *config)
         m->enqueue(soundURL);
         m->enqueue(soundURL);
 
-        connect(m, SIGNAL(currentSourceChanged(Phonon::MediaSource)), SLOT(onAudioSourceChanged(Phonon::MediaSource)));
+        connect(m, &Phonon::MediaObject::currentSourceChanged,
+                this, &NotifyByAudio::onAudioSourceChanged);
     }
 
     Q_ASSERT(!m_notifications.value(m));
@@ -170,7 +171,8 @@ void NotifyByAudio::finishNotification(KNotification *notification, Phonon::Medi
         finish(notification);
     }
 
-    disconnect(m, SIGNAL(currentSourceChanged(Phonon::MediaSource)), this, SLOT(onAudioSourceChanged(Phonon::MediaSource)));
+    disconnect(m, &Phonon::MediaObject::currentSourceChanged,
+               this, &NotifyByAudio::onAudioSourceChanged);
 
     m_reusablePhonons.append(m);
 }

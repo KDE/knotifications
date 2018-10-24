@@ -415,7 +415,7 @@ void NotifyByPopup::onServiceOwnerChanged(const QString &serviceName, const QStr
 {
     Q_UNUSED(serviceName);
     // close all notifications we currently hold reference to
-    Q_FOREACH (KNotification *n, d->galagoNotifications.values()) {
+    for (KNotification *n : qAsConst(d->galagoNotifications)) {
         if (n) {
             emit finished(n);
         }

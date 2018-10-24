@@ -27,12 +27,12 @@
 #include "knotification.h"
 #include "debug_p.h"
 
-#include <QtDBus>
 #include <QDBusConnection>
 #include <QDBusConnectionInterface>
 #include <QDBusServiceWatcher>
 #include <QDBusError>
 #include <QDBusMessage>
+#include <QDBusMetaType>
 #include <QMap>
 
 #include <kconfiggroup.h>

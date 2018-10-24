@@ -65,7 +65,7 @@ void NotifyByTTS::notify(KNotification *notification, KNotifyConfig *config )
 
         m_speech->say(say);
 
-        finished(notification);
+        emit finished(notification);
     } else {
         qCDebug(LOG_KNOTIFICATIONS) << "Speech backend has an error, not speaking";
     }

@@ -416,11 +416,11 @@ void NotifyByPopup::onServiceOwnerChanged(const QString &serviceName, const QStr
     // close all notifications we currently hold reference to
     Q_FOREACH (KNotification *n, d->galagoNotifications.values()) {
         if (n) {
-            finished(n);
+            emit finished(n);
         }
     }
     Q_FOREACH (KNotification *n, d->passivePopups.keys()) {
-        finished(n);
+        emit finished(n);
     }
     d->galagoNotifications.clear();
     d->passivePopups.clear();
@@ -488,7 +488,7 @@ void NotifyByPopup::onGalagoNotificationClosed(uint dbus_id, uint reason)
     d->galagoNotifications.remove(dbus_id);
 
     if (n) {
-        finished(n);
+        emit finished(n);
         // The popup bubble is the only user facing part of a notification,
         // if the user closes the popup, it means he wants to get rid
         // of the notification completely, including playing sound etc

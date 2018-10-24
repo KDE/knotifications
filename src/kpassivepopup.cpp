@@ -144,7 +144,7 @@ public:
             QPolygon corner = path.toFillPolygon().toPolygon();
 
             surround.resize(z + corner.count() - 1);
-            for (int s = 1; s < corner.count() - 1; s++, z++) {
+            for (int s = 1; s < corner.count() - 1; ++s, ++z) {
                 surround.setPoint(z, corner[s]);
             }
 

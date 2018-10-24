@@ -325,7 +325,8 @@ void NotifyByPopup::onPassivePopupDestroyed()
 void NotifyByPopup::timerEvent(QTimerEvent *event)
 {
     if (event->timerId() != d->animationTimer) {
-        return KNotificationPlugin::timerEvent(event);
+        KNotificationPlugin::timerEvent(event);
+        return;
     }
 
     bool cont = false;

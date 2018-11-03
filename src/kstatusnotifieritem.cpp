@@ -446,7 +446,7 @@ void KStatusNotifierItem::setContextMenu(QMenu *menu)
 #endif
         }
 
-        connect(menu, &QMenu::aboutToShow, this, [this]() { d->contextMenuAboutToShow(); });
+        connect(menu, SIGNAL(aboutToShow()), this, SLOT(contextMenuAboutToShow()));
     }
 
     d->menu = menu;
@@ -499,7 +499,7 @@ void KStatusNotifierItem::setAssociatedWidget(QWidget *associatedWidget)
             action = new QAction(this);
             d->actionCollection.insert(QStringLiteral("minimizeRestore"), action);
             action->setText(tr("&Minimize"));
-            connect(action, &QAction::triggered, this, [this]() { d->minimizeRestore(); });
+            connect(action, SIGNAL(triggered(bool)), this, SLOT(minimizeRestore()));
         }
 
         KWindowInfo info(d->associatedWidget->winId(), NET::WMDesktop);
@@ -770,10 +770,8 @@ void KStatusNotifierItemPrivate::init(const QString &extraId)
             QDBusConnection::sessionBus(),
             QDBusServiceWatcher::WatchForOwnerChange,
             q);
-    QObject::connect(watcher, &QDBusServiceWatcher::serviceOwnerChanged,
-                     q, [this](const QString &name, const QString &oldOwner, const QString &newOwner) {
-                         serviceChange(name, oldOwner, newOwner);
-                     });
+    QObject::connect(watcher, SIGNAL(serviceOwnerChanged(QString,QString,QString)),
+                     q, SLOT(serviceChange(QString,QString,QString)));
 
     //create a default menu, just like in KSystemtrayIcon
     QMenu *m = new QMenu(associatedWidget);
@@ -923,10 +921,8 @@ void KStatusNotifierItemPrivate::setLegacySystemTrayEnabled(bool enabled)
             syncLegacySystemTrayIcon();
             systemTrayIcon->setToolTip(toolTipTitle);
             systemTrayIcon->show();
-            QObject::connect(systemTrayIcon, &KStatusNotifierLegacyIcon::wheel,
-                             q, [this](int delta) { legacyWheelEvent(delta); });
-            QObject::connect(systemTrayIcon, &QSystemTrayIcon::activated,
-                             q, [this](QSystemTrayIcon::ActivationReason reason) { legacyActivated(reason); });
+            QObject::connect(systemTrayIcon, SIGNAL(wheel(int)), q, SLOT(legacyWheelEvent(int)));
+            QObject::connect(systemTrayIcon, SIGNAL(activated(QSystemTrayIcon::ActivationReason)), q, SLOT(legacyActivated(QSystemTrayIcon::ActivationReason)));
         } else if (isKde) {
             // prevent infinite recursion if the KDE platform plugin is loaded
             // but SNI is not available; see bug 350785

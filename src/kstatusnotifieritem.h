@@ -483,7 +483,14 @@ protected:
 private:
     KStatusNotifierItemPrivate *const d;
 
+    Q_PRIVATE_SLOT(d, void serviceChange(const QString &name,
+                                         const QString &oldOwner,
+                                         const QString &newOwner))
+    Q_PRIVATE_SLOT(d, void contextMenuAboutToShow())
     Q_PRIVATE_SLOT(d, void maybeQuit())
+    Q_PRIVATE_SLOT(d, void minimizeRestore())
+    Q_PRIVATE_SLOT(d, void legacyWheelEvent(int))
+    Q_PRIVATE_SLOT(d, void legacyActivated(QSystemTrayIcon::ActivationReason))
 };
 
 #endif

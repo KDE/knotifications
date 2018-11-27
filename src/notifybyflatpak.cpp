@@ -27,6 +27,7 @@
 #include "knotification.h"
 #include "debug_p.h"
 
+#include <QBuffer>
 #include <QDBusConnection>
 #include <QDBusConnectionInterface>
 #include <QDBusServiceWatcher>
@@ -42,6 +43,11 @@ static const char portalDbusPath[] = "/org/freedesktop/portal/desktop";
 
 class NotifyByFlatpakPrivate {
 public:
+    struct PortalIcon {
+        QString str;
+        QDBusVariant data;
+    };
+
     NotifyByFlatpakPrivate(NotifyByFlatpak *parent) : dbusServiceExists(false), q(parent) {}
 
     /**
@@ -86,6 +92,24 @@ public:
 
     NotifyByFlatpak * const q;
 };
+
+QDBusArgument &operator<<(QDBusArgument &argument, const NotifyByFlatpakPrivate::PortalIcon &icon)
+{
+    argument.beginStructure();
+    argument << icon.str << icon.data;
+    argument.endStructure();
+    return argument;
+}
+
+const QDBusArgument &operator>>(const QDBusArgument &argument, NotifyByFlatpakPrivate::PortalIcon &icon)
+{
+    argument.beginStructure();
+    argument >> icon.str >> icon.data;
+    argument.endStructure();
+    return argument;
+}
+
+Q_DECLARE_METATYPE(NotifyByFlatpakPrivate::PortalIcon)
 
 //---------------------------------------------------------------------------------------
 
@@ -254,7 +278,25 @@ bool NotifyByFlatpakPrivate::sendNotificationToPortal(KNotification *notificatio
     }
 
     qDBusRegisterMetaType<QList<QVariantMap> >();
-    portalArgs.insert(QStringLiteral("icon"), iconName);
+    qDBusRegisterMetaType<PortalIcon>();
+
+    if (!notification->pixmap().isNull()) {
+        QByteArray pixmapData;
+        QBuffer buffer(&pixmapData);
+        buffer.open(QIODevice::WriteOnly);
+        notification->pixmap().save(&buffer, "PNG");
+        buffer.close();
+
+        PortalIcon icon;
+        icon.str = QStringLiteral("bytes");
+        icon.data.setVariant(pixmapData);
+        portalArgs.insert(QStringLiteral("icon"), QVariant::fromValue<PortalIcon>(icon));
+    } else {
+        // Use this for now for backwards compatibility, we can as well set the variant to be (sv) where the
+        // string is keyword "themed" and the variant is an array of strings with icon names
+        portalArgs.insert(QStringLiteral("icon"), iconName);
+    }
+
     portalArgs.insert(QStringLiteral("title"), title);
     portalArgs.insert(QStringLiteral("body"), text);
     portalArgs.insert(QStringLiteral("buttons"), QVariant::fromValue<QList<QVariantMap> >(buttons));

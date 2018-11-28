@@ -38,7 +38,7 @@
 #include "notifybylogfile.h"
 #include "notifybytaskbar.h"
 #include "notifybyexecute.h"
-#include "notifybyflatpak.h"
+#include "notifybyportal.h"
 #include "debug_p.h"
 
 #if defined(HAVE_CANBERRA)
@@ -89,6 +89,8 @@ KNotificationManager::KNotificationManager()
         if (!runtimeDir.isEmpty()) {
             d->inSandbox = QFileInfo::exists(QFile::decodeName(runtimeDir) + QLatin1String("/flatpak-info"));
         }
+    } else if (qEnvironmentVariableIsSet("SNAP")) {
+        d->inSandbox = true;
     }
 
     if (d->inSandbox) {
@@ -131,7 +133,7 @@ KNotificationPlugin *KNotificationManager::pluginForAction(const QString &action
     // to instantiate an externally supplied plugin.
     if (action == QLatin1String("Popup")) {
             if (d->inSandbox && d->portalDBusServiceExists) {
-                plugin = new NotifyByFlatpak(this);
+                plugin = new NotifyByPortal(this);
             } else {
                 plugin = new NotifyByPopup(this);
             }

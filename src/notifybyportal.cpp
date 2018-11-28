@@ -21,7 +21,7 @@
    License along with this library.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "notifybyflatpak.h"
+#include "notifybyportal.h"
 
 #include "knotifyconfig.h"
 #include "knotification.h"
@@ -41,14 +41,14 @@ static const char portalDbusServiceName[] = "org.freedesktop.portal.Desktop";
 static const char portalDbusInterfaceName[] = "org.freedesktop.portal.Notification";
 static const char portalDbusPath[] = "/org/freedesktop/portal/desktop";
 
-class NotifyByFlatpakPrivate {
+class NotifyByPortalPrivate {
 public:
     struct PortalIcon {
         QString str;
         QDBusVariant data;
     };
 
-    NotifyByFlatpakPrivate(NotifyByFlatpak *parent) : dbusServiceExists(false), q(parent) {}
+    NotifyByPortalPrivate(NotifyByPortal *parent) : dbusServiceExists(false), q(parent) {}
 
     /**
      * Sends notification to DBus "org.freedesktop.notifications" interface.
@@ -82,7 +82,7 @@ public:
      * As we communicate with the notification server over dbus
      * we use only ids, this is for fast KNotifications lookup
      */
-    QHash<uint, QPointer<KNotification>> flatpakNotifications;
+    QHash<uint, QPointer<KNotification>> portalNotifications;
 
     /*
      * Holds the id that will be assigned to the next notification source
@@ -90,10 +90,10 @@ public:
      */
     uint nextId;
 
-    NotifyByFlatpak * const q;
+    NotifyByPortal * const q;
 };
 
-QDBusArgument &operator<<(QDBusArgument &argument, const NotifyByFlatpakPrivate::PortalIcon &icon)
+QDBusArgument &operator<<(QDBusArgument &argument, const NotifyByPortalPrivate::PortalIcon &icon)
 {
     argument.beginStructure();
     argument << icon.str << icon.data;
@@ -101,7 +101,7 @@ QDBusArgument &operator<<(QDBusArgument &argument, const NotifyByFlatpakPrivate:
     return argument;
 }
 
-const QDBusArgument &operator>>(const QDBusArgument &argument, NotifyByFlatpakPrivate::PortalIcon &icon)
+const QDBusArgument &operator>>(const QDBusArgument &argument, NotifyByPortalPrivate::PortalIcon &icon)
 {
     argument.beginStructure();
     argument >> icon.str >> icon.data;
@@ -109,13 +109,13 @@ const QDBusArgument &operator>>(const QDBusArgument &argument, NotifyByFlatpakPr
     return argument;
 }
 
-Q_DECLARE_METATYPE(NotifyByFlatpakPrivate::PortalIcon)
+Q_DECLARE_METATYPE(NotifyByPortalPrivate::PortalIcon)
 
 //---------------------------------------------------------------------------------------
 
-NotifyByFlatpak::NotifyByFlatpak(QObject *parent)
+NotifyByPortal::NotifyByPortal(QObject *parent)
   : KNotificationPlugin(parent),
-    d(new NotifyByFlatpakPrivate(this))
+    d(new NotifyByPortalPrivate(this))
 {
     // check if service already exists on plugin instantiation
     QDBusConnectionInterface *interface = QDBusConnection::sessionBus().interface();
@@ -130,23 +130,23 @@ NotifyByFlatpak::NotifyByFlatpak(QObject *parent)
     watcher->setConnection(QDBusConnection::sessionBus());
     watcher->setWatchMode(QDBusServiceWatcher::WatchForOwnerChange);
     watcher->addWatchedService(QString::fromLatin1(portalDbusServiceName));
-    connect(watcher,&QDBusServiceWatcher::serviceOwnerChanged, this, &NotifyByFlatpak::onServiceOwnerChanged);
+    connect(watcher,&QDBusServiceWatcher::serviceOwnerChanged, this, &NotifyByPortal::onServiceOwnerChanged);
 }
 
 
-NotifyByFlatpak::~NotifyByFlatpak()
+NotifyByPortal::~NotifyByPortal()
 {
     delete d;
 }
 
-void NotifyByFlatpak::notify(KNotification *notification, KNotifyConfig *notifyConfig)
+void NotifyByPortal::notify(KNotification *notification, KNotifyConfig *notifyConfig)
 {
     notify(notification, *notifyConfig);
 }
 
-void NotifyByFlatpak::notify(KNotification *notification, const KNotifyConfig &notifyConfig)
+void NotifyByPortal::notify(KNotification *notification, const KNotifyConfig &notifyConfig)
 {
-    if (d->flatpakNotifications.contains(notification->id())) {
+    if (d->portalNotifications.contains(notification->id())) {
         // notification is already on the screen, do nothing
         finish(notification);
         return;
@@ -160,31 +160,31 @@ void NotifyByFlatpak::notify(KNotification *notification, const KNotifyConfig &n
     }
 }
 
-void NotifyByFlatpak::close(KNotification *notification)
+void NotifyByPortal::close(KNotification *notification)
 {
     if (d->dbusServiceExists) {
         d->closePortalNotification(notification);
     }
 }
 
-void NotifyByFlatpak::update(KNotification *notification, KNotifyConfig *notifyConfig)
+void NotifyByPortal::update(KNotification *notification, KNotifyConfig *notifyConfig)
 {
     // TODO not supported by portals
     Q_UNUSED(notification);
     Q_UNUSED(notifyConfig);
 }
 
-void NotifyByFlatpak::onServiceOwnerChanged(const QString &serviceName, const QString &oldOwner, const QString &newOwner)
+void NotifyByPortal::onServiceOwnerChanged(const QString &serviceName, const QString &oldOwner, const QString &newOwner)
 {
     Q_UNUSED(serviceName);
     // close all notifications we currently hold reference to
-    Q_FOREACH (KNotification *n, d->flatpakNotifications) {
+    Q_FOREACH (KNotification *n, d->portalNotifications) {
         if (n) {
             emit finished(n);
         }
     }
 
-    d->flatpakNotifications.clear();
+    d->portalNotifications.clear();
 
     if (newOwner.isEmpty()) {
         d->dbusServiceExists = false;
@@ -205,12 +205,12 @@ void NotifyByFlatpak::onServiceOwnerChanged(const QString &serviceName, const QS
     }
 }
 
-void NotifyByFlatpak::onPortalNotificationActionInvoked(const QString &id, const QString &action, const QVariantList &parameter)
+void NotifyByPortal::onPortalNotificationActionInvoked(const QString &id, const QString &action, const QVariantList &parameter)
 {
     Q_UNUSED(parameter);
 
-    auto iter = d->flatpakNotifications.find(id.toUInt());
-    if (iter == d->flatpakNotifications.end()) {
+    auto iter = d->portalNotifications.find(id.toUInt());
+    if (iter == d->portalNotifications.end()) {
         return;
     }
 
@@ -218,11 +218,11 @@ void NotifyByFlatpak::onPortalNotificationActionInvoked(const QString &id, const
     if (n) {
         emit actionInvoked(n->id(), action.toUInt());
     } else {
-        d->flatpakNotifications.erase(iter);
+        d->portalNotifications.erase(iter);
     }
 }
 
-void NotifyByFlatpakPrivate::getAppCaptionAndIconName(const KNotifyConfig &notifyConfig, QString *appCaption, QString *iconName)
+void NotifyByPortalPrivate::getAppCaptionAndIconName(const KNotifyConfig &notifyConfig, QString *appCaption, QString *iconName)
 {
     KConfigGroup globalgroup(&(*notifyConfig.eventsfile), QStringLiteral("Global"));
     *appCaption = globalgroup.readEntry("Name", globalgroup.readEntry("Comment", notifyConfig.appname));
@@ -235,7 +235,7 @@ void NotifyByFlatpakPrivate::getAppCaptionAndIconName(const KNotifyConfig &notif
     }
 }
 
-bool NotifyByFlatpakPrivate::sendNotificationToPortal(KNotification *notification, const KNotifyConfig &notifyConfig_nocheck)
+bool NotifyByPortalPrivate::sendNotificationToPortal(KNotification *notification, const KNotifyConfig &notifyConfig_nocheck)
 {
     QDBusMessage dbusNotificationMessage;
     dbusNotificationMessage = QDBusMessage::createMethodCall(QString::fromLatin1(portalDbusServiceName),
@@ -244,7 +244,7 @@ bool NotifyByFlatpakPrivate::sendNotificationToPortal(KNotification *notificatio
                                                              QStringLiteral("AddNotification"));
 
     QVariantList args;
-    // Will be used only with flatpak portal
+    // Will be used only with xdg-desktop-portal
     QVariantMap portalArgs;
 
     QString appCaption;
@@ -309,14 +309,14 @@ bool NotifyByFlatpakPrivate::sendNotificationToPortal(KNotification *notificatio
     QDBusPendingCall notificationCall = QDBusConnection::sessionBus().asyncCall(dbusNotificationMessage, -1);
 
     // If we are in sandbox we don't need to wait for returned notification id
-    flatpakNotifications.insert(nextId++, notification);
+    portalNotifications.insert(nextId++, notification);
 
     return true;
 }
 
-void NotifyByFlatpakPrivate::closePortalNotification(KNotification *notification)
+void NotifyByPortalPrivate::closePortalNotification(KNotification *notification)
 {
-    uint id = flatpakNotifications.key(notification, 0);
+    uint id = portalNotifications.key(notification, 0);
 
     qCDebug(LOG_KNOTIFICATIONS) << "ID: " << id;
 

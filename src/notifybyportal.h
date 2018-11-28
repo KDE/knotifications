@@ -21,8 +21,8 @@
    License along with this library.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef NOTIFYBYFLATPAK_H
-#define NOTIFYBYFLATPAK_H
+#ifndef NOTIFYBYPORTAL_H
+#define NOTIFYBYPORTAL_H
 
 #include "knotificationplugin.h"
 
@@ -31,14 +31,14 @@
 #include <QVariantList>
 
 class KNotification;
-class NotifyByFlatpakPrivate;
+class NotifyByPortalPrivate;
 
-class NotifyByFlatpak : public KNotificationPlugin
+class NotifyByPortal : public KNotificationPlugin
 {
     Q_OBJECT
 public:
-    explicit NotifyByFlatpak(QObject *parent = nullptr);
-    ~NotifyByFlatpak() override;
+    explicit NotifyByPortal(QObject *parent = nullptr);
+    ~NotifyByPortal() override;
 
     QString optionName() override { return QStringLiteral("Popup"); }
     void notify(KNotification *notification, KNotifyConfig *notifyConfig) override;
@@ -57,7 +57,7 @@ private:
     void notify(KNotification *notification, const KNotifyConfig &notifyConfig);
     void update(KNotification *notification, const KNotifyConfig &notifyConfig);
 
-    NotifyByFlatpakPrivate * const d;
+    NotifyByPortalPrivate * const d;
 };
 
 #endif

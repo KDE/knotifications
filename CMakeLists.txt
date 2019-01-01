@@ -33,7 +33,10 @@ ecm_setup_version(PROJECT
 # Dependencies
 set(REQUIRED_QT_VERSION 5.9.0)
 
-find_package(Qt5 ${REQUIRED_QT_VERSION} CONFIG REQUIRED Widgets DBus)
+find_package(Qt5 ${REQUIRED_QT_VERSION} CONFIG REQUIRED Widgets)
+if (NOT ANDROID)
+    find_package(Qt5 ${REQUIRED_QT_VERSION} CONFIG REQUIRED DBus)
+endif()
 find_package(Qt5 ${REQUIRED_QT_VERSION} QUIET OPTIONAL_COMPONENTS TextToSpeech)
 set_package_properties(Qt5TextToSpeech PROPERTIES
    DESCRIPTION "Qt text to speech module"
@@ -113,6 +116,10 @@ endif()
 
 include(CMakePackageConfigHelpers)
 
+set(HAVE_DBUS FALSE)
+if (TARGET Qt5::DBus)
+    set(HAVE_DBUS TRUE)
+endif()
 configure_package_config_file(
   "${CMAKE_CURRENT_SOURCE_DIR}/KF5NotificationsConfig.cmake.in"
   "${CMAKE_CURRENT_BINARY_DIR}/KF5NotificationsConfig.cmake"

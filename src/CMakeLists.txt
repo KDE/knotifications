@@ -12,21 +12,27 @@ set(knotifications_SRCS
   knotification.cpp
   knotificationmanager.cpp
   kpassivepopup.cpp
-  kstatusnotifieritem.cpp
-  kstatusnotifieritemdbus_p.cpp
-  knotificationrestrictions.cpp
 
   knotifyconfig.cpp
   knotificationplugin.cpp
-  notifybypopup.cpp
-  imageconverter.cpp #needed to marshal images for sending over dbus by NotifyByPopup
   notifybypopupgrowl.cpp
   notifybyexecute.cpp
-  notifybyportal.cpp
   notifybylogfile.cpp
   notifybytaskbar.cpp
   ${knotifications_QM_LOADER}
 )
+
+if (TARGET Qt5::DBus)
+  list(APPEND knotifications_SRCS
+    kstatusnotifieritem.cpp
+    kstatusnotifieritemdbus_p.cpp
+    knotificationrestrictions.cpp
+
+    imageconverter.cpp #needed to marshal images for sending over dbus by NotifyByPopup
+    notifybypopup.cpp
+    notifybyportal.cpp
+  )
+endif()
 
 ecm_qt_declare_logging_category(knotifications_SRCS HEADER debug_p.h IDENTIFIER LOG_KNOTIFICATIONS CATEGORY_NAME org.kde.knotifications)
 
@@ -55,14 +61,16 @@ else()
    set(HAVE_DBUSMENUQT 0)
 endif()
 
-qt5_add_dbus_adaptor(knotifications_SRCS     org.kde.StatusNotifierItem.xml
-                     kstatusnotifieritemdbus_p.h KStatusNotifierItemDBus)
+if (TARGET Qt5::DBus)
+  qt5_add_dbus_adaptor(knotifications_SRCS     org.kde.StatusNotifierItem.xml
+                      kstatusnotifieritemdbus_p.h KStatusNotifierItemDBus)
 
 
-set(statusnotifierwatcher_xml org.kde.StatusNotifierWatcher.xml)
-qt5_add_dbus_interface(knotifications_SRCS ${statusnotifierwatcher_xml} statusnotifierwatcher_interface)
-set(notifications_xml org.freedesktop.Notifications.xml)
-qt5_add_dbus_interface(knotifications_SRCS ${notifications_xml} notifications_interface)
+  set(statusnotifierwatcher_xml org.kde.StatusNotifierWatcher.xml)
+  qt5_add_dbus_interface(knotifications_SRCS ${statusnotifierwatcher_xml} statusnotifierwatcher_interface)
+  set(notifications_xml org.freedesktop.Notifications.xml)
+  qt5_add_dbus_interface(knotifications_SRCS ${notifications_xml} notifications_interface)
+endif()
 
 configure_file(config-knotifications.h.cmake ${CMAKE_CURRENT_BINARY_DIR}/config-knotifications.h )
 
@@ -74,8 +82,10 @@ target_include_directories(KF5Notifications INTERFACE "$<INSTALL_INTERFACE:${KDE
 
 target_link_libraries(KF5Notifications PUBLIC
    Qt5::Widgets
-   Qt5::DBus
 )
+if (TARGET Qt5::DBus)
+   target_link_libraries(KF5Notifications PUBLIC Qt5::DBus)
+endif()
 target_link_libraries(KF5Notifications PRIVATE
    KF5::CoreAddons
    KF5::ConfigCore
@@ -161,15 +171,17 @@ if(BUILD_QCH)
     )
 endif()
 
-install(FILES
-    org.kde.StatusNotifierItem.xml
-    DESTINATION ${KDE_INSTALL_DBUSINTERFACEDIR}
-    RENAME kf5_org.kde.StatusNotifierItem.xml)
+if (TARGET Qt5::DBus)
+    install(FILES
+        org.kde.StatusNotifierItem.xml
+        DESTINATION ${KDE_INSTALL_DBUSINTERFACEDIR}
+        RENAME kf5_org.kde.StatusNotifierItem.xml)
 
-install(FILES
-    org.kde.StatusNotifierWatcher.xml
-    DESTINATION ${KDE_INSTALL_DBUSINTERFACEDIR}
-    RENAME kf5_org.kde.StatusNotifierWatcher.xml)
+    install(FILES
+        org.kde.StatusNotifierWatcher.xml
+        DESTINATION ${KDE_INSTALL_DBUSINTERFACEDIR}
+        RENAME kf5_org.kde.StatusNotifierWatcher.xml)
+endif()
 
 install(FILES
     knotificationplugin.desktop

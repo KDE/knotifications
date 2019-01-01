@@ -8,12 +8,14 @@ macro(knotifications_executable_tests)
   endforeach(_testname)
 endmacro()
 
-knotifications_executable_tests(
-    knotificationrestrictionstest
-    kpassivepopuptest
-    unitylaunchertest
-    kstatusnotifieritemtest
-    knotificationdbustest
-)
+if (TARGET Qt5::DBus)
+    knotifications_executable_tests(
+        knotificationrestrictionstest
+        kpassivepopuptest
+        unitylaunchertest
+        kstatusnotifieritemtest
+        knotificationdbustest
+    )
 
-target_link_libraries(kpassivepopuptest KF5::WindowSystem)
+    target_link_libraries(kpassivepopuptest KF5::WindowSystem)
+endif()

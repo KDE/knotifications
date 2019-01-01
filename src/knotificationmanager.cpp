@@ -23,22 +23,27 @@
 
 #include <QHash>
 #include <QWidget>
-#include <QDBusConnection>
 #include <QPointer>
 #include <QBuffer>
 #include <QFileInfo>
-#include <QDBusConnectionInterface>
 #include <KPluginLoader>
 #include <KPluginMetaData>
 
+#ifdef QT_DBUS_LIB
+#include <QDBusConnection>
+#include <QDBusConnectionInterface>
+#endif
+
 #include "knotifyconfig.h"
 #include "knotificationplugin.h"
-#include "notifybypopup.h"
 
 #include "notifybylogfile.h"
 #include "notifybytaskbar.h"
 #include "notifybyexecute.h"
+#ifndef Q_OS_ANDROID
+#include "notifybypopup.h"
 #include "notifybyportal.h"
+#endif
 #include "debug_p.h"
 
 #if defined(HAVE_CANBERRA)
@@ -93,6 +98,7 @@ KNotificationManager::KNotificationManager()
         d->inSandbox = true;
     }
 
+#ifdef QT_DBUS_LIB
     if (d->inSandbox) {
         QDBusConnectionInterface *interface = QDBusConnection::sessionBus().interface();
         d->portalDBusServiceExists = interface->isServiceRegistered(QStringLiteral("org.freedesktop.portal.Desktop"));
@@ -104,6 +110,7 @@ KNotificationManager::KNotificationManager()
                                           QStringLiteral("reparseConfiguration"),
                                           this,
                                           SLOT(reparseConfiguration(QString)));
+#endif
 }
 
 KNotificationManager::~KNotificationManager()
@@ -132,11 +139,13 @@ KNotificationPlugin *KNotificationManager::pluginForAction(const QString &action
     // We have a series of built-ins up first, and fall back to trying
     // to instantiate an externally supplied plugin.
     if (action == QLatin1String("Popup")) {
+#ifndef Q_OS_ANDROID
             if (d->inSandbox && d->portalDBusServiceExists) {
                 plugin = new NotifyByPortal(this);
             } else {
                 plugin = new NotifyByPopup(this);
             }
+#endif
 
         addPlugin(plugin);
     } else if (action == QLatin1String("Taskbar")) {

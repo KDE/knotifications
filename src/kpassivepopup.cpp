@@ -56,8 +56,6 @@ public:
         : q(q),
           popupStyle(DEFAULT_POPUP_TYPE),
           window(winId),
-          msgView(nullptr),
-          topLayout(nullptr),
           hideDelay(DEFAULT_POPUP_TIME),
           hideTimer(new QTimer(q)),
           autoDelete(false)
@@ -90,14 +88,14 @@ public:
     QPoint fixedPosition;
 
     WId window;
-    QWidget *msgView;
-    QBoxLayout *topLayout;
+    QWidget *msgView = nullptr;
+    QBoxLayout *topLayout = nullptr;
     int hideDelay;
-    QTimer *hideTimer;
+    QTimer *hideTimer = nullptr;
 
-    QLabel *ttlIcon;
-    QLabel *ttl;
-    QLabel *msg;
+    QLabel *ttlIcon = nullptr;
+    QLabel *ttl = nullptr;
+    QLabel *msg = nullptr;
 
     bool autoDelete;
 

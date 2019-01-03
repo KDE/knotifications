@@ -1,0 +1,9 @@
+<rules>
+    <dependencies>
+        <lib name="KF5Notifications">
+            <depends>
+                <jar bundling="1" file="jar/KF5Notifications.jar"/>
+            </depends>
+        </lib>
+    </dependencies>
+</rules>

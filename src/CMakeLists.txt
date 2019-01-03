@@ -34,6 +34,23 @@ if (TARGET Qt5::DBus)
   )
 endif()
 
+if (ANDROID)
+  list(APPEND knotifications_SRCS notifybyandroid.cpp)
+  # see qtbase/mkspecs/features/java.prf
+  set(CMAKE_JAVA_COMPILE_FLAGS -source 6 -target 6)
+  if (NOT CMAKE_ANDROID_API VERSION_LESS 23)
+    add_jar(knotifications_jar
+        SOURCES
+            org/kde/knotifications/KNotification.java
+            org/kde/knotifications/NotifyByAndroid.java
+        INCLUDE_JARS ${ANDROID_SDK_ROOT}/platforms/android-${CMAKE_ANDROID_API}/android.jar
+        OUTPUT_NAME KF5Notifications
+    )
+  else()
+    message(WARNING "Android notification backend needs at least API level 23!")
+  endif()
+endif()
+
 ecm_qt_declare_logging_category(knotifications_SRCS HEADER debug_p.h IDENTIFIER LOG_KNOTIFICATIONS CATEGORY_NAME org.kde.knotifications)
 
 if (CANBERRA_FOUND)
@@ -123,6 +140,10 @@ if(HAVE_DBUSMENUQT)
   target_link_libraries(KF5Notifications PRIVATE dbusmenu-qt5)
 endif()
 
+if (ANDROID)
+    target_link_libraries(KF5Notifications PRIVATE Qt5::AndroidExtras)
+endif()
+
 set_target_properties(KF5Notifications PROPERTIES VERSION   ${KNOTIFICATIONS_VERSION_STRING}
                                                   SOVERSION ${KNOTIFICATIONS_SOVERSION}
                                                   EXPORT_NAME Notifications
@@ -191,3 +212,7 @@ include(ECMGeneratePriFile)
 ecm_generate_pri_file(BASE_NAME KNotifications LIB_NAME KF5Notifications DEPS "widgets" FILENAME_VAR PRI_FILENAME INCLUDE_INSTALL_DIR ${KDE_INSTALL_INCLUDEDIR_KF5}/KNotifications)
 install(FILES ${PRI_FILENAME} DESTINATION ${ECM_MKSPECS_INSTALL_DIR})
 
+if (ANDROID AND NOT ANDROID_API_LEVEL VERSION_LESS 23)
+    install_jar(knotifications_jar DESTINATION jar)
+    install(FILES KF5Notifications-android-dependencies.xml DESTINATION ${KDE_INSTALL_LIBDIR})
+endif()

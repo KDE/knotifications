@@ -43,6 +43,8 @@
 #ifndef Q_OS_ANDROID
 #include "notifybypopup.h"
 #include "notifybyportal.h"
+#else
+#include "notifybyandroid.h"
 #endif
 #include "debug_p.h"
 
@@ -145,6 +147,8 @@ KNotificationPlugin *KNotificationManager::pluginForAction(const QString &action
             } else {
                 plugin = new NotifyByPopup(this);
             }
+#else
+        plugin = new NotifyByAndroid(this);
 #endif
 
         addPlugin(plugin);

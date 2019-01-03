@@ -1,0 +1,113 @@
+/*
+    Copyright (C) 2018 Volker Krause <vkrause@kde.org>
+
+    This program is free software; you can redistribute it and/or modify it
+    under the terms of the GNU Library General Public License as published by
+    the Free Software Foundation; either version 2 of the License, or (at your
+    option) any later version.
+
+    This program is distributed in the hope that it will be useful, but WITHOUT
+    ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+    FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Library General Public
+    License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see <https://www.gnu.org/licenses/>.
+*/
+
+package org.kde.knotifications;
+
+import android.app.Activity;
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
+import android.util.Log;
+
+/** Java side of the Android notfication backend. */
+public class NotifyByAndroid extends BroadcastReceiver
+{
+    private static final String TAG = "org.kde.knotifications";
+
+    private static final String NOTIFICATION_ACTION = ".org.kde.knotifications.NOTIFICATION_ACTION";
+    private static final String NOTIFICATION_DELETED = ".org.kde.knotifications.NOTIFICATION_DELETED";
+    private static final String NOTIFICATION_ID_EXTRA = "org.kde.knotifications.NOTIFICATION_ID";
+    private static final String NOTIFICATION_ACTION_ID_EXTRA = "org.kde.knotifications.NOTIFICATION_ACTION_ID";
+
+    private android.content.Context m_ctx;
+    private NotificationManager m_notificationManager;
+    private int m_uniquePendingIntentId = 0;
+
+    public NotifyByAndroid(android.content.Context context)
+    {
+        Log.i(TAG, context.getPackageName());
+        m_ctx = context;
+        m_notificationManager = (NotificationManager)m_ctx.getSystemService(Context.NOTIFICATION_SERVICE);
+
+        IntentFilter filter = new IntentFilter();
+        filter.addAction(m_ctx.getPackageName() + NOTIFICATION_ACTION);
+        filter.addAction(m_ctx.getPackageName() + NOTIFICATION_DELETED);
+        m_ctx.registerReceiver(this, filter);
+    }
+
+    public void notify(KNotification notification)
+    {
+        Log.i(TAG, notification.text);
+
+        Notification.Builder builder = new Notification.Builder(m_ctx);
+        builder.setSmallIcon(notification.icon);
+        builder.setContentTitle(notification.title);
+        builder.setContentText(notification.text);
+
+        // taping the notification shows the app
+        Intent intent = new Intent(m_ctx, m_ctx.getClass());
+        PendingIntent contentIntent = PendingIntent.getActivity(m_ctx, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+        builder.setContentIntent(contentIntent);
+
+        // actions
+        int actionId = 0;
+        for (String actionName : notification.actions) {
+            Intent actionIntent = new Intent(m_ctx.getPackageName() + NOTIFICATION_ACTION);
+            actionIntent.putExtra(NOTIFICATION_ID_EXTRA, notification.id);
+            actionIntent.putExtra(NOTIFICATION_ACTION_ID_EXTRA, actionId);
+            PendingIntent pendingIntent = PendingIntent.getBroadcast(m_ctx, m_uniquePendingIntentId++, actionIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+            Notification.Action action = new Notification.Action.Builder(0, actionName, pendingIntent).build();
+            builder.addAction(action);
+            ++actionId;
+        }
+
+        // notfication about user closing the notification
+        Intent deleteIntent = new Intent(m_ctx.getPackageName() + NOTIFICATION_DELETED);
+        deleteIntent.putExtra(NOTIFICATION_ID_EXTRA, notification.id);
+        Log.i(TAG, deleteIntent.getExtras() + " " + notification.id);
+        builder.setDeleteIntent(PendingIntent.getBroadcast(m_ctx, m_uniquePendingIntentId++, deleteIntent, PendingIntent.FLAG_UPDATE_CURRENT));
+
+        m_notificationManager.notify(notification.id, builder.build());
+    }
+
+    public void close(int id)
+    {
+        m_notificationManager.cancel(id);
+    }
+
+    @Override
+    public void onReceive(Context context, Intent intent)
+    {
+        String action = intent.getAction();
+        int id = intent.getIntExtra(NOTIFICATION_ID_EXTRA, -1);
+        Log.i(TAG, action + ": " + id + " " + intent.getExtras());
+
+        if (action.equals(m_ctx.getPackageName() + NOTIFICATION_ACTION)) {
+            int actionId = intent.getIntExtra(NOTIFICATION_ACTION_ID_EXTRA, -1);
+            notificationActionInvoked(id, actionId);
+        } else if (action.equals(m_ctx.getPackageName() + NOTIFICATION_DELETED)) {
+            notificationFinished(id);
+        }
+    }
+
+    public native void notificationFinished(int notificationId);
+    public native void notificationActionInvoked(int notificationId, int action);
+}

@@ -147,7 +147,7 @@ KNotificationPlugin *KNotificationManager::pluginForAction(const QString &action
             } else {
                 plugin = new NotifyByPopup(this);
             }
-#else
+#elif __ANDROID_API__ >= 23
         plugin = new NotifyByAndroid(this);
 #endif
 

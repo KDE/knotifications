@@ -35,10 +35,10 @@ if (TARGET Qt5::DBus)
 endif()
 
 if (ANDROID)
-  list(APPEND knotifications_SRCS notifybyandroid.cpp)
-  # see qtbase/mkspecs/features/java.prf
-  set(CMAKE_JAVA_COMPILE_FLAGS -source 6 -target 6)
   if (NOT CMAKE_ANDROID_API VERSION_LESS 23)
+    list(APPEND knotifications_SRCS notifybyandroid.cpp)
+    # see qtbase/mkspecs/features/java.prf
+    set(CMAKE_JAVA_COMPILE_FLAGS -source 6 -target 6)
     add_jar(knotifications_jar
         SOURCES
             org/kde/knotifications/KNotification.java

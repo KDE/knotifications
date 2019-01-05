@@ -2,7 +2,7 @@
     <dependencies>
         <lib name="KF5Notifications">
             <depends>
-                <jar bundling="1" file="jar/KF5Notifications.jar"/>
+                <jar bundling="1" file="jar/KF5Notifications.aar"/>
             </depends>
         </lib>
     </dependencies>

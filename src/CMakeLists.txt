@@ -36,16 +36,8 @@ endif()
 
 if (ANDROID)
   if (NOT CMAKE_ANDROID_API VERSION_LESS 23)
+    add_subdirectory(android)
     list(APPEND knotifications_SRCS notifybyandroid.cpp knotifications.qrc)
-    # see qtbase/mkspecs/features/java.prf
-    set(CMAKE_JAVA_COMPILE_FLAGS -source 6 -target 6)
-    add_jar(knotifications_jar
-        SOURCES
-            org/kde/knotifications/KNotification.java
-            org/kde/knotifications/NotifyByAndroid.java
-        INCLUDE_JARS ${ANDROID_SDK_ROOT}/platforms/android-${CMAKE_ANDROID_API}/android.jar
-        OUTPUT_NAME KF5Notifications
-    )
   else()
     message(WARNING "Android notification backend needs at least API level 23!")
   endif()
@@ -213,6 +205,5 @@ ecm_generate_pri_file(BASE_NAME KNotifications LIB_NAME KF5Notifications DEPS "w
 install(FILES ${PRI_FILENAME} DESTINATION ${ECM_MKSPECS_INSTALL_DIR})
 
 if (ANDROID AND NOT ANDROID_API_LEVEL VERSION_LESS 23)
-    install_jar(knotifications_jar DESTINATION jar)
     install(FILES KF5Notifications-android-dependencies.xml DESTINATION ${KDE_INSTALL_LIBDIR})
 endif()

@@ -32,6 +32,7 @@ ecm_setup_version(PROJECT
 
 # Dependencies
 set(REQUIRED_QT_VERSION 5.10.0)
+set(CMAKE_AUTORCC TRUE)
 
 find_package(Qt5 ${REQUIRED_QT_VERSION} CONFIG REQUIRED Widgets)
 if (NOT ANDROID)

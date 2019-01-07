@@ -1,0 +1,19 @@
+[Event/fatalerror]
+Name=Fatal Error
+Comment=There was a serious error causing the program to exit
+Action=Popup
+
+[Event/notification]
+Name=Notification
+Comment=Something special happened in the program
+Action=Popup
+
+[Event/warning]
+Name=Warning
+Comment=There was an error in the program which may cause problems
+Action=Popup
+
+[Event/catastrophe]
+Name=Catastrophe
+Comment=A very serious error occurred, at least causing the program to exit
+Action=Popup

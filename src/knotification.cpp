@@ -338,6 +338,15 @@ void KNotification::Private::raiseWidget(QWidget *w)
     }
 }
 
+static QString defaultComponentName()
+{
+#ifndef Q_OS_ANDROID
+    return QStringLiteral("plasma_workspace");
+#else
+    return QStringLiteral("android_defaults");
+#endif
+}
+
 KNotification *KNotification::event(const QString &eventid, const QString &title, const QString &text,
                                     const QPixmap &pixmap, QWidget *widget, const NotificationFlags &flags, const QString &componentName)
 {
@@ -345,7 +354,7 @@ KNotification *KNotification::event(const QString &eventid, const QString &title
     notify->setTitle(title);
     notify->setText(text);
     notify->setPixmap(pixmap);
-    notify->setComponentName((flags & DefaultEvent) ? QStringLiteral("plasma_workspace") : componentName);
+    notify->setComponentName((flags & DefaultEvent) ? defaultComponentName() : componentName);
 
     QTimer::singleShot(0, notify, &KNotification::sendEvent);
 
@@ -379,7 +388,7 @@ KNotification *KNotification::event(const QString &eventid, const QString &title
     notify->setTitle(title);
     notify->setText(text);
     notify->setIconName(iconName);
-    notify->setComponentName((flags & DefaultEvent) ? QStringLiteral("plasma_workspace") : componentName);
+    notify->setComponentName((flags & DefaultEvent) ? defaultComponentName() : componentName);
 
     QTimer::singleShot(0, notify, &KNotification::sendEvent);
 
@@ -441,7 +450,7 @@ QString KNotification::appName() const
     QString appname;
 
     if (d->flags & DefaultEvent) {
-        appname = QStringLiteral("plasma_workspace");
+        appname = defaultComponentName();
     } else if (!d->componentName.isEmpty()) {
         appname = d->componentName;
     } else {

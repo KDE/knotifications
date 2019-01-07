@@ -36,7 +36,7 @@ endif()
 
 if (ANDROID)
   if (NOT CMAKE_ANDROID_API VERSION_LESS 23)
-    list(APPEND knotifications_SRCS notifybyandroid.cpp)
+    list(APPEND knotifications_SRCS notifybyandroid.cpp knotifications.qrc)
     # see qtbase/mkspecs/features/java.prf
     set(CMAKE_JAVA_COMPILE_FLAGS -source 6 -target 6)
     add_jar(knotifications_jar

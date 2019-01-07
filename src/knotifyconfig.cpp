@@ -38,6 +38,10 @@ static KSharedConfig::Ptr retrieve_from_cache(const QString &filename, QStandard
     }
 
     KSharedConfig::Ptr m = KSharedConfig::openConfig(filename, KConfig::NoGlobals, type);
+    // also search for event config files in qrc resources
+    if (type == QStandardPaths::GenericDataLocation) {
+        m->addConfigSources({QStringLiteral(":/") + filename});
+    }
     cache.insert(filename, new KSharedConfig::Ptr(m));
 
     return m;

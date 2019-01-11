@@ -29,7 +29,6 @@
 #include <QUrl>
 
 class QWidget;
-class QDBusError;
 
 /**
  * @class KNotification knotification.h KNotification

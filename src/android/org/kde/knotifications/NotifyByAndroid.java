@@ -25,6 +25,8 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.graphics.drawable.Icon;
+import android.os.Build;
 import android.util.Log;
 
 /** Java side of the Android notfication backend. */
@@ -58,7 +60,9 @@ public class NotifyByAndroid extends BroadcastReceiver
         Log.i(TAG, notification.text);
 
         Notification.Builder builder = new Notification.Builder(m_ctx);
-        builder.setSmallIcon(notification.icon);
+        if (Build.VERSION.SDK_INT >= 23) {
+            builder.setSmallIcon((Icon)notification.icon);
+        }
         builder.setContentTitle(notification.title);
         builder.setContentText(notification.text);
 

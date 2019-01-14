@@ -77,9 +77,7 @@ NotifyByAndroid::NotifyByAndroid(QObject* parent) :
     KNotificationPlugin(parent)
 {
     s_instance = this;
-#if __ANDROID_API__ >= 23
     m_backend = QAndroidJniObject("org/kde/knotifications/NotifyByAndroid", "(Landroid/content/Context;)V", QtAndroid::androidContext().object<jobject>());
-#endif
 }
 
 NotifyByAndroid::~NotifyByAndroid()
@@ -102,7 +100,6 @@ void NotifyByAndroid::notifyDeferred(KNotification* notification, const KNotifyC
 {
     Q_UNUSED(config);
 
-#if __ANDROID_API__ >= 23
     QAndroidJniEnvironment env;
 
     QAndroidJniObject n("org/kde/knotifications/KNotification", "()V");
@@ -135,16 +132,11 @@ void NotifyByAndroid::notifyDeferred(KNotification* notification, const KNotifyC
     m_notifications.insert(notification->id(), notification);
 
     m_backend.callMethod<void>("notify", "(Lorg/kde/knotifications/KNotification;)V", n.object<jobject>());
-#else
-    Q_UNUSED(notification);
-#endif
 }
 
 void NotifyByAndroid::close(KNotification* notification)
 {
-#if __ANDROID_API__ >= 23
     m_backend.callMethod<void>("close", "(I)V", notification->id());
-#endif
     KNotificationPlugin::close(notification);
 }
 

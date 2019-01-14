@@ -18,6 +18,9 @@
 package org.kde.knotifications;
 
 import android.graphics.drawable.Icon;
+import android.os.Build;
+
+import java.lang.Object;
 import java.util.ArrayList;
 
 /** Java side of KNotification.
@@ -28,12 +31,14 @@ public class KNotification
     public int id;
     public String text;
     public String title;
-    public Icon icon;
+    public Object icon;
     public ArrayList<String> actions = new ArrayList<String>();
 
     public void setIconFromData(byte[] data, int length)
     {
-        icon = Icon.createWithData(data, 0, length);
+        if (Build.VERSION.SDK_INT >= 23) {
+            icon = Icon.createWithData(data, 0, length);
+        }
     }
 
     public void addAction(String action)

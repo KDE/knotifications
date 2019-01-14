@@ -86,10 +86,11 @@ function(gradle_add_aar target)
         set(_aar_gradleCmd "assembleRelease")
     endif()
 
+    file(GLOB_RECURSE _src_files CONFIGURE_DEPENDS "*")
     add_custom_command(
         OUTPUT ${_build_root}/build/outputs/aar/${ARG_NAME}${_aar_suffix}.aar
         COMMAND ${Gradle_EXECUTABLE} ${_aar_gradleCmd}
-        DEPENDS ${Gradle_EXECUTABLE}
+        DEPENDS ${Gradle_EXECUTABLE} ${_src_files}
         DEPENDS gradle
         WORKING_DIRECTORY ${_build_root}
     )

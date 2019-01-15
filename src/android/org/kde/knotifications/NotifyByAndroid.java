@@ -62,6 +62,8 @@ public class NotifyByAndroid extends BroadcastReceiver
         Notification.Builder builder = new Notification.Builder(m_ctx);
         if (Build.VERSION.SDK_INT >= 23) {
             builder.setSmallIcon((Icon)notification.icon);
+        } else {
+            builder.setSmallIcon(m_ctx.getApplicationInfo().icon);
         }
         builder.setContentTitle(notification.title);
         builder.setContentText(notification.text);

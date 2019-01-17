@@ -16,10 +16,6 @@ repositories {
 
 apply plugin: 'com.android.library'
 
-dependencies {
-    implementation 'androidx.core:core:1.0.1'
-}
-
 android {
     compileSdkVersion 28
     buildToolsVersion '28.0.2'

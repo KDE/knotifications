@@ -17,6 +17,7 @@
 
 #include "notifybyandroid.h"
 #include "knotification.h"
+#include "knotifyconfig.h"
 #include "debug_p.h"
 
 #include <QtAndroid>
@@ -92,20 +93,25 @@ QString NotifyByAndroid::optionName()
 
 void NotifyByAndroid::notify(KNotification *notification, KNotifyConfig *config)
 {
+    Q_UNUSED(config);
     // HACK work around that notification->id() is only populated after returning from here
-    QMetaObject::invokeMethod(this, [this, notification, config](){ notifyDeferred(notification, config); }, Qt::QueuedConnection);
+    // note that config will be invalid at that point, so we can't pass that along
+    QMetaObject::invokeMethod(this, [this, notification](){ notifyDeferred(notification); }, Qt::QueuedConnection);
 }
 
-void NotifyByAndroid::notifyDeferred(KNotification* notification, const KNotifyConfig* config)
+void NotifyByAndroid::notifyDeferred(KNotification* notification)
 {
-    Q_UNUSED(config);
-
+    KNotifyConfig config(notification->appName(), notification->contexts(), notification->eventId());
     QAndroidJniEnvironment env;
 
     QAndroidJniObject n("org/kde/knotifications/KNotification", "()V");
     n.setField("id", notification->id());
     n.setField("text", QAndroidJniObject::fromString(notification->text()).object<jstring>());
     n.setField("title", QAndroidJniObject::fromString(notification->title()).object<jstring>());
+
+    n.setField("channelId", QAndroidJniObject::fromString(notification->eventId()).object<jstring>());
+    n.setField("channelName", QAndroidJniObject::fromString(config.readEntry(QLatin1String("Name"))).object<jstring>());
+    n.setField("channelDescription", QAndroidJniObject::fromString(config.readEntry(QLatin1String("Comment"))).object<jstring>());
 
     // icon
     QPixmap pixmap;

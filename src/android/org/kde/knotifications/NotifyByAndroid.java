@@ -19,6 +19,7 @@ package org.kde.knotifications;
 
 import android.app.Activity;
 import android.app.Notification;
+import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
@@ -28,6 +29,7 @@ import android.content.IntentFilter;
 import android.graphics.drawable.Icon;
 import android.os.Build;
 import android.util.Log;
+import java.util.HashSet;
 
 /** Java side of the Android notfication backend. */
 public class NotifyByAndroid extends BroadcastReceiver
@@ -42,6 +44,7 @@ public class NotifyByAndroid extends BroadcastReceiver
     private android.content.Context m_ctx;
     private NotificationManager m_notificationManager;
     private int m_uniquePendingIntentId = 0;
+    private HashSet<String> m_channels = new HashSet();
 
     public NotifyByAndroid(android.content.Context context)
     {
@@ -59,7 +62,24 @@ public class NotifyByAndroid extends BroadcastReceiver
     {
         Log.i(TAG, notification.text);
 
-        Notification.Builder builder = new Notification.Builder(m_ctx);
+        // notification channel
+        if (!m_channels.contains(notification.channelId)) {
+            m_channels.add(notification.channelId);
+
+            if (Build.VERSION.SDK_INT >= 26) {
+                NotificationChannel channel = new NotificationChannel(notification.channelId, notification.channelName, NotificationManager.IMPORTANCE_DEFAULT);
+                channel.setDescription(notification.channelDescription);
+                m_notificationManager.createNotificationChannel(channel);
+            }
+        }
+
+        Notification.Builder builder;
+        if (Build.VERSION.SDK_INT >= 26) {
+            builder = new Notification.Builder(m_ctx, notification.channelId);
+        } else {
+            builder = new Notification.Builder(m_ctx);
+        }
+
         if (Build.VERSION.SDK_INT >= 23) {
             builder.setSmallIcon((Icon)notification.icon);
         } else {

@@ -41,7 +41,7 @@ public:
     void notificationActionInvoked(int id, int action);
 
 private:
-    void notifyDeferred(KNotification *notification, const KNotifyConfig *config);
+    void notifyDeferred(KNotification *notification);
 
     QAndroidJniObject m_backend;
     QHash<int, QPointer<KNotification>> m_notifications;

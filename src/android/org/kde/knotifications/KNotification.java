@@ -33,6 +33,9 @@ public class KNotification
     public String title;
     public Object icon;
     public ArrayList<String> actions = new ArrayList<String>();
+    public String channelId;
+    public String channelName;
+    public String channelDescription;
 
     public void setIconFromData(byte[] data, int length)
     {

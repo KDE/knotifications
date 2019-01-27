@@ -128,6 +128,7 @@ void NotifyByAndroid::notifyDeferred(KNotification* notification)
     auto jIconData = env->NewByteArray(iconData.length());
     env->SetByteArrayRegion(jIconData, 0, iconData.length(), reinterpret_cast<const jbyte*>(iconData.constData()));
     n.callMethod<void>("setIconFromData", "([BI)V", jIconData, iconData.length());
+    env->DeleteLocalRef(jIconData);
 
     // actions
     const auto actions = notification->actions();

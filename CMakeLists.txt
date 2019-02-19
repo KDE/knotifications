@@ -77,7 +77,7 @@ set_package_properties(Canberra PROPERTIES DESCRIPTION "Library for generating e
     PURPOSE "Needed to build audio notification support"
     URL "http://0pointer.de/lennart/projects/libcanberra"
     TYPE OPTIONAL)
-if (CANBERRA_FOUND)
+if (Canberra_FOUND)
     add_definitions(-DHAVE_CANBERRA)
 else()
     find_package(Phonon4Qt5 4.6.60 NO_MODULE)

@@ -41,7 +41,7 @@ endif()
 
 ecm_qt_declare_logging_category(knotifications_SRCS HEADER debug_p.h IDENTIFIER LOG_KNOTIFICATIONS CATEGORY_NAME org.kde.knotifications)
 
-if (CANBERRA_FOUND)
+if (Canberra_FOUND)
   set(knotifications_SRCS ${knotifications_SRCS}
   notifybyaudio_canberra.cpp)
 elseif (Phonon4Qt5_FOUND)
@@ -103,9 +103,9 @@ if (Phonon4Qt5_FOUND)
         ${PHONON_LIBRARIES})
 endif()
 
-if (CANBERRA_FOUND)
+if (Canberra_FOUND)
     target_link_libraries(KF5Notifications PRIVATE
-        ${CANBERRA_LIBRARIES})
+        Canberra::Canberra)
 endif()
 
 if (Qt5TextToSpeech_FOUND)

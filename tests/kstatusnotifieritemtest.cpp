@@ -45,9 +45,9 @@ KStatusNotifierItemTest::KStatusNotifierItemTest(QObject *parent, KStatusNotifie
     menu->addAction(active);
     menu->addAction(passive);
 
-    connect(needsAttention, SIGNAL(triggered()), this, SLOT(setNeedsAttention()));
-    connect(active, SIGNAL(triggered()), this, SLOT(setActive()));
-    connect(passive, SIGNAL(triggered()), this, SLOT(setPassive()));
+    connect(needsAttention, &QAction::triggered, this, &KStatusNotifierItemTest::setNeedsAttention);
+    connect(active, &QAction::triggered, this, &KStatusNotifierItemTest::setActive);
+    connect(passive, &QAction::triggered, this, &KStatusNotifierItemTest::setPassive);
 }
 
 void KStatusNotifierItemTest::setNeedsAttention()

@@ -71,44 +71,44 @@ int main(int argc, char **argv)
 
     pb = new QPushButton();
     pb->setText(QStringLiteral("By taskbar entry (no caption, default style)"));
-    pb->connect(pb, SIGNAL(clicked()), t, SLOT(showIt()));
+    pb->connect(pb, &QAbstractButton::clicked, t, &Test::showIt);
     pb->show();
 
     pb2 = new QPushButton();
     pb2->setText(QStringLiteral("By taskbar entry (with caption, default style)"));
-    pb2->connect(pb2, SIGNAL(clicked()), t, SLOT(showIt2()));
+    pb2->connect(pb2, &QAbstractButton::clicked, t, &Test::showIt2);
     pb2->show();
 
     pb3 = new QPushButton();
     pb3->setText(QStringLiteral("Without WinID"));
-    pb3->connect(pb3, SIGNAL(clicked()), t, SLOT(showIt3()));
+    pb3->connect(pb3, &QAbstractButton::clicked, t, &Test::showIt3);
     pb3->show();
 
     pb4 = new QPushButton();
     pb4->setText(QStringLiteral("By taskbar entry (with caption, boxed)"));
-    pb4->connect(pb4, SIGNAL(clicked()), t, SLOT(showIt4()));
+    pb4->connect(pb4, &QAbstractButton::clicked, t, &Test::showIt4);
     pb4->show();
 
     pb5 = new QPushButton();
     pb5->setText(QStringLiteral("By taskbar entry (with caption, balloon)"));
-    pb5->connect(pb5, SIGNAL(clicked()), t, SLOT(showIt5()));
+    pb5->connect(pb5, &QAbstractButton::clicked, t, &Test::showIt5);
     pb5->show();
 
     // this test depends on X11
     pb6 = new QPushButton();
     pb6->setText(QStringLiteral("By window (with caption, balloon)"));
-    pb6->connect(pb6, SIGNAL(clicked()), t, SLOT(showIt6()));
+    pb6->connect(pb6, &QAbstractButton::clicked, t, &Test::showIt6);
     pb6->show();
     KWindowSystem::setState(pb6->effectiveWinId(), NET::SkipTaskbar);
 
     pb7 = new QPushButton();
     pb7->setText(QStringLiteral("By taskbar entry (with caption and icon, default style)"));
-    pb7->connect(pb7, SIGNAL(clicked()), t, SLOT(showIt7()));
+    pb7->connect(pb7, &QAbstractButton::clicked, t, &Test::showIt7);
     pb7->show();
 
     icon = new QSystemTrayIcon();
     // TODO icon->setIcon(icon->loadIcon("xorg"));
-    icon->connect(icon, SIGNAL(activated(QSystemTrayIcon::ActivationReason)), t, SLOT(showItIcon(QSystemTrayIcon::ActivationReason)));
+    icon->connect(icon, &QSystemTrayIcon::activated, t, &Test::showItIcon);
     icon->show();
 
     return app.exec();

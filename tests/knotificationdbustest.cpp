@@ -75,7 +75,7 @@ int main(int argc, char *argv[])
 
     // wait a little before sending another notification
     QEventLoop a;
-    QTimer::singleShot(500, &a, SLOT(quit()));
+    QTimer::singleShot(500, &a, &QEventLoop::quit);
     a.exec();
 
     notificationDBusCall(QStringLiteral("kwalletmanager"),
@@ -83,7 +83,7 @@ int main(int argc, char *argv[])
                          QStringLiteral("Praesent odio ipsum, posuere a magna ac, egestas vehicula lectus"),
                          QStringList() << QStringLiteral("action1") << QStringLiteral("action2"));
 
-    QTimer::singleShot(1000, &a, SLOT(quit()));
+    QTimer::singleShot(1000, &a, &QEventLoop::quit);
     a.exec();
 
     notificationDBusCall(QStringLiteral("preferences-desktop-accessibility"),

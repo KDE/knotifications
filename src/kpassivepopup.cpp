@@ -308,13 +308,13 @@ QWidget *KPassivePopup::standardView(const QString &caption,
 {
     QWidget *top = new QWidget(parent ? parent : this);
     QVBoxLayout *vb = new QVBoxLayout(top);
-    vb->setMargin(0);
+    vb->setContentsMargins(0, 0, 0, 0);
     top->setLayout(vb);
 
     QHBoxLayout *hb = nullptr;
     if (!icon.isNull()) {
         hb = new QHBoxLayout;
-        hb->setMargin(0);
+        hb->setContentsMargins(0, 0, 0, 0);
         vb->addLayout(hb);
         d->ttlIcon = new QLabel(top);
         d->ttlIcon->setPixmap(icon);

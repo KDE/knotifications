@@ -50,7 +50,8 @@ static KSharedConfig::Ptr retrieve_from_cache(const QString &filename, QStandard
 void KNotifyConfig::reparseConfiguration()
 {
     QCache<QString, KSharedConfig::Ptr> &cache = *static_cache;
-    Q_FOREACH (const QString &filename, cache.keys()) {
+    const auto listFiles =  cache.keys();
+    for (const QString &filename : listFiles) {
         (*cache[filename])->reparseConfiguration();
     }
 }
@@ -95,9 +96,7 @@ KNotifyConfig *KNotifyConfig::copy() const
 
 QString KNotifyConfig::readEntry(const QString &entry, bool path)
 {
-    QPair<QString, QString> context;
-
-    Q_FOREACH (context, contexts) {
+    for (const QPair<QString, QString> &context : qAsConst(contexts)) {
         const QString group = QStringLiteral("Event/") + eventid + QLatin1Char('/') + context.first + QLatin1Char('/') + context.second;
 
         if (configfile->hasGroup(group)) {

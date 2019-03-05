@@ -178,7 +178,7 @@ void NotifyByPortal::onServiceOwnerChanged(const QString &serviceName, const QSt
 {
     Q_UNUSED(serviceName);
     // close all notifications we currently hold reference to
-    Q_FOREACH (KNotification *n, d->portalNotifications) {
+    for (KNotification *n : qAsConst(d->portalNotifications)) {
         if (n) {
             emit finished(n);
         }
@@ -268,7 +268,8 @@ bool NotifyByPortalPrivate::sendNotificationToPortal(KNotification *notification
     buttons.reserve(notification->actions().count());
 
     int actId = 0;
-    Q_FOREACH (const QString &actionName, notification->actions()) {
+    const auto listActions = notification->actions();
+    for (const QString &actionName : listActions) {
         actId++;
         QVariantMap button = {
             {QStringLiteral("action"), QString::number(actId)},

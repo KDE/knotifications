@@ -203,7 +203,7 @@ NotifyByPopup::NotifyByPopup(QObject *parent)
 
 NotifyByPopup::~NotifyByPopup()
 {
-    Q_FOREACH (KPassivePopup *p, d->passivePopups) {
+    for (KPassivePopup *p : qAsConst(d->passivePopups)) {
         p->deleteLater();
     }
 
@@ -333,7 +333,7 @@ void NotifyByPopup::timerEvent(QTimerEvent *event)
     QRect screen = QGuiApplication::primaryScreen()->availableGeometry();
     d->nextPosition = screen.top();
 
-    Q_FOREACH (KPassivePopup *popup, d->passivePopups)
+    for (KPassivePopup *popup : qAsConst(d->passivePopups))
     {
         int y = popup->pos().y();
         if (y > d->nextPosition) {
@@ -420,8 +420,10 @@ void NotifyByPopup::onServiceOwnerChanged(const QString &serviceName, const QStr
             emit finished(n);
         }
     }
-    Q_FOREACH (KNotification *n, d->passivePopups.keys()) {
-        emit finished(n);
+    QMap<KNotification*, KPassivePopup *>::const_iterator i = d->passivePopups.constBegin();
+    while (i != d->passivePopups.constEnd()) {
+        emit finished(i.key());
+        ++i;
     }
     d->galagoNotifications.clear();
     d->passivePopups.clear();
@@ -595,7 +597,8 @@ void NotifyByPopupPrivate::fillPopup(KPassivePopup *popup, KNotification *notifi
     if (!notification->actions().isEmpty()) {
         QString linkCode = QStringLiteral("<p align=\"right\">");
         int i = 0;
-        Q_FOREACH (const QString &it, notification->actions()) {
+        const auto actionList = notification->actions();
+        for (const QString &it : actionList) {
             i++;
             linkCode += QStringLiteral("&nbsp;<a href=\"%1/%2\">%3</a>").arg(QString::number(notification->id()), QString::number(i), it.toHtmlEscaped());
         }
@@ -671,7 +674,8 @@ bool NotifyByPopupPrivate::sendNotificationToGalagoServer(KNotification *notific
             actionList.append(defaultAction);
         }
         int actId = 0;
-        Q_FOREACH (const QString &actionName, notification->actions()) {
+        const auto listActions = notification->actions();
+        for (const QString &actionName : listActions) {
             actId++;
             actionList.append(QString::number(actId));
             actionList.append(actionName);

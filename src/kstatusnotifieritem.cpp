@@ -1134,7 +1134,8 @@ KDbusImageVector KStatusNotifierItemPrivate::iconToVector(const QIcon &icon)
     QPixmap iconPixmap;
 
     //if an icon exactly that size wasn't found don't add it to the vector
-    foreach (QSize size, icon.availableSizes()) {
+    const auto lstSizes = icon.availableSizes();
+    for (QSize size : lstSizes) {
         iconPixmap = icon.pixmap(size);
         iconVector.append(imageToStruct(iconPixmap.toImage()));
     }

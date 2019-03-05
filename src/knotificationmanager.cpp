@@ -207,7 +207,7 @@ KNotificationPlugin *KNotificationManager::pluginForAction(const QString &action
             },
             this);
 
-        Q_FOREACH (QObject *pluginObj, plugins) {
+        for (QObject *pluginObj : qAsConst(plugins)) {
             KNotificationPlugin *notifyPlugin = qobject_cast<KNotificationPlugin*>(pluginObj);
 
             if (notifyPlugin) {
@@ -280,7 +280,8 @@ void KNotificationManager::close(int id, bool force)
         KNotifyConfig notifyConfig(n->appName(), n->contexts(), n->eventId());
         QString notifyActions = notifyConfig.readEntry(QStringLiteral("Action"));
 
-        Q_FOREACH (const QString &action, notifyActions.split(QLatin1Char('|'))) {
+        const auto listActions = notifyActions.split(QLatin1Char('|'));
+        for (const QString &action : listActions) {
             if (!d->notifyPlugins.contains(action)) {
                 qCDebug(LOG_KNOTIFICATIONS) << "No plugin for action" << action;
                 continue;
@@ -311,7 +312,8 @@ int KNotificationManager::notify(KNotification *n)
 
     d->notifications.insert(d->notifyIdCounter, n);
 
-    Q_FOREACH (const QString &action, notifyActions.split(QLatin1Char('|'))) {
+    const auto actionsList = notifyActions.split(QLatin1Char('|'));
+    for (const QString &action : actionsList) {
         KNotificationPlugin *notifyPlugin = pluginForAction(action);
 
         if (!notifyPlugin) {
@@ -332,7 +334,7 @@ void KNotificationManager::update(KNotification *n)
 {
     KNotifyConfig notifyConfig(n->appName(), n->contexts(), n->eventId());
 
-    Q_FOREACH (KNotificationPlugin *p, d->notifyPlugins) {
+    for (KNotificationPlugin *p : qAsConst(d->notifyPlugins)) {
         p->update(n, &notifyConfig);
     }
 }

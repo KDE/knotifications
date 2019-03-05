@@ -235,8 +235,8 @@ public:
 
     QRect desktopRectForPoint(const QPoint &point)
     {
-        QList<QScreen*> screens = QGuiApplication::screens();
-        Q_FOREACH(const QScreen *screen, screens) {
+        const QList<QScreen*> screens = QGuiApplication::screens();
+        for(const QScreen *screen : screens) {
             if (screen->geometry().contains(point)) {
                 return screen->geometry();
             }

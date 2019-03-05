@@ -40,7 +40,7 @@ void notificationDBusCall(const QString &iconName, const QString &title, const Q
 
     QStringList actionList;
     int actId = 0;
-    Q_FOREACH (const QString &actionName, actions) {
+    for (const QString &actionName : actions) {
         actId++;
         actionList.append(QString::number(actId));
         actionList.append(actionName);

@@ -59,6 +59,7 @@ struct Q_DECL_HIDDEN KNotification::Private {
     NotificationFlags flags;
     QString componentName;
     QList<QUrl> urls;
+    QVariantMap hints;
 
     QTimer updateTimer;
     bool needUpdate;
@@ -521,5 +522,23 @@ QString KNotification::standardEventToIconName(KNotification::StandardEvent even
             break;
     }
     return iconName;
+}
+
+void KNotification::setHint(const QString &hint, const QVariant &value)
+{
+    if (value == d->hints.value(hint)) {
+        return;
+    }
+
+    d->needUpdate = true;
+    d->hints[hint] = value;
+    if (d->id >= 0) {
+        d->updateTimer.start();
+    }
+}
+
+QVariantMap KNotification::hints() const
+{
+    return d->hints;
 }
 

@@ -615,6 +615,20 @@ public Q_SLOTS:
      */
     void update();
 
+    /**
+     * @since 5.57
+     * Adds a custom hint to the notification. Those are key-value pairs that can be interpreted by the respective notification backend to trigger additional, non-standard features.
+     * @param hint the hint's key
+     * @param value the hint's value
+     */
+    void setHint(const QString &hint, const QVariant &value);
+
+    /**
+     * @since 5.57
+     * Returns the custom hints set by setHint()
+     */
+    QVariantMap hints() const;
+
 private:
     struct Private;
     Private *const d;

@@ -584,7 +584,13 @@ void KStatusNotifierItem::showMessage(const QString &title, const QString &messa
     } else
 #endif
     {
-        d->notificationsClient->Notify(d->title, id, icon, title, message, QStringList(), QVariantMap(), timeout);
+        QVariantMap hints;
+
+        if (!qApp->desktopFileName().isEmpty()) {
+            hints.insert(QStringLiteral("desktop-entry"), qApp->desktopFileName());
+        }
+
+        d->notificationsClient->Notify(d->title, id, icon, title, message, QStringList(), hints, timeout);
     }
 }
 

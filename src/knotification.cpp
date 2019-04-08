@@ -258,7 +258,15 @@ KNotification::NotificationFlags KNotification::flags() const
 
 void KNotification::setFlags(const NotificationFlags &flags)
 {
+    if (d->flags == flags) {
+        return;
+    }
+
+    d->needUpdate = true;
     d->flags = flags;
+    if (d->id >= 0) {
+        d->updateTimer.start();
+    }
 }
 
 void KNotification::setComponentName(const QString &c)
@@ -273,7 +281,15 @@ QList<QUrl> KNotification::urls() const
 
 void KNotification::setUrls(const QList<QUrl> &urls)
 {
+    if (d->urls == urls) {
+        return;
+    }
+
+    d->needUpdate = true;
     d->urls = urls;
+    if (d->id >= 0) {
+        d->updateTimer.start();
+    }
 }
 
 KNotification::Urgency KNotification::urgency() const
@@ -283,7 +299,15 @@ KNotification::Urgency KNotification::urgency() const
 
 void KNotification::setUrgency(Urgency urgency)
 {
+    if (d->urgency == urgency) {
+        return;
+    }
+
+    d->needUpdate = true;
     d->urgency = urgency;
+    if (d->id >= 0) {
+        d->updateTimer.start();
+    }
 }
 
 void KNotification::activate(unsigned int action)

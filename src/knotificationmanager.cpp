@@ -312,6 +312,18 @@ int KNotificationManager::notify(KNotification *n)
 
     d->notifications.insert(d->notifyIdCounter, n);
 
+    // TODO KF6 d-pointer KNotifyConfig and add this there
+    if (n->urgency() == KNotification::DefaultUrgency) {
+        const QString urgency = notifyConfig.readEntry(QStringLiteral("Urgency"));
+        if (urgency == QLatin1String("Low")) {
+            n->setUrgency(KNotification::LowUrgency);
+        } else if (urgency == QLatin1String("Normal")) {
+            n->setUrgency(KNotification::NormalUrgency);
+        } else if (urgency == QLatin1String("Critical")) {
+            n->setUrgency(KNotification::CriticalUrgency);
+        }
+    }
+
     const auto actionsList = notifyActions.split(QLatin1Char('|'));
     for (const QString &action : actionsList) {
         KNotificationPlugin *notifyPlugin = pluginForAction(action);

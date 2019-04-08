@@ -127,6 +127,7 @@ class QWidget;
            Contexts=group
            Sound=filetoplay.ogg
            Action=None
+           Urgency=Low
  *  </pre>
  *  These are the default settings for each notifiable event.
  *  Action is the string representing the action. Actions can be added to
@@ -136,6 +137,8 @@ class QWidget;
  *  Actions can be combined by separating them with '|'.
  *
  *  Contexts is a comma separated list of possible context for this event.
+ *
+ *  Urgency can be any of: Low, Normal, Critical.
  *
  *  \section userfile The user's config file
  *
@@ -268,6 +271,14 @@ public:
      * default events you can use in the event function
      */
     enum StandardEvent { Notification, Warning, Error, Catastrophe };
+
+    /**
+     * The urgency of a notification.
+     *
+     * @since 5.58
+     * @sa setUrgency
+     */
+    enum Urgency { DefaultUrgency = -1, LowUrgency, NormalUrgency, CriticalUrgency };
 
     /**
      * Create a new notification.
@@ -507,6 +518,28 @@ public:
      * @since 5.29
      */
     void setUrls(const QList<QUrl> &urls);
+
+    /**
+     * The urgency of the notification.
+     * @since 5.58
+     */
+    Urgency urgency() const;
+
+    /**
+     * Sets the urgency of the notification.
+     *
+     * This defines the importance of the notification. For example,
+     * a track change in a media player would be a low urgency.
+     * "You have new mail" would be normal urgency. "Your battery level
+     * is low" would be a critical urgency.
+     *
+     * Use critical notifications with care as they might be shown even
+     * when giving a presentation or when notifications are turned off.
+     *
+     * @param urgency The urgency.
+     * @since 5.58
+     */
+    void setUrgency(Urgency urgency);
 
     /**
      * @internal

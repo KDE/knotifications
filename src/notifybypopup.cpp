@@ -712,6 +712,10 @@ bool NotifyByPopupPrivate::sendNotificationToGalagoServer(KNotification *notific
         hintsMap[QStringLiteral("desktop-entry")] = qApp->desktopFileName();
     }
 
+    if (notification->urgency() != KNotification::DefaultUrgency) {
+        hintsMap[QStringLiteral("urgency")] = static_cast<int>(notification->urgency());
+    }
+
     const QVariantMap hints = notification->hints();
     for (auto it = hints.constBegin(); it != hints.constEnd(); ++it) {
         hintsMap[it.key()] = it.value();

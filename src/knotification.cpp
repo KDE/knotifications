@@ -59,12 +59,13 @@ struct Q_DECL_HIDDEN KNotification::Private {
     NotificationFlags flags;
     QString componentName;
     QList<QUrl> urls;
+    KNotification::Urgency urgency;
     QVariantMap hints;
 
     QTimer updateTimer;
     bool needUpdate;
 
-    Private() : id(-1), ref(0), widget(nullptr), needUpdate(false) {}
+    Private() : id(-1), ref(0), widget(nullptr), urgency(KNotification::DefaultUrgency), needUpdate(false) {}
     /**
      * recursive function that raise the widget. @p w
      *
@@ -273,6 +274,16 @@ QList<QUrl> KNotification::urls() const
 void KNotification::setUrls(const QList<QUrl> &urls)
 {
     d->urls = urls;
+}
+
+KNotification::Urgency KNotification::urgency() const
+{
+    return d->urgency;
+}
+
+void KNotification::setUrgency(Urgency urgency)
+{
+    d->urgency = urgency;
 }
 
 void KNotification::activate(unsigned int action)

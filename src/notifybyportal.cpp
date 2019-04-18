@@ -259,6 +259,33 @@ bool NotifyByPortalPrivate::sendNotificationToPortal(KNotification *notification
     QString title = notification->title().isEmpty() ? appCaption : notification->title();
     QString text = notification->text();
 
+    if (!notification->defaultAction().isEmpty()) {
+        portalArgs.insert(QStringLiteral("default-action"), notification->defaultAction());
+        portalArgs.insert(QStringLiteral("default-action-target"), QStringLiteral("0"));
+    }
+
+    QString priority;
+    switch (notification->urgency()) {
+    case KNotification::DefaultUrgency:
+        break;
+    case KNotification::LowUrgency:
+        priority = QStringLiteral("low");
+        break;
+    case KNotification::NormalUrgency:
+        priority = QStringLiteral("normal");
+        break;
+    case KNotification::HighUrgency:
+        priority = QStringLiteral("high");
+        break;
+    case KNotification::CriticalUrgency:
+        priority = QStringLiteral("urgent");
+        break;
+    }
+
+    if (!priority.isEmpty()) {
+        portalArgs.insert(QStringLiteral("priority"), priority);
+    }
+
     // galago spec defines action list to be list like
     // (act_id1, action1, act_id2, action2, ...)
     //

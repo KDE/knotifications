@@ -319,6 +319,8 @@ int KNotificationManager::notify(KNotification *n)
             n->setUrgency(KNotification::LowUrgency);
         } else if (urgency == QLatin1String("Normal")) {
             n->setUrgency(KNotification::NormalUrgency);
+        } else if (urgency == QLatin1String("High")) {
+            n->setUrgency(KNotification::HighUrgency);
         } else if (urgency == QLatin1String("Critical")) {
             n->setUrgency(KNotification::CriticalUrgency);
         }

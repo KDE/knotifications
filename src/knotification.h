@@ -278,7 +278,13 @@ public:
      * @since 5.58
      * @sa setUrgency
      */
-    enum Urgency { DefaultUrgency = -1, LowUrgency, NormalUrgency, CriticalUrgency };
+    enum Urgency {
+        DefaultUrgency = -1,
+        LowUrgency = 10,
+        NormalUrgency = 50,
+        HighUrgency = 70,
+        CriticalUrgency = 90
+    };
 
     /**
      * Create a new notification.

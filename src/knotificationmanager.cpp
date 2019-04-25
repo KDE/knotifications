@@ -67,7 +67,6 @@ struct Q_DECL_HIDDEN KNotificationManager::Private {
     // incremental ids for notifications
     int notifyIdCounter;
     QStringList dirtyConfigCache;
-    bool inSandbox = false;
     bool portalDBusServiceExists = false;
 };
 
@@ -91,17 +90,10 @@ KNotificationManager::KNotificationManager()
     qDeleteAll(d->notifyPlugins);
     d->notifyPlugins.clear();
 
-    if (!qEnvironmentVariableIsEmpty("XDG_RUNTIME_DIR")) {
-        const QByteArray runtimeDir = qgetenv("XDG_RUNTIME_DIR");
-        if (!runtimeDir.isEmpty()) {
-            d->inSandbox = QFileInfo::exists(QFile::decodeName(runtimeDir) + QLatin1String("/flatpak-info"));
-        }
-    } else if (qEnvironmentVariableIsSet("SNAP")) {
-        d->inSandbox = true;
-    }
-
 #ifdef QT_DBUS_LIB
-    if (d->inSandbox) {
+    const bool inSandbox = QFileInfo::exists(QLatin1String("/.flatpak-info")) || qEnvironmentVariableIsSet("SNAP");
+
+    if (inSandbox) {
         QDBusConnectionInterface *interface = QDBusConnection::sessionBus().interface();
         d->portalDBusServiceExists = interface->isServiceRegistered(QStringLiteral("org.freedesktop.portal.Desktop"));
     }
@@ -142,7 +134,7 @@ KNotificationPlugin *KNotificationManager::pluginForAction(const QString &action
     // to instantiate an externally supplied plugin.
     if (action == QLatin1String("Popup")) {
 #ifndef Q_OS_ANDROID
-            if (d->inSandbox && d->portalDBusServiceExists) {
+            if (d->portalDBusServiceExists) {
                 plugin = new NotifyByPortal(this);
             } else {
                 plugin = new NotifyByPopup(this);

@@ -586,8 +586,14 @@ void KStatusNotifierItem::showMessage(const QString &title, const QString &messa
     {
         QVariantMap hints;
 
-        if (!qApp->desktopFileName().isEmpty()) {
-            hints.insert(QStringLiteral("desktop-entry"), qApp->desktopFileName());
+        QString desktopFileName = QGuiApplication::desktopFileName();
+        if (!desktopFileName.isEmpty()) {
+            // handle apps which set the desktopFileName property with filename suffix,
+            // due to unclear API dox (https://bugreports.qt.io/browse/QTBUG-75521)
+            if (desktopFileName.endsWith(QLatin1String(".desktop"))) {
+                desktopFileName.chop(8);
+            }
+            hints.insert(QStringLiteral("desktop-entry"), desktopFileName);
         }
 
         d->notificationsClient->Notify(d->title, id, icon, title, message, QStringList(), hints, timeout);

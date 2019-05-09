@@ -46,9 +46,15 @@ NotifyByAudio::NotifyByAudio(QObject *parent)
         return;
     }
 
+    QString desktopFileName = QGuiApplication::desktopFileName();
+    // handle apps which set the desktopFileName property with filename suffix,
+    // due to unclear API dox (https://bugreports.qt.io/browse/QTBUG-75521)
+    if (desktopFileName.endsWith(QLatin1String(".desktop"))) {
+        desktopFileName.chop(8);
+    }
     ret = ca_context_change_props(m_context,
         CA_PROP_APPLICATION_NAME, qUtf8Printable(qApp->applicationDisplayName()),
-        CA_PROP_APPLICATION_ID, qUtf8Printable(qApp->desktopFileName()),
+        CA_PROP_APPLICATION_ID, qUtf8Printable(desktopFileName),
         CA_PROP_APPLICATION_ICON_NAME, qUtf8Printable(qApp->windowIcon().name()),
         nullptr);
     if (ret != CA_SUCCESS) {

@@ -708,8 +708,14 @@ bool NotifyByPopupPrivate::sendNotificationToGalagoServer(KNotification *notific
         hintsMap[QStringLiteral("transient")] = true;
     }
 
-    if (!qApp->desktopFileName().isEmpty()) {
-        hintsMap[QStringLiteral("desktop-entry")] = qApp->desktopFileName();
+    QString desktopFileName = QGuiApplication::desktopFileName();
+    if (!desktopFileName.isEmpty()) {
+        // handle apps which set the desktopFileName property with filename suffix,
+        // due to unclear API dox (https://bugreports.qt.io/browse/QTBUG-75521)
+        if (desktopFileName.endsWith(QLatin1String(".desktop"))) {
+            desktopFileName.chop(8);
+        }
+        hintsMap[QStringLiteral("desktop-entry")] = desktopFileName;
     }
 
     int urgency = -1;

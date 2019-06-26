@@ -79,18 +79,13 @@ set_package_properties(Canberra PROPERTIES DESCRIPTION "Library for generating e
     TYPE OPTIONAL)
 if (Canberra_FOUND)
     add_definitions(-DHAVE_CANBERRA)
-else()
-    find_package(Phonon4Qt5 4.6.60 NO_MODULE)
+elseif(NOT ANDROID)
+    # This is REQUIRED since you cannot tell CMake "either one of those two optional ones are required"
+    find_package(Phonon4Qt5 4.6.60 NO_MODULE REQUIRED)
     set_package_properties(Phonon4Qt5 PROPERTIES
         DESCRIPTION "Qt-based audio library"
         PURPOSE "Needed to build audio notification support when Canberra isn't available")
-    if (NOT ANDROID)
-        # This is REQUIRED since you cannot tell CMake "either one of those two optional ones are required"
-        set_package_properties(Phonon4Qt5 PROPERTIES TYPE REQUIRED)
-    endif()
-    if (Phonon4Qt5_FOUND)
         add_definitions(-DHAVE_PHONON4QT5)
-    endif()
 endif()
 
 remove_definitions(-DQT_NO_CAST_FROM_BYTEARRAY)

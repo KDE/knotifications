@@ -1,0 +1,48 @@
+# Safa Alfulaij <safa1996alfulaij@gmail.com>, 2014, 2018.
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2014-06-28 15:38+0300\n"
+"PO-Revision-Date: 2018-06-09 21:05+0300\n"
+"Last-Translator: Safa Alfulaij <safa1996alfulaij@gmail.com>\n"
+"Language-Team: Arabic <doc@arabeyes.org>\n"
+"Language: ar\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=6; plural=n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100>=3 "
+"&& n%100<=10 ? 3 : n%100>=11 ? 4 : 5;\n"
+"X-Generator: Lokalize 2.0\n"
+"X-Qt-Contexts: true\n"
+
+#: knotificationrestrictions.cpp:192
+msgctxt "KNotificationRestrictions|"
+msgid "Unknown Application"
+msgstr "تطبيق مجهول"
+
+#: kstatusnotifieritem.cpp:501 kstatusnotifieritem.cpp:1067
+msgctxt "KStatusNotifierItem|"
+msgid "&Minimize"
+msgstr "ص&غّر"
+
+#: kstatusnotifieritem.cpp:816
+msgctxt "KStatusNotifierItem|"
+msgid "Quit"
+msgstr "أنهِ"
+
+#: kstatusnotifieritem.cpp:1065
+msgctxt "KStatusNotifierItem|"
+msgid "&Restore"
+msgstr "ا&ستعد"
+
+#: kstatusnotifieritem.cpp:1079
+#, qt-format
+msgctxt "KStatusNotifierItem|"
+msgid "<qt>Are you sure you want to quit <b>%1</b>?</qt>"
+msgstr "أمتأكّد من إنهاء <b>%1</b>؟"
+
+#: kstatusnotifieritem.cpp:1082
+msgctxt "KStatusNotifierItem|"
+msgid "Confirm Quit From System Tray"
+msgstr "أكّد الإنهاء من صينية النظام"

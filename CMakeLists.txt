@@ -35,12 +35,6 @@ set(REQUIRED_QT_VERSION 5.11.0)
 set(CMAKE_AUTORCC TRUE)
 
 find_package(Qt5 ${REQUIRED_QT_VERSION} CONFIG REQUIRED Widgets)
-if (NOT ANDROID)
-    find_package(Qt5 ${REQUIRED_QT_VERSION} CONFIG REQUIRED DBus)
-else ()
-    find_package(Qt5 ${REQUIRED_QT_VERSION} CONFIG REQUIRED AndroidExtras)
-    find_package(Gradle REQUIRED)
-endif()
 find_package(Qt5 ${REQUIRED_QT_VERSION} QUIET OPTIONAL_COMPONENTS TextToSpeech)
 set_package_properties(Qt5TextToSpeech PROPERTIES
    DESCRIPTION "Qt text to speech module"
@@ -72,20 +66,29 @@ find_package(KF5Config ${KF5_DEP_VERSION} REQUIRED)
 find_package(KF5Codecs ${KF5_DEP_VERSION} REQUIRED)
 find_package(KF5CoreAddons ${KF5_DEP_VERSION} REQUIRED)
 
-find_package(Canberra)
-set_package_properties(Canberra PROPERTIES DESCRIPTION "Library for generating event sounds"
-    PURPOSE "Needed to build audio notification support"
-    URL "http://0pointer.de/lennart/projects/libcanberra"
-    TYPE OPTIONAL)
-if (Canberra_FOUND)
-    add_definitions(-DHAVE_CANBERRA)
-elseif(NOT ANDROID)
-    # This is REQUIRED since you cannot tell CMake "either one of those two optional ones are required"
-    find_package(Phonon4Qt5 4.6.60 NO_MODULE REQUIRED)
-    set_package_properties(Phonon4Qt5 PROPERTIES
-        DESCRIPTION "Qt-based audio library"
-        PURPOSE "Needed to build audio notification support when Canberra isn't available")
-        add_definitions(-DHAVE_PHONON4QT5)
+if (NOT WIN32)
+    if (ANDROID)
+        find_package(Qt5 ${REQUIRED_QT_VERSION} CONFIG REQUIRED AndroidExtras)
+        find_package(Gradle REQUIRED)
+    else()
+        find_package(Qt5 ${REQUIRED_QT_VERSION} CONFIG REQUIRED DBus)
+
+        find_package(Canberra)
+        set_package_properties(Canberra PROPERTIES DESCRIPTION "Library for generating event sounds"
+            PURPOSE "Needed to build audio notification support"
+            URL "http://0pointer.de/lennart/projects/libcanberra"
+            TYPE OPTIONAL)
+        if (Canberra_FOUND)
+            add_definitions(-DHAVE_CANBERRA)
+        else()
+            # This is REQUIRED since you cannot tell CMake "either one of those two optional ones are required"
+            find_package(Phonon4Qt5 4.6.60 NO_MODULE REQUIRED)
+            set_package_properties(Phonon4Qt5 PROPERTIES
+                DESCRIPTION "Qt-based audio library"
+                PURPOSE "Needed to build audio notification support when Canberra isn't available")
+            add_definitions(-DHAVE_PHONON4QT5)
+        endif()
+    endif()
 endif()
 
 remove_definitions(-DQT_NO_CAST_FROM_BYTEARRAY)

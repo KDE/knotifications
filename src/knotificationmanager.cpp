@@ -40,16 +40,12 @@
 #include "notifybylogfile.h"
 #include "notifybytaskbar.h"
 #include "notifybyexecute.h"
-
-#ifdef Q_OS_ANDROID
-#include "notifybyandroid.h"
-#else
-#ifndef Q_OS_WIN
+#ifndef Q_OS_ANDROID
 #include "notifybypopup.h"
 #include "notifybyportal.h"
+#else
+#include "notifybyandroid.h"
 #endif
-#endif
-
 #include "debug_p.h"
 
 #if defined(HAVE_CANBERRA)
@@ -137,17 +133,16 @@ KNotificationPlugin *KNotificationManager::pluginForAction(const QString &action
     // We have a series of built-ins up first, and fall back to trying
     // to instantiate an externally supplied plugin.
     if (action == QLatin1String("Popup")) {
-#ifdef Q_OS_ANDROID
-        plugin = new NotifyByAndroid(this);
-#else
-#ifndef Q_OS_WIN
+#ifndef Q_OS_ANDROID
             if (d->portalDBusServiceExists) {
                 plugin = new NotifyByPortal(this);
             } else {
                 plugin = new NotifyByPopup(this);
             }
+#else
+        plugin = new NotifyByAndroid(this);
 #endif
-#endif
+
         addPlugin(plugin);
     } else if (action == QLatin1String("Taskbar")) {
         plugin = new NotifyByTaskbar(this);

@@ -8,11 +8,15 @@ class KnotificationsConan(ConanFile):
     url = "https://api.kde.org/frameworks/knotifications/html/index.html"
     description = "Desktop notifications"
     settings = "os", "compiler", "build_type", "arch"
-    default_options = { "qt:qtx11extras" : True }
+    default_options = (
+        "qt:qtx11extras = True",
+        "qt:qtdeclarative = True",
+        "qt:with_pq=False"
+    )
 
     requires = (
         "extra-cmake-modules/[>=5.60.0]@kde/testing", # CMakeLists.txt requires 5.49.0
-        "qt/[>=5.11.0]@bincrafters/stable", # +x11 extras
+        "qt/[>=5.11.3]@bincrafters/stable", # +x11 extras
         "kwindowsystem/[>=5.60.0]@kde/testing",
         "kconfig/[>=5.60.0]@kde/testing",
         "kcodecs/[>=5.60.0]@kde/testing",

@@ -4,6 +4,11 @@ set(KF5_VERSION "5.61.0") # handled by release scripts
 set(KF5_DEP_VERSION "5.60.0") # handled by release scripts
 project(KNotifications VERSION ${KF5_VERSION})
 
+if (EXISTS ${CMAKE_BINARY_DIR}/conanbuildinfo.cmake)
+    include(${CMAKE_BINARY_DIR}/conanbuildinfo.cmake)
+    conan_basic_setup(TARGETS)
+endif()
+
 # ECM setup
 include(FeatureSummary)
 find_package(ECM 5.60.0  NO_MODULE)

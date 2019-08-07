@@ -24,7 +24,6 @@
 #include <QAndroidJniEnvironment>
 
 #include <QBuffer>
-#include <QDebug>
 #include <QIcon>
 
 static NotifyByAndroid *s_instance = nullptr;

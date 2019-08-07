@@ -26,7 +26,6 @@
 #include "debug_p.h"
 
 #include <QApplication>
-#include <QWidget>
 
 NotifyByTaskbar::NotifyByTaskbar(QObject *parent)
     : KNotificationPlugin(parent)

@@ -23,10 +23,7 @@
 
 #include <QObject>
 #include <QString>
-#include <QDBusArgument>
-#include <QDBusConnection>
 #include <QMovie>
-#include <QPixmap>
 #include <QSystemTrayIcon>
 #include <QWheelEvent>
 #include <QEventLoopLocker>

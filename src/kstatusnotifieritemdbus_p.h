@@ -26,7 +26,6 @@
 #include <QDBusArgument>
 #include <QDBusConnection>
 #include <QDBusObjectPath>
-#include <QPixmap>
 
 //Custom message type for DBus
 struct KDbusImageStruct {

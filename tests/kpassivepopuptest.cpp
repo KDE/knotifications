@@ -2,7 +2,6 @@
 #include <QApplication>
 #include <kpassivepopup.h>
 #include <QPushButton>
-#include <QLatin1String>
 #include <qsystemtrayicon.h>
 
 #include <kwindowsystem.h>

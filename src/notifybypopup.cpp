@@ -34,14 +34,11 @@
 #include <QBuffer>
 #include <QImage>
 #include <QLabel>
-#include <QTextDocument>
 #include <QGuiApplication>
-#include <QBoxLayout>
 #include <QLayout>
 #include <QDBusConnection>
 #include <QDBusConnectionInterface>
 #include <QDBusServiceWatcher>
-#include <QDBusError>
 #include <QDBusMessage>
 #include <QXmlStreamReader>
 #include <QMap>
@@ -50,10 +47,10 @@
 #include <QPointer>
 #include <QMutableListIterator>
 #include <QThread>
-#include <QScreen>
 #include <QFontMetrics>
 #include <QIcon>
 #include <QUrl>
+#include <QScreen>
 
 #include <kconfiggroup.h>
 #include <KCodecs/KCharsets>

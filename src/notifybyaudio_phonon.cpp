@@ -22,9 +22,7 @@
 #include "notifybyaudio_phonon.h"
 #include "debug_p.h"
 
-#include <QDateTime>
 #include <QFile>
-#include <QTextStream>
 #include <QUrl>
 #include <QString>
 

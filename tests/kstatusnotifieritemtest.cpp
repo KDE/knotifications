@@ -21,10 +21,8 @@
 #include "kstatusnotifieritemtest.h"
 
 #include "kstatusnotifieritem.h"
-#include <QDateTime>
 #include <QLabel>
 #include <QMenu>
-#include <QMovie>
 #include <QApplication>
 
 #include <qcommandlineparser.h>

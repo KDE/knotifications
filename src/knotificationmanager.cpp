@@ -22,9 +22,6 @@
 #include "knotification.h"
 
 #include <QHash>
-#include <QWidget>
-#include <QPointer>
-#include <QBuffer>
 #include <QFileInfo>
 #include <KPluginLoader>
 #include <KPluginMetaData>

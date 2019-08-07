@@ -26,8 +26,6 @@
 
 #include "knotificationplugin.h"
 
-#include <QDBusVariant>
-#include <QStringList>
 #include <QVariantList>
 
 class KNotification;

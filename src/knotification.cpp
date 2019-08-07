@@ -33,13 +33,9 @@
 
 #include <QCoreApplication>
 
-#include <QMap>
 #include <QPixmap>
-#include <QPointer>
-#include <QLabel>
 #include <QTimer>
 #include <QTabWidget>
-#include <QFile>
 #include <QStringList>
 #include <QUrl>
 

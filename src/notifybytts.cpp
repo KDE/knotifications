@@ -28,7 +28,6 @@
 #include "knotification.h"
 #include "debug_p.h"
 
-#include <QtDebug>
 
 NotifyByTTS::NotifyByTTS(QObject *parent)
     : KNotificationPlugin(parent)

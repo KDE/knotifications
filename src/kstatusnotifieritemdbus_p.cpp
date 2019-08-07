@@ -24,11 +24,7 @@
 #include "debug_p.h"
 
 #include <QDBusConnection>
-#include <QPixmap>
-#include <QImage>
-#include <QApplication>
 #include <QMenu>
-#include <QMovie>
 
 #include <kwindowinfo.h>
 #include <kwindowsystem.h>

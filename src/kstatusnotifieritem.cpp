@@ -24,7 +24,6 @@
 #include "debug_p.h"
 
 #include <QDBusConnection>
-#include <QtEndian>
 #include <QMessageBox>
 #include <QPixmap>
 #include <QImage>

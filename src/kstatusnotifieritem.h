@@ -23,7 +23,6 @@
 
 #include <QObject>
 #include <QString>
-#include <QDBusArgument>
 #include <QPoint>
 
 #include <knotifications_export.h>

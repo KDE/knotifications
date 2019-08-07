@@ -27,12 +27,10 @@
 #include <QBitmap>
 #include <QScreen>
 #include <QLabel>
-#include <QLayout>
 #include <QBoxLayout>
 #include <QMouseEvent>
 #include <QPainter>
 #include <QPainterPath>
-#include <QPolygonF>
 #include <QStyle>
 #include <QTimer>
 #include <QToolTip>

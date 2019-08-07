@@ -25,9 +25,8 @@
 #include <ksharedconfig.h>
 
 #include <QPair>
-#include <QPixmap>
 #include <QObject> //for Wid
-
+#include <QImage>
 #include "knotifications_export.h"
 
 typedef QList< QPair<QString,QString> > ContextList;

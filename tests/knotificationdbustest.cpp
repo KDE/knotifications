@@ -21,7 +21,6 @@
 #include <QTimer>
 
 #include <QApplication>
-#include <QLabel>
 #include <QDebug>
 #include <QDBusConnection>
 #include <QDBusMessage>

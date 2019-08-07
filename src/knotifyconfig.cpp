@@ -24,7 +24,6 @@
 #include <ksharedconfig.h>
 #include <kconfiggroup.h>
 #include <QCache>
-#include <QDataStream>
 #include <QStandardPaths>
 
 typedef QCache<QString, KSharedConfig::Ptr> ConfigCache;

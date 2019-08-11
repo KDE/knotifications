@@ -573,5 +573,3 @@ QVariantMap KNotification::hints() const
     return d->hints;
 }
 
-}
-

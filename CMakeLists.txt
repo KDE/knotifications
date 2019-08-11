@@ -35,12 +35,14 @@ set(REQUIRED_QT_VERSION 5.11.0)
 set(CMAKE_AUTORCC TRUE)
 
 find_package(Qt5 ${REQUIRED_QT_VERSION} CONFIG REQUIRED Widgets)
+
 if (NOT ANDROID)
     find_package(Qt5 ${REQUIRED_QT_VERSION} CONFIG REQUIRED DBus)
 else ()
     find_package(Qt5 ${REQUIRED_QT_VERSION} CONFIG REQUIRED AndroidExtras)
     find_package(Gradle REQUIRED)
 endif()
+
 find_package(Qt5 ${REQUIRED_QT_VERSION} QUIET OPTIONAL_COMPONENTS TextToSpeech)
 set_package_properties(Qt5TextToSpeech PROPERTIES
    DESCRIPTION "Qt text to speech module"
@@ -65,10 +67,6 @@ if(X11_FOUND)
 endif()
 if(APPLE)
    find_package(Qt5MacExtras ${REQUIRED_QT_VERSION} REQUIRED NO_MODULE)
-endif()
-if (ANDROID)
-        find_package(Qt5 ${REQUIRED_QT_VERSION} CONFIG REQUIRED AndroidExtras)
-        find_package(Gradle REQUIRED)
 endif()
 if (WIN32)
     find_package(LibSnoreToast REQUIRED)

@@ -39,6 +39,10 @@ if (ANDROID)
     list(APPEND knotifications_SRCS notifybyandroid.cpp knotifications.qrc)
 endif()
 
+if (WIN32)
+  list(APPEND knotifications_SRCS notifybysnore.cpp)
+endif ()
+
 ecm_qt_declare_logging_category(knotifications_SRCS HEADER debug_p.h IDENTIFIER LOG_KNOTIFICATIONS CATEGORY_NAME org.kde.knotifications)
 
 if (Canberra_FOUND)
@@ -54,27 +58,25 @@ if (Qt5TextToSpeech_FOUND)
     notifybytts.cpp)
 endif()
 
-find_package(dbusmenu-qt5 CONFIG)
-set_package_properties(dbusmenu-qt5 PROPERTIES DESCRIPTION "DBusMenuQt"
-                       URL "https://launchpad.net/libdbusmenu-qt" TYPE OPTIONAL
-                       PURPOSE "Support for notification area menus via the DBusMenu protocol")
-if (dbusmenu-qt5_FOUND)
-   message("dbusmenu-qt5_FOUND")
-   set(HAVE_DBUSMENUQT 1)
-   include_directories(${dbusmenu-qt5_INCLUDE_DIRS})
-else()
-   set(HAVE_DBUSMENUQT 0)
-endif()
-
 if (TARGET Qt5::DBus)
-  qt5_add_dbus_adaptor(knotifications_SRCS     org.kde.StatusNotifierItem.xml
-                      kstatusnotifieritemdbus_p.h KStatusNotifierItemDBus)
+  if (dbusmenu-qt5_FOUND)
+    message("dbusmenu-qt5_FOUND")
+    set(HAVE_DBUSMENUQT 1)
+    include_directories(${dbusmenu-qt5_INCLUDE_DIRS})
+  else()
+    set(HAVE_DBUSMENUQT 0)
+  endif()
+
+  if (TARGET Qt5::DBus)
+    qt5_add_dbus_adaptor(knotifications_SRCS     org.kde.StatusNotifierItem.xml
+                        kstatusnotifieritemdbus_p.h KStatusNotifierItemDBus)
 
 
-  set(statusnotifierwatcher_xml org.kde.StatusNotifierWatcher.xml)
-  qt5_add_dbus_interface(knotifications_SRCS ${statusnotifierwatcher_xml} statusnotifierwatcher_interface)
-  set(notifications_xml org.freedesktop.Notifications.xml)
-  qt5_add_dbus_interface(knotifications_SRCS ${notifications_xml} notifications_interface)
+    set(statusnotifierwatcher_xml org.kde.StatusNotifierWatcher.xml)
+    qt5_add_dbus_interface(knotifications_SRCS ${statusnotifierwatcher_xml} statusnotifierwatcher_interface)
+    set(notifications_xml org.freedesktop.Notifications.xml)
+    qt5_add_dbus_interface(knotifications_SRCS ${notifications_xml} notifications_interface)
+  endif()
 endif()
 
 configure_file(config-knotifications.h.cmake ${CMAKE_CURRENT_BINARY_DIR}/config-knotifications.h )
@@ -97,6 +99,9 @@ target_link_libraries(KF5Notifications PRIVATE
    KF5::WindowSystem
    KF5::Codecs
 )
+if (TARGET SnoreToast::SnoreToastActions)
+  target_link_libraries(KF5Notifications PRIVATE Qt5::Network SnoreToast::SnoreToastActions)
+endif ()
 
 if (Phonon4Qt5_FOUND)
     target_link_libraries(KF5Notifications PRIVATE

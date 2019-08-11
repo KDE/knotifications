@@ -37,11 +37,14 @@
 #include "notifybylogfile.h"
 #include "notifybytaskbar.h"
 #include "notifybyexecute.h"
-#ifndef Q_OS_ANDROID
+
+#if defined(Q_OS_ANDROID)
+#include "notifybyandroid.h"
+#elif defined(Q_OS_WIN)
+#include "notifybysnore.h"
+#else
 #include "notifybypopup.h"
 #include "notifybyportal.h"
-#else
-#include "notifybyandroid.h"
 #endif
 #include "debug_p.h"
 
@@ -88,10 +91,10 @@ KNotificationManager::KNotificationManager()
     d->notifyPlugins.clear();
 
 #ifdef QT_DBUS_LIB
-    const bool inSandbox = QFileInfo::exists(QLatin1String("/.flatpak-info")) || qEnvironmentVariableIsSet("SNAP");
+     const bool inSandbox = QFileInfo::exists(QLatin1String("/.flatpak-info")) || qEnvironmentVariableIsSet("SNAP");
 
-    if (inSandbox) {
-        QDBusConnectionInterface *interface = QDBusConnection::sessionBus().interface();
+     if (inSandbox) {
+         QDBusConnectionInterface *interface = QDBusConnection::sessionBus().interface();
         d->portalDBusServiceExists = interface->isServiceRegistered(QStringLiteral("org.freedesktop.portal.Desktop"));
     }
 
@@ -130,24 +133,25 @@ KNotificationPlugin *KNotificationManager::pluginForAction(const QString &action
     // We have a series of built-ins up first, and fall back to trying
     // to instantiate an externally supplied plugin.
     if (action == QLatin1String("Popup")) {
-#ifndef Q_OS_ANDROID
+#if defined(Q_OS_ANDROID)
+            plugin = new NotifyByAndroid(this);
+#elif defined(Q_OS_WIN)
+            plugin = new NotifyBySnore(this);
+#else
             if (d->portalDBusServiceExists) {
                 plugin = new NotifyByPortal(this);
             } else {
                 plugin = new NotifyByPopup(this);
-            }
-#else
-        plugin = new NotifyByAndroid(this);
+        }
 #endif
-
         addPlugin(plugin);
     } else if (action == QLatin1String("Taskbar")) {
         plugin = new NotifyByTaskbar(this);
         addPlugin(plugin);
     } else if (action == QLatin1String("Sound")) {
 #if defined(HAVE_PHONON4QT5) || defined(HAVE_CANBERRA)
-        plugin = new NotifyByAudio(this);
-        addPlugin(plugin);
+            plugin = new NotifyByAudio(this);
+            addPlugin(plugin);
 #endif
     } else if (action == QLatin1String("Execute")) {
         plugin = new NotifyByExecute(this);

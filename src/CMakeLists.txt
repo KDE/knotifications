@@ -67,16 +67,14 @@ if (TARGET Qt5::DBus)
     set(HAVE_DBUSMENUQT 0)
   endif()
 
-  if (TARGET Qt5::DBus)
-    qt5_add_dbus_adaptor(knotifications_SRCS     org.kde.StatusNotifierItem.xml
-                        kstatusnotifieritemdbus_p.h KStatusNotifierItemDBus)
+  qt5_add_dbus_adaptor(knotifications_SRCS     org.kde.StatusNotifierItem.xml
+                    kstatusnotifieritemdbus_p.h KStatusNotifierItemDBus)
 
 
-    set(statusnotifierwatcher_xml org.kde.StatusNotifierWatcher.xml)
-    qt5_add_dbus_interface(knotifications_SRCS ${statusnotifierwatcher_xml} statusnotifierwatcher_interface)
-    set(notifications_xml org.freedesktop.Notifications.xml)
-    qt5_add_dbus_interface(knotifications_SRCS ${notifications_xml} notifications_interface)
-  endif()
+  set(statusnotifierwatcher_xml org.kde.StatusNotifierWatcher.xml)
+  qt5_add_dbus_interface(knotifications_SRCS ${statusnotifierwatcher_xml} statusnotifierwatcher_interface)
+  set(notifications_xml org.freedesktop.Notifications.xml)
+  qt5_add_dbus_interface(knotifications_SRCS ${notifications_xml} notifications_interface)
 endif()
 
 configure_file(config-knotifications.h.cmake ${CMAKE_CURRENT_BINARY_DIR}/config-knotifications.h )

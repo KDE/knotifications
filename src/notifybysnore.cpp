@@ -140,6 +140,14 @@ NotifyBySnore::~NotifyBySnore()
 
 void NotifyBySnore::notify(KNotification *notification, KNotifyConfig *config)
 {
+    Q_UNUSED(config);
+    // HACK work around that notification->id() is only populated after returning from here
+    // note that config will be invalid at that point, so we can't pass that along
+    QMetaObject::invokeMethod(this, [this, notification](){ notifyDeferred(notification); }, Qt::QueuedConnection);
+}
+
+void NotifyBySnore::notifyDeferred(KNotification* notification)
+{
     QProcess *proc = new QProcess();
     QStringList arguments;
 
@@ -153,6 +161,8 @@ void NotifyBySnore::notify(KNotification *notification, KNotifyConfig *config)
     const QString iconPath = m_iconDir.path() + QLatin1Char('/')
                     + QString::number(notification->id()) + QStringLiteral(".png");
     if (!notification->pixmap().isNull()) {
+        auto iconPath = QString(m_iconDir.path() + QLatin1Char('/')
+                    + QString::number(notification->id()) + QStringLiteral(".png"));
         notification->pixmap().save(iconPath, "PNG");
         arguments << QStringLiteral("-p") << iconPath;
     } else if (!qApp->windowIcon().isNull()) {

@@ -29,7 +29,7 @@
 #include <snoretoastactions.h>
 
 /*
- * On Windows a shortcut to your app is needed to be installed in the Start Menu 
+ * On Windows a shortcut to your app is needed to be installed in the Start Menu
  * (and subsequently, registered with the OS) in order to show notifications.
  * Since KNotifications is a library, an app using it can't (feasibly) be properly
  * registered with the OS. It is possible we could come up with some complicated solution
@@ -41,7 +41,7 @@
  * just some tweaks to the Craft blueprint and packaging script
  * to pull in SnoreToast and trigger shortcut building respectively.
  * Be sure to have a shortcut installed in Windows Start Menu by SnoreToast.
- * 
+ *
  * So the location doesn't matter, but it's only possible to register the internal COM server in an executable.
  * We could make it a static lib and link it in all KDE applications,
  * but to make the action center integration work, we would need to also compile a class
@@ -53,7 +53,7 @@
  *
  * Trigger the shortcut installation during the installation of your app; syntax for shortcut installation is -
  * ./SnoreToast.exe -install <absolute\address\of\shortcut> <absolute\address\to\app.exe> <appID>
- * 
+ *
  * appID: use as-is from your app's QCoreApplication::applicationName() when installing the shortcut.
  * NOTE: Install the shortcut in Windows Start Menu folder.
  * For example, check out Craft Blueprint for Quassel-IRC or KDE Connect.
@@ -62,7 +62,7 @@
 NotifyBySnore::NotifyBySnore(QObject* parent) :
     KNotificationPlugin(parent)
 {
-    m_server.listen(QString::number(qHash(qApp->applicationDirPath()))); 
+    m_server.listen(QString::number(qHash(qApp->applicationDirPath())));
     connect(&m_server, &QLocalServer::newConnection, &m_server, [this]() {
         auto sock = m_server.nextPendingConnection();
         sock->waitForReadyRead();
@@ -84,11 +84,11 @@ NotifyBySnore::NotifyBySnore(QObject* parent) :
         if (it != m_notifications.constEnd()) {
             notification = it.value();
         }
-        else { 
+        else {
             qCDebug(LOG_KNOTIFICATIONS) << "Notification not found!";
             return;
         }
-        
+
         // MSVC2019 has issues with QString::toStdWString()
         // Qstring::toStdWString() doesn't work with MSVC2019 yet. If it gets fixed
         // in future, feel free to change the implementation below for lesser LOC.
@@ -150,10 +150,16 @@ void NotifyBySnore::notify(KNotification *notification, KNotifyConfig *config)
         arguments << qApp->applicationDisplayName();
     }
     arguments << QStringLiteral("-m") << notification->text();
+    const QString iconPath = m_iconDir.path() + QLatin1Char('/')
+                    + QString::number(notification->id()) + QStringLiteral(".png");
     if (!notification->pixmap().isNull()) {
-        auto iconPath = QString(m_iconDir.path() + QLatin1Char('/') 
-                    + QString::number(notification->id()) + QStringLiteral(".png"));
         notification->pixmap().save(iconPath, "PNG");
+        arguments << QStringLiteral("-p") << iconPath;
+    } else if (!qApp->windowIcon().isNull()) {
+        QIcon app_icon = qApp->windowIcon();
+        // We limit the icon size to 1024x1024 as it is the highest supported by Windows
+        QPixmap pixmap = app_icon.pixmap(1024, 1024);
+        pixmap.save(iconPath, "PNG");
         arguments << QStringLiteral("-p") << iconPath;
     }
     arguments   << QStringLiteral("-appID") << qApp->applicationName()
@@ -168,13 +174,13 @@ void NotifyBySnore::notify(KNotification *notification, KNotifyConfig *config)
     proc->start(m_program, arguments);
     m_notifications.insert(notification->id(), notification);
     connect(proc, QOverload<int, QProcess::ExitStatus>::of(&QProcess::finished),
-            [=](int exitCode, QProcess::ExitStatus exitStatus){ 
+            [=](int exitCode, QProcess::ExitStatus exitStatus){
                 proc->deleteLater();
                 if (exitStatus != QProcess::NormalExit) {
                     qCDebug(LOG_KNOTIFICATIONS) << "SnoreToast crashed while trying to show a notification.";
                     close(notification);
                 }
-                QFile::remove(QString(m_iconDir.path() + QLatin1Char('/') 
+                QFile::remove(QString(m_iconDir.path() + QLatin1Char('/')
                             + QString::number(notification->id()) + QStringLiteral(".png")));
     });
 }

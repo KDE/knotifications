@@ -157,6 +157,7 @@ void NotifyBySnore::notify(KNotification *notification, KNotifyConfig *config)
         arguments << QStringLiteral("-p") << iconPath;
     }
     arguments   << QStringLiteral("-appID") << qApp->applicationName()
+                << QStringLiteral("-pid") << QString::number(qApp->applicationPid())
                 << QStringLiteral("-id") << QString::number(notification->id())
                 << QStringLiteral("-pipename") << m_server.fullServerName();
 

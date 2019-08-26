@@ -102,6 +102,16 @@ if (NOT WIN32 AND NOT ANDROID)
     endif()
 endif()
 
+set(HAVE_DBUS FALSE)
+if (TARGET Qt5::DBus)
+    find_package(dbusmenu-qt5 CONFIG REQUIRED)
+    set_package_properties(dbusmenu-qt5 PROPERTIES DESCRIPTION "DBusMenuQt"
+                            URL "https://launchpad.net/libdbusmenu-qt" TYPE OPTIONAL
+                            PURPOSE "Support for notification area menus via the DBusMenu protocol")
+
+    set(HAVE_DBUS TRUE)
+endif()
+
 remove_definitions(-DQT_NO_CAST_FROM_BYTEARRAY)
 #add_definitions(-DQT_NO_FOREACH)
 if (IS_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/po")
@@ -131,15 +141,6 @@ endif()
 
 include(CMakePackageConfigHelpers)
 
-set(HAVE_DBUS FALSE)
-if (TARGET Qt5::DBus)
-    find_package(dbusmenu-qt5 CONFIG)
-    set_package_properties(dbusmenu-qt5 PROPERTIES DESCRIPTION "DBusMenuQt"
-                            URL "https://launchpad.net/libdbusmenu-qt" TYPE OPTIONAL
-                            PURPOSE "Support for notification area menus via the DBusMenu protocol")
-
-    set(HAVE_DBUS TRUE)
-endif()
 configure_package_config_file(
   "${CMAKE_CURRENT_SOURCE_DIR}/KF5NotificationsConfig.cmake.in"
   "${CMAKE_CURRENT_BINARY_DIR}/KF5NotificationsConfig.cmake"

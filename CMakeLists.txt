@@ -104,7 +104,7 @@ endif()
 
 set(HAVE_DBUS FALSE)
 if (TARGET Qt5::DBus)
-    find_package(dbusmenu-qt5 CONFIG REQUIRED)
+    find_package(dbusmenu-qt5 CONFIG)
     set_package_properties(dbusmenu-qt5 PROPERTIES DESCRIPTION "DBusMenuQt"
                             URL "https://launchpad.net/libdbusmenu-qt" TYPE OPTIONAL
                             PURPOSE "Support for notification area menus via the DBusMenu protocol")

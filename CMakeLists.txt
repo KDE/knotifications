@@ -86,9 +86,8 @@ find_package(KF5CoreAddons ${KF5_DEP_VERSION} REQUIRED)
 if (NOT WIN32 AND NOT ANDROID)
     find_package(Qt5 ${REQUIRED_QT_VERSION} CONFIG REQUIRED DBus)
     find_package(Canberra)
-    set_package_properties(Canberra PROPERTIES DESCRIPTION "Library for generating event sounds"
+    set_package_properties(Canberra PROPERTIES
         PURPOSE "Needed to build audio notification support"
-        URL "http://0pointer.de/lennart/projects/libcanberra"
         TYPE OPTIONAL)
     if (Canberra_FOUND)
         add_definitions(-DHAVE_CANBERRA)

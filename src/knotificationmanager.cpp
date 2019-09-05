@@ -188,7 +188,7 @@ KNotificationPlugin *KNotificationManager::pluginForAction(const QString &action
                 // instantiate the plugin, unless we already got a match.
                 // TODO KF6: Require X-KDE-KNotification-OptionName be set and
                 // reject plugins without it.
-                if (rawData.contains(QStringLiteral("X-KDE-KNotification-OptionName"))) {
+                if (rawData.contains(QLatin1String("X-KDE-KNotification-OptionName"))) {
                     if (rawData.value(QStringLiteral("X-KDE-KNotification-OptionName")) == action) {
                         pluginFound = true;
                     } else {

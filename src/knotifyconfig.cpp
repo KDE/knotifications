@@ -69,7 +69,7 @@ KNotifyConfig::KNotifyConfig(const QString &_appname, const ContextList &_contex
       contexts(_contexts),
       eventid(_eventid)
 {
-    eventsfile = retrieve_from_cache(QStringLiteral("knotifications5/") + _appname + QStringLiteral(".notifyrc"), QStandardPaths::GenericDataLocation);
+    eventsfile = retrieve_from_cache(QLatin1String("knotifications5/") + _appname + QLatin1String(".notifyrc"), QStandardPaths::GenericDataLocation);
     configfile = retrieve_from_cache(_appname + QStringLiteral(".notifyrc"));
 }
 
@@ -96,7 +96,7 @@ KNotifyConfig *KNotifyConfig::copy() const
 QString KNotifyConfig::readEntry(const QString &entry, bool path)
 {
     for (const QPair<QString, QString> &context : qAsConst(contexts)) {
-        const QString group = QStringLiteral("Event/") + eventid + QLatin1Char('/') + context.first + QLatin1Char('/') + context.second;
+        const QString group = QLatin1String("Event/") + eventid + QLatin1Char('/') + context.first + QLatin1Char('/') + context.second;
 
         if (configfile->hasGroup(group)) {
             KConfigGroup cg(configfile, group);
@@ -117,7 +117,7 @@ QString KNotifyConfig::readEntry(const QString &entry, bool path)
         }
     }
 //    kDebug() << entry << " not found in contexts ";
-    const QString group = QStringLiteral("Event/") + eventid;
+    const QString group = QLatin1String("Event/") + eventid;
 
     if (configfile->hasGroup(group)) {
         KConfigGroup cg(configfile, group);

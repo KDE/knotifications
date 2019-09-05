@@ -468,7 +468,7 @@ void NotifyByPopup::onGalagoNotificationActionInvoked(uint notificationId, const
 
     KNotification *n = *iter;
     if (n) {
-        if (actionKey == QStringLiteral("default")) {
+        if (actionKey == QLatin1String("default")) {
             emit actionInvoked(n->id(), 0);
         } else {
             emit actionInvoked(n->id(), actionKey.toUInt());
@@ -646,7 +646,7 @@ bool NotifyByPopupPrivate::sendNotificationToGalagoServer(KNotification *notific
     QString title = notification->title().isEmpty() ? appCaption : notification->title();
     QString text = notification->text();
 
-    if (!popupServerCapabilities.contains(QStringLiteral("body-markup"))) {
+    if (!popupServerCapabilities.contains(QLatin1String("body-markup"))) {
         if (title.startsWith(QLatin1String("<html>"))) {
             title = stripHtml(title);
         }
@@ -664,7 +664,7 @@ bool NotifyByPopupPrivate::sendNotificationToGalagoServer(KNotification *notific
     // assign id's to actions like it's done in fillPopup() method
     // (i.e. starting from 1)
     QStringList actionList;
-    if (popupServerCapabilities.contains(QStringLiteral("actions"))) {
+    if (popupServerCapabilities.contains(QLatin1String("actions"))) {
         QString defaultAction = notification->defaultAction();
         if (!defaultAction.isEmpty()) {
             actionList.append(QStringLiteral("default"));

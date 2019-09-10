@@ -175,7 +175,8 @@ class QWidget;
     notification->setPixmap( contact->pixmap() );
     notification->setActions( QStringList( i18n( "Open chat" ) ) );
 
-    foreach( const QString &group , contact->groups() ) {
+    const auto groups = contact->groups();
+    for ( const QString &group : groups ) {
         notification->addContext( "group" , group ) ;
     }
 

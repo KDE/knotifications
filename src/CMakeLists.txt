@@ -173,6 +173,8 @@ if(BUILD_QCH)
         IMAGE_DIRS "${CMAKE_SOURCE_DIR}/docs/pics"
         LINK_QCHS
             Qt5Widgets_QCH
+        INCLUDE_DIRS
+            ${CMAKE_CURRENT_BINARY_DIR}
         BLANK_MACROS
             KNOTIFICATIONS_EXPORT
             KNOTIFICATIONS_DEPRECATED

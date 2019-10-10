@@ -40,6 +40,8 @@
 
 #if defined(Q_OS_ANDROID)
 #include "notifybyandroid.h"
+#elif defined(Q_OS_MACOS)
+#include "notifybymacosnotificationcenter.h"
 #elif defined(Q_OS_WIN)
 #include "notifybysnore.h"
 #else
@@ -137,6 +139,8 @@ KNotificationPlugin *KNotificationManager::pluginForAction(const QString &action
             plugin = new NotifyByAndroid(this);
 #elif defined(Q_OS_WIN)
             plugin = new NotifyBySnore(this);
+#elif defined(Q_OS_MACOS)
+            plugin = new NotifyByMacOSNotificationCenter(this);
 #else
             if (d->portalDBusServiceExists) {
                 plugin = new NotifyByPortal(this);

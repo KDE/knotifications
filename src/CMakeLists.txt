@@ -43,6 +43,10 @@ if (WIN32)
   list(APPEND knotifications_SRCS notifybysnore.cpp)
 endif ()
 
+if (APPLE)
+  list(APPEND knotifications_SRCS notifybymacosnotificationcenter.mm)
+endif()
+
 ecm_qt_declare_logging_category(knotifications_SRCS HEADER debug_p.h IDENTIFIER LOG_KNOTIFICATIONS CATEGORY_NAME org.kde.knotifications)
 
 if (Canberra_FOUND)
@@ -120,7 +124,7 @@ if(X11_FOUND)
 endif()
 
 if(APPLE)
-  target_link_libraries(KF5Notifications PRIVATE Qt5::MacExtras)
+  target_link_libraries(KF5Notifications PRIVATE Qt5::MacExtras "-framework Foundation" "-framework AppKit")
 endif()
 
 if(X11_XTest_FOUND)

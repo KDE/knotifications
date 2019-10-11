@@ -23,7 +23,6 @@
 
 #include "notifybypopup.h"
 #include "imageconverter.h"
-#include "notifybypopupgrowl.h"
 
 #include "kpassivepopup.h"
 #include "knotifyconfig.h"
@@ -240,32 +239,6 @@ void NotifyByPopup::notify(KNotification *notification, const KNotifyConfig &not
     // CloseOnTimeout => -1 == let the server decide
     int timeout = (notification->flags() & KNotification::Persistent) ? 0 : -1;
 
-    // if Growl can display our popups, use that instead
-    if (NotifyByPopupGrowl::canPopup()) {
-
-        QString appCaption, iconName;
-        d->getAppCaptionAndIconName(notifyConfig, &appCaption, &iconName);
-        appCaption = d->stripHtml(appCaption);
-
-        //did the user override the icon name?
-        if (!notification->iconName().isEmpty()) {
-            iconName = notification->iconName();
-        }
-
-        // Our growl implementation does not support html stuff
-        // so strip it off right away
-        QString text = notification->text();
-        text = d->stripHtml(text);
-
-        // The first arg is QPixmap*, however that pixmap is not used
-        // at all (it has Q_UNUSED) so just set it to 0
-        NotifyByPopupGrowl::popup(nullptr, timeout, appCaption, text);
-
-        // Finish immediately, because current NotifyByPopupGrowl can't callback
-        finish(notification);
-        return;
-    }
-
     // Check if this object lives in the GUI thread and return if it doesn't
     // as Qt cannot create/handle widgets in non-GUI threads
     if (QThread::currentThread() != qApp->thread()) {
@@ -400,11 +373,6 @@ void NotifyByPopup::update(KNotification *notification, const KNotifyConfig &not
     if (d->dbusServiceExists) {
         d->sendNotificationToGalagoServer(notification, notifyConfig, true);
         return;
-    }
-
-    // otherwise, just display a new Growl notification
-    if (NotifyByPopupGrowl::canPopup()) {
-        notify(notification, notifyConfig);
     }
 }
 
@@ -801,13 +769,9 @@ void NotifyByPopupPrivate::closeGalagoNotification(KNotification *notification)
 void NotifyByPopupPrivate::queryPopupServerCapabilities()
 {
     if (!dbusServiceExists) {
-        if (NotifyByPopupGrowl::canPopup()) {
-            popupServerCapabilities = NotifyByPopupGrowl::capabilities();
-        } else {
-            // Return capabilities of the KPassivePopup implementation
-            popupServerCapabilities = QStringList() << QStringLiteral("actions") << QStringLiteral("body") << QStringLiteral("body-hyperlinks")
+        // Return capabilities of the KPassivePopup implementation
+        popupServerCapabilities = QStringList() << QStringLiteral("actions") << QStringLiteral("body") << QStringLiteral("body-hyperlinks")
                                                       << QStringLiteral("body-markup") << QStringLiteral("icon-static");
-        }
     }
 
     if (dbusServiceCapCacheDirty) {

@@ -15,7 +15,6 @@ set(knotifications_SRCS
 
   knotifyconfig.cpp
   knotificationplugin.cpp
-  notifybypopupgrowl.cpp
   notifybyexecute.cpp
   notifybylogfile.cpp
   notifybytaskbar.cpp

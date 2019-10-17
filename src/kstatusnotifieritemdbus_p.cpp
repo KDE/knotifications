@@ -290,11 +290,7 @@ void KStatusNotifierItemDBus::ContextMenu(int x, int y)
 
 void KStatusNotifierItemDBus::Activate(int x, int y)
 {
-    if (m_statusNotifierItem->d->associatedWidget == m_statusNotifierItem->d->menu) {
-        ContextMenu(x, y);
-    } else {
-        m_statusNotifierItem->activate(QPoint(x, y));
-    }
+    m_statusNotifierItem->activate(QPoint(x, y));
 }
 
 void KStatusNotifierItemDBus::SecondaryActivate(int x, int y)

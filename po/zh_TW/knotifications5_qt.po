@@ -1,0 +1,59 @@
+# translation of kdelibs4.po to Chinese Traditional
+# Copyright (C) 2001, 2002, 2004, 2005, 2006, 2007, 2008 Free Software Foundation, Inc.
+# Eric Cheng <ericc@shinewave.com.tw>, unknown.
+# This file referenced zh_CN translations at 2002.
+# Chih-Wei Huang <cwhuang@linux.org.tw>, 2001.
+# Kenduest Lee <kenduest@i18n.linux.org.tw>, 2001, 2002.
+# Jouston Huang (Huang, Jiun-Jeng) <jouston@housediy.com>, 2002.
+# Chia-Lin, Kao <acelan@linux.org.tw>, 2004.
+# Yuan-Chen Cheng <ycheng@slat.org>, 2002.
+# Goodhorse <franklin@goodhorse.idv.tw>, 2008.
+# Frank Weng (a.k.a. Franklin) <franklin at goodhorse dot idv dot tw>, 2006-2009, 2010.
+# Franklin Weng <franklin@mail.everfocus.com.tw>, 2010, 2011, 2012.
+# Franklin Weng <franklin@goodhorse.idv.tw>, 2010, 2011, 2012, 2013, 2014.
+msgid ""
+msgstr ""
+"Project-Id-Version: kdelibs4\n"
+"Report-Msgid-Bugs-To: http://bugs.kde.org\n"
+"POT-Creation-Date: 2014-03-23 01:50+0000\n"
+"PO-Revision-Date: 2014-04-22 10:34+0800\n"
+"Last-Translator: Franklin Weng <franklin at goodhorse dot idv dot tw>\n"
+"Language-Team: Chinese Traditional <kde-tw@googlegroups.com>\n"
+"Language: zh_TW\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Lokalize 1.5\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"X-Qt-Contexts: true\n"
+
+#: knotificationrestrictions.cpp:192
+msgctxt "KNotificationRestrictions|"
+msgid "Unknown Application"
+msgstr "未知的應用程式"
+
+#: kstatusnotifieritem.cpp:500 kstatusnotifieritem.cpp:1066
+msgctxt "KStatusNotifierItem|"
+msgid "&Minimize"
+msgstr "縮到最小(&M)"
+
+#: kstatusnotifieritem.cpp:815
+msgctxt "KStatusNotifierItem|"
+msgid "Quit"
+msgstr "離開"
+
+#: kstatusnotifieritem.cpp:1064
+msgctxt "KStatusNotifierItem|"
+msgid "&Restore"
+msgstr "回復(&R)"
+
+#: kstatusnotifieritem.cpp:1078
+#, qt-format
+msgctxt "KStatusNotifierItem|"
+msgid "<qt>Are you sure you want to quit <b>%1</b>?</qt>"
+msgstr "<qt>您確定要離開 '<b>%1</b>' 嗎?</qt>"
+
+#: kstatusnotifieritem.cpp:1081
+msgctxt "KStatusNotifierItem|"
+msgid "Confirm Quit From System Tray"
+msgstr "確定要離開系統列"

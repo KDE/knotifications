@@ -70,6 +70,7 @@ class QWidget;
  * \section file The global config file
  * Your application should install a file called <em>knotifications5/appname.notifyrc</em>
  * in a QStandardPaths::GenericDataLocation directory.
+ * On Android, this path is <em>qrc:/knotifications5/</em>.
  *
  * The filename must either match QCoreApplication::applicationName or be specified as the
  * component name to the KNotification object.

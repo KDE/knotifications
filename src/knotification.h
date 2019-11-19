@@ -412,7 +412,7 @@ public:
      */
     QPixmap pixmap() const;
     /**
-     * Set the pixmap that will be shown in the popup.
+     * Set the pixmap that will be shown in the popup. If you want to use an icon from the icon theme use setIconName instead.
      *
      * @param pix the pixmap
      */

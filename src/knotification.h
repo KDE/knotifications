@@ -27,6 +27,7 @@
 #include <QList>
 #include <QPair>
 #include <QUrl>
+#include <QVariant>
 
 class QWidget;
 

@@ -64,7 +64,7 @@ void NotifyByLogfile::notify(KNotification *notification, KNotifyConfig *config)
     // append msg
     QTextStream strm(&logFile);
     strm << "- KNotify " << QDateTime::currentDateTime().toString() << ": ";
-    strm << text << endl;
+    strm << text << QLatin1Char('\n');
 
     // close file
     logFile.close();

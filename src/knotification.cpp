@@ -29,8 +29,6 @@
 #include "knotification.h"
 #include "knotificationmanager_p.h"
 
-#include <kwindowsystem.h>
-
 #include <QCoreApplication>
 
 #include <QPixmap>
@@ -356,10 +354,7 @@ void KNotification::Private::raiseWidget(QWidget *w)
     //TODO  this function is far from finished.
     if (w->isTopLevel()) {
         w->raise();
-        KWindowSystem::activateWindow(w->winId());
-#if defined(Q_OS_MACOS)
         w->activateWindow();
-#endif
     } else {
         QWidget *pw = w->parentWidget();
         raiseWidget(pw);

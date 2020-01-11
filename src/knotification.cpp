@@ -340,6 +340,7 @@ void KNotification::close()
     }
 }
 
+#if KNOTIFICATIONS_BUILD_DEPRECATED_SINCE(5, 67)
 void KNotification::raiseWidget()
 {
     if (!d->widget) {
@@ -348,6 +349,7 @@ void KNotification::raiseWidget()
 
     Private::raiseWidget(d->widget);
 }
+#endif
 
 void KNotification::Private::raiseWidget(QWidget *w)
 {

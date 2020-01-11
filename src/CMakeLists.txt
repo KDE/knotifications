@@ -83,8 +83,17 @@ endif()
 configure_file(config-knotifications.h.cmake ${CMAKE_CURRENT_BINARY_DIR}/config-knotifications.h )
 
 add_library(KF5Notifications ${knotifications_SRCS})
-generate_export_header(KF5Notifications BASE_NAME KNotifications)
 add_library(KF5::Notifications ALIAS KF5Notifications)
+
+ecm_generate_export_header(KF5Notifications
+    EXPORT_FILE_NAME knotifications_export.h
+    BASE_NAME KNotifications
+    GROUP_BASE_NAME KF
+    VERSION ${KF5_VERSION}
+    DEPRECATED_BASE_VERSION 0
+    DEPRECATION_VERSIONS 5.67
+    EXCLUDE_DEPRECATED_BEFORE_AND_AT ${EXCLUDE_DEPRECATED_BEFORE_AND_AT}
+)
 
 target_include_directories(KF5Notifications INTERFACE "$<INSTALL_INTERFACE:${KDE_INSTALL_INCLUDEDIR_KF5}/KNotifications>")
 

@@ -619,11 +619,15 @@ public Q_SLOTS:
      */
     void close();
 
+#if KNOTIFICATIONS_ENABLE_DEPRECATED_SINCE(5, 67)
     /**
      * @brief Raise the widget.
      * This will change the desktop, activate the window, and the tab if needed.
+     * @deprecated since 5.67, use QWindow raise + requestActivate instead.
      */
+    KNOTIFICATIONS_DEPRECATED_VERSION(5, 67, "Use QWindow raise + requestActivate instead")
     void raiseWidget();
+#endif
 
     /**
      * The notification will automatically be closed if all presentations are finished.

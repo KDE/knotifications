@@ -106,9 +106,13 @@ endif()
 target_link_libraries(KF5Notifications PRIVATE
    KF5::CoreAddons
    KF5::ConfigCore
-   KF5::WindowSystem
    KF5::Codecs
 )
+
+if (NOT ANDROID)
+    target_link_libraries(KF5Notifications PRIVATE KF5::WindowSystem)
+endif()
+
 if (TARGET SnoreToast::SnoreToastActions)
   target_link_libraries(KF5Notifications PRIVATE Qt5::Network SnoreToast::SnoreToastActions)
 endif ()

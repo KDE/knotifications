@@ -41,7 +41,9 @@
 #include <netwm.h>
 #endif
 
+#if HAVE_KWINDOWSYSTEM
 #include <kwindowinfo.h>
+#endif
 
 static const int DEFAULT_POPUP_TYPE = KPassivePopup::Boxed;
 static const int DEFAULT_POPUP_TIME = 6 * 1000;
@@ -471,12 +473,14 @@ void KPassivePopup::positionSelf()
                 target = widget->geometry();
             }
         }
+#if HAVE_KWINDOWSYSTEM
         if (target.isNull()) {
             KWindowInfo info(d->window, NET::WMGeometry);
             if (info.valid()) {
                 target = info.geometry();
             }
         }
+#endif
     }
     if (target.isNull()) {
         target = QRect(defaultLocation(), QSize(0, 0));

@@ -5,3 +5,5 @@
 #cmakedefine01 HAVE_XTEST
 
 #cmakedefine01 HAVE_DBUSMENUQT
+
+#cmakedefine01 HAVE_KWINDOWSYSTEM

@@ -79,7 +79,12 @@ if (WIN32)
     find_package(Qt5Network REQUIRED)
 endif()
 
-find_package(KF5WindowSystem ${KF5_DEP_VERSION} REQUIRED)
+set(HAVE_KWINDOWSYSTEM FALSE)
+if(NOT ANDROID)
+    find_package(KF5WindowSystem ${KF5_DEP_VERSION} REQUIRED)
+    set(HAVE_KWINDOWSYSTEM TRUE)
+endif()
+
 find_package(KF5Config ${KF5_DEP_VERSION} REQUIRED)
 find_package(KF5Codecs ${KF5_DEP_VERSION} REQUIRED)
 find_package(KF5CoreAddons ${KF5_DEP_VERSION} REQUIRED)

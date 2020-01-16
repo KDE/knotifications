@@ -223,5 +223,9 @@ ecm_generate_pri_file(BASE_NAME KNotifications LIB_NAME KF5Notifications DEPS "w
 install(FILES ${PRI_FILENAME} DESTINATION ${ECM_MKSPECS_INSTALL_DIR})
 
 if (ANDROID)
-    install(FILES KF5Notifications-android-dependencies.xml DESTINATION ${KDE_INSTALL_LIBDIR})
+    if (Qt5Core_VERSION VERSION_LESS 5.14.0)
+        install(FILES KF5Notifications-android-dependencies.xml DESTINATION ${KDE_INSTALL_LIBDIR})
+    else()
+        install(FILES KF5Notifications-android-dependencies.xml DESTINATION ${KDE_INSTALL_LIBDIR} RENAME KF5Notifications_${CMAKE_ANDROID_ARCH_ABI}-android-dependencies.xml)
+    endif()
 endif()

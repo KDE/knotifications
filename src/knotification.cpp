@@ -60,12 +60,14 @@ struct Q_DECL_HIDDEN KNotification::Private {
     bool needUpdate;
 
     Private() : id(-1), ref(0), widget(nullptr), urgency(KNotification::DefaultUrgency), needUpdate(false) {}
+#if KNOTIFICATIONS_BUILD_DEPRECATED_SINCE(5, 67)
     /**
      * recursive function that raise the widget. @p w
      *
      * @see raiseWidget()
      */
     static void raiseWidget(QWidget *w);
+#endif
 };
 
 KNotification::KNotification(const QString &eventId, QWidget *parent, const NotificationFlags &flags) :
@@ -351,6 +353,7 @@ void KNotification::raiseWidget()
 }
 #endif
 
+#if KNOTIFICATIONS_BUILD_DEPRECATED_SINCE(5, 67)
 void KNotification::Private::raiseWidget(QWidget *w)
 {
     //TODO  this function is far from finished.
@@ -366,6 +369,7 @@ void KNotification::Private::raiseWidget(QWidget *w)
         }
     }
 }
+#endif
 
 static QString defaultComponentName()
 {

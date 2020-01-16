@@ -256,7 +256,7 @@ public:
         /**
          * Sends a hint to Plasma to skip grouping for this notification
          *
-         * @since: 5.18
+         * @since 5.18
          */
         SkipGrouping = 0x10,
 

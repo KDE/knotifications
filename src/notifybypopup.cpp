@@ -597,12 +597,8 @@ bool NotifyByPopupPrivate::sendNotificationToGalagoServer(KNotification *notific
     QString text = notification->text();
 
     if (!popupServerCapabilities.contains(QLatin1String("body-markup"))) {
-        if (title.startsWith(QLatin1String("<html>"))) {
-            title = q->stripRichText(title);
-        }
-        if (text.startsWith(QLatin1String("<html>"))) {
-            text = q->stripRichText(text);
-        }
+        title = q->stripRichText(title);
+        text = q->stripRichText(text);
     }
 
     args.append(title); // summary

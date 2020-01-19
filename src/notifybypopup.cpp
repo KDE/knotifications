@@ -42,7 +42,6 @@
 #include <QXmlStreamReader>
 #include <QMap>
 #include <QHash>
-#include <QXmlStreamEntityResolver>
 #include <QPointer>
 #include <QMutableListIterator>
 #include <QThread>
@@ -52,7 +51,6 @@
 #include <QScreen>
 
 #include <kconfiggroup.h>
-#include <KCodecs/KCharsets>
 
 static const char dbusServiceName[] = "org.freedesktop.Notifications";
 static const char dbusInterfaceName[] = "org.freedesktop.Notifications";
@@ -66,13 +64,7 @@ public:
      * Fills the KPassivePopup with data
      */
     void fillPopup(KPassivePopup *popup, KNotification *notification, const KNotifyConfig &config);
-    /**
-     * Removes HTML from a given string. Replaces line breaks with \n and
-     * HTML entities by their 'normal forms'.
-     * @param string the HTML to remove.
-     * @return the cleaned string.
-     */
-    QString stripHtml(const QString &text);
+
     /**
      * Sends notification to DBus "org.freedesktop.notifications" interface.
      * @param id knotify-sid identifier of notification
@@ -140,16 +132,6 @@ public:
 
 
     NotifyByPopup * const q;
-
-    /**
-     * A class for resolving HTML entities in XML documents (used
-     * during HTML stripping)
-     */
-    class HtmlEntityResolver : public QXmlStreamEntityResolver
-    {
-        QString resolveUndeclaredEntity(const QString &name) override;
-    };
-
 };
 
 //---------------------------------------------------------------------------------------
@@ -616,10 +598,10 @@ bool NotifyByPopupPrivate::sendNotificationToGalagoServer(KNotification *notific
 
     if (!popupServerCapabilities.contains(QLatin1String("body-markup"))) {
         if (title.startsWith(QLatin1String("<html>"))) {
-            title = stripHtml(title);
+            title = q->stripRichText(title);
         }
         if (text.startsWith(QLatin1String("<html>"))) {
-            text = stripHtml(text);
+            text = q->stripRichText(text);
         }
     }
 
@@ -788,50 +770,5 @@ void NotifyByPopupPrivate::queryPopupServerCapabilities()
     }
 }
 
-QString NotifyByPopupPrivate::stripHtml(const QString &text)
-{
-    QXmlStreamReader r(QStringLiteral("<elem>") + text + QStringLiteral("</elem>"));
-    HtmlEntityResolver resolver;
-    r.setEntityResolver(&resolver);
-    QString result;
-    while (!r.atEnd()) {
-        r.readNext();
-        if (r.tokenType() == QXmlStreamReader::Characters) {
-            result.append(r.text());
-        } else if (r.tokenType() == QXmlStreamReader::StartElement && r.name() == QLatin1String("br")) {
-            result.append(QLatin1Char('\n'));
-        }
-    }
 
-    if (r.hasError()) {
-        // XML error in the given text, just return the original string
-        qCWarning(LOG_KNOTIFICATIONS) << "Notification to send to backend which does "
-                         "not support HTML, contains invalid XML:"
-                      << r.errorString() << "line" << r.lineNumber()
-                      << "col" << r.columnNumber();
-        return text;
-    }
-
-    return result;
-}
-
-QString NotifyByPopupPrivate::HtmlEntityResolver::resolveUndeclaredEntity(const QString &name)
-{
-    QString result = QXmlStreamEntityResolver::resolveUndeclaredEntity(name);
-
-    if (!result.isEmpty()) {
-        return result;
-    }
-
-    QChar ent = KCharsets::fromEntity(QLatin1Char('&') + name);
-
-    if (ent.isNull()) {
-        qCWarning(LOG_KNOTIFICATIONS) << "Notification to send to backend which does "
-                      "not support HTML, contains invalid entity: "
-                   << name;
-        ent = QLatin1Char(' ');
-    }
-
-    return QString(ent);
-}
 

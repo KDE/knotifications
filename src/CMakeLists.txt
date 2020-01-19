@@ -106,7 +106,6 @@ endif()
 target_link_libraries(KF5Notifications PRIVATE
    KF5::CoreAddons
    KF5::ConfigCore
-   KF5::Codecs
 )
 
 if (TARGET KF5::WindowSystem)

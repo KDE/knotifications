@@ -39,9 +39,9 @@ set(CMAKE_AUTORCC TRUE)
 
 find_package(Qt5 ${REQUIRED_QT_VERSION} CONFIG REQUIRED Widgets)
 
-if (NOT ANDROID)
+if (NOT ANDROID AND NOT WIN32)
     find_package(Qt5 ${REQUIRED_QT_VERSION} CONFIG REQUIRED DBus)
-else ()
+elseif (ANDROID)
     find_package(Qt5 ${REQUIRED_QT_VERSION} CONFIG REQUIRED AndroidExtras)
     find_package(Gradle REQUIRED)
 endif()
@@ -75,14 +75,14 @@ if (WIN32)
     find_package(LibSnoreToast REQUIRED)
     set_package_properties(LibSnoreToast PROPERTIES TYPE REQUIRED
                             PURPOSE     "for the Windows Toast Notifications"
-                            DESCRIPTION "A command line application, capable of creating 
+                            DESCRIPTION "A command line application, capable of creating
                                         Windows Toast notifications on Windows (>=)8 "
     )
     find_package(Qt5Network REQUIRED)
 endif()
 
 set(HAVE_KWINDOWSYSTEM FALSE)
-if(NOT ANDROID)
+if(NOT ANDROID AND NOT WIN32)
     find_package(KF5WindowSystem ${KF5_DEP_VERSION} REQUIRED)
     set(HAVE_KWINDOWSYSTEM TRUE)
 endif()

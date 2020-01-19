@@ -109,7 +109,7 @@ target_link_libraries(KF5Notifications PRIVATE
    KF5::Codecs
 )
 
-if (NOT ANDROID)
+if (TARGET KF5::WindowSystem)
     target_link_libraries(KF5Notifications PRIVATE KF5::WindowSystem)
 endif()
 

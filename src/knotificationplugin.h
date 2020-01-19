@@ -23,6 +23,8 @@
 #define KNOTIFICATIONPLUGIN_H
 
 #include <QObject>
+#include <QTextDocumentFragment>
+
 #include <KPluginFactory>
 
 #include "knotifications_export.h"
@@ -93,6 +95,11 @@ protected:
         * If your presentation is synchronous, you can even call this function from the notify() call itself
         */
     void finish(KNotification *notification);
+
+    static inline QString stripRichText(const QString &s)
+    {
+        return QTextDocumentFragment::fromHtml(s).toPlainText();
+    }
 
 Q_SIGNALS:
     /**

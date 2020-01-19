@@ -567,6 +567,13 @@ Q_SIGNALS:
      * Emitted only when the default activation has occurred
      */
     void activated();
+
+    /**
+     * Emitted when the default action has been activated.
+     * @since 5.67
+     */
+    void defaultActivated();
+
     /**
      * Emitted when an action has been activated.
      *

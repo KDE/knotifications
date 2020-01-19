@@ -311,6 +311,7 @@ void KNotification::activate(unsigned int action)
     switch (action) {
     case 0:
         emit activated();
+        emit defaultActivated();
         break;
     case 1:
         emit action1Activated();

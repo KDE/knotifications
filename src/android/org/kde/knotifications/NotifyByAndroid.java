@@ -38,6 +38,7 @@ public class NotifyByAndroid extends BroadcastReceiver
 
     private static final String NOTIFICATION_ACTION = ".org.kde.knotifications.NOTIFICATION_ACTION";
     private static final String NOTIFICATION_DELETED = ".org.kde.knotifications.NOTIFICATION_DELETED";
+    private static final String NOTIFICATION_OPENED = ".org.kde.knotifications.NOTIFICATION_OPENED";
     private static final String NOTIFICATION_ID_EXTRA = "org.kde.knotifications.NOTIFICATION_ID";
     private static final String NOTIFICATION_ACTION_ID_EXTRA = "org.kde.knotifications.NOTIFICATION_ACTION_ID";
 
@@ -55,6 +56,7 @@ public class NotifyByAndroid extends BroadcastReceiver
         IntentFilter filter = new IntentFilter();
         filter.addAction(m_ctx.getPackageName() + NOTIFICATION_ACTION);
         filter.addAction(m_ctx.getPackageName() + NOTIFICATION_DELETED);
+        filter.addAction(m_ctx.getPackageName() + NOTIFICATION_OPENED);
         m_ctx.registerReceiver(this, filter);
     }
 
@@ -89,8 +91,9 @@ public class NotifyByAndroid extends BroadcastReceiver
         builder.setContentText(notification.text);
 
         // taping the notification shows the app
-        Intent intent = new Intent(m_ctx, m_ctx.getClass());
-        PendingIntent contentIntent = PendingIntent.getActivity(m_ctx, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+        Intent intent = new Intent(m_ctx.getPackageName() + NOTIFICATION_OPENED);
+        intent.putExtra(NOTIFICATION_ID_EXTRA, notification.id);
+        PendingIntent contentIntent = PendingIntent.getBroadcast(m_ctx, m_uniquePendingIntentId++, intent, PendingIntent.FLAG_UPDATE_CURRENT);
         builder.setContentIntent(contentIntent);
 
         // actions
@@ -131,6 +134,11 @@ public class NotifyByAndroid extends BroadcastReceiver
             notificationActionInvoked(id, actionId);
         } else if (action.equals(m_ctx.getPackageName() + NOTIFICATION_DELETED)) {
             notificationFinished(id);
+        } else if (action.equals(m_ctx.getPackageName() + NOTIFICATION_OPENED)) {
+            Intent newintent = new Intent(m_ctx, m_ctx.getClass());
+            newintent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            m_ctx.startActivity(newintent);
+            notificationActionInvoked(id, 0);
         }
     }
 

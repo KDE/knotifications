@@ -46,7 +46,13 @@ if (APPLE)
   list(APPEND knotifications_SRCS notifybymacosnotificationcenter.mm)
 endif()
 
-ecm_qt_declare_logging_category(knotifications_SRCS HEADER debug_p.h IDENTIFIER LOG_KNOTIFICATIONS CATEGORY_NAME org.kde.knotifications)
+ecm_qt_declare_logging_category(knotifications_SRCS
+    HEADER debug_p.h
+    IDENTIFIER LOG_KNOTIFICATIONS
+    CATEGORY_NAME org.kde.knotifications
+    DESCRIPTION "KNotifications"
+    EXPORT KNOTIFICATIONS
+)
 
 if (Canberra_FOUND)
   set(knotifications_SRCS ${knotifications_SRCS}
@@ -173,6 +179,12 @@ install(FILES
   ${CMAKE_CURRENT_BINARY_DIR}/knotifications_export.h
   ${KNotifications_HEADERS}
   DESTINATION ${KDE_INSTALL_INCLUDEDIR_KF5}/KNotifications COMPONENT Devel
+)
+
+ecm_qt_install_logging_categories(
+    EXPORT KNOTIFICATIONS
+    FILE knotifications.categories
+    DESTINATION ${KDE_INSTALL_LOGGINGCATEGORIESDIR}
 )
 
 if(BUILD_QCH)

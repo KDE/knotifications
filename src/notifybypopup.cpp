@@ -629,7 +629,7 @@ bool NotifyByPopupPrivate::sendNotificationToGalagoServer(KNotification *notific
 
     QVariantMap hintsMap;
     // Add the application name to the hints.
-    // According to fdo spec, the app_name is supposed to be the applicaton's "pretty name"
+    // According to fdo spec, the app_name is supposed to be the application's "pretty name"
     // but in some places it's handy to know the application name itself
     if (!notification->appName().isEmpty()) {
         hintsMap[QStringLiteral("x-kde-appname")] = notification->appName();
@@ -705,7 +705,7 @@ bool NotifyByPopupPrivate::sendNotificationToGalagoServer(KNotification *notific
     // CloseOnTimeout => -1 == let the server decide
     int timeout = (notification->flags() & KNotification::Persistent) ? 0 : -1;
 
-    args.append(timeout); // expire timout
+    args.append(timeout); // expire timeout
 
     dbusNotificationMessage.setArguments(args);
 

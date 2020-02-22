@@ -53,7 +53,7 @@ void notificationDBusCall(const QString &iconName, const QString &title, const Q
     // CloseOnTimeout => -1 == let the server decide
     int timeout = persistent ? 0 : -1;
 
-    args.append(timeout); // expire timout
+    args.append(timeout); // expire timeout
 
     dbusNotificationMessage.setArguments(args);
 

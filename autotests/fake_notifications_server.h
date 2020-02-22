@@ -16,8 +16,8 @@
    Boston, MA 02110-1301, USA.
 */
 
-#ifndef FAKE_NOTIFICATION_SERVER_H
-#define FAKE_NOTIFICATION_SERVER_H
+#ifndef FAKE_NOTIFICATIONS_SERVER_H
+#define FAKE_NOTIFICATIONS_SERVER_H
 
 #include <QObject>
 #include <QHash>

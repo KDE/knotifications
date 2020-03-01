@@ -97,7 +97,7 @@ public class NotifyByAndroid extends BroadcastReceiver
         builder.setContentIntent(contentIntent);
 
         // actions
-        int actionId = 0;
+        int actionId = 1;
         for (String actionName : notification.actions) {
             Intent actionIntent = new Intent(m_ctx.getPackageName() + NOTIFICATION_ACTION);
             actionIntent.putExtra(NOTIFICATION_ID_EXTRA, notification.id);

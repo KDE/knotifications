@@ -82,7 +82,7 @@ if (WIN32)
 endif()
 
 set(HAVE_KWINDOWSYSTEM FALSE)
-if(NOT ANDROID AND NOT WIN32)
+if(NOT ANDROID)
     find_package(KF5WindowSystem ${KF5_DEP_VERSION} REQUIRED)
     set(HAVE_KWINDOWSYSTEM TRUE)
 endif()

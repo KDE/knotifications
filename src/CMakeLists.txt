@@ -21,9 +21,13 @@ set(knotifications_SRCS
   ${knotifications_QM_LOADER}
 )
 
+if (NOT ANDROID)
+    list(APPEND knotifications_SRCS
+        kstatusnotifieritem.cpp)
+endif()
+
 if (TARGET Qt5::DBus)
   list(APPEND knotifications_SRCS
-    kstatusnotifieritem.cpp
     kstatusnotifieritemdbus_p.cpp
     knotificationrestrictions.cpp
 

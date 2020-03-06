@@ -29,10 +29,14 @@
 #include <QEventLoopLocker>
 
 #include "kstatusnotifieritem.h"
+
+#ifdef QT_DBUS_LIB
 #include "kstatusnotifieritemdbus_p.h"
 
 #include "statusnotifierwatcher_interface.h"
 #include "notifications_interface.h"
+#endif
+
 
 class KSystemTrayIcon;
 class QMenu;
@@ -120,13 +124,27 @@ public:
     void legacyWheelEvent(int delta);
     void legacyActivated(QSystemTrayIcon::ActivationReason reason);
 
-    KDbusImageStruct imageToStruct(const QImage &image);
-    KDbusImageVector iconToVector(const QIcon &icon);
     bool checkVisibility(QPoint pos, bool perform = true);
 
     static const int s_protocolVersion;
 
     KStatusNotifierItem *q;
+
+#ifdef QT_DBUS_LIB
+    KDbusImageStruct imageToStruct(const QImage &image);
+    KDbusImageVector iconToVector(const QIcon &icon);
+
+    KDbusImageVector serializedIcon;
+    KDbusImageVector serializedAttentionIcon;
+    KDbusImageVector serializedOverlayIcon;
+    KDbusImageVector serializedToolTipIcon;
+
+
+    org::kde::StatusNotifierWatcher *statusNotifierWatcher = nullptr;
+    org::freedesktop::Notifications *notificationsClient = nullptr;
+
+    KStatusNotifierItemDBus *statusNotifierItemDBus;
+#endif
 
     KStatusNotifierItem::ItemCategory category;
     QString id;
@@ -134,37 +152,30 @@ public:
     KStatusNotifierItem::ItemStatus status;
 
     QString iconName;
-    KDbusImageVector serializedIcon;
     QIcon icon;
 
     QString overlayIconName;
-    KDbusImageVector serializedOverlayIcon;
     QIcon overlayIcon;
 
     QString attentionIconName;
     QIcon attentionIcon;
-    KDbusImageVector serializedAttentionIcon;
     QString movieName;
     QPointer<QMovie> movie;
 
     QString toolTipIconName;
-    KDbusImageVector serializedToolTipIcon;
     QIcon toolTipIcon;
     QString toolTipTitle;
     QString toolTipSubTitle;
     QString iconThemePath;
     QString menuObjectPath;
+    KStatusNotifierLegacyIcon *systemTrayIcon;
 
     QMenu *menu;
     QHash<QString, QAction *> actionCollection;
     QWidget *associatedWidget;
     QPoint associatedWidgetPos;
     QAction *titleAction;
-    org::kde::StatusNotifierWatcher *statusNotifierWatcher;
-    org::freedesktop::Notifications *notificationsClient;
 
-    KStatusNotifierLegacyIcon *systemTrayIcon;
-    KStatusNotifierItemDBus *statusNotifierItemDBus;
 
     // Ensure that closing the last KMainWindow doesn't exit the application
     // if a system tray icon is still present.

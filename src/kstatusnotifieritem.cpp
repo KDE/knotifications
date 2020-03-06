@@ -20,10 +20,8 @@
 
 #include "kstatusnotifieritem.h"
 #include "kstatusnotifieritemprivate_p.h"
-#include "kstatusnotifieritemdbus_p.h"
 #include "debug_p.h"
 
-#include <QDBusConnection>
 #include <QMessageBox>
 #include <QPixmap>
 #include <QImage>
@@ -37,6 +35,17 @@
 #include <QtMac>
 #endif
 
+#ifdef QT_DBUS_LIB
+#include "kstatusnotifieritemdbus_p.h"
+
+#include <QDBusConnection>
+
+#if HAVE_DBUSMENUQT
+#include <dbusmenuexporter.h>
+#endif //HAVE_DBUSMENUQT
+#endif
+
+#include <QTimer>
 #include <kwindowinfo.h>
 #include <kwindowsystem.h>
 
@@ -46,10 +55,6 @@
 
 static const char s_statusNotifierWatcherServiceName[] = "org.kde.StatusNotifierWatcher";
 static const int s_legacyTrayIconSize = 24;
-
-#if HAVE_DBUSMENUQT
-#include <dbusmenuexporter.h>
-#endif //HAVE_DBUSMENUQT
 
 KStatusNotifierItem::KStatusNotifierItem(QObject *parent)
     : QObject(parent),
@@ -67,8 +72,10 @@ KStatusNotifierItem::KStatusNotifierItem(const QString &id, QObject *parent)
 
 KStatusNotifierItem::~KStatusNotifierItem()
 {
+#ifdef QT_DBUS_LIB
     delete d->statusNotifierWatcher;
     delete d->notificationsClient;
+#endif
     delete d->systemTrayIcon;
     if (!qApp->closingDown()) {
         delete d->menu;
@@ -112,8 +119,10 @@ void KStatusNotifierItem::setStatus(const ItemStatus status)
     }
 
     d->status = status;
-    emit d->statusNotifierItemDBus->NewStatus(QString::fromLatin1(metaObject()->enumerator(metaObject()->indexOfEnumerator("ItemStatus")).valueToKey(d->status)));
 
+#ifdef QT_DBUS_LIB
+    emit d->statusNotifierItemDBus->NewStatus(QString::fromLatin1(metaObject()->enumerator(metaObject()->indexOfEnumerator("ItemStatus")).valueToKey(d->status)));
+#endif
     if (d->systemTrayIcon) {
         d->syncLegacySystemTrayIcon();
     }
@@ -127,9 +136,14 @@ void KStatusNotifierItem::setIconByName(const QString &name)
         return;
     }
 
-    d->serializedIcon = KDbusImageVector();
+
     d->iconName = name;
+
+#ifdef QT_DBUS_LIB
+    d->serializedIcon = KDbusImageVector();
     emit d->statusNotifierItemDBus->NewIcon();
+#endif
+
     if (d->systemTrayIcon) {
         d->systemTrayIcon->setIcon(QIcon::fromTheme(name));
     }
@@ -147,8 +161,11 @@ void KStatusNotifierItem::setIconByPixmap(const QIcon &icon)
     }
 
     d->iconName.clear();
+
+#ifdef QT_DBUS_LIB
     d->serializedIcon = d->iconToVector(icon);
     emit d->statusNotifierItemDBus->NewIcon();
+#endif
 
     d->icon = icon;
     if (d->systemTrayIcon) {
@@ -168,7 +185,9 @@ void KStatusNotifierItem::setOverlayIconByName(const QString &name)
     }
 
     d->overlayIconName = name;
+#ifdef QT_DBUS_LIB
     emit d->statusNotifierItemDBus->NewOverlayIcon();
+#endif
     if (d->systemTrayIcon) {
         QPixmap iconPixmap = QIcon::fromTheme(d->iconName).pixmap(s_legacyTrayIconSize, s_legacyTrayIconSize);
         if (!name.isEmpty()) {
@@ -193,8 +212,11 @@ void KStatusNotifierItem::setOverlayIconByPixmap(const QIcon &icon)
     }
 
     d->overlayIconName.clear();
+
+#ifdef QT_DBUS_LIB
     d->serializedOverlayIcon = d->iconToVector(icon);
     emit d->statusNotifierItemDBus->NewOverlayIcon();
+#endif
 
     d->overlayIcon = icon;
     if (d->systemTrayIcon) {
@@ -221,9 +243,12 @@ void KStatusNotifierItem::setAttentionIconByName(const QString &name)
         return;
     }
 
-    d->serializedAttentionIcon = KDbusImageVector();
     d->attentionIconName = name;
+
+#ifdef QT_DBUS_LIB
+    d->serializedAttentionIcon = KDbusImageVector();
     emit d->statusNotifierItemDBus->NewAttentionIcon();
+#endif
 }
 
 QString KStatusNotifierItem::attentionIconName() const
@@ -238,9 +263,12 @@ void KStatusNotifierItem::setAttentionIconByPixmap(const QIcon &icon)
     }
 
     d->attentionIconName.clear();
-    d->serializedAttentionIcon = d->iconToVector(icon);
     d->attentionIcon = icon;
+
+#ifdef QT_DBUS_LIB
+    d->serializedAttentionIcon = d->iconToVector(icon);
     emit d->statusNotifierItemDBus->NewAttentionIcon();
+#endif
 }
 
 QIcon KStatusNotifierItem::attentionIconPixmap() const
@@ -259,7 +287,9 @@ void KStatusNotifierItem::setAttentionMovieByName(const QString &name)
     delete d->movie;
     d->movie = nullptr;
 
+#ifdef QT_DBUS_LIB
     emit d->statusNotifierItemDBus->NewAttentionIcon();
+#endif
 
     if (d->systemTrayIcon) {
         d->movie = new QMovie(d->movieName);
@@ -312,7 +342,6 @@ void KStatusNotifierItem::setToolTip(const QString &iconName, const QString &tit
         return;
     }
 
-    d->serializedToolTipIcon = KDbusImageVector();
     d->toolTipIconName = iconName;
 
     d->toolTipTitle = title;
@@ -321,7 +350,11 @@ void KStatusNotifierItem::setToolTip(const QString &iconName, const QString &tit
 //     }
     setTrayToolTip(d->systemTrayIcon, title, subTitle);
     d->toolTipSubTitle = subTitle;
+
+#ifdef QT_DBUS_LIB
+    d->serializedToolTipIcon = KDbusImageVector();
     emit d->statusNotifierItemDBus->NewToolTip();
+#endif
 }
 
 void KStatusNotifierItem::setToolTip(const QIcon &icon, const QString &title, const QString &subTitle)
@@ -333,7 +366,6 @@ void KStatusNotifierItem::setToolTip(const QIcon &icon, const QString &title, co
     }
 
     d->toolTipIconName.clear();
-    d->serializedToolTipIcon = d->iconToVector(icon);
     d->toolTipIcon = icon;
 
     d->toolTipTitle = title;
@@ -343,7 +375,10 @@ void KStatusNotifierItem::setToolTip(const QIcon &icon, const QString &title, co
     setTrayToolTip(d->systemTrayIcon, title, subTitle);
 
     d->toolTipSubTitle = subTitle;
+#ifdef QT_DBUS_LIB
+    d->serializedToolTipIcon = d->iconToVector(icon);
     emit d->statusNotifierItemDBus->NewToolTip();
+#endif
 }
 
 void KStatusNotifierItem::setToolTipIconByName(const QString &name)
@@ -352,9 +387,11 @@ void KStatusNotifierItem::setToolTipIconByName(const QString &name)
         return;
     }
 
-    d->serializedToolTipIcon = KDbusImageVector();
     d->toolTipIconName = name;
+#ifdef QT_DBUS_LIB
+    d->serializedToolTipIcon = KDbusImageVector();
     emit d->statusNotifierItemDBus->NewToolTip();
+#endif
 }
 
 QString KStatusNotifierItem::toolTipIconName() const
@@ -369,9 +406,12 @@ void KStatusNotifierItem::setToolTipIconByPixmap(const QIcon &icon)
     }
 
     d->toolTipIconName.clear();
-    d->serializedToolTipIcon = d->iconToVector(icon);
     d->toolTipIcon = icon;
+
+#ifdef QT_DBUS_LIB
+    d->serializedToolTipIcon = d->iconToVector(icon);
     emit d->statusNotifierItemDBus->NewToolTip();
+#endif
 }
 
 QIcon KStatusNotifierItem::toolTipIconPixmap() const
@@ -386,7 +426,10 @@ void KStatusNotifierItem::setToolTipTitle(const QString &title)
     }
 
     d->toolTipTitle = title;
+
+#ifdef QT_DBUS_LIB
     emit d->statusNotifierItemDBus->NewToolTip();
+#endif
 //     if (d->systemTrayIcon) {
 //         d->systemTrayIcon->setToolTip(title);
 //     }
@@ -408,7 +451,9 @@ void KStatusNotifierItem::setToolTipSubTitle(const QString &subTitle)
 #ifdef Q_OS_MACOS
     setTrayToolTip(d->systemTrayIcon, d->toolTipTitle, subTitle);
 #endif
+#ifdef QT_DBUS_LIB
     emit d->statusNotifierItemDBus->NewToolTip();
+#endif
 }
 
 QString KStatusNotifierItem::toolTipSubTitle() const
@@ -570,12 +615,6 @@ bool KStatusNotifierItem::standardActionsEnabled() const
 
 void KStatusNotifierItem::showMessage(const QString &title, const QString &message, const QString &icon, int timeout)
 {
-    if (!d->notificationsClient) {
-        d->notificationsClient = new org::freedesktop::Notifications(QStringLiteral("org.freedesktop.Notifications"), QStringLiteral("/org/freedesktop/Notifications"),
-                QDBusConnection::sessionBus());
-    }
-
-    uint id = 0;
 #ifdef Q_OS_MACOS
     if (d->systemTrayIcon) {
         // Growl is not needed anymore for QSystemTrayIcon::showMessage() since OS X 10.8
@@ -583,6 +622,13 @@ void KStatusNotifierItem::showMessage(const QString &title, const QString &messa
     } else
 #endif
     {
+#ifdef QT_DBUS_LIB
+        if (!d->notificationsClient) {
+            d->notificationsClient = new org::freedesktop::Notifications(QStringLiteral("org.freedesktop.Notifications"), QStringLiteral("/org/freedesktop/Notifications"),
+                                                                         QDBusConnection::sessionBus());
+        }
+
+        uint id = 0;
         QVariantMap hints;
 
         QString desktopFileName = QGuiApplication::desktopFileName();
@@ -596,6 +642,7 @@ void KStatusNotifierItem::showMessage(const QString &title, const QString &messa
         }
 
         d->notificationsClient->Notify(d->title, id, icon, title, message, QStringList(), hints, timeout);
+#endif
     }
 }
 
@@ -613,13 +660,17 @@ void KStatusNotifierItem::activate(const QPoint &pos)
 #ifdef Q_OS_MACOS
         QtMac::setBadgeLabelText(QString());
 #endif
+#ifdef QT_DBUS_LIB
         emit d->statusNotifierItemDBus->NewStatus(QString::fromLatin1(metaObject()->enumerator(metaObject()->indexOfEnumerator("ItemStatus")).valueToKey(d->status)));
+#endif
     }
 
+#ifdef QT_DBUS_LIB
     if (d->associatedWidget && d->associatedWidget == d->menu) {
         d->statusNotifierItemDBus->ContextMenu(pos.x(), pos.y());
         return;
     }
+#endif
 
     if (d->menu && d->menu->isVisible()) {
         d->menu->hide();
@@ -759,8 +810,6 @@ KStatusNotifierItemPrivate::KStatusNotifierItemPrivate(KStatusNotifierItem *item
       menu(nullptr),
       associatedWidget(nullptr),
       titleAction(nullptr),
-      statusNotifierWatcher(nullptr),
-      notificationsClient(nullptr),
       systemTrayIcon(nullptr),
       hasQuit(false),
       onAllDesktops(false),
@@ -770,12 +819,13 @@ KStatusNotifierItemPrivate::KStatusNotifierItemPrivate(KStatusNotifierItem *item
 
 void KStatusNotifierItemPrivate::init(const QString &extraId)
 {
+    q->setAssociatedWidget(qobject_cast<QWidget *>(q->parent()));
+#ifdef QT_DBUS_LIB
     qDBusRegisterMetaType<KDbusImageStruct>();
     qDBusRegisterMetaType<KDbusImageVector>();
     qDBusRegisterMetaType<KDbusToolTipStruct>();
 
     statusNotifierItemDBus = new KStatusNotifierItemDBus(q);
-    q->setAssociatedWidget(qobject_cast<QWidget *>(q->parent()));
 
     QDBusServiceWatcher *watcher = new QDBusServiceWatcher(QString::fromLatin1(s_statusNotifierWatcherServiceName),
             QDBusConnection::sessionBus(),
@@ -783,6 +833,7 @@ void KStatusNotifierItemPrivate::init(const QString &extraId)
             q);
     QObject::connect(watcher, SIGNAL(serviceOwnerChanged(QString,QString,QString)),
                      q, SLOT(serviceChange(QString,QString,QString)));
+#endif
 
     //create a default menu, just like in KSystemtrayIcon
     QMenu *m = new QMenu(associatedWidget);
@@ -834,6 +885,8 @@ void KStatusNotifierItemPrivate::init(const QString &extraId)
 
 void KStatusNotifierItemPrivate::registerToDaemon()
 {
+    bool useLegacy = false;
+#ifdef QT_DBUS_LIB
     qCDebug(LOG_KNOTIFICATIONS) << "Registering a client interface to the KStatusNotifierWatcher";
     if (!statusNotifierWatcher) {
         statusNotifierWatcher = new org::kde::StatusNotifierWatcher(QString::fromLatin1(s_statusNotifierWatcherServiceName), QStringLiteral("/StatusNotifierWatcher"),
@@ -871,8 +924,10 @@ void KStatusNotifierItemPrivate::registerToDaemon()
         );
     } else {
         qCDebug(LOG_KNOTIFICATIONS) << "KStatusNotifierWatcher not reachable";
-        setLegacySystemTrayEnabled(true);
+        useLegacy = true;
     }
+#endif
+    setLegacySystemTrayEnabled(useLegacy);
 }
 
 void KStatusNotifierItemPrivate::serviceChange(const QString &name, const QString &oldOwner, const QString &newOwner)
@@ -882,8 +937,10 @@ void KStatusNotifierItemPrivate::serviceChange(const QString &name, const QStrin
         //unregistered
         qCDebug(LOG_KNOTIFICATIONS) << "Connection to the KStatusNotifierWatcher lost";
         setLegacyMode(true);
+#ifdef QT_DBUS_LIB
         delete statusNotifierWatcher;
         statusNotifierWatcher = nullptr;
+#endif
     } else if (oldOwner.isEmpty()) {
         //registered
         setLegacyMode(false);
@@ -903,7 +960,9 @@ void KStatusNotifierItemPrivate::setLegacyMode(bool legacy)
 
 void KStatusNotifierItemPrivate::legacyWheelEvent(int delta)
 {
+#ifdef QT_DBUS_LIB
     statusNotifierItemDBus->Scroll(delta, QStringLiteral("vertical"));
+#endif
 }
 
 void KStatusNotifierItemPrivate::legacyActivated(QSystemTrayIcon::ActivationReason reason)
@@ -1114,6 +1173,7 @@ void KStatusNotifierItemPrivate::minimizeRestore(bool show)
     }
 }
 
+#ifdef QT_DBUS_LIB
 KDbusImageStruct KStatusNotifierItemPrivate::imageToStruct(const QImage &image)
 {
     KDbusImageStruct icon;
@@ -1153,6 +1213,7 @@ KDbusImageVector KStatusNotifierItemPrivate::iconToVector(const QIcon &icon)
 
     return iconVector;
 }
+#endif
 
 #include "moc_kstatusnotifieritem.cpp"
 #include "moc_kstatusnotifieritemprivate_p.cpp"

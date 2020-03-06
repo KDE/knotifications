@@ -21,6 +21,8 @@
 #include "kstatusnotifieritem.h"
 #include "kstatusnotifieritemprivate_p.h"
 #include "debug_p.h"
+#include "config-knotifications.h"
+
 
 #include <QMessageBox>
 #include <QPixmap>
@@ -50,8 +52,6 @@
 #include <kwindowsystem.h>
 
 #include <cstdlib>
-
-#include <config-knotifications.h>
 
 static const char s_statusNotifierWatcherServiceName[] = "org.kde.StatusNotifierWatcher";
 static const int s_legacyTrayIconSize = 24;

@@ -448,11 +448,10 @@ void KStatusNotifierItem::setToolTipSubTitle(const QString &subTitle)
     }
 
     d->toolTipSubTitle = subTitle;
-#ifdef Q_OS_MACOS
-    setTrayToolTip(d->systemTrayIcon, d->toolTipTitle, subTitle);
-#endif
 #ifdef QT_DBUS_LIB
     emit d->statusNotifierItemDBus->NewToolTip();
+#else
+    setTrayToolTip(d->systemTrayIcon, d->toolTipTitle, subTitle);
 #endif
 }
 
@@ -615,35 +614,32 @@ bool KStatusNotifierItem::standardActionsEnabled() const
 
 void KStatusNotifierItem::showMessage(const QString &title, const QString &message, const QString &icon, int timeout)
 {
-#ifdef Q_OS_MACOS
+#ifdef QT_DBUS_LIB
+    if (!d->notificationsClient) {
+        d->notificationsClient = new org::freedesktop::Notifications(QStringLiteral("org.freedesktop.Notifications"), QStringLiteral("/org/freedesktop/Notifications"),
+                                                                     QDBusConnection::sessionBus());
+    }
+
+    uint id = 0;
+    QVariantMap hints;
+
+    QString desktopFileName = QGuiApplication::desktopFileName();
+    if (!desktopFileName.isEmpty()) {
+        // handle apps which set the desktopFileName property with filename suffix,
+        // due to unclear API dox (https://bugreports.qt.io/browse/QTBUG-75521)
+        if (desktopFileName.endsWith(QLatin1String(".desktop"))) {
+            desktopFileName.chop(8);
+        }
+        hints.insert(QStringLiteral("desktop-entry"), desktopFileName);
+    }
+
+    d->notificationsClient->Notify(d->title, id, icon, title, message, QStringList(), hints, timeout);
+#else
     if (d->systemTrayIcon) {
         // Growl is not needed anymore for QSystemTrayIcon::showMessage() since OS X 10.8
         d->systemTrayIcon->showMessage(title, message, QSystemTrayIcon::Information, timeout);
-    } else
-#endif
-    {
-#ifdef QT_DBUS_LIB
-        if (!d->notificationsClient) {
-            d->notificationsClient = new org::freedesktop::Notifications(QStringLiteral("org.freedesktop.Notifications"), QStringLiteral("/org/freedesktop/Notifications"),
-                                                                         QDBusConnection::sessionBus());
-        }
-
-        uint id = 0;
-        QVariantMap hints;
-
-        QString desktopFileName = QGuiApplication::desktopFileName();
-        if (!desktopFileName.isEmpty()) {
-            // handle apps which set the desktopFileName property with filename suffix,
-            // due to unclear API dox (https://bugreports.qt.io/browse/QTBUG-75521)
-            if (desktopFileName.endsWith(QLatin1String(".desktop"))) {
-                desktopFileName.chop(8);
-            }
-            hints.insert(QStringLiteral("desktop-entry"), desktopFileName);
-        }
-
-        d->notificationsClient->Notify(d->title, id, icon, title, message, QStringList(), hints, timeout);
-#endif
     }
+#endif
 }
 
 QString KStatusNotifierItem::title() const

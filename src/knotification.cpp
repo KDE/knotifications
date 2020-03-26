@@ -52,7 +52,6 @@ struct Q_DECL_HIDDEN KNotification::Private {
     ContextList contexts;
     NotificationFlags flags;
     QString componentName;
-    QList<QUrl> urls;
     KNotification::Urgency urgency;
     QVariantMap hints;
 
@@ -272,20 +271,12 @@ void KNotification::setComponentName(const QString &c)
 
 QList<QUrl> KNotification::urls() const
 {
-    return d->urls;
+    return QUrl::fromStringList(d->hints[QStringLiteral("x-kde-urls")].toStringList());
 }
 
 void KNotification::setUrls(const QList<QUrl> &urls)
 {
-    if (d->urls == urls) {
-        return;
-    }
-
-    d->needUpdate = true;
-    d->urls = urls;
-    if (d->id >= 0) {
-        d->updateTimer.start();
-    }
+    setHint(QStringLiteral("x-kde-urls"), QUrl::toStringList(urls));
 }
 
 KNotification::Urgency KNotification::urgency() const

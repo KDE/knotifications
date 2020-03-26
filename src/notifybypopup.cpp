@@ -367,10 +367,6 @@ bool NotifyByPopupPrivate::sendNotificationToServer(KNotification *notification,
         hintsMap[QStringLiteral("x-kde-skipGrouping")] = 1;
     }
 
-    if (!notification->urls().isEmpty()) {
-        hintsMap[QStringLiteral("x-kde-urls")] = QUrl::toStringList(notification->urls());
-    }
-
     if (!(notification->flags() & KNotification::Persistent)) {
         hintsMap[QStringLiteral("transient")] = true;
     }

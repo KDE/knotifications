@@ -15,6 +15,7 @@ set(knotifications_SRCS
 
   knotifyconfig.cpp
   knotificationplugin.cpp
+  knotificationjobuidelegate.cpp
   notifybyexecute.cpp
   notifybylogfile.cpp
   notifybytaskbar.cpp
@@ -170,6 +171,7 @@ ecm_generate_headers(KNotifications_HEADERS
   KNotification
   KPassivePopup
   KStatusNotifierItem
+  KNotificationJobUiDelegate
   KNotificationRestrictions
   KNotificationPlugin
   KNotifyConfig

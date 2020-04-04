@@ -1,0 +1,57 @@
+# translation of kdelibs4.po to Punjabi
+# Punjabi translation of kdelibs.
+# Copyright (C) 2004, 2005, 2007, 2008, 2009 Free Software Foundation, Inc.
+#
+# Amanpreet Singh Alam <amanlinux@netscape.net>, 2004.
+# Amanpreet Singh Alam <amanlinux@netscpe.net>, 2004.
+# A S Alam <aalam@users.sf.net>, 2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012.
+# ASB <aalam@users.sf.net>, 2007.
+# Amanpreet Singh Alam <apreet.alam@gmail.com>, 2008.
+# Amanpreet Singh <aalam@users.sf.net>, 2008.
+# Amanpreet Singh Alam <aalam@users.sf.net>, 2008, 2009, 2013, 2014.
+msgid ""
+msgstr ""
+"Project-Id-Version: kdelibs4\n"
+"Report-Msgid-Bugs-To: http://bugs.kde.org\n"
+"POT-Creation-Date: 2014-03-23 01:50+0000\n"
+"PO-Revision-Date: 2014-07-08 14:39-0500\n"
+"Last-Translator: A S Alam <aalam@users.sf.net>\n"
+"Language-Team: Punjabi/Panjabi <punjabi-users@lists.sf.net>\n"
+"Language: pa\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Lokalize 1.5\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Qt-Contexts: true\n"
+
+#: knotificationrestrictions.cpp:192
+msgctxt "KNotificationRestrictions|"
+msgid "Unknown Application"
+msgstr "ਅਣਜਾਣ ਐਪਲੀਕੇਸ਼ਨ"
+
+#: kstatusnotifieritem.cpp:544 kstatusnotifieritem.cpp:1121
+msgctxt "KStatusNotifierItem|"
+msgid "&Minimize"
+msgstr "ਘੱਟੋ-ਘੱਟ(&M)"
+
+#: kstatusnotifieritem.cpp:862
+msgctxt "KStatusNotifierItem|"
+msgid "Quit"
+msgstr "ਬੰਦ ਕਰੋ"
+
+#: kstatusnotifieritem.cpp:1119
+msgctxt "KStatusNotifierItem|"
+msgid "&Restore"
+msgstr "ਮੁੜ-ਸਟੋਰ(&R)"
+
+#: kstatusnotifieritem.cpp:1133
+#, qt-format
+msgctxt "KStatusNotifierItem|"
+msgid "<qt>Are you sure you want to quit <b>%1</b>?</qt>"
+msgstr "<qt>ਕੀ ਤੁਸੀਂ <b>%1</b> ਨੂੰ ਬੰਦ ਕਰਨਾ ਚਾਹੁੰਦੇ ਹੋ?</qt>"
+
+#: kstatusnotifieritem.cpp:1136
+msgctxt "KStatusNotifierItem|"
+msgid "Confirm Quit From System Tray"
+msgstr "ਸਿਟਟਮ ਟਰੇ ਵਿੱਚੋਂ ਬੰਦ ਕਰਨ ਦੀ ਪੁਸ਼ਟੀ"

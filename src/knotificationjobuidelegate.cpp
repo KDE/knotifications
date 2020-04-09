@@ -33,7 +33,12 @@ public:
 
 void KNotificationJobUiDelegatePrivate::showNotification(KNotification::StandardEvent standardEvent, const QString &text)
 {
-    KNotification::event(standardEvent, description, text);
+    QString title = description;
+    if (standardEvent == KNotification::Error && !title.isEmpty()) {
+        //: Job name, e.g. Copying has failed
+        title = KNotificationJobUiDelegate::tr("%1 (Failed)").arg(title);
+    }
+    KNotification::event(standardEvent, title, text);
 }
 
 KNotificationJobUiDelegate::KNotificationJobUiDelegate()

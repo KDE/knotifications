@@ -37,7 +37,6 @@ public:
 
     QString optionName() override { return QStringLiteral("Popup"); }
     void notify(KNotification *notification, KNotifyConfig *config) override;
-    void notifyDeferred(KNotification* notification);
     void close(KNotification * notification) override;
     void update(KNotification *notification, KNotifyConfig *config) override;
 private:

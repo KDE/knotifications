@@ -64,21 +64,27 @@ NotifyBySnore::NotifyBySnore(QObject* parent) :
 {
     m_server.listen(QString::number(qHash(qApp->applicationDirPath())));
     connect(&m_server, &QLocalServer::newConnection, &m_server, [this]() {
+
+        // receive the callback
         auto sock = m_server.nextPendingConnection();
         sock->waitForReadyRead();
         const QByteArray rawData = sock->readAll();
         sock->deleteLater();
+
+        // parse the callback
         const QString data =
                     QString::fromWCharArray(reinterpret_cast<const wchar_t *>(rawData.constData()),
                                         rawData.size() / sizeof(wchar_t));
         QMap<QString, QStringRef> map;
         const auto parts = data.splitRef(QLatin1Char(';'));
         for (auto &str : parts) {
-            const auto index = str.indexOf(QLatin1Char('='));
+            const int index = str.indexOf(QLatin1Char('='));
             map.insert(str.mid(0, index).toString(), str.mid(index + 1));
         }
-        const auto action = map[QStringLiteral("action")].toString();
-        const auto id = map[QStringLiteral("notificationId")].toInt();
+        QString action = map[QStringLiteral("action")].toString();
+        int id = map[QStringLiteral("notificationId")].toInt();
+
+        // retrieve the notification from internal map
         KNotification *notification;
         const auto it = m_notifications.constFind(id);
         if (it != m_notifications.constEnd()) {
@@ -118,8 +124,20 @@ NotifyBySnore::NotifyBySnore(QObject* parent) :
             const auto button = map[QStringLiteral("button")].toString();
             QStringList s = m_notifications.value(id)->actions();
             int actionNum = s.indexOf(button) + 1;       // QStringList starts with index 0 but not actions
+
+            // WORKAROUND: notifications sometimes are not updated, left with ID = -1.
+            // actionInvoked signal crashes if ID = -1 is passed in the following signal.
+            // Such notifications should be instead handled with ID assumed 0.
+            // A better solution would be to just upgrade SnoreToast to support updating notifications.
+            // This feature is unavailable in Windows 8, 8.1.
+            // Hence, moving to that implementation breaks support for Windows 8, 8.1.
+
+            if (id == -1) {
+                id = 0;
+            }
             emit actionInvoked(id, actionNum);
-            break;}
+            break;
+            }
         case SnoreToastActions::Actions::TextEntered:
             qCDebug(LOG_KNOTIFICATIONS) << " User entered some text in the toast.";
             break;
@@ -140,14 +158,11 @@ NotifyBySnore::~NotifyBySnore()
 
 void NotifyBySnore::notify(KNotification *notification, KNotifyConfig *config)
 {
-    Q_UNUSED(config);
-    // HACK work around that notification->id() is only populated after returning from here
-    // note that config will be invalid at that point, so we can't pass that along
-    QMetaObject::invokeMethod(this, [this, notification](){ notifyDeferred(notification); }, Qt::QueuedConnection);
-}
+    if(notification->id() == -1 && notification->eventId() == QLatin1String("notification")) {
+            return;
+    }
 
-void NotifyBySnore::notifyDeferred(KNotification* notification)
-{
+    Q_UNUSED(config);
     QProcess *proc = new QProcess();
     QStringList arguments;
 
@@ -197,6 +212,10 @@ void NotifyBySnore::notifyDeferred(KNotification* notification)
 
 void NotifyBySnore::close(KNotification *notification)
 {
+    if(notification->id() == -1 && notification->eventId() == QLatin1String("notification")) {
+        return;
+    }
+
     if (m_notifications.constFind(notification->id()) == m_notifications.constEnd()) {
         return;
     }

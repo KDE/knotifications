@@ -47,6 +47,12 @@ KNotificationJobUiDelegate::KNotificationJobUiDelegate()
 {
 }
 
+KNotificationJobUiDelegate::KNotificationJobUiDelegate(KJobUiDelegate::Flags flags)
+    : KJobUiDelegate(flags)
+    , d(new KNotificationJobUiDelegatePrivate)
+{
+}
+
 KNotificationJobUiDelegate::~KNotificationJobUiDelegate() = default;
 
 bool KNotificationJobUiDelegate::setJob(KJob *job)

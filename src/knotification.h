@@ -215,6 +215,9 @@ public:
     typedef QPair<QString, QString> Context;
     typedef QList< Context > ContextList;
 
+    /**
+     * @see NotificationFlags
+     */
     enum NotificationFlag {
         /**
          * When the notification is activated, raise the notification's widget.
@@ -268,6 +271,9 @@ public:
 
     };
 
+    /**
+     * Stores a combination of #NotificationFlag values.
+     */
     Q_DECLARE_FLAGS(NotificationFlags, NotificationFlag)
 
     /**

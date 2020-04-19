@@ -53,6 +53,7 @@ class KNOTIFICATIONS_EXPORT KNotificationRestrictions : public QObject
 public:
     /**
      * @enum Service
+     * @see Services
      */
     enum Service {
         /**
@@ -88,6 +89,9 @@ public:
                               Notifications,
         AllServices = NonCriticalServices | CriticalNotifications
     };
+    /**
+     * Stores a combination of #Service values.
+     */
     Q_DECLARE_FLAGS(Services, Service)
 
     /**

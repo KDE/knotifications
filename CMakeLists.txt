@@ -72,13 +72,13 @@ if(APPLE)
    find_package(Qt5MacExtras ${REQUIRED_QT_VERSION} REQUIRED NO_MODULE)
 endif()
 if (WIN32)
-    find_package(LibSnoreToast REQUIRED)
-    set_package_properties(LibSnoreToast PROPERTIES TYPE REQUIRED
-                            PURPOSE     "for the Windows Toast Notifications"
-                            DESCRIPTION "A command line application, capable of creating
-                                        Windows Toast notifications on Windows (>=)8 "
-    )
+    find_package(LibSnoreToast)
     find_package(Qt5Network REQUIRED)
+    
+    include(CMakeDependentOption)
+    cmake_dependent_option(WITH_SNORETOAST "for the Windows Toast Notifications" ON
+                           "Qt5Network_FOUND;LibSnoreToast_FOUND" OFF
+    )    
 endif()
 
 set(HAVE_KWINDOWSYSTEM FALSE)
@@ -90,7 +90,7 @@ endif()
 find_package(KF5Config ${KF5_DEP_VERSION} REQUIRED)
 find_package(KF5CoreAddons ${KF5_DEP_VERSION} REQUIRED)
 
-if (NOT WIN32 AND NOT ANDROID)
+if (NOT ANDROID OR (WIN32 AND NOT ${WITH_SNORETOAST}))
     find_package(Qt5 ${REQUIRED_QT_VERSION} CONFIG REQUIRED DBus)
     find_package(Canberra)
     set_package_properties(Canberra PROPERTIES

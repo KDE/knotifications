@@ -43,7 +43,7 @@ if (ANDROID)
     list(APPEND knotifications_SRCS notifybyandroid.cpp knotifications.qrc)
 endif()
 
-if (WIN32)
+if (WITH_SNORETOAST)
   list(APPEND knotifications_SRCS notifybysnore.cpp)
 endif ()
 

@@ -7,3 +7,5 @@
 #cmakedefine01 HAVE_DBUSMENUQT
 
 #cmakedefine01 HAVE_KWINDOWSYSTEM
+
+#cmakedefine WITH_SNORETOAST

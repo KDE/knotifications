@@ -21,6 +21,8 @@
 #include "knotificationmanager_p.h"
 #include "knotification.h"
 
+#include <config-knotifications.h> 
+
 #include <QHash>
 #include <QFileInfo>
 #include <KPluginLoader>
@@ -42,7 +44,7 @@
 #include "notifybyandroid.h"
 #elif defined(Q_OS_MACOS)
 #include "notifybymacosnotificationcenter.h"
-#elif defined(Q_OS_WIN)
+#elif defined(WITH_SNORETOAST)
 #include "notifybysnore.h"
 #else
 #include "notifybypopup.h"
@@ -137,7 +139,7 @@ KNotificationPlugin *KNotificationManager::pluginForAction(const QString &action
     if (action == QLatin1String("Popup")) {
 #if defined(Q_OS_ANDROID)
             plugin = new NotifyByAndroid(this);
-#elif defined(Q_OS_WIN)
+#elif defined(WITH_SNORETOAST)
             plugin = new NotifyBySnore(this);
 #elif defined(Q_OS_MACOS)
             plugin = new NotifyByMacOSNotificationCenter(this);

@@ -24,17 +24,12 @@
 #include "notifybypopup.h"
 #include "imageconverter.h"
 
-#include "kpassivepopup.h"
 #include "knotifyconfig.h"
 #include "knotification.h"
 #include "debug_p.h"
 
-#include <QApplication>
 #include <QBuffer>
-#include <QImage>
-#include <QLabel>
 #include <QGuiApplication>
-#include <QLayout>
 #include <QDBusConnection>
 #include <QDBusConnectionInterface>
 #include <QDBusServiceWatcher>
@@ -48,7 +43,6 @@
 #include <QFontMetrics>
 #include <QIcon>
 #include <QUrl>
-#include <QScreen>
 
 #include <kconfiggroup.h>
 
@@ -59,11 +53,6 @@ static const char dbusPath[] = "/org/freedesktop/Notifications";
 class NotifyByPopupPrivate {
 public:
     NotifyByPopupPrivate(NotifyByPopup *parent) : q(parent) {}
-    /**
-     * @internal
-     * Fills the KPassivePopup with data
-     */
-    void fillPopup(KPassivePopup *popup, KNotification *notification, const KNotifyConfig &config);
 
     /**
      * Sends notification to DBus "org.freedesktop.notifications" interface.
@@ -90,16 +79,6 @@ public:
      */
     void queryPopupServerCapabilities();
 
-    // the y coordinate of the next position popup should appears
-    int nextPosition;
-    int animationTimer;
-    /**
-     * Specifies if DBus Notifications interface exists on session bus
-     */
-    bool dbusServiceExists;
-
-    bool dbusServiceActivatable;
-
     /**
      * DBus notification daemon capabilities cache.
      * Do not use this variable. Use #popupServerCapabilities() instead.
@@ -119,11 +98,6 @@ public:
      */
     bool dbusServiceCapCacheDirty;
 
-    /**
-     * Keeps the map of notifications done in KPassivePopup
-     */
-    QMap<KNotification*, KPassivePopup *> passivePopups;
-
     /*
      * As we communicate with the notification server over dbus
      * we use only ids, this is for fast KNotifications lookup
@@ -140,51 +114,32 @@ NotifyByPopup::NotifyByPopup(QObject *parent)
   : KNotificationPlugin(parent),
     d(new NotifyByPopupPrivate(this))
 {
-    d->animationTimer = 0;
-    d->dbusServiceExists = false;
-    d->dbusServiceActivatable = false;
     d->dbusServiceCapCacheDirty = true;
-    d->nextPosition = -1;
 
-    // check if service already exists on plugin instantiation
-    QDBusConnectionInterface *interface = QDBusConnection::sessionBus().interface();
-    d->dbusServiceExists = interface && interface->isServiceRegistered(QString::fromLatin1(dbusServiceName));
-
-    if (d->dbusServiceExists) {
-        onServiceOwnerChanged(QString::fromLatin1(dbusServiceName), QString(), QStringLiteral("_")); //connect signals
+     bool connected = QDBusConnection::sessionBus().connect(QString(), // from any service
+                                                               QString::fromLatin1(dbusPath),
+                                                               QString::fromLatin1(dbusInterfaceName),
+                                                               QStringLiteral("ActionInvoked"),
+                                                               this,
+                                                               SLOT(onGalagoNotificationActionInvoked(uint,QString)));
+    if (!connected) {
+        qCWarning(LOG_KNOTIFICATIONS) << "warning: failed to connect to ActionInvoked dbus signal";
     }
 
-    // to catch register/unregister events from service in runtime
-    QDBusServiceWatcher *watcher = new QDBusServiceWatcher(this);
-    watcher->setConnection(QDBusConnection::sessionBus());
-    watcher->setWatchMode(QDBusServiceWatcher::WatchForOwnerChange);
-    watcher->addWatchedService(QString::fromLatin1(dbusServiceName));
-    connect(watcher, &QDBusServiceWatcher::serviceOwnerChanged,
-            this, &NotifyByPopup::onServiceOwnerChanged);
-
-#ifndef Q_WS_WIN
-    if (!d->dbusServiceExists) {
-        QDBusMessage message = QDBusMessage::createMethodCall(QStringLiteral("org.freedesktop.DBus"),
-                                                                QStringLiteral("/org/freedesktop/DBus"),
-                                                                QStringLiteral("org.freedesktop.DBus"),
-                                                                QStringLiteral("ListActivatableNames"));
-        QDBusReply<QStringList> reply = QDBusConnection::sessionBus().call(message);
-        if (reply.isValid() && reply.value().contains(QString::fromLatin1(dbusServiceName))) {
-            d->dbusServiceActivatable = true;
-            //if the service is activatable, we can assume it exists even if it is not currently running
-            d->dbusServiceExists = true;
-        }
+    connected = QDBusConnection::sessionBus().connect(QString(), // from any service
+                                                        QString::fromLatin1(dbusPath),
+                                                        QString::fromLatin1(dbusInterfaceName),
+                                                        QStringLiteral("NotificationClosed"),
+                                                        this,
+                                                        SLOT(onGalagoNotificationClosed(uint,uint)));
+    if (!connected) {
+        qCWarning(LOG_KNOTIFICATIONS) << "warning: failed to connect to NotificationClosed dbus signal";
     }
-#endif
 }
 
 
 NotifyByPopup::~NotifyByPopup()
 {
-    for (KPassivePopup *p : qAsConst(d->passivePopups)) {
-        p->deleteLater();
-    }
-
     delete d;
 }
 
@@ -195,144 +150,21 @@ void NotifyByPopup::notify(KNotification *notification, KNotifyConfig *notifyCon
 
 void NotifyByPopup::notify(KNotification *notification, const KNotifyConfig &notifyConfig)
 {
-    if (d->passivePopups.contains(notification) || d->galagoNotifications.contains(notification->id())) {
+    if (d->galagoNotifications.contains(notification->id())) {
         // notification is already on the screen, do nothing
         finish(notification);
         return;
     }
 
-    // check if Notifications DBus service exists on bus, use it if it does
-    if (d->dbusServiceExists) {
-        if (d->dbusServiceCapCacheDirty) {
-            // if we don't have the server capabilities yet, we need to query for them first;
-            // as that is an async dbus operation, we enqueue the notification and process them
-            // when we receive dbus reply with the server capabilities
-            d->notificationQueue.append(qMakePair(notification, notifyConfig));
-            d->queryPopupServerCapabilities();
-        } else {
-            if (!d->sendNotificationToGalagoServer(notification, notifyConfig)) {
-                finish(notification); //an error occurred.
-            }
-        }
-        return;
-    }
-
-    // Persistent     => 0  == infinite timeout
-    // CloseOnTimeout => -1 == let the server decide
-    int timeout = (notification->flags() & KNotification::Persistent) ? 0 : -1;
-
-    // Check if this object lives in the GUI thread and return if it doesn't
-    // as Qt cannot create/handle widgets in non-GUI threads
-    if (QThread::currentThread() != qApp->thread()) {
-        qCWarning(LOG_KNOTIFICATIONS) << "KNotification did not detect any running org.freedesktop.Notifications server and fallback notifications cannot be used from non-GUI thread!";
-        return;
-    }
-
-    if (!qobject_cast<QApplication *>(QCoreApplication::instance())) {
-        qCWarning(LOG_KNOTIFICATIONS) << "KNotification did not detect any running org.freedesktop.Notifications server and fallback notifications cannot be used without a QApplication!";
-        return;
-    }
-
-    // last fallback - display the popup using KPassivePopup
-    KPassivePopup *pop = new KPassivePopup(notification->widget());
-    d->passivePopups.insert(notification, pop);
-    d->fillPopup(pop, notification, notifyConfig);
-
-    QRect screen = QGuiApplication::primaryScreen()->availableGeometry();
-    if (d->nextPosition == -1) {
-        d->nextPosition = screen.top();
-    }
-    pop->setAutoDelete(true);
-    connect(pop, &QObject::destroyed, this, &NotifyByPopup::onPassivePopupDestroyed);
-
-    pop->setTimeout(timeout);
-    pop->adjustSize();
-    pop->show(QPoint(screen.left() + screen.width()/2 - pop->width()/2 , d->nextPosition));
-    d->nextPosition += pop->height();
-}
-
-void NotifyByPopup::onPassivePopupDestroyed()
-{
-    const QObject *destroyedPopup = sender();
-
-    if (!destroyedPopup) {
-        return;
-    }
-
-    for (QMap<KNotification*, KPassivePopup*>::iterator it = d->passivePopups.begin(); it != d->passivePopups.end(); ++it) {
-        QObject *popup = it.value();
-        if (popup && popup == destroyedPopup) {
-            finish(it.key());
-            d->passivePopups.remove(it.key());
-            break;
-        }
-    }
-
-    //relocate popup
-    if (!d->animationTimer) {
-        d->animationTimer = startTimer(10);
-    }
-}
-
-void NotifyByPopup::timerEvent(QTimerEvent *event)
-{
-    if (event->timerId() != d->animationTimer) {
-        KNotificationPlugin::timerEvent(event);
-        return;
-    }
-
-    bool cont = false;
-    QRect screen = QGuiApplication::primaryScreen()->availableGeometry();
-    d->nextPosition = screen.top();
-
-    for (KPassivePopup *popup : qAsConst(d->passivePopups))
-    {
-        int y = popup->pos().y();
-        if (y > d->nextPosition) {
-            y = qMax(y - 5, d->nextPosition);
-            d->nextPosition = y + popup->height();
-            cont = cont || y != d->nextPosition;
-            popup->move(popup->pos().x(), y);
-        } else {
-            d->nextPosition += popup->height();
-        }
-    }
-
-    if (!cont) {
-        killTimer(d->animationTimer);
-        d->animationTimer = 0;
-    }
-}
-
-void NotifyByPopup::onPassivePopupLinkClicked(const QString &link)
-{
-    unsigned int id = link.section(QLatin1Char('/') , 0 , 0).toUInt();
-    unsigned int action = link.section(QLatin1Char('/') , 1 , 1).toUInt();
-
-    if (id == 0 || action == 0) {
-        return;
-    }
-
-    emit actionInvoked(id, action);
-}
-
-void NotifyByPopup::close(KNotification *notification)
-{
-    if (d->dbusServiceExists) {
-        d->closeGalagoNotification(notification);
-    }
-
-    if (d->passivePopups.contains(notification)) {
-        // this will call onPassivePopupDestroyed()
-        // which will call finish() on the notification
-        d->passivePopups[notification]->deleteLater();
-    }
-
-    QMutableListIterator<QPair<KNotification*, KNotifyConfig> > iter(d->notificationQueue);
-    while (iter.hasNext()) {
-        auto &item = iter.next();
-        if (item.first == notification) {
-            iter.remove();
+    if (d->dbusServiceCapCacheDirty) {
+        // if we don't have the server capabilities yet, we need to query for them first;
+        // as that is an async dbus operation, we enqueue the notification and process them
+        // when we receive dbus reply with the server capabilities
+        d->notificationQueue.append(qMakePair(notification, notifyConfig));
+        d->queryPopupServerCapabilities();
+    } else {
+        if (!d->sendNotificationToGalagoServer(notification, notifyConfig)) {
+            finish(notification); //an error occurred.
         }
     }
 }
@@ -344,67 +176,18 @@ void NotifyByPopup::update(KNotification *notification, KNotifyConfig *notifyCon
 
 void NotifyByPopup::update(KNotification *notification, const KNotifyConfig &notifyConfig)
 {
-    if (d->passivePopups.contains(notification)) {
-        KPassivePopup *p = d->passivePopups[notification];
-        d->fillPopup(p, notification, notifyConfig);
-        return;
-    }
-
-    // if Notifications DBus service exists on bus,
-    // it'll be used instead
-    if (d->dbusServiceExists) {
-        d->sendNotificationToGalagoServer(notification, notifyConfig, true);
-        return;
-    }
+    d->sendNotificationToGalagoServer(notification, notifyConfig, true);
 }
 
-void NotifyByPopup::onServiceOwnerChanged(const QString &serviceName, const QString &oldOwner, const QString &newOwner)
+void NotifyByPopup::close(KNotification *notification)
 {
-    Q_UNUSED(serviceName);
-    // close all notifications we currently hold reference to
-    for (KNotification *n : qAsConst(d->galagoNotifications)) {
-        if (n) {
-            emit finished(n);
-        }
-    }
-    QMap<KNotification*, KPassivePopup *>::const_iterator i = d->passivePopups.constBegin();
-    while (i != d->passivePopups.constEnd()) {
-        emit finished(i.key());
-        ++i;
-    }
-    d->galagoNotifications.clear();
-    d->passivePopups.clear();
+    d->closeGalagoNotification(notification);
 
-    d->dbusServiceCapCacheDirty = true;
-    d->popupServerCapabilities.clear();
-
-    if (newOwner.isEmpty()) {
-        d->notificationQueue.clear();
-        if (!d->dbusServiceActivatable) {
-            d->dbusServiceExists = false;
-        }
-    } else if (oldOwner.isEmpty()) {
-        d->dbusServiceExists = true;
-
-        // connect to action invocation signals
-        bool connected = QDBusConnection::sessionBus().connect(QString(), // from any service
-                                                               QString::fromLatin1(dbusPath),
-                                                               QString::fromLatin1(dbusInterfaceName),
-                                                               QStringLiteral("ActionInvoked"),
-                                                               this,
-                                                               SLOT(onGalagoNotificationActionInvoked(uint,QString)));
-        if (!connected) {
-            qCWarning(LOG_KNOTIFICATIONS) << "warning: failed to connect to ActionInvoked dbus signal";
-        }
-
-        connected = QDBusConnection::sessionBus().connect(QString(), // from any service
-                                                          QString::fromLatin1(dbusPath),
-                                                          QString::fromLatin1(dbusInterfaceName),
-                                                          QStringLiteral("NotificationClosed"),
-                                                          this,
-                                                          SLOT(onGalagoNotificationClosed(uint,uint)));
-        if (!connected) {
-            qCWarning(LOG_KNOTIFICATIONS) << "warning: failed to connect to NotificationClosed dbus signal";
+    QMutableListIterator<QPair<KNotification*, KNotifyConfig> > iter(d->notificationQueue);
+    while (iter.hasNext()) {
+        auto &item = iter.next();
+        if (item.first == notification) {
+            iter.remove();
         }
     }
 }
@@ -489,79 +272,6 @@ void NotifyByPopupPrivate::getAppCaptionAndIconName(const KNotifyConfig &notifyC
     } else {
         *iconName = globalgroup.readEntry("IconName", notifyConfig.appname);
     }
-}
-
-void NotifyByPopupPrivate::fillPopup(KPassivePopup *popup, KNotification *notification, const KNotifyConfig &notifyConfig)
-{
-    QString appCaption;
-    QString iconName;
-    getAppCaptionAndIconName(notifyConfig, &appCaption, &iconName);
-
-    // If we're at this place, it means there's no D-Bus service for notifications
-    // so we don't need to do D-Bus query for the capabilities.
-    // If queryPopupServerCapabilities() finds no service, it sets the KPassivePopup
-    // capabilities immediately, so we don't need to wait for callback as in the case
-    // of galago notifications
-    queryPopupServerCapabilities();
-
-    int iconDimension = QFontMetrics(QFont()).height();
-    QPixmap appIcon = QIcon::fromTheme(iconName).pixmap(iconDimension, iconDimension);
-
-    QWidget *vb = popup->standardView(notification->title().isEmpty() ? appCaption : notification->title(),
-                                      notification->pixmap().isNull() ? notification->text() : QString(),
-                                      appIcon);
-
-    if (!notification->pixmap().isNull()) {
-        const QPixmap pix = notification->pixmap();
-        QHBoxLayout *hbox = new QHBoxLayout(vb);
-
-        QLabel *pil = new QLabel();
-        pil->setPixmap(pix);
-        pil->setScaledContents(true);
-
-        if (pix.height() > 80 && pix.height() > pix.width()) {
-            pil->setMaximumHeight(80);
-            pil->setMaximumWidth(80 * pix.width() / pix.height());
-        } else if(pix.width() > 80 && pix.height() <= pix.width()) {
-            pil->setMaximumWidth(80);
-            pil->setMaximumHeight(80*pix.height()/pix.width());
-        }
-
-        hbox->addWidget(pil);
-
-        QVBoxLayout *vb2 = new QVBoxLayout(vb);
-        QLabel *msg = new QLabel(notification->text());
-        msg->setAlignment(Qt::AlignLeft);
-
-        vb2->addWidget(msg);
-
-        hbox->addLayout(vb2);
-
-        vb->layout()->addItem(hbox);
-    }
-
-
-    if (!notification->actions().isEmpty()) {
-        QString linkCode = QStringLiteral("<p align=\"right\">");
-        int i = 0;
-        const auto actionList = notification->actions();
-        for (const QString &it : actionList) {
-            i++;
-            linkCode += QStringLiteral("&nbsp;<a href=\"%1/%2\">%3</a>").arg(QString::number(notification->id()), QString::number(i), it.toHtmlEscaped());
-        }
-
-        linkCode += QLatin1String("</p>");
-        QLabel *link = new QLabel(linkCode , vb );
-        link->setTextInteractionFlags(Qt::LinksAccessibleByMouse);
-        link->setOpenExternalLinks(false);
-        //link->setAlignment( AlignRight );
-        QObject::connect(link, &QLabel::linkActivated,
-                         q, &NotifyByPopup::onPassivePopupLinkClicked);
-        QObject::connect(link, &QLabel::linkActivated,
-                         popup, &QWidget::hide);
-    }
-
-    popup->setView( vb );
 }
 
 bool NotifyByPopupPrivate::sendNotificationToGalagoServer(KNotification *notification, const KNotifyConfig &notifyConfig_nocheck, bool update)
@@ -746,12 +456,6 @@ void NotifyByPopupPrivate::closeGalagoNotification(KNotification *notification)
 
 void NotifyByPopupPrivate::queryPopupServerCapabilities()
 {
-    if (!dbusServiceExists) {
-        // Return capabilities of the KPassivePopup implementation
-        popupServerCapabilities = QStringList() << QStringLiteral("actions") << QStringLiteral("body") << QStringLiteral("body-hyperlinks")
-                                                      << QStringLiteral("body-markup") << QStringLiteral("icon-static");
-    }
-
     if (dbusServiceCapCacheDirty) {
         QDBusMessage m = QDBusMessage::createMethodCall(QString::fromLatin1(dbusServiceName),
                                                         QString::fromLatin1(dbusPath),
@@ -765,6 +469,3 @@ void NotifyByPopupPrivate::queryPopupServerCapabilities()
                                                        -1);
     }
 }
-
-
-

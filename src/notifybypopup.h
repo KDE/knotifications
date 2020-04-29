@@ -29,7 +29,6 @@
 #include <QStringList>
 
 class KNotification;
-class KPassivePopup;
 class QDBusPendingCallWatcher;
 class NotifyByPopupPrivate;
 
@@ -45,14 +44,7 @@ public:
     void close(KNotification *notification) override;
     void update(KNotification *notification, KNotifyConfig *config) override;
 
-protected:
-    void timerEvent(QTimerEvent *event) override;
-
 private Q_SLOTS:
-    void onPassivePopupDestroyed();
-    void onPassivePopupLinkClicked(const QString &link);
-    // slot to catch appearance or disappearance of Notifications DBus service
-    void onServiceOwnerChanged(const QString &, const QString &, const QString &);
     // slot which gets called when DBus signals that some notification action was invoked
     void onGalagoNotificationActionInvoked(uint notificationId, const QString &actionKey);
     // slot which gets called when DBus signals that some notification was closed

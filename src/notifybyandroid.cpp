@@ -98,19 +98,17 @@ void NotifyByAndroid::notify(KNotification *notification, KNotifyConfig *config)
     QMetaObject::invokeMethod(this, [this, notification](){ notifyDeferred(notification); }, Qt::QueuedConnection);
 }
 
-void NotifyByAndroid::notifyDeferred(KNotification* notification)
+QAndroidJniObject NotifyByAndroid::createAndroidNotification(KNotification *notification, KNotifyConfig *config) const
 {
-    KNotifyConfig config(notification->appName(), notification->contexts(), notification->eventId());
     QAndroidJniEnvironment env;
-
     QAndroidJniObject n("org/kde/knotifications/KNotification", "()V");
     n.setField("id", notification->id());
     n.setField("text", QAndroidJniObject::fromString(stripRichText(notification->text())).object<jstring>());
     n.setField("title", QAndroidJniObject::fromString(stripRichText(notification->title())).object<jstring>());
 
     n.setField("channelId", QAndroidJniObject::fromString(notification->eventId()).object<jstring>());
-    n.setField("channelName", QAndroidJniObject::fromString(config.readEntry(QLatin1String("Name"))).object<jstring>());
-    n.setField("channelDescription", QAndroidJniObject::fromString(config.readEntry(QLatin1String("Comment"))).object<jstring>());
+    n.setField("channelName", QAndroidJniObject::fromString(config->readEntry(QLatin1String("Name"))).object<jstring>());
+    n.setField("channelDescription", QAndroidJniObject::fromString(config->readEntry(QLatin1String("Comment"))).object<jstring>());
 
     // icon
     QPixmap pixmap;
@@ -135,8 +133,21 @@ void NotifyByAndroid::notifyDeferred(KNotification* notification)
         n.callMethod<void>("addAction", "(Ljava/lang/String;)V", QAndroidJniObject::fromString(action).object<jstring>());
     }
 
+    return n;
+}
+
+void NotifyByAndroid::notifyDeferred(KNotification* notification)
+{
+    KNotifyConfig config(notification->appName(), notification->contexts(), notification->eventId());
+    const auto n = createAndroidNotification(notification, &config);
     m_notifications.insert(notification->id(), notification);
 
+    m_backend.callMethod<void>("notify", "(Lorg/kde/knotifications/KNotification;)V", n.object<jobject>());
+}
+
+void NotifyByAndroid::update(KNotification *notification, KNotifyConfig *config)
+{
+    const auto n = createAndroidNotification(notification, config);
     m_backend.callMethod<void>("notify", "(Lorg/kde/knotifications/KNotification;)V", n.object<jobject>());
 }
 

@@ -37,6 +37,7 @@ public class KNotification
     public String channelId;
     public String channelName;
     public String channelDescription;
+    public String group;
     public int urgency;
 
     // see knotification.h

@@ -112,6 +112,10 @@ QAndroidJniObject NotifyByAndroid::createAndroidNotification(KNotification *noti
     n.setField("channelName", QAndroidJniObject::fromString(config->readEntry(QLatin1String("Name"))).object<jstring>());
     n.setField("channelDescription", QAndroidJniObject::fromString(config->readEntry(QLatin1String("Comment"))).object<jstring>());
 
+    if ((notification->flags() & KNotification::SkipGrouping) == 0) {
+        n.setField("group", QAndroidJniObject::fromString(notification->eventId()).object<jstring>());
+    }
+
     // icon
     QPixmap pixmap;
     if (!notification->iconName().isEmpty()) {
@@ -155,7 +159,7 @@ void NotifyByAndroid::update(KNotification *notification, KNotifyConfig *config)
 
 void NotifyByAndroid::close(KNotification* notification)
 {
-    m_backend.callMethod<void>("close", "(I)V", notification->id());
+    m_backend.callMethod<void>("close", "(ILjava/lang/String;)V", notification->id(), QAndroidJniObject::fromString(notification->eventId()).object<jstring>());
     KNotificationPlugin::close(notification);
 }
 

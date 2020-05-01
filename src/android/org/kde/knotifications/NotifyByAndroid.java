@@ -71,6 +71,23 @@ public class NotifyByAndroid extends BroadcastReceiver
             if (Build.VERSION.SDK_INT >= 26) {
                 NotificationChannel channel = new NotificationChannel(notification.channelId, notification.channelName, NotificationManager.IMPORTANCE_DEFAULT);
                 channel.setDescription(notification.channelDescription);
+
+                switch (notification.urgency) {
+                    case KNotification.CriticalUrgency:
+                        channel.setImportance(NotificationManager.IMPORTANCE_HIGH);
+                        break;
+                    case KNotification.NormalUrgency:
+                        channel.setImportance(NotificationManager.IMPORTANCE_LOW);
+                        break;
+                    case KNotification.LowUrgency:
+                        channel.setImportance(NotificationManager.IMPORTANCE_MIN);
+                        break;
+                    case KNotification.HighUrgency:
+                    default:
+                        channel.setImportance(NotificationManager.IMPORTANCE_DEFAULT);
+                        break;
+                }
+
                 m_notificationManager.createNotificationChannel(channel);
             }
         }
@@ -93,6 +110,25 @@ public class NotifyByAndroid extends BroadcastReceiver
         // we need the "BigTextStyle" expandable notifications to make everything readable
         // in the single line case this behaves like the regular one, so no special-casing needed
         builder.setStyle(new Notification.BigTextStyle().bigText(notification.text));
+
+        // legacy priority handling for versions without NotificationChannel support
+        if (Build.VERSION.SDK_INT < 26) {
+            switch (notification.urgency) {
+                case KNotification.CriticalUrgency:
+                    builder.setPriority(Notification.PRIORITY_HIGH);
+                    break;
+                case KNotification.NormalUrgency:
+                    builder.setPriority(Notification.PRIORITY_LOW);
+                    break;
+                case KNotification.LowUrgency:
+                    builder.setPriority(Notification.PRIORITY_MIN);
+                    break;
+                case KNotification.HighUrgency:
+                default:
+                    builder.setPriority(Notification.PRIORITY_DEFAULT);
+                    break;
+            }
+        }
 
         // taping the notification shows the app
         Intent intent = new Intent(m_ctx.getPackageName() + NOTIFICATION_OPENED);

@@ -36,6 +36,13 @@ public class KNotification
     public String channelId;
     public String channelName;
     public String channelDescription;
+    public int urgency;
+
+    // see knotification.h
+    public static final int LowUrgency = 10;
+    public static final int NormalUrgency = 50;
+    public static final int HighUrgency = 70;
+    public static final int CriticalUrgency = 90;
 
     public void setIconFromData(byte[] data, int length)
     {

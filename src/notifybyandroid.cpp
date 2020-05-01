@@ -105,6 +105,7 @@ QAndroidJniObject NotifyByAndroid::createAndroidNotification(KNotification *noti
     n.setField("id", notification->id());
     n.setField("text", QAndroidJniObject::fromString(stripRichText(notification->text())).object<jstring>());
     n.setField("title", QAndroidJniObject::fromString(stripRichText(notification->title())).object<jstring>());
+    n.setField("urgency", (jint)(notification->urgency() == KNotification::DefaultUrgency ? KNotification::HighUrgency : notification->urgency()));
 
     n.setField("channelId", QAndroidJniObject::fromString(notification->eventId()).object<jstring>());
     n.setField("channelName", QAndroidJniObject::fromString(config->readEntry(QLatin1String("Name"))).object<jstring>());

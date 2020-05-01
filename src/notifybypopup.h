@@ -46,13 +46,13 @@ public:
 
 private Q_SLOTS:
     // slot which gets called when DBus signals that some notification action was invoked
-    void onGalagoNotificationActionInvoked(uint notificationId, const QString &actionKey);
+    void onNotificationActionInvoked(uint notificationId, const QString &actionKey);
     // slot which gets called when DBus signals that some notification was closed
-    void onGalagoNotificationClosed(uint, uint);
+    void onNotificationClosed(uint, uint);
 
-    void onGalagoServerReply(QDBusPendingCallWatcher *callWatcher);
+    void onServerReply(QDBusPendingCallWatcher *callWatcher);
 
-    void onGalagoServerCapabilitiesReceived(const QStringList &capabilities);
+    void onServerCapabilitiesReceived(const QStringList &capabilities);
 
 private:
     // TODO KF6, replace current public notify/update

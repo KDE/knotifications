@@ -63,12 +63,8 @@ public:
      *               Otherwise will put new notification on screen
      * @return true for success or false if there was an error.
      */
-    bool sendNotificationToGalagoServer(KNotification *notification, const KNotifyConfig &config, bool update = false);
-    /**
-     * Sends request to close Notification with id to DBus "org.freedesktop.notifications" interface
-     *  @param id knotify-side notification ID to close
-     */
-    void closeGalagoNotification(KNotification *notification);
+    bool sendNotificationToServer(KNotification *notification, const KNotifyConfig &config, bool update = false);
+
     /**
      * Find the caption and the icon name of the application
      */
@@ -102,7 +98,7 @@ public:
      * As we communicate with the notification server over dbus
      * we use only ids, this is for fast KNotifications lookup
      */
-    QHash<uint, QPointer<KNotification>> galagoNotifications;
+    QHash<uint, QPointer<KNotification>> notifications;
 
 
     NotifyByPopup * const q;
@@ -121,7 +117,7 @@ NotifyByPopup::NotifyByPopup(QObject *parent)
                                                                QString::fromLatin1(dbusInterfaceName),
                                                                QStringLiteral("ActionInvoked"),
                                                                this,
-                                                               SLOT(onGalagoNotificationActionInvoked(uint,QString)));
+                                                               SLOT(onNotificationActionInvoked(uint,QString)));
     if (!connected) {
         qCWarning(LOG_KNOTIFICATIONS) << "warning: failed to connect to ActionInvoked dbus signal";
     }
@@ -131,7 +127,7 @@ NotifyByPopup::NotifyByPopup(QObject *parent)
                                                         QString::fromLatin1(dbusInterfaceName),
                                                         QStringLiteral("NotificationClosed"),
                                                         this,
-                                                        SLOT(onGalagoNotificationClosed(uint,uint)));
+                                                        SLOT(onNotificationClosed(uint,uint)));
     if (!connected) {
         qCWarning(LOG_KNOTIFICATIONS) << "warning: failed to connect to NotificationClosed dbus signal";
     }
@@ -150,7 +146,7 @@ void NotifyByPopup::notify(KNotification *notification, KNotifyConfig *notifyCon
 
 void NotifyByPopup::notify(KNotification *notification, const KNotifyConfig &notifyConfig)
 {
-    if (d->galagoNotifications.contains(notification->id())) {
+    if (d->notifications.contains(notification->id())) {
         // notification is already on the screen, do nothing
         finish(notification);
         return;
@@ -163,7 +159,7 @@ void NotifyByPopup::notify(KNotification *notification, const KNotifyConfig &not
         d->notificationQueue.append(qMakePair(notification, notifyConfig));
         d->queryPopupServerCapabilities();
     } else {
-        if (!d->sendNotificationToGalagoServer(notification, notifyConfig)) {
+        if (!d->sendNotificationToServer(notification, notifyConfig)) {
             finish(notification); //an error occurred.
         }
     }
@@ -176,12 +172,30 @@ void NotifyByPopup::update(KNotification *notification, KNotifyConfig *notifyCon
 
 void NotifyByPopup::update(KNotification *notification, const KNotifyConfig &notifyConfig)
 {
-    d->sendNotificationToGalagoServer(notification, notifyConfig, true);
+    d->sendNotificationToServer(notification, notifyConfig, true);
 }
 
 void NotifyByPopup::close(KNotification *notification)
 {
-    d->closeGalagoNotification(notification);
+    uint id = d->notifications.key(notification, 0);
+
+    if (id == 0) {
+        qCDebug(LOG_KNOTIFICATIONS) << "not found dbus id to close" << notification->id();
+        return;
+    }
+
+    QDBusMessage m = QDBusMessage::createMethodCall(QString::fromLatin1(dbusServiceName), QString::fromLatin1(dbusPath),
+                                                    QString::fromLatin1(dbusInterfaceName), QStringLiteral("CloseNotification"));
+    QList<QVariant> args;
+    args.append(id);
+    m.setArguments(args);
+
+    // send(..) does not block
+    bool queued = QDBusConnection::sessionBus().send(m);
+
+    if (!queued) {
+        qCWarning(LOG_KNOTIFICATIONS) << "Failed to queue dbus message for closing a notification";
+    }
 
     QMutableListIterator<QPair<KNotification*, KNotifyConfig> > iter(d->notificationQueue);
     while (iter.hasNext()) {
@@ -192,10 +206,10 @@ void NotifyByPopup::close(KNotification *notification)
     }
 }
 
-void NotifyByPopup::onGalagoNotificationActionInvoked(uint notificationId, const QString &actionKey)
+void NotifyByPopup::onNotificationActionInvoked(uint notificationId, const QString &actionKey)
 {
-    auto iter = d->galagoNotifications.find(notificationId);
-    if (iter == d->galagoNotifications.end()) {
+    auto iter = d->notifications.find(notificationId);
+    if (iter == d->notifications.end()) {
         return;
     }
 
@@ -207,18 +221,18 @@ void NotifyByPopup::onGalagoNotificationActionInvoked(uint notificationId, const
             emit actionInvoked(n->id(), actionKey.toUInt());
         }
     } else {
-        d->galagoNotifications.erase(iter);
+        d->notifications.erase(iter);
     }
 }
 
-void NotifyByPopup::onGalagoNotificationClosed(uint dbus_id, uint reason)
+void NotifyByPopup::onNotificationClosed(uint dbus_id, uint reason)
 {
-    auto iter = d->galagoNotifications.find(dbus_id);
-    if (iter == d->galagoNotifications.end()) {
+    auto iter = d->notifications.find(dbus_id);
+    if (iter == d->notifications.end()) {
         return;
     }
     KNotification *n = *iter;
-    d->galagoNotifications.remove(dbus_id);
+    d->notifications.remove(dbus_id);
 
     if (n) {
         emit finished(n);
@@ -233,7 +247,7 @@ void NotifyByPopup::onGalagoNotificationClosed(uint dbus_id, uint reason)
     }
 }
 
-void NotifyByPopup::onGalagoServerReply(QDBusPendingCallWatcher *watcher)
+void NotifyByPopup::onServerReply(QDBusPendingCallWatcher *watcher)
 {
     // call deleteLater first, since we might return in the middle of the function
     watcher->deleteLater();
@@ -245,10 +259,10 @@ void NotifyByPopup::onGalagoServerReply(QDBusPendingCallWatcher *watcher)
 
     QDBusPendingReply<uint> reply = *watcher;
 
-    d->galagoNotifications.insert(reply.argumentAt<0>(), notification);
+    d->notifications.insert(reply.argumentAt<0>(), notification);
 }
 
-void NotifyByPopup::onGalagoServerCapabilitiesReceived(const QStringList &capabilities)
+void NotifyByPopup::onServerCapabilitiesReceived(const QStringList &capabilities)
 {
     d->popupServerCapabilities = capabilities;
     d->dbusServiceCapCacheDirty = false;
@@ -274,9 +288,9 @@ void NotifyByPopupPrivate::getAppCaptionAndIconName(const KNotifyConfig &notifyC
     }
 }
 
-bool NotifyByPopupPrivate::sendNotificationToGalagoServer(KNotification *notification, const KNotifyConfig &notifyConfig_nocheck, bool update)
+bool NotifyByPopupPrivate::sendNotificationToServer(KNotification *notification, const KNotifyConfig &notifyConfig_nocheck, bool update)
 {
-    uint updateId = galagoNotifications.key(notification, 0);
+    uint updateId = notifications.key(notification, 0);
 
     if (update) {
         if (updateId == 0) {
@@ -314,7 +328,7 @@ bool NotifyByPopupPrivate::sendNotificationToGalagoServer(KNotification *notific
     args.append(title); // summary
     args.append(text); // body
 
-    // galago spec defines action list to be list like
+    // freedesktop.org spec defines action list to be list like
     // (act_id1, action1, act_id2, action2, ...)
     //
     // assign id's to actions like it's done in fillPopup() method
@@ -339,7 +353,7 @@ bool NotifyByPopupPrivate::sendNotificationToGalagoServer(KNotification *notific
 
     QVariantMap hintsMap;
     // Add the application name to the hints.
-    // According to fdo spec, the app_name is supposed to be the application's "pretty name"
+    // According to freedesktop.org spec, the app_name is supposed to be the application's "pretty name"
     // but in some places it's handy to know the application name itself
     if (!notification->appName().isEmpty()) {
         hintsMap[QStringLiteral("x-kde-appname")] = notification->appName();
@@ -380,7 +394,7 @@ bool NotifyByPopupPrivate::sendNotificationToGalagoServer(KNotification *notific
         break;
     case KNotification::NormalUrgency:
         Q_FALLTHROUGH();
-    // galago notifications only know low, normal, critical
+    // freedesktop.org notifications only know low, normal, critical
     case KNotification::HighUrgency:
         urgency = 1;
         break;
@@ -426,32 +440,9 @@ bool NotifyByPopupPrivate::sendNotificationToGalagoServer(KNotification *notific
     watcher->setProperty("notificationObject", QVariant::fromValue<KNotification*>(notification));
 
     QObject::connect(watcher, &QDBusPendingCallWatcher::finished,
-                     q, &NotifyByPopup::onGalagoServerReply);
+                     q, &NotifyByPopup::onServerReply);
 
     return true;
-}
-
-void NotifyByPopupPrivate::closeGalagoNotification(KNotification *notification)
-{
-    uint galagoId = galagoNotifications.key(notification, 0);
-
-    if (galagoId == 0) {
-        qCDebug(LOG_KNOTIFICATIONS) << "not found dbus id to close" << notification->id();
-        return;
-    }
-
-    QDBusMessage m = QDBusMessage::createMethodCall(QString::fromLatin1(dbusServiceName), QString::fromLatin1(dbusPath),
-                                                    QString::fromLatin1(dbusInterfaceName), QStringLiteral("CloseNotification"));
-    QList<QVariant> args;
-    args.append(galagoId);
-    m.setArguments(args);
-
-    // send(..) does not block
-    bool queued = QDBusConnection::sessionBus().send(m);
-
-    if (!queued) {
-        qCWarning(LOG_KNOTIFICATIONS) << "Failed to queue dbus message for closing a notification";
-    }
 }
 
 void NotifyByPopupPrivate::queryPopupServerCapabilities()
@@ -464,7 +455,7 @@ void NotifyByPopupPrivate::queryPopupServerCapabilities()
 
         QDBusConnection::sessionBus().callWithCallback(m,
                                                        q,
-                                                       SLOT(onGalagoServerCapabilitiesReceived(QStringList)),
+                                                       SLOT(onServerCapabilitiesReceived(QStringList)),
                                                        nullptr,
                                                        -1);
     }

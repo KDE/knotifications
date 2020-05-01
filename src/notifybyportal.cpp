@@ -286,7 +286,7 @@ bool NotifyByPortalPrivate::sendNotificationToPortal(KNotification *notification
         portalArgs.insert(QStringLiteral("priority"), priority);
     }
 
-    // galago spec defines action list to be list like
+    // freedesktop.org spec defines action list to be list like
     // (act_id1, action1, act_id2, action2, ...)
     //
     // assign id's to actions like it's done in fillPopup() method

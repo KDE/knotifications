@@ -105,8 +105,8 @@ void NotifyByAndroid::notifyDeferred(KNotification* notification)
 
     QAndroidJniObject n("org/kde/knotifications/KNotification", "()V");
     n.setField("id", notification->id());
-    n.setField("text", QAndroidJniObject::fromString(notification->text()).object<jstring>());
-    n.setField("title", QAndroidJniObject::fromString(notification->title()).object<jstring>());
+    n.setField("text", QAndroidJniObject::fromString(stripRichText(notification->text())).object<jstring>());
+    n.setField("title", QAndroidJniObject::fromString(stripRichText(notification->title())).object<jstring>());
 
     n.setField("channelId", QAndroidJniObject::fromString(notification->eventId()).object<jstring>());
     n.setField("channelName", QAndroidJniObject::fromString(config.readEntry(QLatin1String("Name"))).object<jstring>());

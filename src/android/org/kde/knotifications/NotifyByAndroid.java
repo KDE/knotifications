@@ -89,6 +89,10 @@ public class NotifyByAndroid extends BroadcastReceiver
         }
         builder.setContentTitle(notification.title);
         builder.setContentText(notification.text);
+        // regular notifications show only a single line of content, if we have more
+        // we need the "BigTextStyle" expandable notifications to make everything readable
+        // in the single line case this behaves like the regular one, so no special-casing needed
+        builder.setStyle(new Notification.BigTextStyle().bigText(notification.text));
 
         // taping the notification shows the app
         Intent intent = new Intent(m_ctx.getPackageName() + NOTIFICATION_OPENED);

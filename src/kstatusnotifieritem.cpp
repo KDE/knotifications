@@ -541,7 +541,7 @@ void KStatusNotifierItem::setAssociatedWidget(QWidget *associatedWidget)
         if (!action) {
             action = new QAction(this);
             d->actionCollection.insert(QStringLiteral("minimizeRestore"), action);
-            action->setText(tr("&Minimize"));
+            action->setText(tr("&Minimize", "@action:inmenu"));
             connect(action, SIGNAL(triggered(bool)), this, SLOT(minimizeRestore()));
         }
 
@@ -859,7 +859,7 @@ void KStatusNotifierItemPrivate::init(const QString &extraId)
     q->setContextMenu(m);
 
     QAction *action = new QAction(q);
-    action->setText(KStatusNotifierItem::tr("Quit"));
+    action->setText(KStatusNotifierItem::tr("Quit", "@action:inmenu"));
     action->setIcon(QIcon::fromTheme(QStringLiteral("application-exit")));
     // cannot yet convert to function-pointer-based connect:
     // some apps like kalarm or korgac have a hack to rewire the connection
@@ -1116,9 +1116,9 @@ void KStatusNotifierItemPrivate::contextMenuAboutToShow()
     if (associatedWidget && associatedWidget != menu) {
         QAction *action = actionCollection.value(QStringLiteral("minimizeRestore"));
         if (checkVisibility(QPoint(0, 0), false)) {
-            action->setText(KStatusNotifierItem::tr("&Restore"));
+            action->setText(KStatusNotifierItem::tr("&Restore", "@action:inmenu"));
         } else {
-            action->setText(KStatusNotifierItem::tr("&Minimize"));
+            action->setText(KStatusNotifierItem::tr("&Minimize", "@action:inmenu"));
         }
     }
 }
@@ -1133,7 +1133,7 @@ void KStatusNotifierItemPrivate::maybeQuit()
     QString query = KStatusNotifierItem::tr("<qt>Are you sure you want to quit <b>%1</b>?</qt>").arg(caption);
 
     if (QMessageBox::question(associatedWidget,
-                              KStatusNotifierItem::tr("Confirm Quit From System Tray"), query) == QMessageBox::Yes) {
+                              KStatusNotifierItem::tr("Confirm Quit From System Tray", "@title:window"), query) == QMessageBox::Yes) {
         qApp->quit();
     }
 

@@ -30,6 +30,7 @@ public class KNotification
 {
     public int id;
     public String text;
+    public String richText;
     public String title;
     public Object icon;
     public ArrayList<String> actions = new ArrayList<String>();

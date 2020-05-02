@@ -28,6 +28,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.drawable.Icon;
 import android.os.Build;
+import android.text.Html;
 import android.util.Log;
 import java.util.HashSet;
 
@@ -109,7 +110,11 @@ public class NotifyByAndroid extends BroadcastReceiver
         // regular notifications show only a single line of content, if we have more
         // we need the "BigTextStyle" expandable notifications to make everything readable
         // in the single line case this behaves like the regular one, so no special-casing needed
-        builder.setStyle(new Notification.BigTextStyle().bigText(notification.text));
+        if (Build.VERSION.SDK_INT >= 24) {
+            builder.setStyle(new Notification.BigTextStyle().bigText(Html.fromHtml(notification.richText, Html.FROM_HTML_MODE_COMPACT)));
+        } else {
+            builder.setStyle(new Notification.BigTextStyle().bigText(Html.fromHtml(notification.richText)));
+        }
 
         // legacy priority handling for versions without NotificationChannel support
         if (Build.VERSION.SDK_INT < 26) {

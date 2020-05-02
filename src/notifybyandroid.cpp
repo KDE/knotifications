@@ -104,6 +104,7 @@ QAndroidJniObject NotifyByAndroid::createAndroidNotification(KNotification *noti
     QAndroidJniObject n("org/kde/knotifications/KNotification", "()V");
     n.setField("id", notification->id());
     n.setField("text", QAndroidJniObject::fromString(stripRichText(notification->text())).object<jstring>());
+    n.setField("richText", QAndroidJniObject::fromString(notification->text()).object<jstring>());
     n.setField("title", QAndroidJniObject::fromString(stripRichText(notification->title())).object<jstring>());
     n.setField("urgency", (jint)(notification->urgency() == KNotification::DefaultUrgency ? KNotification::HighUrgency : notification->urgency()));
 

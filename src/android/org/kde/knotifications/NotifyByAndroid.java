@@ -132,6 +132,20 @@ public class NotifyByAndroid extends BroadcastReceiver
             builder.setStyle(new Notification.BigTextStyle().bigText(Html.fromHtml(notification.richText)));
         }
 
+        // lock screen visibility
+        switch (notification.visibility) {
+            case "public":
+                builder.setVisibility(Notification.VISIBILITY_PUBLIC);
+                break;
+            case "private":
+                builder.setVisibility(Notification.VISIBILITY_PRIVATE);
+                break;
+            case "secret":
+                builder.setVisibility(Notification.VISIBILITY_SECRET);
+                break;
+        }
+
+        // grouping
         if (notification.group != null) {
             createGroupNotification(notification);
             builder.setGroup(notification.group);

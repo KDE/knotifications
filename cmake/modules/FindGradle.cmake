@@ -73,6 +73,10 @@ find_package_handle_standard_args(Gradle DEFAULT_MSG Gradle_EXECUTABLE)
 function(gradle_add_aar target)
     cmake_parse_arguments(ARG "" "BUILDFILE;NAME" "" ${ARGN})
 
+    if (NOT ANDROID_SDK_ROOT AND DEFINED ENV{ANDROID_SDK_ROOT})
+        set(ANDROID_SDK_ROOT "$ENV{ANDROID_SDK_ROOT}")
+    endif()
+
     set(_build_root ${CMAKE_CURRENT_BINARY_DIR}/gradle_build/${ARG_NAME})
     configure_file(${_gradle_template_dir}/local.properties.in ${_build_root}/local.properties)
     configure_file(${_gradle_template_dir}/settings.gradle.in ${_build_root}/settings.gradle)

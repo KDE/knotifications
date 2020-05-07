@@ -22,37 +22,30 @@
  */
 
 #include "notifybypopup.h"
-#include "imageconverter.h"
 
+#include "imageconverter.h"
 #include "knotifyconfig.h"
 #include "knotification.h"
+#include "notifications_interface.h"
 #include "debug_p.h"
 
 #include <QBuffer>
 #include <QGuiApplication>
 #include <QDBusConnection>
-#include <QDBusConnectionInterface>
-#include <QDBusServiceWatcher>
-#include <QDBusMessage>
-#include <QXmlStreamReader>
-#include <QMap>
 #include <QHash>
 #include <QPointer>
 #include <QMutableListIterator>
-#include <QThread>
-#include <QFontMetrics>
-#include <QIcon>
 #include <QUrl>
 
 #include <kconfiggroup.h>
 
-static const char dbusServiceName[] = "org.freedesktop.Notifications";
-static const char dbusInterfaceName[] = "org.freedesktop.Notifications";
-static const char dbusPath[] = "/org/freedesktop/Notifications";
-
 class NotifyByPopupPrivate {
 public:
-    NotifyByPopupPrivate(NotifyByPopup *parent) : q(parent) {}
+    NotifyByPopupPrivate(NotifyByPopup *parent)
+        : dbusInterface(QStringLiteral("org.freedesktop.Notifications"),
+                        QStringLiteral("/org/freedesktop/Notifications"),
+                        QDBusConnection::sessionBus())
+        , q(parent) {}
 
     /**
      * Sends notification to DBus "org.freedesktop.notifications" interface.
@@ -100,6 +93,7 @@ public:
      */
     QHash<uint, QPointer<KNotification>> notifications;
 
+    org::freedesktop::Notifications dbusInterface;
 
     NotifyByPopup * const q;
 };
@@ -112,25 +106,9 @@ NotifyByPopup::NotifyByPopup(QObject *parent)
 {
     d->dbusServiceCapCacheDirty = true;
 
-     bool connected = QDBusConnection::sessionBus().connect(QString(), // from any service
-                                                               QString::fromLatin1(dbusPath),
-                                                               QString::fromLatin1(dbusInterfaceName),
-                                                               QStringLiteral("ActionInvoked"),
-                                                               this,
-                                                               SLOT(onNotificationActionInvoked(uint,QString)));
-    if (!connected) {
-        qCWarning(LOG_KNOTIFICATIONS) << "warning: failed to connect to ActionInvoked dbus signal";
-    }
+    connect(&d->dbusInterface, &org::freedesktop::Notifications::ActionInvoked, this, &NotifyByPopup::onNotificationActionInvoked);
 
-    connected = QDBusConnection::sessionBus().connect(QString(), // from any service
-                                                        QString::fromLatin1(dbusPath),
-                                                        QString::fromLatin1(dbusInterfaceName),
-                                                        QStringLiteral("NotificationClosed"),
-                                                        this,
-                                                        SLOT(onNotificationClosed(uint,uint)));
-    if (!connected) {
-        qCWarning(LOG_KNOTIFICATIONS) << "warning: failed to connect to NotificationClosed dbus signal";
-    }
+    connect(&d->dbusInterface, &org::freedesktop::Notifications::NotificationClosed, this, &NotifyByPopup::onNotificationClosed);
 }
 
 
@@ -184,18 +162,7 @@ void NotifyByPopup::close(KNotification *notification)
         return;
     }
 
-    QDBusMessage m = QDBusMessage::createMethodCall(QString::fromLatin1(dbusServiceName), QString::fromLatin1(dbusPath),
-                                                    QString::fromLatin1(dbusInterfaceName), QStringLiteral("CloseNotification"));
-    QList<QVariant> args;
-    args.append(id);
-    m.setArguments(args);
-
-    // send(..) does not block
-    bool queued = QDBusConnection::sessionBus().send(m);
-
-    if (!queued) {
-        qCWarning(LOG_KNOTIFICATIONS) << "Failed to queue dbus message for closing a notification";
-    }
+    d->dbusInterface.CloseNotification(id);
 
     QMutableListIterator<QPair<KNotification*, KNotifyConfig> > iter(d->notificationQueue);
     while (iter.hasNext()) {
@@ -247,34 +214,6 @@ void NotifyByPopup::onNotificationClosed(uint dbus_id, uint reason)
     }
 }
 
-void NotifyByPopup::onServerReply(QDBusPendingCallWatcher *watcher)
-{
-    // call deleteLater first, since we might return in the middle of the function
-    watcher->deleteLater();
-    KNotification *notification = watcher->property("notificationObject").value<KNotification*>();
-    if (!notification) {
-        qCWarning(LOG_KNOTIFICATIONS) << "Invalid notification object passed in DBus reply watcher; notification will probably break";
-        return;
-    }
-
-    QDBusPendingReply<uint> reply = *watcher;
-
-    d->notifications.insert(reply.argumentAt<0>(), notification);
-}
-
-void NotifyByPopup::onServerCapabilitiesReceived(const QStringList &capabilities)
-{
-    d->popupServerCapabilities = capabilities;
-    d->dbusServiceCapCacheDirty = false;
-
-    // re-run notify() on all enqueued notifications
-    for (int i = 0, total = d->notificationQueue.size(); i < total; ++i) {
-        notify(d->notificationQueue.at(i).first, d->notificationQueue.at(i).second);
-    }
-
-    d->notificationQueue.clear();
-}
-
 void NotifyByPopupPrivate::getAppCaptionAndIconName(const KNotifyConfig &notifyConfig, QString *appCaption, QString *iconName)
 {
     KConfigGroup globalgroup(&(*notifyConfig.eventsfile), QStringLiteral("Global"));
@@ -300,10 +239,6 @@ bool NotifyByPopupPrivate::sendNotificationToServer(KNotification *notification,
         }
     }
 
-    QDBusMessage dbusNotificationMessage = QDBusMessage::createMethodCall(QString::fromLatin1(dbusServiceName), QString::fromLatin1(dbusPath), QString::fromLatin1(dbusInterfaceName), QStringLiteral("Notify"));
-
-    QList<QVariant> args;
-
     QString appCaption;
     QString iconName;
     getAppCaptionAndIconName(notifyConfig_nocheck, &appCaption, &iconName);
@@ -313,10 +248,6 @@ bool NotifyByPopupPrivate::sendNotificationToServer(KNotification *notification,
         iconName = notification->iconName();
     }
 
-    args.append(appCaption); // app_name
-    args.append(updateId);  // notification to update
-    args.append(iconName); // app_icon
-
     QString title = notification->title().isEmpty() ? appCaption : notification->title();
     QString text = notification->text();
 
@@ -324,9 +255,6 @@ bool NotifyByPopupPrivate::sendNotificationToServer(KNotification *notification,
         title = q->stripRichText(title);
         text = q->stripRichText(text);
     }
-
-    args.append(title); // summary
-    args.append(text); // body
 
     // freedesktop.org spec defines action list to be list like
     // (act_id1, action1, act_id2, action2, ...)
@@ -348,8 +276,6 @@ bool NotifyByPopupPrivate::sendNotificationToServer(KNotification *notification,
             actionList.append(actionName);
         }
     }
-
-    args.append(actionList); // actions
 
     QVariantMap hintsMap;
     // Add the application name to the hints.
@@ -419,40 +345,46 @@ bool NotifyByPopupPrivate::sendNotificationToServer(KNotification *notification,
         hintsMap[QStringLiteral("image_data")] = ImageConverter::variantForImage(QImage::fromData(pixmapData));
     }
 
-    args.append(hintsMap); // hints
-
     // Persistent     => 0  == infinite timeout
     // CloseOnTimeout => -1 == let the server decide
     int timeout = (notification->flags() & KNotification::Persistent) ? 0 : -1;
 
-    args.append(timeout); // expire timeout
-
-    dbusNotificationMessage.setArguments(args);
-
-    QDBusPendingCall notificationCall = QDBusConnection::sessionBus().asyncCall(dbusNotificationMessage, -1);
+    const QDBusPendingReply<uint> reply = dbusInterface.Notify(appCaption, updateId, iconName, title, text, actionList, hintsMap, timeout);
 
     //parent is set to the notification so that no-one ever accesses a dangling pointer on the notificationObject property
-    QDBusPendingCallWatcher *watcher = new QDBusPendingCallWatcher(notificationCall, notification);
-    watcher->setProperty("notificationObject", QVariant::fromValue<KNotification*>(notification));
+    QDBusPendingCallWatcher *watcher = new QDBusPendingCallWatcher(reply, notification);
 
-    QObject::connect(watcher, &QDBusPendingCallWatcher::finished,
-                     q, &NotifyByPopup::onServerReply);
+    QObject::connect(watcher, &QDBusPendingCallWatcher::finished, q, [this, notification](QDBusPendingCallWatcher *watcher){
+        watcher->deleteLater();
+        QDBusPendingReply<uint> reply = *watcher;
+        notifications.insert(reply.argumentAt<0>(), notification);
+    });
 
     return true;
 }
 
 void NotifyByPopupPrivate::queryPopupServerCapabilities()
 {
-    if (dbusServiceCapCacheDirty) {
-        QDBusMessage m = QDBusMessage::createMethodCall(QString::fromLatin1(dbusServiceName),
-                                                        QString::fromLatin1(dbusPath),
-                                                        QString::fromLatin1(dbusInterfaceName),
-                                                        QStringLiteral("GetCapabilities"));
-
-        QDBusConnection::sessionBus().callWithCallback(m,
-                                                       q,
-                                                       SLOT(onServerCapabilitiesReceived(QStringList)),
-                                                       nullptr,
-                                                       -1);
+    if (!dbusServiceCapCacheDirty) {
+        return;
     }
+
+    QDBusPendingReply<QStringList> call = dbusInterface.GetCapabilities();
+
+    QDBusPendingCallWatcher *watcher = new QDBusPendingCallWatcher(call);
+
+    QObject::connect(watcher, &QDBusPendingCallWatcher::finished, q, [this](QDBusPendingCallWatcher *watcher) {
+        watcher->deleteLater();
+        const QDBusPendingReply<QStringList> reply = *watcher;
+        const QStringList capabilities = reply.argumentAt<0>();
+        popupServerCapabilities = capabilities;
+        dbusServiceCapCacheDirty = false;
+
+        // re-run notify() on all enqueued notifications
+        for (const QPair<KNotification*, KNotifyConfig> &noti : qAsConst(notificationQueue)) {
+            q->notify(noti.first, noti.second);
+        }
+
+        notificationQueue.clear();
+    });
 }

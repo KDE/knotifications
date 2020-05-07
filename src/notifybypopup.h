@@ -50,10 +50,6 @@ private Q_SLOTS:
     // slot which gets called when DBus signals that some notification was closed
     void onNotificationClosed(uint, uint);
 
-    void onServerReply(QDBusPendingCallWatcher *callWatcher);
-
-    void onServerCapabilitiesReceived(const QStringList &capabilities);
-
 private:
     // TODO KF6, replace current public notify/update
     void notify(KNotification *notification, const KNotifyConfig &notifyConfig);

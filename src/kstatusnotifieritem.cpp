@@ -803,10 +803,10 @@ KStatusNotifierItemPrivate::KStatusNotifierItemPrivate(KStatusNotifierItem *item
       category(KStatusNotifierItem::ApplicationStatus),
       status(KStatusNotifierItem::Passive),
       movie(nullptr),
+      systemTrayIcon(nullptr),
       menu(nullptr),
       associatedWidget(nullptr),
       titleAction(nullptr),
-      systemTrayIcon(nullptr),
       hasQuit(false),
       onAllDesktops(false),
       standardActionsEnabled(true)

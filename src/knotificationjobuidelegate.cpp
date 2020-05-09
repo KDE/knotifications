@@ -88,5 +88,3 @@ void KNotificationJobUiDelegate::slotWarning(KJob *job, const QString &plain, co
         d->showNotification(KNotification::Notification, plain);
     }
 }
-
-#include "knotificationjobuidelegate.moc"

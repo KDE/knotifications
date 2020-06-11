@@ -287,8 +287,12 @@ void KPassivePopup::setView(QWidget *child)
     delete d->topLayout;
     d->topLayout = new QVBoxLayout(this);
     if (d->popupStyle == Balloon) {
-        const int marginHint = 2 * style()->pixelMetric(QStyle::PM_DefaultChildMargin);
-        d->topLayout->setContentsMargins(marginHint, marginHint, marginHint, marginHint);
+        auto *style = this->style();
+        const int leftMarginHint = 2 * style->pixelMetric(QStyle::PM_LayoutLeftMargin);
+        const int topMarginHint = 2 * style->pixelMetric(QStyle::PM_LayoutTopMargin);
+        const int rightMarginHint = 2 * style->pixelMetric(QStyle::PM_LayoutRightMargin);
+        const int bottomMarginHint = 2 * style->pixelMetric(QStyle::PM_LayoutBottomMargin);
+        d->topLayout->setContentsMargins(leftMarginHint, topMarginHint, rightMarginHint, bottomMarginHint);
     }
     d->topLayout->addWidget(d->msgView);
     d->topLayout->activate();

@@ -29,7 +29,7 @@
 #include "knotification.h"
 #include "debug_p.h"
 
-#include <kmacroexpander.h>
+#include <KMacroExpander>
 
 NotifyByExecute::NotifyByExecute(QObject *parent)
     : KNotificationPlugin(parent)

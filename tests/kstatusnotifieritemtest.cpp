@@ -25,9 +25,9 @@
 #include <QMenu>
 #include <QApplication>
 
-#include <qcommandlineparser.h>
+#include <QCommandLineParser>
 
-#include <qdebug.h>
+#include <QDebug>
 
 KStatusNotifierItemTest::KStatusNotifierItemTest(QObject *parent, KStatusNotifierItem *tray)
     : QObject(parent)

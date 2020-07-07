@@ -31,9 +31,9 @@
 #include <QMenu>
 #include <QMovie>
 #include <QPainter>
-#include <qstandardpaths.h>
+#include <QStandardPaths>
 #ifdef Q_OS_MACOS
-#include <qfontdatabase.h>
+#include <QFontDatabase>
 #include <QtMac>
 #endif
 
@@ -48,7 +48,7 @@
 #endif
 
 #include <QTimer>
-#include <kwindowinfo.h>
+#include <KWindowInfo>
 #include <kwindowsystem.h>
 
 #include <cstdlib>

@@ -22,7 +22,7 @@
 #ifndef KNOTIFYCONFIG_H
 #define KNOTIFYCONFIG_H
 
-#include <ksharedconfig.h>
+#include <KSharedConfig>
 
 #include <QPair>
 #include <QObject> //for Wid

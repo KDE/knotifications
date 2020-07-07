@@ -26,7 +26,7 @@
 #include <QDBusConnection>
 #include <QMenu>
 
-#include <kwindowinfo.h>
+#include <KWindowInfo>
 #include <kwindowsystem.h>
 
 #include "statusnotifierwatcher_interface.h"

@@ -19,7 +19,7 @@
 #ifndef KNOTIFICATIONJOBUIDELEGATE_H
 #define KNOTIFICATIONJOBUIDELEGATE_H
 
-#include <kjobuidelegate.h>
+#include <KJobUiDelegate>
 
 #include <QScopedPointer>
 

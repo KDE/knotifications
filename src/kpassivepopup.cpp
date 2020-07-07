@@ -42,7 +42,7 @@
 #endif
 
 #if HAVE_KWINDOWSYSTEM
-#include <kwindowinfo.h>
+#include <KWindowInfo>
 #endif
 
 static const int DEFAULT_POPUP_TYPE = KPassivePopup::Boxed;

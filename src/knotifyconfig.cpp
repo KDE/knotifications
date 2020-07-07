@@ -21,8 +21,8 @@
 
 #include "knotifyconfig.h"
 
-#include <ksharedconfig.h>
-#include <kconfiggroup.h>
+#include <KSharedConfig>
+#include <KConfigGroup>
 #include <QCache>
 #include <QStandardPaths>
 

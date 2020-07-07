@@ -36,7 +36,7 @@
 #include <QDBusMetaType>
 #include <QMap>
 
-#include <kconfiggroup.h>
+#include <KConfigGroup>
 static const char portalDbusServiceName[] = "org.freedesktop.portal.Desktop";
 static const char portalDbusInterfaceName[] = "org.freedesktop.portal.Notification";
 static const char portalDbusPath[] = "/org/freedesktop/portal/desktop";

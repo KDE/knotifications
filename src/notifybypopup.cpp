@@ -37,7 +37,7 @@
 #include <QMutableListIterator>
 #include <QUrl>
 
-#include <kconfiggroup.h>
+#include <KConfigGroup>
 
 class NotifyByPopupPrivate {
 public:

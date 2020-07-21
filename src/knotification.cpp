@@ -1,29 +1,18 @@
-/* This file is part of the KDE libraries
-   Copyright (C) 2005-2006 Olivier Goffart <ogoffart at kde.org>
-   Copyright (C) 2013-2014 Martin Klapetek <mklapetek@kde.org>
+/*
+    This file is part of the KDE libraries
+    SPDX-FileCopyrightText: 2005-2006 Olivier Goffart <ogoffart at kde.org>
+    SPDX-FileCopyrightText: 2013-2014 Martin Klapetek <mklapetek@kde.org>
 
-   code from KNotify/KNotifyClient
-   Copyright (c) 1997 Christian Esken (esken@kde.org)
-                 2000 Charles Samuels (charles@kde.org)
-                 2000 Stefan Schimanski (1Stein@gmx.de)
-                 2000 Matthias Ettrich (ettrich@kde.org)
-                 2000 Waldo Bastian <bastian@kde.org>
-                 2000-2003 Carsten Pfeiffer <pfeiffer@kde.org>
-                 2005 Allan Sandfeld Jensen <kde@carewolf.com>
+    code from KNotify/KNotifyClient
+    SPDX-FileCopyrightText: 1997 Christian Esken <esken@kde.org>
+    SPDX-FileCopyrightText: 2000 Charles Samuels <charles@kde.org>
+    SPDX-FileCopyrightText: 2000 Stefan Schimanski <1Stein@gmx.de>
+    SPDX-FileCopyrightText: 2000 Matthias Ettrich <ettrich@kde.org>
+    SPDX-FileCopyrightText: 2000 Waldo Bastian <bastian@kde.org>
+    SPDX-FileCopyrightText: 2000-2003 Carsten Pfeiffer <pfeiffer@kde.org>
+    SPDX-FileCopyrightText: 2005 Allan Sandfeld Jensen <kde@carewolf.com>
 
-   This library is free software; you can redistribute it and/or
-   modify it under the terms of the GNU Library General Public
-   License version 2 as published by the Free Software Foundation.
-
-   This library is distributed in the hope that it will be useful,
-   but WITHOUT ANY WARRANTY; without even the implied warranty of
-   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-   Library General Public License for more details.
-
-   You should have received a copy of the GNU Library General Public License
-   along with this library; see the file COPYING.LIB.  If not, write to
-   the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor,
-   Boston, MA 02110-1301, USA.
+    SPDX-License-Identifier: LGPL-2.0-only
 */
 
 #include "knotification.h"

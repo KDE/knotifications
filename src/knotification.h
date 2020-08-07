@@ -67,7 +67,7 @@ class QWidget;
  * @warning Notifications won't be visible otherwise.
  *
  * You can do this with the following CMake command:
- * install(FILES appname.notifyrc  DESTINATION ${KNOTIFYRC_INSTALL_DIR}))
+ * install(FILES appname.notifyrc DESTINATION ${KNOTIFYRC_INSTALL_DIR}))
  *
  *  This file contains  mainly 3 parts
  *   <ol><li>\ref global "Global information"</li>
@@ -79,13 +79,15 @@ class QWidget;
  * <pre>
            [Global]
            IconName=Filename
-           Comment=Friendly Name of app
-           Name=Name of app
+           Name=Name of Application
+           Comment=A brief description of the application
  * </pre>
- *   The icon filename is just the name, without extension,  it's found with the KIconLoader.
- *   The Comment field will be used in KControl to describe the application.
- *   The Name field is optional and may be used as the application name for popup,
- *   if Name is not present, Comment is used instead
+ *   The icon filename is just the name, without extension. It follows the same
+ *   behavior as `Icon=` as defined in the Freedesktop Desktop Entry specification.
+ *   The Name field may be used as the application name for popup, it may also be used
+ *   to visualize the application's notification settings in KCModule instances.
+ *   If Name is not present, Comment is used instead. Either must be present.
+ *   Make sure to follow <a href="https://hig.kde.org/style/writing/capitalization.html">the HIG</a>
  *
  * \subsection context Context information
  *
@@ -100,20 +102,20 @@ class QWidget;
  *  </pre>
  *  The second part of the groupname is the context identifier.
  *  It should not contain special characters.
- *  The Name field is the one the user will see (and which is translated)
+ *  The Name field is required and used for visualization.
  *
  * \subsection events Definition of Events
  *
  * The definition of the events forms the most important part of the config file
  * <pre>
            [Event/newmail]
-           Name=New email
+           Name=New E-Mail
            Comment=You have got a new email
            Contexts=folder,group
            Action=Sound|Popup
 
            [Event/contactOnline]
-           Name=Contact goes online
+           Name=Contact Goes Online
            Comment=One of your contact has been connected
            Contexts=group
            Sound=filetoplay.ogg

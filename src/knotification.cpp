@@ -58,6 +58,7 @@ struct Q_DECL_HIDDEN KNotification::Private {
 #endif
 };
 
+#if KNOTIFICATIONS_BUILD_DEPRECATED_SINCE(5, 75)
 KNotification::KNotification(const QString &eventId, QWidget *parent, const NotificationFlags &flags) :
     QObject(parent), d(new Private)
 {
@@ -68,6 +69,7 @@ KNotification::KNotification(const QString &eventId, QWidget *parent, const Noti
     d->updateTimer.setSingleShot(true);
     d->updateTimer.setInterval(100);
 }
+#endif
 
 KNotification::KNotification(
     const QString &eventId,
@@ -364,7 +366,8 @@ static QString defaultComponentName()
 KNotification *KNotification::event(const QString &eventid, const QString &title, const QString &text,
                                     const QPixmap &pixmap, QWidget *widget, const NotificationFlags &flags, const QString &componentName)
 {
-    KNotification *notify = new KNotification(eventid, widget, flags);
+    KNotification *notify = new KNotification(eventid, flags);
+    notify->setWidget(widget);
     notify->setTitle(title);
     notify->setText(text);
     notify->setPixmap(pixmap);
@@ -398,7 +401,8 @@ KNotification *KNotification::event(const QString &eventid, const QString &title
                                 const QString &iconName, QWidget *widget,
                                 const NotificationFlags &flags, const QString &componentName)
 {
-    KNotification *notify = new KNotification(eventid, widget, flags);
+    KNotification *notify = new KNotification(eventid, flags);
+    notify->setWidget(widget);
     notify->setTitle(title);
     notify->setText(text);
     notify->setIconName(iconName);

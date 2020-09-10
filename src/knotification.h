@@ -163,7 +163,8 @@ class QWidget;
  * This portion of code will fire the event for the "contactOnline" event
  *
  * @code
-    KNotification *notification= new KNotification ( "contactOnline", widget );
+    KNotification *notification= new KNotification ( "contactOnline" );
+    notification->setWidget( widget );
     notification->setText( i18n("The contact <i>%1</i> has gone online", contact->name() );
     notification->setPixmap( contact->pixmap() );
     notification->setActions( QStringList( i18n( "Open chat" ) ) );
@@ -286,6 +287,7 @@ public:
         CriticalUrgency = 90
     };
 
+#if KNOTIFICATIONS_ENABLE_DEPRECATED_SINCE(5, 75)
     /**
      * Create a new notification.
      *
@@ -300,8 +302,32 @@ public:
      * @param eventId is the name of the event
      * @param widget is a widget where the notification reports to
      * @param flags is a bitmask of NotificationFlag
+     * @deprecated Since 5.75, use other constructor and call setWidget() explicitly
      */
-    explicit KNotification(const QString &eventId, QWidget *widget = nullptr, const NotificationFlags &flags = CloseOnTimeout);
+    KNOTIFICATIONS_DEPRECATED_VERSION(5, 75, "Use other constructor and call setWidget() explicitly")
+    explicit KNotification(const QString &eventId, QWidget *widget, const NotificationFlags &flags = CloseOnTimeout);
+#endif
+
+    /**
+     * Create a new notification.
+     *
+     * You have to use sendEvent to show the notification.
+     *
+     * The pointer is automatically deleted when the event is closed.
+     *
+     * The NotificationFlags is set to CloseOnTimeout.
+     *
+     * @param eventId is the name of the event
+     * @since 5.75
+     */
+    inline explicit KNotification(const QString &eventId)
+        : KNotification(eventId, CloseOnTimeout, nullptr)
+    {
+    }
+    // TODO KF6: remove thic constructor, in favour of other non-deprecated constructor
+    // It is a helper constructor for software binary compatibility of code which called the
+    // deprecated constructor so far due to it's second parameter "widget" having had
+    // a default nullptr value.
 
     /**
      * Create a new notification.
@@ -320,13 +346,8 @@ public:
      * @param flags is a bitmask of NotificationFlag
      * @param parent parent object
      */
-    // KDE5: Clean up this mess
-    // Only this constructor should stay with saner argument order and
-    // defaults. Because of binary and source compatibility issues it has to
-    // stay this way for now. The second argument CANNOT have a default
-    // argument. if someone needs a widget associated with the notification he
-    // should use setWidget after creating the object (or some xyz_cast magic)
     explicit KNotification(const QString &eventId, const NotificationFlags &flags, QObject *parent = nullptr);
+    // TODO KF6: pass flags by value instead of reference, set CloseOnTimeout as default value
 
     ~KNotification();
 

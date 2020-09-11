@@ -5,7 +5,7 @@ buildscript {
     }
 
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.2.0'
+        classpath 'com.android.tools.build:gradle:4.0.1'
     }
 }
 
@@ -17,8 +17,8 @@ repositories {
 apply plugin: 'com.android.library'
 
 android {
-    compileSdkVersion 28
-    buildToolsVersion '28.0.2'
+    compileSdkVersion @ANDROID_SDK_COMPILE_API@
+    buildToolsVersion '@ANDROID_SDK_BUILD_TOOLS_REVISION@'
 
     sourceSets {
         main {
@@ -29,5 +29,10 @@ android {
 
     lintOptions {
         abortOnError false
+    }
+
+    defaultConfig {
+        minSdkVersion @ANDROID_API_LEVEL@
+        targetSdkVersion @ANDROID_SDK_COMPILE_API@
     }
 }

@@ -16,15 +16,14 @@
 
 NotifyByTTS::NotifyByTTS(QObject *parent)
     : KNotificationPlugin(parent)
+    , m_speech(new QTextToSpeech(this))
 {
-    m_speech = new QTextToSpeech(this);
 }
 
 
 NotifyByTTS::~NotifyByTTS()
 {
     delete m_speech;
-    m_speech = nullptr;
 }
 
 void NotifyByTTS::notify(KNotification *notification, KNotifyConfig *config )

@@ -28,10 +28,10 @@
 
 struct Q_DECL_HIDDEN KNotification::Private {
     QString eventId;
-    int id;
-    int ref;
+    int id = -1;
+    int ref = 0;
 
-    QWidget *widget;
+    QWidget *widget = nullptr;
     QString title;
     QString text;
     QString iconName;
@@ -41,13 +41,12 @@ struct Q_DECL_HIDDEN KNotification::Private {
     ContextList contexts;
     NotificationFlags flags;
     QString componentName;
-    KNotification::Urgency urgency;
+    KNotification::Urgency urgency = KNotification::DefaultUrgency;
     QVariantMap hints;
 
     QTimer updateTimer;
-    bool needUpdate;
+    bool needUpdate = false;
 
-    Private() : id(-1), ref(0), widget(nullptr), urgency(KNotification::DefaultUrgency), needUpdate(false) {}
 #if KNOTIFICATIONS_BUILD_DEPRECATED_SINCE(5, 67)
     /**
      * recursive function that raise the widget. @p w

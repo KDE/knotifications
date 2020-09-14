@@ -23,7 +23,7 @@ public:
     void notify(KNotification *notification, KNotifyConfig *config) override;
 
 private:
-    QTextToSpeech *m_speech = nullptr;
+    QTextToSpeech *const m_speech;
 };
 
 #endif

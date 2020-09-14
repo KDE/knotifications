@@ -68,7 +68,7 @@ public:
         connect(q, QOverload<>::of(&KPassivePopup::clicked), q, &QWidget::hide);
     }
 
-    KPassivePopup *q;
+    KPassivePopup *const q;
 
     int popupStyle;
     QPolygon surround;
@@ -85,7 +85,7 @@ public:
     QLabel *ttl = nullptr;
     QLabel *msg = nullptr;
 
-    bool autoDelete;
+    bool autoDelete = false;
 
     /**
      * Updates the transparency mask. Unused if PopupStyle == Boxed

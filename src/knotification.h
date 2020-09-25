@@ -34,7 +34,7 @@ class QWidget;
  * window. This allows us to play sounds when a dialog appears.
  * This is an instant notification.  It ends automatically after a small timeout.
  *
- * @li persistant notifications:
+ * @li Persistent notifications:
  * Notify when the user received a new message, or when something else important happened
  * the user has to know about.  This notification has a start and a end.  It begins when
  * the event actually occurs, and finishes when the message is acknowledged or read.
@@ -80,6 +80,7 @@ class QWidget;
            [Global]
            IconName=Filename
            Name=Name of Application
+           DesktopEntry=DesktopFileName
            Comment=A brief description of the application
  * </pre>
  *   The icon filename is just the name, without extension. It follows the same
@@ -88,6 +89,13 @@ class QWidget;
  *   to visualize the application's notification settings in KCModule instances.
  *   If Name is not present, Comment is used instead. Either must be present.
  *   Make sure to follow <a href="https://hig.kde.org/style/writing/capitalization.html">the HIG</a>
+ *
+ *   The DesktopEntry field is required in order for the application to be listed
+ *   in the notifications KCModule, and for its notifications to appear in the
+ *   notification history. Ensure that its value matches the application's desktop
+ *   file name, that the desktop file name is set in the QGuiApplication or
+ *   KAboutData desktopFileName property, and that the desktop file is not marked
+ *   as Hidden.
  *
  * \subsection context Context information
  *

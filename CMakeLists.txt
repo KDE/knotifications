@@ -90,7 +90,7 @@ endif()
 find_package(KF5Config ${KF5_DEP_VERSION} REQUIRED)
 find_package(KF5CoreAddons ${KF5_DEP_VERSION} REQUIRED)
 
-if (NOT ANDROID OR (WIN32 AND NOT ${WITH_SNORETOAST}))
+if (NOT ANDROID AND NOT WIN32 OR (WIN32 AND NOT WITH_SNORETOAST))
     find_package(Qt5 ${REQUIRED_QT_VERSION} CONFIG REQUIRED DBus)
     find_package(Canberra)
     set_package_properties(Canberra PROPERTIES

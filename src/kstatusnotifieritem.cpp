@@ -909,6 +909,8 @@ void KStatusNotifierItemPrivate::registerToDaemon()
         qCDebug(LOG_KNOTIFICATIONS) << "KStatusNotifierWatcher not reachable";
         useLegacy = true;
     }
+#else
+    useLegacy = true;
 #endif
     setLegacySystemTrayEnabled(useLegacy);
 }

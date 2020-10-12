@@ -9,13 +9,10 @@
 
 #include "knotificationplugin.h"
 
-#include <QPointer>
 #include <QLocalServer>
 #include <QProcess>
-#include <QString>
 #include <QTemporaryDir>
 
-/** Windows notification backend - inspired by Android notification backend. */
 class NotifyBySnore : public KNotificationPlugin
 {
     Q_OBJECT
@@ -29,9 +26,9 @@ public:
     void notifyDeferred(KNotification* notification);
     void close(KNotification * notification) override;
     void update(KNotification *notification, KNotifyConfig *config) override;
+
 private:
     QHash<int, QPointer<KNotification>> m_notifications;
-    QString m_program = QStringLiteral("SnoreToast.exe");
     QLocalServer m_server;
     QTemporaryDir m_iconDir;
 };

@@ -167,10 +167,17 @@ void NotifyByPopup::onNotificationActionInvoked(uint notificationId, const QStri
 
     KNotification *n = *iter;
     if (n) {
-        if (actionKey == QLatin1String("default")) {
+        if (actionKey == QLatin1String("default") && !n->defaultAction().isEmpty()) {
             emit actionInvoked(n->id(), 0);
         } else {
-            emit actionInvoked(n->id(), actionKey.toUInt());
+            bool ok;
+            const int actionIndex = actionKey.toInt(&ok);
+
+            if (!ok || actionIndex < 1 || actionIndex > n->actions().size()) {
+                qCWarning(LOG_KNOTIFICATIONS) << "Invalid action key" << actionKey;
+            }
+
+            emit actionInvoked(n->id(), actionIndex);
         }
     } else {
         d->notifications.erase(iter);

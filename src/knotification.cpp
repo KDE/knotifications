@@ -20,7 +20,6 @@
 
 #include <QCoreApplication>
 
-#include <QPixmap>
 #include <QTimer>
 #include <QTabWidget>
 #include <QStringList>

@@ -10,7 +10,6 @@
 #include "kstatusnotifieritem.h"
 #include "debug_p.h"
 
-#include <QDBusConnection>
 #include <QMenu>
 
 #include <KWindowInfo>

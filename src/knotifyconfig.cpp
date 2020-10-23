@@ -6,7 +6,6 @@
 
 #include "knotifyconfig.h"
 
-#include <KSharedConfig>
 #include <KConfigGroup>
 #include <QCache>
 #include <QStandardPaths>

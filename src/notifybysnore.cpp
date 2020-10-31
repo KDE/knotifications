@@ -144,6 +144,8 @@ void NotifyBySnore::notify(KNotification *notification, KNotifyConfig *config)
 
 void NotifyBySnore::notifyDeferred(KNotification* notification)
 {
+    m_notifications.insert(notification->id(), notification);
+
     const QString notificationTitle = ((!notification->title().isEmpty()) ? stripRichText(notification->title())
                                                                           : qApp->applicationDisplayName());
     QStringList snoretoastArgsList {
@@ -168,20 +170,35 @@ void NotifyBySnore::notifyDeferred(KNotification* notification)
         snoretoastArgsList << QStringLiteral("-b") << notification->actions().join(QLatin1Char(';'));
     }
 
-    qCDebug(LOG_KNOTIFICATIONS) << snoretoastArgsList;
-
     QProcess* snoretoastProcess = new QProcess();
-    connect(snoretoastProcess, &QProcess::started, [this, notification]() {
-        m_notifications.insert(notification->id(), notification); // TODO: handle failure of this call
-        qCDebug(LOG_KNOTIFICATIONS) << "Inserted notification into m_notifications";
+    connect(snoretoastProcess, &QProcess::readyReadStandardError,
+            [snoretoastProcess, snoretoastArgsList]() {
+                const auto data = snoretoastProcess->readAllStandardError();
+                qCDebug(LOG_KNOTIFICATIONS) << "SnoreToast process stderr:"
+                    << snoretoastArgsList << data;
     });
-
-    connect(snoretoastProcess, QOverload<int, QProcess::ExitStatus>::of(&QProcess::finished),
-            [this, snoretoastProcess, iconPath](int exitCode, QProcess::ExitStatus exitStatus) {
+    connect(snoretoastProcess, &QProcess::readyReadStandardOutput,
+            [snoretoastProcess, snoretoastArgsList]() {
+                const auto data = snoretoastProcess->readAllStandardOutput();
+                qCDebug(LOG_KNOTIFICATIONS) << "SnoreToast process stdout:"
+                    << snoretoastArgsList << data;
+    });
+    connect(snoretoastProcess, &QProcess::errorOccurred, this,
+            [this, snoretoastProcess, snoretoastArgsList, iconPath](QProcess::ProcessError error) {
+                qCWarning(LOG_KNOTIFICATIONS) << "SnoreToast process errored:"
+                    << snoretoastArgsList << error;
+                snoretoastProcess->deleteLater();
+                QFile::remove(iconPath);
+    });
+    connect(snoretoastProcess, QOverload<int, QProcess::ExitStatus>::of(&QProcess::finished), this,
+            [this, snoretoastProcess, snoretoastArgsList, iconPath](int exitCode, QProcess::ExitStatus exitStatus) {
+                qCDebug(LOG_KNOTIFICATIONS) << "SnoreToast process finished:" << snoretoastArgsList;
+                qCDebug(LOG_KNOTIFICATIONS) << "code:" << exitCode << "status:" << exitStatus;
                 snoretoastProcess->deleteLater();
                 QFile::remove(iconPath);
     });
 
+    qCDebug(LOG_KNOTIFICATIONS) << "SnoreToast process starting:" << snoretoastArgsList;
     snoretoastProcess->start(SnoreToastExecName(), snoretoastArgsList);
 }
 
@@ -193,21 +210,18 @@ void NotifyBySnore::close(KNotification *notification)
         return;
     }
 
+    m_notifications.remove(notification->id());
+
     const QStringList snoretoastArgsList{ QStringLiteral("-close"),
                                           QString::number(notification->id()),
                                           QStringLiteral("-appID"),
                                           qApp->applicationName()
                                         };
 
-    qCDebug(LOG_KNOTIFICATIONS) << "SnoreToast closing notification with ID:" << notification->id();
+    qCDebug(LOG_KNOTIFICATIONS) << "Closing notification; SnoreToast process arguments:" << snoretoastArgsList;
+    QProcess::startDetached(SnoreToastExecName(), snoretoastArgsList);
 
-    QProcess* snoretoastProcess = new QProcess();
-    connect(snoretoastProcess, &QProcess::started, [this, notification]() {
-        qCDebug(LOG_KNOTIFICATIONS) << "Removed" << m_notifications.remove(notification->id()) << "notifications from m_notifications";
-    });
-
-    connect(snoretoastProcess, QOverload<int, QProcess::ExitStatus>::of(&QProcess::finished), snoretoastProcess, &QProcess::deleteLater);
-    snoretoastProcess->start(SnoreToastExecName(), snoretoastArgsList);
+    finish(notification);
 }
 
 void NotifyBySnore::update(KNotification *notification, KNotifyConfig *config)

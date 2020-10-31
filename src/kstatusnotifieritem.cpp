@@ -861,7 +861,7 @@ void KStatusNotifierItemPrivate::init(const QString &extraId)
     }
 
     // Init iconThemePath to the app folder for now
-    iconThemePath = QStandardPaths::locate(QStandardPaths::DataLocation, QStringLiteral("icons"), QStandardPaths::LocateDirectory);
+    iconThemePath = QStandardPaths::locate(QStandardPaths::AppDataLocation, QStringLiteral("icons"), QStandardPaths::LocateDirectory);
 
     registerToDaemon();
 }

@@ -290,7 +290,9 @@ void KNotification::activate(unsigned int action)
 {
     switch (action) {
     case 0:
+#if KNOTIFICATIONS_BUILD_DEPRECATED_SINCE(5, 76)
         emit activated();
+#endif
         emit defaultActivated();
         break;
     case 1:

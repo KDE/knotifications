@@ -589,10 +589,14 @@ public:
     QString appName() const;
 
 Q_SIGNALS:
+#if KNOTIFICATIONS_ENABLE_DEPRECATED_SINCE(5, 76)
     /**
      * Emitted only when the default activation has occurred
+     * @deprecated Since 5.67, use defaultActivated() instead
      */
+    KNOTIFICATIONS_DEPRECATED_VERSION_BELATED(5, 76, 5, 67, "Use defaultActivated() instead")
     void activated();
+#endif
 
     /**
      * Emitted when the default action has been activated.

@@ -573,4 +573,27 @@ QString KNotification::xdgActivationToken() const
     return d->xdgActivationToken;
 }
 
+void KNotification::setWindow(QWindow *window)
+{
+    if (window == d->window) {
+        return;
+    }
+
+    disconnect(d->window, &QWindow::activeChanged, this, &KNotification::slotWindowActiveChanged);
+    d->window = window;
+    connect(d->window, &QWindow::activeChanged, this, &KNotification::slotWindowActiveChanged);
+}
+
+void KNotification::slotWindowActiveChanged()
+{
+    if (d->window->isActive() && (d->flags & CloseWhenWindowActivated)) {
+        close();
+    }
+}
+
+QWindow *KNotification::window() const
+{
+    return d->window;
+}
+
 #include "moc_knotification.cpp"

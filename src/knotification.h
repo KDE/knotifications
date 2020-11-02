@@ -17,6 +17,7 @@
 #include <QPixmap>
 #include <QUrl>
 #include <QVariant>
+#include <QWindow>
 
 #include <memory>
 
@@ -145,6 +146,16 @@ public:
          * @since 5.18
          */
         SkipGrouping = 0x10,
+
+        /**
+         * The notification will be automatically closed if the window() becomes
+         * activated.
+         *
+         * You need to set a window using setWindow().
+         *
+         * @since 6.0
+         */
+        CloseWhenWindowActivated = 0x20,
 
         /**
          * @internal
@@ -440,6 +451,22 @@ public:
     void setUrgency(Urgency urgency);
 
     /**
+     * Sets the window associated with this notification.
+     * This is relevant when using the CloseWhenWindowActivated flag.
+     *
+     * @since 6.0
+     */
+    void setWindow(QWindow *window);
+
+    /**
+     * The window associated with this notification. nullptr by default.
+     * @return the window set by setWindow()
+     *
+     * @since 6.0
+     */
+    QWindow *window() const;
+
+    /**
      * @internal
      * appname used for the D-Bus object
      */
@@ -622,6 +649,8 @@ private:
     friend class NotifyByAndroid;
     friend class NotifyByMacOSNotificationCenter;
     struct Private;
+
+    KNOTIFICATIONS_NO_EXPORT void slotWindowActiveChanged();
 
     /**
      * @brief Activate the action specified action

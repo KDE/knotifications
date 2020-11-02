@@ -43,6 +43,7 @@ struct Q_DECL_HIDDEN KNotification::Private {
     bool needUpdate = false;
     bool isNew = true;
     bool autoDelete = true;
+    QWindow *window = nullptr;
 };
 
 #endif

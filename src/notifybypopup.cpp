@@ -174,10 +174,10 @@ void NotifyByPopup::onNotificationActionInvoked(uint notificationId, const QStri
             const int actionIndex = actionKey.toInt(&ok);
 
             if (!ok || actionIndex < 1 || actionIndex > n->actions().size()) {
-                qCWarning(LOG_KNOTIFICATIONS) << "Invalid action key" << actionKey;
+                qCWarning(LOG_KNOTIFICATIONS) << "Ignored invalid action key" << actionKey;
+            } else {
+                emit actionInvoked(n->id(), actionIndex);
             }
-
-            emit actionInvoked(n->id(), actionIndex);
         }
     } else {
         d->notifications.erase(iter);

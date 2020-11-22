@@ -57,8 +57,6 @@ struct Q_DECL_HIDDEN KNotificationManager::Private {
     QHash<int, KNotification *> notifications;
     QHash<QString, KNotificationPlugin *> notifyPlugins;
 
-    // incremental ids for notifications
-    int notifyIdCounter;
     QStringList dirtyConfigCache;
     bool portalDBusServiceExists = false;
 };
@@ -79,7 +77,6 @@ KNotificationManager *KNotificationManager::self()
 KNotificationManager::KNotificationManager()
     : d(new Private)
 {
-    d->notifyIdCounter = 0;
     qDeleteAll(d->notifyPlugins);
     d->notifyPlugins.clear();
 
@@ -280,7 +277,7 @@ void KNotificationManager::close(int id, bool force)
     }
 }
 
-int KNotificationManager::notify(KNotification *n)
+void KNotificationManager::notify(KNotification *n)
 {
     KNotifyConfig notifyConfig(n->appName(), n->contexts(), n->eventId());
 
@@ -295,10 +292,10 @@ int KNotificationManager::notify(KNotification *n)
         // this will cause KNotification closing itself fast
         n->ref();
         n->deref();
-        return -1;
+        return;
     }
 
-    d->notifications.insert(d->notifyIdCounter, n);
+    d->notifications.insert(n->id(), n);
 
     // TODO KF6 d-pointer KNotifyConfig and add this there
     if (n->urgency() == KNotification::DefaultUrgency) {
@@ -329,7 +326,6 @@ int KNotificationManager::notify(KNotification *n)
     }
 
     connect(n, &KNotification::closed, this, &KNotificationManager::notificationClosed);
-    return d->notifyIdCounter++;
 }
 
 void KNotificationManager::update(KNotification *n)

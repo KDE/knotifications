@@ -32,7 +32,7 @@ public:
     /**
      * send the dbus call to the knotify server
      */
-    int notify(KNotification *n);
+    void notify(KNotification *n);
 
     /**
      * send the close dcop call to the knotify server for the notification with the identifier @p id .

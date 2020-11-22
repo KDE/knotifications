@@ -25,6 +25,9 @@
 #include <QStringList>
 #include <QUrl>
 
+// incremental notification ID
+static int notificationIdCounter = 0;
+
 struct Q_DECL_HIDDEN KNotification::Private {
     QString eventId;
     int id = -1;
@@ -45,6 +48,7 @@ struct Q_DECL_HIDDEN KNotification::Private {
 
     QTimer updateTimer;
     bool needUpdate = false;
+    bool isNew = true;
 
 #if KNOTIFICATIONS_BUILD_DEPRECATED_SINCE(5, 67)
     /**
@@ -66,6 +70,7 @@ KNotification::KNotification(const QString &eventId, QWidget *parent, const Noti
     connect(&d->updateTimer, &QTimer::timeout, this, &KNotification::update);
     d->updateTimer.setSingleShot(true);
     d->updateTimer.setInterval(100);
+    d->id = ++notificationIdCounter;
 }
 #endif
 
@@ -82,6 +87,7 @@ KNotification::KNotification(
     d->updateTimer.setSingleShot(true);
     d->updateTimer.setInterval(100);
     d->widget = nullptr;
+    d->id = ++notificationIdCounter;
 }
 
 KNotification::~KNotification()
@@ -448,9 +454,10 @@ void KNotification::beep(const QString &reason, QWidget *widget)
 void KNotification::sendEvent()
 {
     d->needUpdate = false;
-    if (d->id == -1) {
-        d->id = KNotificationManager::self()->notify(this);
-    } else if (d->id >= 0) {
+    if (d->isNew) {
+        d->isNew = false;
+        KNotificationManager::self()->notify(this);
+    } else {
         KNotificationManager::self()->reemit(this);
     }
 }

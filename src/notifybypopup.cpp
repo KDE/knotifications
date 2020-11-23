@@ -285,10 +285,6 @@ bool NotifyByPopupPrivate::sendNotificationToServer(KNotification *notification,
         hintsMap[QStringLiteral("x-kde-skipGrouping")] = 1;
     }
 
-    if (!(notification->flags() & KNotification::Persistent)) {
-        hintsMap[QStringLiteral("transient")] = true;
-    }
-
     QString desktopFileName = QGuiApplication::desktopFileName();
     if (!desktopFileName.isEmpty()) {
         // handle apps which set the desktopFileName property with filename suffix,

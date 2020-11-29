@@ -7,7 +7,7 @@
 #include <QDebug>
 #include <QtMac>
 
-#import <Appkit/Appkit.h>
+#import <AppKit/AppKit.h>
 #import <Foundation/Foundation.h>
 #import <objc/runtime.h>
 

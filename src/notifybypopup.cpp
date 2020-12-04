@@ -134,6 +134,14 @@ void NotifyByPopup::update(KNotification *notification, const KNotifyConfig &not
 
 void NotifyByPopup::close(KNotification *notification)
 {
+    QMutableListIterator<QPair<KNotification*, KNotifyConfig> > iter(d->notificationQueue);
+    while (iter.hasNext()) {
+        auto &item = iter.next();
+        if (item.first == notification) {
+            iter.remove();
+        }
+    }
+
     uint id = d->notifications.key(notification, 0);
 
     if (id == 0) {
@@ -142,14 +150,6 @@ void NotifyByPopup::close(KNotification *notification)
     }
 
     d->dbusInterface.CloseNotification(id);
-
-    QMutableListIterator<QPair<KNotification*, KNotifyConfig> > iter(d->notificationQueue);
-    while (iter.hasNext()) {
-        auto &item = iter.next();
-        if (item.first == notification) {
-            iter.remove();
-        }
-    }
 }
 
 void NotifyByPopup::onNotificationActionInvoked(uint notificationId, const QString &actionKey)

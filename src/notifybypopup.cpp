@@ -109,12 +109,6 @@ void NotifyByPopup::notify(KNotification *notification, KNotifyConfig *notifyCon
 
 void NotifyByPopup::notify(KNotification *notification, const KNotifyConfig &notifyConfig)
 {
-    if (d->notifications.contains(notification->id())) {
-        // notification is already on the screen, do nothing
-        finish(notification);
-        return;
-    }
-
     if (d->dbusServiceCapCacheDirty) {
         // if we don't have the server capabilities yet, we need to query for them first;
         // as that is an async dbus operation, we enqueue the notification and process them

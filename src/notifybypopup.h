@@ -12,17 +12,18 @@
 #include "knotificationplugin.h"
 
 #include <QStringList>
+#include "knotifyconfig.h"
+
+#include "notifications_interface.h"
 
 class KNotification;
 class QDBusPendingCallWatcher;
-class NotifyByPopupPrivate;
 
 class NotifyByPopup : public KNotificationPlugin
 {
     Q_OBJECT
 public:
     explicit NotifyByPopup(QObject *parent = nullptr);
-    ~NotifyByPopup() override;
 
     QString optionName() override { return QStringLiteral("Popup"); }
     void notify(KNotification *notification, KNotifyConfig *notifyConfig) override;
@@ -40,8 +41,53 @@ private:
     void notify(KNotification *notification, const KNotifyConfig &notifyConfig);
     void update(KNotification *notification, const KNotifyConfig &notifyConfig);
 
-    NotifyByPopupPrivate * const d;
-    friend class NotifyByPopupPrivate;
+    /**
+     * Sends notification to DBus "org.freedesktop.notifications" interface.
+     * @param id knotify-sid identifier of notification
+     * @param config notification data
+     * @param update If true, will request the DBus service to update
+                     the notification with new data from \c notification
+     *               Otherwise will put new notification on screen
+     * @return true for success or false if there was an error.
+     */
+    bool sendNotificationToServer(KNotification *notification, const KNotifyConfig &config, bool update = false);
+
+    /**
+     * Find the caption and the icon name of the application
+     */
+    void getAppCaptionAndIconName(const KNotifyConfig &config, QString *appCaption, QString *iconName);
+    /*
+     * Query the dbus server for notification capabilities
+     * If no DBus server is present, use fallback capabilities for KPassivePopup
+     */
+    void queryPopupServerCapabilities();
+
+    /**
+     * DBus notification daemon capabilities cache.
+     * Do not use this variable. Use #popupServerCapabilities() instead.
+     * @see popupServerCapabilities
+     */
+    QStringList m_popupServerCapabilities;
+
+    /**
+     * In case we still don't know notification server capabilities,
+     * we need to query those first. That's done in an async way
+     * so we queue all notifications while waiting for the capabilities
+     * to return, then process them from this queue
+     */
+    QList<QPair<KNotification*, KNotifyConfig> > m_notificationQueue;
+    /**
+     * Whether the DBus notification daemon capability cache is up-to-date.
+     */
+    bool m_dbusServiceCapCacheDirty;
+
+    /*
+     * As we communicate with the notification server over dbus
+     * we use only ids, this is for fast KNotifications lookup
+     */
+    QHash<uint, QPointer<KNotification>> m_notifications;
+
+    org::freedesktop::Notifications m_dbusInterface;
 };
 
 #endif

@@ -301,7 +301,6 @@ QWidget *KPassivePopup::standardView(const QString &caption,
     QWidget *top = new QWidget(parent ? parent : this);
     QVBoxLayout *vb = new QVBoxLayout(top);
     vb->setContentsMargins(0, 0, 0, 0);
-    top->setLayout(vb);
 
     QHBoxLayout *hb = nullptr;
     if (!icon.isNull()) {

@@ -33,6 +33,8 @@
 #include <KWindowInfo>
 #endif
 
+#if KNOTIFICATIONS_BUILD_DEPRECATED_SINCE(5, 79)
+
 static const int DEFAULT_POPUP_TYPE = KPassivePopup::Boxed;
 static const int DEFAULT_POPUP_TIME = 6 * 1000;
 static const Qt::WindowFlags POPUP_FLAGS = Qt::Tool | Qt::WindowStaysOnTopHint | Qt::FramelessWindowHint;
@@ -625,6 +627,8 @@ KPassivePopup *KPassivePopup::message(int popupStyle, const QString &caption, co
 {
     return message(popupStyle, caption, text, QPixmap(), parent);
 }
+
+#endif
 
 // Local Variables:
 // End:

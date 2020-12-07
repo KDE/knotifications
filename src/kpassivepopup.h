@@ -15,6 +15,7 @@
 
 class QSystemTrayIcon;
 
+#if KNOTIFICATIONS_ENABLE_DEPRECATED_SINCE(5, 79)
 /**
  * @class KPassivePopup kpassivepopup.h KPassivePopup
  *
@@ -68,6 +69,8 @@ class QSystemTrayIcon;
  *    pop->show();
  * \endcode
  *
+ * @deprecated since 5.79, use KNotification
+ *
  * @author Richard Moore, rich@kde.org
  * @author Sascha Cunz, sascha.cunz@tiscali.de
  */
@@ -88,12 +91,15 @@ public:
 
     /**
      * Creates a popup for the specified widget.
+     * @deprecated since 5.79, use KNotification
      */
+    KNOTIFICATIONS_DEPRECATED_VERSION(5, 79, "Use KNotification")
     explicit KPassivePopup(QWidget *parent = nullptr, Qt::WindowFlags f = Qt::WindowFlags());
 
     /**
      * Creates a popup for the specified window.
      */
+    KNOTIFICATIONS_DEPRECATED_VERSION(5, 79, "Use KNotification")
     explicit KPassivePopup(WId parent);
 
     /**
@@ -182,7 +188,9 @@ public:
      * icon of the specified widget.
      * Note that the returned object is destroyed when it is hidden.
      * @see setAutoDelete
+     * @deprecated since 5.79, use KNotification
      */
+    KNOTIFICATIONS_DEPRECATED_VERSION(5, 79, "Use KNotification")
     static KPassivePopup *message(const QString &text, QWidget *parent,
                                   const QPoint &p = QPoint());
 
@@ -191,7 +199,9 @@ public:
      * icon of the specified QSystemTrayIcon.
      * Note that the returned object is destroyed when it is hidden.
      * @see setAutoDelete
+     * @deprecated since 5.79, use KNotification
      */
+    KNOTIFICATIONS_DEPRECATED_VERSION(5, 79, "Use KNotification")
     static KPassivePopup *message(const QString &text, QSystemTrayIcon *parent);
 
     /**
@@ -199,7 +209,9 @@ public:
      * beside the icon of the specified widget.
      * Note that the returned object is destroyed when it is hidden.
      * @see setAutoDelete
+     * @deprecated since 5.79, use KNotification
      */
+    KNOTIFICATIONS_DEPRECATED_VERSION(5, 79, "Use KNotification")
     static KPassivePopup *message(const QString &caption, const QString &text,
                                   QWidget *parent, const QPoint &p = QPoint());
 
@@ -208,7 +220,9 @@ public:
      * beside the icon of the specified QSystemTrayIcon.
      * Note that the returned object is destroyed when it is hidden.
      * @see setAutoDelete
+     * @deprecated since 5.79, use KNotification
      */
+    KNOTIFICATIONS_DEPRECATED_VERSION(5, 79, "Use KNotification")
     static KPassivePopup *message(const QString &caption, const QString &text,
                                   QSystemTrayIcon *parent);
 
@@ -217,7 +231,9 @@ public:
      * message beside the icon of the specified widget.
      * Note that the returned object is destroyed when it is hidden.
      * @see setAutoDelete
+     * @deprecated since 5.79, use KNotification
      */
+    KNOTIFICATIONS_DEPRECATED_VERSION(5, 79, "Use KNotification")
     static KPassivePopup *message(const QString &caption, const QString &text,
                                   const QPixmap &icon, QWidget *parent, int timeout = -1,
                                   const QPoint &p = QPoint());
@@ -227,7 +243,9 @@ public:
      * message beside the icon of the specified QSystemTrayIcon.
      * Note that the returned object is destroyed when it is hidden.
      * @see setAutoDelete
+     * @deprecated since 5.79, use KNotification
      */
+    KNOTIFICATIONS_DEPRECATED_VERSION(5, 79, "Use KNotification")
     static KPassivePopup *message(const QString &caption, const QString &text,
                                   const QPixmap &icon, QSystemTrayIcon *parent, int timeout = -1);
 
@@ -236,7 +254,9 @@ public:
      * message beside the icon of the specified window.
      * Note that the returned object is destroyed when it is hidden.
      * @see setAutoDelete
+     * @deprecated since 5.79, use KNotification
      */
+    KNOTIFICATIONS_DEPRECATED_VERSION(5, 79, "Use KNotification")
     static KPassivePopup *message(const QString &caption, const QString &text,
                                   const QPixmap &icon, WId parent,
                                   int timeout = -1, const QPoint &p = QPoint());
@@ -246,7 +266,9 @@ public:
      * icon of the specified widget.
      * Note that the returned object is destroyed when it is hidden.
      * @see setAutoDelete
+     * @deprecated since 5.79, use KNotification
      */
+    KNOTIFICATIONS_DEPRECATED_VERSION(5, 79, "Use KNotification")
     static KPassivePopup *message(int popupStyle, const QString &text, QWidget *parent, const QPoint &p = QPoint());
 
     /**
@@ -254,7 +276,9 @@ public:
      * icon of the specified QSystemTrayIcon.
      * Note that the returned object is destroyed when it is hidden.
      * @see setAutoDelete
+     * @deprecated since 5.79, use KNotification
      */
+    KNOTIFICATIONS_DEPRECATED_VERSION(5, 79, "Use KNotification")
     static KPassivePopup *message(int popupStyle, const QString &text, QSystemTrayIcon *parent);
 
     /**
@@ -262,7 +286,9 @@ public:
      * beside the icon of the specified QSystemTrayIcon.
      * Note that the returned object is destroyed when it is hidden.
      * @see setAutoDelete
+     * @deprecated since 5.79, use KNotification
      */
+    KNOTIFICATIONS_DEPRECATED_VERSION(5, 79, "Use KNotification")
     static KPassivePopup *message(int popupStyle, const QString &caption, const QString &text,
                                   QSystemTrayIcon *parent);
 
@@ -271,7 +297,9 @@ public:
      * beside the icon of the specified widget.
      * Note that the returned object is destroyed when it is hidden.
      * @see setAutoDelete
+     * @deprecated since 5.79, use KNotification
      */
+    KNOTIFICATIONS_DEPRECATED_VERSION(5, 79, "Use KNotification")
     static KPassivePopup *message(int popupStyle, const QString &caption, const QString &text,
                                   QWidget *parent, const QPoint &p = QPoint());
 
@@ -280,7 +308,9 @@ public:
      * message beside the icon of the specified widget.
      * Note that the returned object is destroyed when it is hidden.
      * @see setAutoDelete
+     * @deprecated since 5.79, use KNotification
      */
+    KNOTIFICATIONS_DEPRECATED_VERSION(5, 79, "Use KNotification")
     static KPassivePopup *message(int popupStyle, const QString &caption, const QString &text,
                                   const QPixmap &icon, QWidget *parent, int timeout = -1,
                                   const QPoint &p = QPoint());
@@ -290,7 +320,9 @@ public:
      * message beside the icon of the specified QSystemTrayIcon.
      * Note that the returned object is destroyed when it is hidden.
      * @see setAutoDelete
+     * @deprecated since 5.79, use KNotification
      */
+    KNOTIFICATIONS_DEPRECATED_VERSION(5, 79, "Use KNotification")
     static KPassivePopup *message(int popupStyle, const QString &caption, const QString &text,
                                   const QPixmap &icon, QSystemTrayIcon *parent, int timeout = -1);
 
@@ -299,7 +331,9 @@ public:
      * message beside the icon of the specified window.
      * Note that the returned object is destroyed when it is hidden.
      * @see setAutoDelete
+     * @deprecated since 5.79, use KNotification
      */
+    KNOTIFICATIONS_DEPRECATED_VERSION(5, 79, "Use KNotification")
     static KPassivePopup *message(int popupStyle, const QString &caption, const QString &text,
                                   const QPixmap &icon, WId parent, int timeout = -1,
                                   const QPoint &p = QPoint());
@@ -390,6 +424,8 @@ private:
     class Private;
     Private *const d;
 };
+
+#endif
 
 #endif // KPASSIVEPOPUP_H
 

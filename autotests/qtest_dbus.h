@@ -8,7 +8,8 @@
 #ifndef KNOTIFICATIONS_QTEST_DBUS_H
 #define KNOTIFICATIONS_QTEST_DBUS_H
 
-#include <QtTest>
+#include <QTest>
+#include <QProcess>
 #include <stdlib.h>
 
 #define QTEST_GUILESS_MAIN_SYSTEM_DBUS(TestObject) \

@@ -20,7 +20,11 @@ public:
     Q_INVOKABLE void sendNotification(const QString &title, const QString &text)
     {
         KNotification *notification = new KNotification(QStringLiteral("notification"));
+#ifndef Q_OS_ANDROID
         notification->setComponentName(QStringLiteral("plasma_workspace"));
+#else
+        notification->setComponentName(QStringLiteral("android_defaults"));
+#endif
         notification->setTitle(title);
         notification->setText(text);
 
@@ -30,6 +34,9 @@ public:
 
 #include "notificationtester.moc"
 
+#ifdef Q_OS_ANDROID
+Q_DECL_EXPORT
+#endif
 int main(int argc, char** argv)
 {
     QGuiApplication app(argc, argv);

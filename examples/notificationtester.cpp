@@ -9,6 +9,16 @@
 #include <QQmlApplicationEngine>
 
 #include <KNotification>
+#include <KNotificationReplyAction>
+
+static QString defaultComponentName()
+{
+#if defined(Q_OS_ANDROID)
+    return QStringLiteral("android_defaults");
+#else
+    return QStringLiteral("plasma_workspace");
+#endif
+}
 
 class NotificationTester : public QObject
 {
@@ -20,14 +30,25 @@ public:
     Q_INVOKABLE void sendNotification(const QString &title, const QString &text)
     {
         KNotification *notification = new KNotification(QStringLiteral("notification"));
-#ifndef Q_OS_ANDROID
-        notification->setComponentName(QStringLiteral("plasma_workspace"));
-#else
-        notification->setComponentName(QStringLiteral("android_defaults"));
-#endif
+        notification->setComponentName(defaultComponentName());
         notification->setTitle(title);
         notification->setText(text);
 
+        notification->sendEvent();
+    }
+
+    Q_INVOKABLE void sendInlineReplyNotification(const QString &title, const QString &text)
+    {
+        auto notification = new KNotification(QStringLiteral("notification"));
+        notification->setComponentName(defaultComponentName());
+        notification->setTitle(title);
+        notification->setText(text);
+        std::unique_ptr<KNotificationReplyAction> replyAction(new KNotificationReplyAction(QStringLiteral("Reply")));
+        replyAction->setPlaceholderText(QStringLiteral("Reply to annoying chat group..."));
+        QObject::connect(replyAction.get(), &KNotificationReplyAction::replied, [](const QString &text) {
+            qInfo() << "received reply:" << text;
+        });
+        notification->setReplyAction(std::move(replyAction));
         notification->sendEvent();
     }
 };

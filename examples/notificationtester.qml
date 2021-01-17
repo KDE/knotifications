@@ -43,5 +43,9 @@ Window {
             text: "Send"
             onClicked: Tester.sendNotification(titleField.text, textField.text)
         }
+        Button {
+            text: "Inline Reply"
+            onClicked: Tester.sendInlineReplyNotification(titleField.text, textField.text)
+        }
     }
 }

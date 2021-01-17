@@ -29,6 +29,7 @@ public:
     // interface from Java
     void notificationFinished(int id);
     void notificationActionInvoked(int id, int action);
+    void notificationInlineReply(int id, const QString &text);
 
 private:
     void notifyDeferred(KNotification *notification);

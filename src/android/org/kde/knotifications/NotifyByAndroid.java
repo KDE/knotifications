@@ -10,6 +10,7 @@ import android.app.Activity;
 import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
+import android.app.RemoteInput;
 import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -17,6 +18,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.drawable.Icon;
 import android.os.Build;
+import android.os.Bundle;
 import android.text.Html;
 import android.util.Log;
 import java.util.HashMap;
@@ -30,12 +32,15 @@ public class NotifyByAndroid extends BroadcastReceiver
     private static final String NOTIFICATION_ACTION = ".org.kde.knotifications.NOTIFICATION_ACTION";
     private static final String NOTIFICATION_DELETED = ".org.kde.knotifications.NOTIFICATION_DELETED";
     private static final String NOTIFICATION_OPENED = ".org.kde.knotifications.NOTIFICATION_OPENED";
+    private static final String NOTIFICATION_REPLIED = ".org.kde.knotifications.NOTIFICATION_REPLIED";
     // the id of the notification triggering an intent
     private static final String NOTIFICATION_ID_EXTRA = "org.kde.knotifications.NOTIFICATION_ID";
     // the id of the action that was triggered for a notification
     private static final String NOTIFICATION_ACTION_ID_EXTRA = "org.kde.knotifications.NOTIFICATION_ACTION_ID";
     // the group a notification belongs too
     private static final String NOTIFICATION_GROUP_EXTRA = "org.kde.knotifications.NOTIFICATION_GROUP";
+    // RemoteInput value key
+    private static final String REMOTE_INPUT_KEY = "REPLY";
 
     // notification id offset for group summary notifications
     // we need this to stay out of the regular notification's id space (which comes from the C++ side)
@@ -63,6 +68,7 @@ public class NotifyByAndroid extends BroadcastReceiver
         filter.addAction(m_ctx.getPackageName() + NOTIFICATION_ACTION);
         filter.addAction(m_ctx.getPackageName() + NOTIFICATION_DELETED);
         filter.addAction(m_ctx.getPackageName() + NOTIFICATION_OPENED);
+        filter.addAction(m_ctx.getPackageName() + NOTIFICATION_REPLIED);
         m_ctx.registerReceiver(this, filter);
     }
 
@@ -177,6 +183,22 @@ public class NotifyByAndroid extends BroadcastReceiver
             ++actionId;
         }
 
+        // inline reply actions
+        if (notification.inlineReplyLabel != null) {
+            Intent replyIntent = new Intent(m_ctx.getPackageName() + NOTIFICATION_REPLIED);
+            replyIntent.putExtra(NOTIFICATION_ID_EXTRA, notification.id);
+            PendingIntent pendingReplyIntent = PendingIntent.getBroadcast(m_ctx, m_uniquePendingIntentId++, replyIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+
+            RemoteInput input = new RemoteInput.Builder(REMOTE_INPUT_KEY)
+                .setAllowFreeFormInput(true)
+                .setLabel(notification.inlineReplyPlaceholder)
+                .build();
+            Notification.Action replyAction = new Notification.Action.Builder(0, notification.inlineReplyLabel, pendingReplyIntent)
+                .addRemoteInput(input)
+                .build();
+            builder.addAction(replyAction);
+        }
+
         // notfication about user closing the notification
         Intent deleteIntent = new Intent(m_ctx.getPackageName() + NOTIFICATION_DELETED);
         deleteIntent.putExtra(NOTIFICATION_ID_EXTRA, notification.id);
@@ -244,11 +266,18 @@ public class NotifyByAndroid extends BroadcastReceiver
             newintent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             m_ctx.startActivity(newintent);
             notificationActionInvoked(id, 0);
+        } else if (action.equals(m_ctx.getPackageName() + NOTIFICATION_REPLIED)) {
+            Bundle remoteInput = RemoteInput.getResultsFromIntent(intent);
+            if (remoteInput != null) {
+                String s = (String) remoteInput.getCharSequence(REMOTE_INPUT_KEY);
+                notificationInlineReply(id, s);
+            }
         }
     }
 
     public native void notificationFinished(int notificationId);
     public native void notificationActionInvoked(int notificationId, int action);
+    public native void notificationInlineReply(int notificationId, String text);
 
     private void createGroupNotification(KNotification notification)
     {

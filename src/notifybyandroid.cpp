@@ -6,6 +6,7 @@
 
 #include "notifybyandroid.h"
 #include "knotification.h"
+#include "knotificationreplyaction.h"
 #include "knotifyconfig.h"
 #include "debug_p.h"
 
@@ -35,9 +36,20 @@ static void notificationActionInvoked(JNIEnv *env, jobject that, jint id, jint a
     }
 }
 
+static void notificationInlineReply(JNIEnv *env, jobject that, jint id, jstring text)
+{
+    Q_UNUSED(that);
+    if (s_instance) {
+        const char *str = env->GetStringUTFChars(text, nullptr);
+        s_instance->notificationInlineReply(id, QString::fromUtf8(str));
+        env->ReleaseStringUTFChars(text, str);
+    }
+}
+
 static const JNINativeMethod methods[] = {
     {"notificationFinished", "(I)V", (void*)notificationFinished},
-    {"notificationActionInvoked", "(II)V", (void*)notificationActionInvoked}
+    {"notificationActionInvoked", "(II)V", (void*)notificationActionInvoked},
+    {"notificationInlineReply", "(ILjava/lang/String;)V", (void*)notificationInlineReply},
 };
 
 KNOTIFICATIONS_EXPORT jint JNICALL JNI_OnLoad(JavaVM *vm, void*)
@@ -129,6 +141,11 @@ QAndroidJniObject NotifyByAndroid::createAndroidNotification(KNotification *noti
         n.callMethod<void>("addAction", "(Ljava/lang/String;)V", QAndroidJniObject::fromString(action).object<jstring>());
     }
 
+    if (notification->replyAction()) {
+        n.setField("inlineReplyLabel", QAndroidJniObject::fromString(notification->replyAction()->label()).object<jstring>());
+        n.setField("inlineReplyPlaceholder", QAndroidJniObject::fromString(notification->replyAction()->placeholderText()).object<jstring>());
+    }
+
     return n;
 }
 
@@ -170,4 +187,10 @@ void NotifyByAndroid::notificationActionInvoked(int id, int action)
 {
     qCDebug(LOG_KNOTIFICATIONS) << id << action;
     Q_EMIT actionInvoked(id, action);
+}
+
+void NotifyByAndroid::notificationInlineReply(int id, const QString& text)
+{
+    qCDebug(LOG_KNOTIFICATIONS) << id << text;
+    Q_EMIT replied(id, text);
 }

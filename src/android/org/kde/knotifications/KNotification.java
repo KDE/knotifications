@@ -30,6 +30,9 @@ public class KNotification
     public int urgency;
     public String visibility;
 
+    public String inlineReplyLabel;
+    public String inlineReplyPlaceholder;
+
     // see knotification.h
     public static final int LowUrgency = 10;
     public static final int NormalUrgency = 50;

@@ -162,7 +162,7 @@ void NotifyByPopup::onNotificationActionInvoked(uint notificationId, const QStri
     KNotification *n = *iter;
     if (n) {
         if (actionKey == QLatin1String("default") && !n->defaultAction().isEmpty()) {
-            emit actionInvoked(n->id(), 0);
+            Q_EMIT actionInvoked(n->id(), 0);
         } else {
             bool ok;
             const int actionIndex = actionKey.toInt(&ok);
@@ -170,7 +170,7 @@ void NotifyByPopup::onNotificationActionInvoked(uint notificationId, const QStri
             if (!ok || actionIndex < 1 || actionIndex > n->actions().size()) {
                 qCWarning(LOG_KNOTIFICATIONS) << "Ignored invalid action key" << actionKey;
             } else {
-                emit actionInvoked(n->id(), actionIndex);
+                Q_EMIT actionInvoked(n->id(), actionIndex);
             }
         }
     } else {
@@ -188,7 +188,7 @@ void NotifyByPopup::onNotificationClosed(uint dbus_id, uint reason)
     d->notifications.remove(dbus_id);
 
     if (n) {
-        emit finished(n);
+        Q_EMIT finished(n);
         // The popup bubble is the only user facing part of a notification,
         // if the user closes the popup, it means he wants to get rid
         // of the notification completely, including playing sound etc

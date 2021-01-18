@@ -27,11 +27,11 @@ void KNotificationPlugin::update(KNotification *notification, KNotifyConfig *con
 
 void KNotificationPlugin::close(KNotification *notification)
 {
-    emit finished(notification);
+    Q_EMIT finished(notification);
 }
 
 void KNotificationPlugin::finish(KNotification *notification)
 {
-    emit finished(notification);
+    Q_EMIT finished(notification);
 }
 

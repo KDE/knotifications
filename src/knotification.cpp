@@ -297,25 +297,25 @@ void KNotification::activate(unsigned int action)
     switch (action) {
     case 0:
 #if KNOTIFICATIONS_BUILD_DEPRECATED_SINCE(5, 76)
-        emit activated();
+        Q_EMIT activated();
 #endif
-        emit defaultActivated();
+        Q_EMIT defaultActivated();
         break;
     case 1:
-        emit action1Activated();
+        Q_EMIT action1Activated();
         break;
     case 2:
-        emit action2Activated();
+        Q_EMIT action2Activated();
         break;
     case 3:
-        emit action3Activated();
+        Q_EMIT action3Activated();
         break;
     }
 
     // emitting activated() makes the Manager close all the active plugins
     // which will deref() the KNotification object, which will result
     // in closing the notification
-    emit activated(action);
+    Q_EMIT activated(action);
 }
 
 void KNotification::close()
@@ -326,7 +326,7 @@ void KNotification::close()
 
     if (d->id == -1) {
         d->id = -2;
-        emit closed();
+        Q_EMIT closed();
         deleteLater();
     }
 }

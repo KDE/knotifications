@@ -169,5 +169,5 @@ void NotifyByAndroid::notificationFinished(int id)
 void NotifyByAndroid::notificationActionInvoked(int id, int action)
 {
     qCDebug(LOG_KNOTIFICATIONS) << id << action;
-    emit actionInvoked(id, action);
+    Q_EMIT actionInvoked(id, action);
 }

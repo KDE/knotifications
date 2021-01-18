@@ -71,7 +71,7 @@ private:
             if (!originNotification || originNotification->defaultAction().isNull()) {
                 break;
             }
-            emit originNotification->activate();
+            Q_EMIT originNotification->activate();
         }
         break;
     case NSUserNotificationActivationTypeActionButtonClicked: {
@@ -80,7 +80,7 @@ private:
             if (!originNotification) {
                 break;
             }
-            emit originNotification->activate(1);
+            Q_EMIT originNotification->activate(1);
         }
         break;
     case NSUserNotificationActivationTypeAdditionalActionClicked: {
@@ -89,7 +89,7 @@ private:
             if (!originNotification) {
                 break;
             }
-            emit originNotification->activate([notification.additionalActivationAction.identifier intValue] + 1);
+            Q_EMIT originNotification->activate([notification.additionalActivationAction.identifier intValue] + 1);
         }
         break;
     default:

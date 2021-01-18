@@ -108,7 +108,7 @@ NotifyBySnore::NotifyBySnore(QObject* parent) :
                 const QString responseButton = notificationResponseMap[QStringLiteral("button")].toString();
                 QStringList s = m_notifications.value(responseNotificationId)->actions();
                 int actionNum = s.indexOf(responseButton) + 1;       // QStringList starts with index 0 but not actions
-                emit actionInvoked(responseNotificationId, actionNum);
+                Q_EMIT actionInvoked(responseNotificationId, actionNum);
                 break;
             }
 

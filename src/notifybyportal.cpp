@@ -166,7 +166,7 @@ void NotifyByPortal::onServiceOwnerChanged(const QString &serviceName, const QSt
     // close all notifications we currently hold reference to
     for (KNotification *n : qAsConst(d->portalNotifications)) {
         if (n) {
-            emit finished(n);
+            Q_EMIT finished(n);
         }
     }
 
@@ -202,7 +202,7 @@ void NotifyByPortal::onPortalNotificationActionInvoked(const QString &id, const 
 
     KNotification *n = *iter;
     if (n) {
-        emit actionInvoked(n->id(), action.toUInt());
+        Q_EMIT actionInvoked(n->id(), action.toUInt());
     } else {
         d->portalNotifications.erase(iter);
     }

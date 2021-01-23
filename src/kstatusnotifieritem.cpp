@@ -473,6 +473,7 @@ void KStatusNotifierItem::setContextMenu(QMenu *menu)
             d->menuObjectPath = QStringLiteral("/MenuBar");
 #if HAVE_DBUSMENUQT
             new DBusMenuExporter(d->menuObjectPath, menu, d->statusNotifierItemDBus->dbusConnection());
+            Q_EMIT d->statusNotifierItemDBus->NewMenu();
 #endif
         }
 

@@ -198,6 +198,11 @@ Q_SIGNALS:
     void NewAttentionIcon();
 
     /**
+     * Inform the systemtray that a new context menu has been set.
+     */
+    void NewMenu();
+
+    /**
      * Inform the systemtray that something in the tooltip has been changed
      */
     void NewToolTip();

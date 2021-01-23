@@ -18,7 +18,11 @@
 #include <QUrl>
 #include <QVariant>
 
+#include <memory>
+
 class QWidget;
+
+class KNotificationReplyAction;
 
 /**
  * @class KNotification knotification.h KNotification
@@ -327,6 +331,34 @@ public:
      */
     //KF6: Rename to "setAdditionalActions"?
     void setActions(const QStringList &actions);
+
+    /**
+     * @return the inline reply action.
+     * @since 5.81
+     */
+    KNotificationReplyAction *replyAction() const;
+
+    /**
+    * @brief Add an inline reply action to the notification.
+    *
+    * On supported platforms this lets the user type a reply to a notification,
+    * such as replying to a chat message, from the notification popup, for example:
+    *
+    * @code{.cpp}
+    * KNotification *notification = new KNotification(QStringLiteral("notification"));
+    * ...
+    * auto replyAction = std::make_unique<KNotificationReplyAction>(i18nc("@action:button", "Reply"));
+    * replyAction->setPlaceholderText(i18nc("@info:placeholder", "Reply to Dave..."));
+    * QObject::connect(replyAction.get(), &KNotificationReplyAction::replied, [](const QString &text) {
+    *     qDebug() << "you replied with" << text;
+    * });
+    * notification->setReplyAction(std::move(replyAction));
+    * @endcode
+    *
+    * @param replyAction the reply action to set
+    * @since 5.81
+    */
+    void setReplyAction(std::unique_ptr<KNotificationReplyAction> replyAction);
 
     /**
      * @return the list of contexts, see KNotification::Context

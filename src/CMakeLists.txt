@@ -10,6 +10,7 @@ ecm_create_qm_loader(knotifications_QM_LOADER knotifications5_qt)
 set(knotifications_SRCS
 
   knotification.cpp
+  knotificationreplyaction.cpp
   knotificationmanager.cpp
   kpassivepopup.cpp
 
@@ -173,6 +174,7 @@ ecm_generate_headers(KNotifications_HEADERS
   KPassivePopup
   KStatusNotifierItem
   KNotificationJobUiDelegate
+  KNotificationReplyAction
   KNotificationRestrictions
   KNotificationPlugin
   KNotifyConfig

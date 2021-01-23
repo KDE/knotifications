@@ -54,6 +54,7 @@ public:
 private Q_SLOTS:
     void notificationClosed();
     void notificationActivated(int id,  int action);
+    void notificationReplied(int id, const QString &text);
     void notifyPluginFinished(KNotification *notification);
     void reparseConfiguration(const QString &app);
 

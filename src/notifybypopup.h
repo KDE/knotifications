@@ -35,6 +35,7 @@ private Q_SLOTS:
     void onNotificationActionInvoked(uint notificationId, const QString &actionKey);
     // slot which gets called when DBus signals that some notification was closed
     void onNotificationClosed(uint, uint);
+    void onNotificationReplied(uint notificationId, const QString &text);
 
 private:
     // TODO KF6, replace current public notify/update

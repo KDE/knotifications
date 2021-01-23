@@ -24,6 +24,7 @@
 
 #include "knotifyconfig.h"
 #include "knotificationplugin.h"
+#include "knotificationreplyaction.h"
 
 #include "notifybylogfile.h"
 #include "notifybytaskbar.h"
@@ -117,6 +118,8 @@ KNotificationPlugin *KNotificationManager::pluginForAction(const QString &action
                 this, &KNotificationManager::notifyPluginFinished);
         connect(plugin, &KNotificationPlugin::actionInvoked,
                 this, &KNotificationManager::notificationActivated);
+        connect(plugin, &KNotificationPlugin::replied,
+                this, &KNotificationManager::notificationReplied);
     };
 
     // Load plugin.
@@ -230,6 +233,22 @@ void KNotificationManager::notificationActivated(int id, int action)
         KNotification *n = d->notifications[id];
         n->activate(action);
         close(id);
+    }
+}
+
+void KNotificationManager::notificationReplied(int id, const QString &text)
+{
+    if (KNotification *n = d->notifications.value(id)) {
+        if (auto *replyAction = n->replyAction()) {
+            // cannot really send out a "activate inline-reply" signal from plugin to manager
+            // so we instead assume empty reply is not supported and means normal invocation
+            if (text.isEmpty() && replyAction->fallbackBehavior() == KNotificationReplyAction::FallbackBehavior::UseRegularAction) {
+                Q_EMIT replyAction->activated();
+            } else {
+                Q_EMIT replyAction->replied(text);
+            }
+            close(id);
+        }
     }
 }
 

@@ -98,6 +98,8 @@ Q_SIGNALS:
         */
     void actionInvoked(int id , int action);
 
+    void replied(int id, const QString &text);
+
 private:
     KNotificationPluginPrivate *const d;
 

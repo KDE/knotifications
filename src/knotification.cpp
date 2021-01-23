@@ -17,6 +17,7 @@
 
 #include "knotification.h"
 #include "knotificationmanager_p.h"
+#include "knotificationreplyaction.h"
 
 #include <QCoreApplication>
 
@@ -39,6 +40,7 @@ struct Q_DECL_HIDDEN KNotification::Private {
     QString iconName;
     QString defaultAction;
     QStringList actions;
+    std::unique_ptr<KNotificationReplyAction> replyAction;
     QPixmap pixmap;
     ContextList contexts;
     NotificationFlags flags;
@@ -198,6 +200,24 @@ void KNotification::setActions(const QStringList &as)
 
     d->needUpdate = true;
     d->actions = as;
+    if (d->id >= 0) {
+        d->updateTimer.start();
+    }
+}
+
+KNotificationReplyAction *KNotification::replyAction() const
+{
+    return d->replyAction.get();
+}
+
+void KNotification::setReplyAction(std::unique_ptr<KNotificationReplyAction> replyAction)
+{
+    if (replyAction == d->replyAction) {
+        return;
+    }
+
+    d->needUpdate = true;
+    d->replyAction = std::move(replyAction);
     if (d->id >= 0) {
         d->updateTimer.start();
     }

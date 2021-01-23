@@ -8,9 +8,11 @@
 
 #include "notifybypopup.h"
 
+#include "debug_p.h"
 #include "imageconverter.h"
 #include "knotification.h"
-#include "debug_p.h"
+#include "knotificationreplyaction.h"
+#include "notifications_interface.h"
 
 #include <QBuffer>
 #include <QGuiApplication>
@@ -29,6 +31,10 @@ NotifyByPopup::NotifyByPopup(QObject *parent)
     m_dbusServiceCapCacheDirty = true;
 
     connect(&m_dbusInterface, &org::freedesktop::Notifications::ActionInvoked, this, &NotifyByPopup::onNotificationActionInvoked);
+
+    // TODO can we check if this actually worked?
+    // probably not as this just does a DBus filter which will work but the signal might still get caught in apparmor :/
+    connect(&m_dbusInterface, &org::freedesktop::Notifications::NotificationReplied, this, &NotifyByPopup::onNotificationReplied);
 
     connect(&m_dbusInterface, &org::freedesktop::Notifications::NotificationClosed, this, &NotifyByPopup::onNotificationClosed);
 }
@@ -94,6 +100,8 @@ void NotifyByPopup::onNotificationActionInvoked(uint notificationId, const QStri
     if (n) {
         if (actionKey == QLatin1String("default") && !n->defaultAction().isEmpty()) {
             Q_EMIT actionInvoked(n->id(), 0);
+        } else if (actionKey == QLatin1String("inline-reply") && n->replyAction()) {
+            Q_EMIT replied(n->id(), QString());
         } else {
             bool ok;
             const int actionIndex = actionKey.toInt(&ok);
@@ -128,6 +136,23 @@ void NotifyByPopup::onNotificationClosed(uint dbus_id, uint reason)
         if (reason == 2) {
             n->close();
         }
+    }
+}
+
+void NotifyByPopup::onNotificationReplied(uint notificationId, const QString &text)
+{
+    auto iter = m_notifications.find(notificationId);
+    if (iter == m_notifications.end()) {
+        return;
+    }
+
+    KNotification *n = *iter;
+    if (n) {
+        if (n->replyAction()) {
+            Q_EMIT replied(n->id(), text);
+        }
+    } else {
+        m_notifications.erase(iter);
     }
 }
 
@@ -172,6 +197,8 @@ bool NotifyByPopup::sendNotificationToServer(KNotification *notification, const 
         text = stripRichText(text);
     }
 
+    QVariantMap hintsMap;
+
     // freedesktop.org spec defines action list to be list like
     // (act_id1, action1, act_id2, action2, ...)
     //
@@ -191,9 +218,31 @@ bool NotifyByPopup::sendNotificationToServer(KNotification *notification, const 
             actionList.append(QString::number(actId));
             actionList.append(actionName);
         }
+
+        if (auto *replyAction = notification->replyAction()) {
+            const bool supportsInlineReply = m_popupServerCapabilities.contains(QLatin1String("inline-reply"));
+
+            if (supportsInlineReply
+                    || replyAction->fallbackBehavior() == KNotificationReplyAction::FallbackBehavior::UseRegularAction) {
+
+                actionList.append(QStringLiteral("inline-reply"));
+                actionList.append(replyAction->label());
+
+                if (supportsInlineReply) {
+                    if (!replyAction->placeholderText().isEmpty()) {
+                        hintsMap.insert(QStringLiteral("x-kde-reply-placeholder-text"), replyAction->placeholderText());
+                    }
+                    if (!replyAction->submitButtonText().isEmpty()) {
+                        hintsMap.insert(QStringLiteral("x-kde-reply-submit-button-text"), replyAction->submitButtonText());
+                    }
+                    if (replyAction->submitButtonIconName().isEmpty()) {
+                        hintsMap.insert(QStringLiteral("x-kde-reply-submit-button-icon-name"), replyAction->submitButtonIconName());
+                    }
+                }
+            }
+        }
     }
 
-    QVariantMap hintsMap;
     // Add the application name to the hints.
     // According to freedesktop.org spec, the app_name is supposed to be the application's "pretty name"
     // but in some places it's handy to know the application name itself

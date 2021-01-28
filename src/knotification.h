@@ -575,8 +575,6 @@ public:
      * Make sure you use one of the CloseOnTimeOut or CloseWhenWidgetActivated, if not,
      * you have to close yourself the notification.
      *
-     * @note the text is shown in a QLabel, you should escape HTML, if needed.
-     *
      * @param eventId is the name of the event
      * @param title is title of the notification to show in the popup.
      * @param text is the text of the notification to show in the popup.

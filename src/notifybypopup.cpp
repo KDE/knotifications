@@ -238,7 +238,6 @@ bool NotifyByPopupPrivate::sendNotificationToServer(KNotification *notification,
     QString text = notification->text();
 
     if (!popupServerCapabilities.contains(QLatin1String("body-markup"))) {
-        title = q->stripRichText(title);
         text = q->stripRichText(text);
     }
 

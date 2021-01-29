@@ -146,7 +146,7 @@ void NotifyBySnore::notifyDeferred(KNotification* notification)
 {
     m_notifications.insert(notification->id(), notification);
 
-    const QString notificationTitle = ((!notification->title().isEmpty()) ? stripRichText(notification->title())
+    const QString notificationTitle = ((!notification->title().isEmpty()) ? notification->title()
                                                                           : qApp->applicationDisplayName());
     QStringList snoretoastArgsList {
         QStringLiteral("-id"), QString::number(notification->id()),

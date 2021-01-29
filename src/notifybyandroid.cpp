@@ -94,7 +94,7 @@ QAndroidJniObject NotifyByAndroid::createAndroidNotification(KNotification *noti
     n.setField("id", notification->id());
     n.setField("text", QAndroidJniObject::fromString(stripRichText(notification->text())).object<jstring>());
     n.setField("richText", QAndroidJniObject::fromString(notification->text()).object<jstring>());
-    n.setField("title", QAndroidJniObject::fromString(stripRichText(notification->title())).object<jstring>());
+    n.setField("title", QAndroidJniObject::fromString(notification->title()).object<jstring>());
     n.setField("urgency", (jint)(notification->urgency() == KNotification::DefaultUrgency ? KNotification::HighUrgency : notification->urgency()));
     n.setField("visibility", QAndroidJniObject::fromString(notification->hints().value(QLatin1String("x-kde-visibility")).toString().toLower()).object<jstring>());
 

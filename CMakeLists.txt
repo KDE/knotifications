@@ -1,8 +1,8 @@
 cmake_minimum_required(VERSION 3.5)
 
-set(KF5_VERSION "5.79.0") # handled by release scripts
-set(KF5_DEP_VERSION "5.79.0") # handled by release scripts
-project(KNotifications VERSION ${KF5_VERSION})
+set(KF_VERSION "5.79.0") # handled by release scripts
+set(KF_DEP_VERSION "5.79.0") # handled by release scripts
+project(KNotifications VERSION ${KF_VERSION})
 
 # ECM setup
 include(FeatureSummary)
@@ -83,12 +83,12 @@ endif()
 
 set(HAVE_KWINDOWSYSTEM FALSE)
 if(NOT ANDROID)
-    find_package(KF5WindowSystem ${KF5_DEP_VERSION} REQUIRED)
+    find_package(KF5WindowSystem ${KF_DEP_VERSION} REQUIRED)
     set(HAVE_KWINDOWSYSTEM TRUE)
 endif()
 
-find_package(KF5Config ${KF5_DEP_VERSION} REQUIRED)
-find_package(KF5CoreAddons ${KF5_DEP_VERSION} REQUIRED)
+find_package(KF5Config ${KF_DEP_VERSION} REQUIRED)
+find_package(KF5CoreAddons ${KF_DEP_VERSION} REQUIRED)
 
 if (NOT ANDROID AND NOT WIN32 OR (WIN32 AND NOT WITH_SNORETOAST))
     find_package(Qt5 ${REQUIRED_QT_VERSION} CONFIG REQUIRED DBus)

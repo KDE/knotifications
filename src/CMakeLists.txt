@@ -101,7 +101,7 @@ ecm_generate_export_header(KF5Notifications
     EXPORT_FILE_NAME knotifications_export.h
     BASE_NAME KNotifications
     GROUP_BASE_NAME KF
-    VERSION ${KF5_VERSION}
+    VERSION ${KF_VERSION}
     DEPRECATED_BASE_VERSION 0
     DEPRECATION_VERSIONS 5.67 5.75 5.76 5.79
     EXCLUDE_DEPRECATED_BEFORE_AND_AT ${EXCLUDE_DEPRECATED_BEFORE_AND_AT}
@@ -199,7 +199,7 @@ if(BUILD_QCH)
         KF5Notifications_QCH
         NAME KNotifications
         BASE_NAME KF5Notifications
-        VERSION ${KF5_VERSION}
+        VERSION ${KF_VERSION}
         ORG_DOMAIN org.kde
         SOURCES # using only public headers, to cover only public API
             ${KNotifications_HEADERS}

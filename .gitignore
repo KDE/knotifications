@@ -21,3 +21,4 @@ CMakeLists.txt.user*
 *.unc-backup*
 .vscode
 .cmake/
+/.clang-format

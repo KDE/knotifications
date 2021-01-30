@@ -9,13 +9,17 @@ macro(knotifications_executable_tests)
 endmacro()
 
 if (TARGET Qt5::DBus)
+    if(NOT EXCLUDE_DEPRECATED_BEFORE_AND_AT STREQUAL "CURRENT" AND
+       EXCLUDE_DEPRECATED_BEFORE_AND_AT VERSION_LESS 5.79.0)
+        knotifications_executable_tests(
+            kpassivepopuptest
+        )
+        target_link_libraries(kpassivepopuptest KF5::WindowSystem)
+    endif()
     knotifications_executable_tests(
         knotificationrestrictionstest
-        kpassivepopuptest
         unitylaunchertest
         kstatusnotifieritemtest
         knotificationdbustest
     )
-
-    target_link_libraries(kpassivepopuptest KF5::WindowSystem)
 endif()

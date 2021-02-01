@@ -13,7 +13,6 @@
 
 class KNotification;
 class QPixmap;
-class QStringList;
 class KNotificationPlugin;
 
 /**

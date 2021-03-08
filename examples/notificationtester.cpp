@@ -4,6 +4,7 @@
    SPDX-License-Identifier: LGPL-2.1-only OR LGPL-3.0-only OR LicenseRef-KDE-Accepted-LGPL
  */
 
+#include <QDebug>
 #include <QObject>
 #include <QGuiApplication>
 #include <QQmlApplicationEngine>

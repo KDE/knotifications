@@ -4,10 +4,10 @@
     SPDX-License-Identifier: LGPL-2.0-only
 */
 
-#include <qtest.h>
+#include <QDBusConnection>
 #include <QObject>
 #include <QStandardPaths>
-#include <QDBusConnection>
+#include <qtest.h>
 
 #include "../src/knotification.h"
 #include "fake_notifications_server.h"
@@ -95,7 +95,7 @@ void KNotificationTest::gettersTest()
     QCOMPARE(n->appName(), QStringLiteral("testtest"));
 
     QSignalSpy nClosedSpy(n, SIGNAL(closed()));
-    QSignalSpy nDestroyedSpy(n, SIGNAL(destroyed(QObject*)));
+    QSignalSpy nDestroyedSpy(n, SIGNAL(destroyed(QObject *)));
 
     // Calling ref and deref simulates a Notification plugin
     // starting and ending an action, after the action has
@@ -150,7 +150,7 @@ void KNotificationTest::serverCallTest()
     const QString testText = QStringLiteral("Test");
 
     QSignalSpy serverNewSpy(m_server, SIGNAL(newNotification()));
-    QSignalSpy serverClosedSpy(m_server, SIGNAL(NotificationClosed(uint,uint)));
+    QSignalSpy serverClosedSpy(m_server, SIGNAL(NotificationClosed(uint, uint)));
 
     KNotification n(QStringLiteral("testEvent"));
     n.setText(testText);
@@ -204,7 +204,7 @@ void KNotificationTest::serverActionsTest()
     n.setActions(QStringList{QStringLiteral("a1"), QStringLiteral("a2")});
     n.sendEvent();
 
-    QSignalSpy serverClosedSpy(m_server, SIGNAL(NotificationClosed(uint,uint)));
+    QSignalSpy serverClosedSpy(m_server, SIGNAL(NotificationClosed(uint, uint)));
     QSignalSpy nClosedSpy(&n, SIGNAL(closed()));
     QSignalSpy nActivatedSpy(&n, SIGNAL(activated(uint)));
     QSignalSpy nActivated2Spy(&n, SIGNAL(action1Activated()));
@@ -231,7 +231,7 @@ void KNotificationTest::serverActionsTest()
 
 void KNotificationTest::noActionsTest()
 {
-    //event doesn't exist in config, meaning it has no actions
+    // event doesn't exist in config, meaning it has no actions
     QPointer<KNotification> n(new KNotification(QStringLiteral("noActionsEvent")));
     QSignalSpy nClosedSpy(n, SIGNAL(closed()));
     n->sendEvent();

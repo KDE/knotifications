@@ -8,9 +8,9 @@
 #include "kstatusnotifieritemtest.h"
 
 #include "kstatusnotifieritem.h"
+#include <QApplication>
 #include <QLabel>
 #include <QMenu>
-#include <QApplication>
 
 #include <QCommandLineParser>
 
@@ -64,8 +64,14 @@ int main(int argc, char **argv)
         QCommandLineParser parser;
         parser.setApplicationDescription(QCoreApplication::translate("main", "KStatusNotifierItemtest"));
         parser.addHelpOption();
-        parser.addOption(QCommandLineOption(QStringList() << QStringLiteral("active-icon"), QCoreApplication::translate("main", "Name of active icon"), QStringLiteral("name"), QStringLiteral("konqueror")));
-        parser.addOption(QCommandLineOption(QStringList() << QStringLiteral("ksni-count"), QCoreApplication::translate("main", "How many instances of KStatusNotifierItem to create"), QStringLiteral("count"), QStringLiteral("1")));
+        parser.addOption(QCommandLineOption(QStringList() << QStringLiteral("active-icon"),
+                                            QCoreApplication::translate("main", "Name of active icon"),
+                                            QStringLiteral("name"),
+                                            QStringLiteral("konqueror")));
+        parser.addOption(QCommandLineOption(QStringList() << QStringLiteral("ksni-count"),
+                                            QCoreApplication::translate("main", "How many instances of KStatusNotifierItem to create"),
+                                            QStringLiteral("count"),
+                                            QStringLiteral("1")));
         parser.process(app);
 
         if (parser.positionalArguments().count() != 0) {
@@ -88,8 +94,8 @@ int main(int argc, char **argv)
 
         tray->setTitle(QStringLiteral("DBus System tray test"));
         tray->setIconByName(iconName);
-        //tray->setIconByPixmap(QIcon::fromTheme("konqueror"));
-        //tray->setAttentionIconByName("kmail");
+        // tray->setIconByPixmap(QIcon::fromTheme("konqueror"));
+        // tray->setAttentionIconByName("kmail");
         tray->setOverlayIconByName(QStringLiteral("emblem-important"));
         tray->setStatus(KStatusNotifierItem::Active);
 
@@ -97,12 +103,16 @@ int main(int argc, char **argv)
         tray->setToolTipTitle(QStringLiteral("DBus System tray test"));
         tray->setToolTipSubTitle(QStringLiteral("This is a test of the new systemtray specification"));
 
-        tray->setToolTip(QStringLiteral("konqueror"), QStringLiteral("DBus System tray test #%1").arg(x + 1), QStringLiteral("This is a test of the new systemtray specification"));
+        tray->setToolTip(QStringLiteral("konqueror"),
+                         QStringLiteral("DBus System tray test #%1").arg(x + 1),
+                         QStringLiteral("This is a test of the new systemtray specification"));
 
-        tray->showMessage(QStringLiteral("message test"), QStringLiteral("Test of the new systemtray notifications wrapper"), QStringLiteral("konqueror"), 3000);
-        //tray->setStandardActionsEnabled(false);
+        tray->showMessage(QStringLiteral("message test"),
+                          QStringLiteral("Test of the new systemtray notifications wrapper"),
+                          QStringLiteral("konqueror"),
+                          3000);
+        // tray->setStandardActionsEnabled(false);
     }
 
     return app.exec();
 }
-

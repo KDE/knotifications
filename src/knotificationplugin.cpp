@@ -7,17 +7,15 @@
 #include "knotificationplugin.h"
 
 KNotificationPlugin::KNotificationPlugin(QObject *parent, const QVariantList &args)
-    : QObject(parent),
-      d(nullptr)
+    : QObject(parent)
+    , d(nullptr)
 {
     Q_UNUSED(args);
 }
 
-
 KNotificationPlugin::~KNotificationPlugin()
 {
 }
-
 
 void KNotificationPlugin::update(KNotification *notification, KNotifyConfig *config)
 {
@@ -34,4 +32,3 @@ void KNotificationPlugin::finish(KNotification *notification)
 {
     Q_EMIT finished(notification);
 }
-

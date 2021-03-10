@@ -7,12 +7,11 @@
 */
 
 #include "notifybytts.h"
-#include <QTextToSpeech>
-#include <KMacroExpander>
-#include "knotifyconfig.h"
-#include "knotification.h"
 #include "debug_p.h"
-
+#include "knotification.h"
+#include "knotifyconfig.h"
+#include <KMacroExpander>
+#include <QTextToSpeech>
 
 NotifyByTTS::NotifyByTTS(QObject *parent)
     : KNotificationPlugin(parent)
@@ -20,27 +19,26 @@ NotifyByTTS::NotifyByTTS(QObject *parent)
 {
 }
 
-
 NotifyByTTS::~NotifyByTTS()
 {
     delete m_speech;
 }
 
-void NotifyByTTS::notify(KNotification *notification, KNotifyConfig *config )
+void NotifyByTTS::notify(KNotification *notification, KNotifyConfig *config)
 {
     if (m_speech->state() != QTextToSpeech::BackendError) {
-        QString say = config->readEntry( QStringLiteral("TTS") );
+        QString say = config->readEntry(QStringLiteral("TTS"));
 
         if (!say.isEmpty()) {
             // Create a hash of characters to strings to expand text into the notification text.
-            QHash<QChar,QString> subst;
+            QHash<QChar, QString> subst;
             subst.insert(QLatin1Char('e'), notification->eventId());
             subst.insert(QLatin1Char('a'), notification->appName());
             subst.insert(QLatin1Char('s'), notification->text());
-            //subst.insert('w', QString::number((quintptr)config->winId));
-            //subst.insert('i', QString::number(id));
+            // subst.insert('w', QString::number((quintptr)config->winId));
+            // subst.insert('i', QString::number(id));
             subst.insert(QLatin1Char('m'), notification->text());
-            say = KMacroExpander::expandMacrosShellQuote( say, subst );
+            say = KMacroExpander::expandMacrosShellQuote(say, subst);
         }
 
         if (say.isEmpty())

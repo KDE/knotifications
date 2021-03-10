@@ -21,10 +21,13 @@ public:
     explicit NotifyBySnore(QObject *parent = nullptr);
     ~NotifyBySnore() override;
 
-    QString optionName() override { return QStringLiteral("Popup"); }
+    QString optionName() override
+    {
+        return QStringLiteral("Popup");
+    }
     void notify(KNotification *notification, KNotifyConfig *config) override;
-    void notifyDeferred(KNotification* notification);
-    void close(KNotification * notification) override;
+    void notifyDeferred(KNotification *notification);
+    void close(KNotification *notification) override;
     void update(KNotification *notification, KNotifyConfig *config) override;
 
 private:

@@ -72,9 +72,7 @@ public:
          * @note <b>not implemented yet</b>
          */
         CriticalNotifications = 8,
-        NonCriticalServices = ScreenSaver |
-                              MessagingPopups |
-                              Notifications,
+        NonCriticalServices = ScreenSaver | MessagingPopups | Notifications,
         AllServices = NonCriticalServices | CriticalNotifications,
     };
     /**
@@ -88,8 +86,7 @@ public:
      * @param control the services to be restricted
      * @param parent the parent of this object
      */
-    explicit KNotificationRestrictions(Services control = NonCriticalServices,
-                                       QObject *parent = nullptr);
+    explicit KNotificationRestrictions(Services control = NonCriticalServices, QObject *parent = nullptr);
     virtual ~KNotificationRestrictions();
 
     /**
@@ -100,9 +97,7 @@ public:
      * @param parent the parent of this object
      */
     // TODO KF6 make reason optional
-    explicit KNotificationRestrictions(Services control,
-                                       const QString &reason,
-                                       QObject *parent = nullptr);
+    explicit KNotificationRestrictions(Services control, const QString &reason, QObject *parent = nullptr);
 
 private:
     class Private;

@@ -9,14 +9,14 @@
 #include "notifybyaudio_canberra.h"
 #include "debug_p.h"
 
-#include <QGuiApplication>
 #include <QFile>
 #include <QFileInfo>
+#include <QGuiApplication>
 #include <QIcon>
 #include <QString>
 
-#include "knotifyconfig.h"
 #include "knotification.h"
+#include "knotifyconfig.h"
 
 #include <canberra.h>
 
@@ -39,10 +39,13 @@ NotifyByAudio::NotifyByAudio(QObject *parent)
         desktopFileName.chop(8);
     }
     ret = ca_context_change_props(m_context,
-        CA_PROP_APPLICATION_NAME, qUtf8Printable(qApp->applicationDisplayName()),
-        CA_PROP_APPLICATION_ID, qUtf8Printable(desktopFileName),
-        CA_PROP_APPLICATION_ICON_NAME, qUtf8Printable(qApp->windowIcon().name()),
-        nullptr);
+                                  CA_PROP_APPLICATION_NAME,
+                                  qUtf8Printable(qApp->applicationDisplayName()),
+                                  CA_PROP_APPLICATION_ID,
+                                  qUtf8Printable(desktopFileName),
+                                  CA_PROP_APPLICATION_ICON_NAME,
+                                  qUtf8Printable(qApp->windowIcon().name()),
+                                  nullptr);
     if (ret != CA_SUCCESS) {
         qCWarning(LOG_KNOTIFICATIONS) << "Failed to set application properties on canberra context for audio notification:" << ca_strerror(ret);
     }
@@ -69,9 +72,7 @@ void NotifyByAudio::notify(KNotification *notification, KNotifyConfig *config)
     QUrl soundURL;
     const auto dataLocations = QStandardPaths::standardLocations(QStandardPaths::GenericDataLocation);
     for (const QString &dataLocation : dataLocations) {
-        soundURL = QUrl::fromUserInput(soundFilename,
-                                       dataLocation + QStringLiteral("/sounds"),
-                                       QUrl::AssumeLocalFile);
+        soundURL = QUrl::fromUserInput(soundFilename, dataLocation + QStringLiteral("/sounds"), QUrl::AssumeLocalFile);
         if (soundURL.isLocalFile() && QFileInfo::exists(soundURL.toLocalFile())) {
             break;
         } else if (!soundURL.isLocalFile() && soundURL.isValid()) {
@@ -131,10 +132,7 @@ bool NotifyByAudio::playSound(quint32 id, const QUrl &url)
 void NotifyByAudio::ca_finish_callback(ca_context *c, uint32_t id, int error_code, void *userdata)
 {
     Q_UNUSED(c);
-    QMetaObject::invokeMethod(static_cast<NotifyByAudio*>(userdata),
-                              "finishCallback",
-                              Q_ARG(uint32_t, id),
-                              Q_ARG(int, error_code));
+    QMetaObject::invokeMethod(static_cast<NotifyByAudio *>(userdata), "finishCallback", Q_ARG(uint32_t, id), Q_ARG(int, error_code));
 }
 
 void NotifyByAudio::finishCallback(uint32_t id, int error_code)

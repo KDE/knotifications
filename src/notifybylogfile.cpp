@@ -8,12 +8,12 @@
 
 #include <QDateTime>
 #include <QFile>
+#include <QString>
 #include <QTextStream>
 #include <QUrl>
-#include <QString>
 
-#include "knotifyconfig.h"
 #include "knotification.h"
+#include "knotifyconfig.h"
 
 NotifyByLogfile::NotifyByLogfile(QObject *parent)
     : KNotificationPlugin(parent)
@@ -55,4 +55,3 @@ void NotifyByLogfile::notify(KNotification *notification, KNotifyConfig *config)
 
     finish(notification);
 }
-

@@ -5,9 +5,9 @@
 */
 
 #include "notifybytaskbar.h"
-#include "knotifyconfig.h"
-#include "knotification.h"
 #include "debug_p.h"
+#include "knotification.h"
+#include "knotifyconfig.h"
 
 #include <QApplication>
 
@@ -33,4 +33,3 @@ void NotifyByTaskbar::notify(KNotification *notification, KNotifyConfig *config)
 
     finish(notification);
 }
-

@@ -4,12 +4,11 @@
     SPDX-License-Identifier: LGPL-2.0-or-later
 */
 
-#include <QCoreApplication>
 #include <QCommandLineParser>
+#include <QCoreApplication>
 #include <QDBusConnection>
 #include <QDBusMessage>
 #include <QTimer>
-
 
 int main(int argc, char *argv[])
 {
@@ -74,4 +73,3 @@ int main(int argc, char *argv[])
 
     return app.exec();
 }
-

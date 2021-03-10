@@ -12,30 +12,30 @@
 #include <QDBusMessage>
 #include <QDBusReply>
 
-#include <config-knotifications.h>
 #include "debug_p.h"
+#include <config-knotifications.h>
 
 #if HAVE_XTEST
 #include <QTimer>
 #include <QX11Info>
 
-#include <X11/keysym.h>
 #include <X11/extensions/XTest.h>
+#include <X11/keysym.h>
 #endif // HAVE_XTEST
 
 class Q_DECL_HIDDEN KNotificationRestrictions::Private
 {
 public:
     Private(KNotificationRestrictions *qq, Services c, const QString &r)
-        : q(qq),
-          control(c)
-          , screenSaverDbusCookie(-1)
-          , reason(r)
+        : q(qq)
+        , control(c)
+        , screenSaverDbusCookie(-1)
+        , reason(r)
 #if HAVE_XTEST
-          , screensaverTimer(nullptr),
-          haveXTest(0),
-          XTestKeyCode(0),
-          isX11(QX11Info::isPlatformX11())
+        , screensaverTimer(nullptr)
+        , haveXTest(0)
+        , XTestKeyCode(0)
+        , isX11(QX11Info::isPlatformX11())
 #endif // HAVE_XTEST
     {
     }
@@ -58,17 +58,14 @@ public:
 #endif // HAVE_XTEST
 };
 
-KNotificationRestrictions::KNotificationRestrictions(Services control,
-                                                     QObject *parent)
+KNotificationRestrictions::KNotificationRestrictions(Services control, QObject *parent)
     : KNotificationRestrictions(control, QStringLiteral("no_reason_specified"), parent)
 {
 }
 
-KNotificationRestrictions::KNotificationRestrictions(Services control,
-                                                     const QString &reason,
-                                                     QObject *parent)
-    : QObject(parent),
-      d(new Private(this, control, reason))
+KNotificationRestrictions::KNotificationRestrictions(Services control, const QString &reason, QObject *parent)
+    : QObject(parent)
+    , d(new Private(this, control, reason))
 {
     if (d->control & ScreenSaver) {
         d->startScreenSaverPrevention();
@@ -103,8 +100,10 @@ void KNotificationRestrictions::Private::startScreenSaverPrevention()
 {
     qCDebug(LOG_KNOTIFICATIONS);
 
-    QDBusMessage message = QDBusMessage::createMethodCall(
-                               QStringLiteral("org.freedesktop.ScreenSaver"), QStringLiteral("/ScreenSaver"), QStringLiteral("org.freedesktop.ScreenSaver"), QStringLiteral("Inhibit"));
+    QDBusMessage message = QDBusMessage::createMethodCall(QStringLiteral("org.freedesktop.ScreenSaver"),
+                                                          QStringLiteral("/ScreenSaver"),
+                                                          QStringLiteral("org.freedesktop.ScreenSaver"),
+                                                          QStringLiteral("Inhibit"));
     message << determineProgramName();
     message << reason;
     QDBusReply<uint> reply = QDBusConnection::sessionBus().call(message);
@@ -137,8 +136,7 @@ void KNotificationRestrictions::Private::startScreenSaverPrevention()
 
     if (!screensaverTimer) {
         screensaverTimer = new QTimer(q);
-        connect(screensaverTimer, SIGNAL(timeout()),
-                q, SLOT(screensaverFakeKeyEvent()));
+        connect(screensaverTimer, SIGNAL(timeout()), q, SLOT(screensaverFakeKeyEvent()));
     }
 
     qCDebug(LOG_KNOTIFICATIONS) << "---- using XTest";
@@ -151,10 +149,11 @@ void KNotificationRestrictions::Private::startScreenSaverPrevention()
 
 void KNotificationRestrictions::Private::stopScreenSaverPrevention()
 {
-
     if (screenSaverDbusCookie != -1) {
-        QDBusMessage message = QDBusMessage::createMethodCall(
-                                   QStringLiteral("org.freedesktop.ScreenSaver"), QStringLiteral("/ScreenSaver"), QStringLiteral("org.freedesktop.ScreenSaver"), QStringLiteral("UnInhibit"));
+        QDBusMessage message = QDBusMessage::createMethodCall(QStringLiteral("org.freedesktop.ScreenSaver"),
+                                                              QStringLiteral("/ScreenSaver"),
+                                                              QStringLiteral("org.freedesktop.ScreenSaver"),
+                                                              QStringLiteral("UnInhibit"));
         message << static_cast<uint>(screenSaverDbusCookie);
         screenSaverDbusCookie = -1;
         if (QDBusConnection::sessionBus().send(message)) {

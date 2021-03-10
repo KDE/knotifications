@@ -9,8 +9,13 @@ class Test : public QObject
     Q_OBJECT
 
 public:
-    Test() : QObject() {}
-    ~Test() {}
+    Test()
+        : QObject()
+    {
+    }
+    ~Test()
+    {
+    }
 
 public Q_SLOTS:
     void showIt();
@@ -24,4 +29,3 @@ public Q_SLOTS:
 };
 
 #endif // KPASSIVEPOPUPTEST_H
-

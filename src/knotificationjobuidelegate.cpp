@@ -49,9 +49,7 @@ bool KNotificationJobUiDelegate::setJob(KJob *job)
     const bool ok = KJobUiDelegate::setJob(job);
 
     if (ok) {
-        connect(job, &KJob::description, this, [this](
-                KJob *, const QString &title, const QPair<QString, QString> &, const QPair<QString, QString> &
-        ){
+        connect(job, &KJob::description, this, [this](KJob *, const QString &title, const QPair<QString, QString> &, const QPair<QString, QString> &) {
             d->description = title;
         });
     }

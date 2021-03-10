@@ -5,8 +5,8 @@
  */
 
 #include <QDebug>
-#include <QObject>
 #include <QGuiApplication>
+#include <QObject>
 #include <QQmlApplicationEngine>
 
 #include <KNotification>
@@ -26,7 +26,9 @@ class NotificationTester : public QObject
     Q_OBJECT
 
 public:
-    explicit NotificationTester(QObject *parent = nullptr) {}
+    explicit NotificationTester(QObject *parent = nullptr)
+    {
+    }
 
     Q_INVOKABLE void sendNotification(const QString &title, const QString &text)
     {
@@ -59,13 +61,13 @@ public:
 #ifdef Q_OS_ANDROID
 Q_DECL_EXPORT
 #endif
-int main(int argc, char** argv)
+int main(int argc, char **argv)
 {
     QGuiApplication app(argc, argv);
     QQmlApplicationEngine engine;
 
-    qmlRegisterSingletonType<NotificationTester>("org.kde.knotifications.tester", 1, 0, "Tester", [](QQmlEngine*, QJSEngine*) {
-       return new NotificationTester;
+    qmlRegisterSingletonType<NotificationTester>("org.kde.knotifications.tester", 1, 0, "Tester", [](QQmlEngine *, QJSEngine *) {
+        return new NotificationTester;
     });
 
     engine.load(QStringLiteral("qrc:/notificationtester.qml"));

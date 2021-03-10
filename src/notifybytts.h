@@ -19,7 +19,10 @@ public:
     explicit NotifyByTTS(QObject *parent = nullptr);
     ~NotifyByTTS() override;
 
-    QString optionName() override { return QStringLiteral("TTS"); }
+    QString optionName() override
+    {
+        return QStringLiteral("TTS");
+    }
     void notify(KNotification *notification, KNotifyConfig *config) override;
 
 private:

@@ -26,7 +26,7 @@ public:
     static KNotificationManager *self();
     ~KNotificationManager();
 
-    KNotificationPlugin *pluginForAction(const QString& action);
+    KNotificationPlugin *pluginForAction(const QString &action);
 
     /**
      * send the dbus call to the knotify server
@@ -53,7 +53,7 @@ public:
 
 private Q_SLOTS:
     void notificationClosed();
-    void notificationActivated(int id,  int action);
+    void notificationActivated(int id, int action);
     void notificationReplied(int id, const QString &text);
     void notifyPluginFinished(KNotification *notification);
     void reparseConfiguration(const QString &app);

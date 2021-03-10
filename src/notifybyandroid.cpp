@@ -5,13 +5,13 @@
 */
 
 #include "notifybyandroid.h"
+#include "debug_p.h"
 #include "knotification.h"
 #include "knotificationreplyaction.h"
 #include "knotifyconfig.h"
-#include "debug_p.h"
 
-#include <QtAndroid>
 #include <QAndroidJniEnvironment>
+#include <QtAndroid>
 
 #include <QBuffer>
 #include <QIcon>
@@ -47,12 +47,12 @@ static void notificationInlineReply(JNIEnv *env, jobject that, jint id, jstring 
 }
 
 static const JNINativeMethod methods[] = {
-    {"notificationFinished", "(I)V", (void*)notificationFinished},
-    {"notificationActionInvoked", "(II)V", (void*)notificationActionInvoked},
-    {"notificationInlineReply", "(ILjava/lang/String;)V", (void*)notificationInlineReply},
+    {"notificationFinished", "(I)V", (void *)notificationFinished},
+    {"notificationActionInvoked", "(II)V", (void *)notificationActionInvoked},
+    {"notificationInlineReply", "(ILjava/lang/String;)V", (void *)notificationInlineReply},
 };
 
-KNOTIFICATIONS_EXPORT jint JNICALL JNI_OnLoad(JavaVM *vm, void*)
+KNOTIFICATIONS_EXPORT jint JNICALL JNI_OnLoad(JavaVM *vm, void *)
 {
     static bool initialized = false;
     if (initialized) {
@@ -61,7 +61,7 @@ KNOTIFICATIONS_EXPORT jint JNICALL JNI_OnLoad(JavaVM *vm, void*)
     initialized = true;
 
     JNIEnv *env = nullptr;
-    if (vm->GetEnv((void**)&env, JNI_VERSION_1_4) != JNI_OK) {
+    if (vm->GetEnv((void **)&env, JNI_VERSION_1_4) != JNI_OK) {
         qCWarning(LOG_KNOTIFICATIONS) << "Failed to get JNI environment.";
         return -1;
     }
@@ -74,8 +74,8 @@ KNOTIFICATIONS_EXPORT jint JNICALL JNI_OnLoad(JavaVM *vm, void*)
     return JNI_VERSION_1_4;
 }
 
-NotifyByAndroid::NotifyByAndroid(QObject* parent) :
-    KNotificationPlugin(parent)
+NotifyByAndroid::NotifyByAndroid(QObject *parent)
+    : KNotificationPlugin(parent)
 {
     s_instance = this;
     m_backend = QAndroidJniObject("org/kde/knotifications/NotifyByAndroid", "(Landroid/content/Context;)V", QtAndroid::androidContext().object<jobject>());
@@ -96,7 +96,12 @@ void NotifyByAndroid::notify(KNotification *notification, KNotifyConfig *config)
     Q_UNUSED(config);
     // HACK work around that notification->id() is only populated after returning from here
     // note that config will be invalid at that point, so we can't pass that along
-    QMetaObject::invokeMethod(this, [this, notification](){ notifyDeferred(notification); }, Qt::QueuedConnection);
+    QMetaObject::invokeMethod(
+        this,
+        [this, notification]() {
+            notifyDeferred(notification);
+        },
+        Qt::QueuedConnection);
 }
 
 QAndroidJniObject NotifyByAndroid::createAndroidNotification(KNotification *notification, KNotifyConfig *config) const
@@ -108,7 +113,8 @@ QAndroidJniObject NotifyByAndroid::createAndroidNotification(KNotification *noti
     n.setField("richText", QAndroidJniObject::fromString(notification->text()).object<jstring>());
     n.setField("title", QAndroidJniObject::fromString(notification->title()).object<jstring>());
     n.setField("urgency", (jint)(notification->urgency() == KNotification::DefaultUrgency ? KNotification::HighUrgency : notification->urgency()));
-    n.setField("visibility", QAndroidJniObject::fromString(notification->hints().value(QLatin1String("x-kde-visibility")).toString().toLower()).object<jstring>());
+    n.setField("visibility",
+               QAndroidJniObject::fromString(notification->hints().value(QLatin1String("x-kde-visibility")).toString().toLower()).object<jstring>());
 
     n.setField("channelId", QAndroidJniObject::fromString(notification->eventId()).object<jstring>());
     n.setField("channelName", QAndroidJniObject::fromString(config->readEntry(QLatin1String("Name"))).object<jstring>());
@@ -131,7 +137,7 @@ QAndroidJniObject NotifyByAndroid::createAndroidNotification(KNotification *noti
     buffer.open(QIODevice::WriteOnly);
     pixmap.save(&buffer, "PNG");
     auto jIconData = env->NewByteArray(iconData.length());
-    env->SetByteArrayRegion(jIconData, 0, iconData.length(), reinterpret_cast<const jbyte*>(iconData.constData()));
+    env->SetByteArrayRegion(jIconData, 0, iconData.length(), reinterpret_cast<const jbyte *>(iconData.constData()));
     n.callMethod<void>("setIconFromData", "([BI)V", jIconData, iconData.length());
     env->DeleteLocalRef(jIconData);
 
@@ -149,7 +155,7 @@ QAndroidJniObject NotifyByAndroid::createAndroidNotification(KNotification *noti
     return n;
 }
 
-void NotifyByAndroid::notifyDeferred(KNotification* notification)
+void NotifyByAndroid::notifyDeferred(KNotification *notification)
 {
     KNotifyConfig config(notification->appName(), notification->contexts(), notification->eventId());
     const auto n = createAndroidNotification(notification, &config);
@@ -164,7 +170,7 @@ void NotifyByAndroid::update(KNotification *notification, KNotifyConfig *config)
     m_backend.callMethod<void>("notify", "(Lorg/kde/knotifications/KNotification;)V", n.object<jobject>());
 }
 
-void NotifyByAndroid::close(KNotification* notification)
+void NotifyByAndroid::close(KNotification *notification)
 {
     m_backend.callMethod<void>("close", "(ILjava/lang/String;)V", notification->id(), QAndroidJniObject::fromString(notification->eventId()).object<jstring>());
     KNotificationPlugin::close(notification);
@@ -189,7 +195,7 @@ void NotifyByAndroid::notificationActionInvoked(int id, int action)
     Q_EMIT actionInvoked(id, action);
 }
 
-void NotifyByAndroid::notificationInlineReply(int id, const QString& text)
+void NotifyByAndroid::notificationInlineReply(int id, const QString &text)
 {
     qCDebug(LOG_KNOTIFICATIONS) << id << text;
     Q_EMIT replied(id, text);

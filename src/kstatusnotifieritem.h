@@ -9,8 +9,8 @@
 #define KSTATUSNOTIFIERITEM_H
 
 #include <QObject>
-#include <QString>
 #include <QPoint>
+#include <QString>
 
 #include <knotifications_export.h>
 
@@ -71,6 +71,7 @@ class KNOTIFICATIONS_EXPORT KStatusNotifierItem : public QObject
 
     friend class KStatusNotifierItemDBus;
     friend class KStatusNotifierItemPrivate;
+
 public:
     /**
      * All the possible status this icon can have, depending on the
@@ -180,7 +181,7 @@ public:
      */
     ItemStatus status() const;
 
-    //Main icon related functions
+    // Main icon related functions
     /**
      * Sets a new main icon for the system tray
      *
@@ -233,7 +234,7 @@ public:
      */
     QIcon overlayIconPixmap() const;
 
-    //Requesting attention icon
+    // Requesting attention icon
 
     /**
      * Sets a new icon that should be used when the application
@@ -276,7 +277,7 @@ public:
      */
     QString attentionMovieName() const;
 
-    //ToolTip handling
+    // ToolTip handling
     /**
      * Sets a new toolTip or this icon, a toolTip is composed of an icon,
      * a title and a text, all fields are optional.
@@ -469,9 +470,7 @@ protected:
 private:
     KStatusNotifierItemPrivate *const d;
 
-    Q_PRIVATE_SLOT(d, void serviceChange(const QString &name,
-                                         const QString &oldOwner,
-                                         const QString &newOwner))
+    Q_PRIVATE_SLOT(d, void serviceChange(const QString &name, const QString &oldOwner, const QString &newOwner))
     Q_PRIVATE_SLOT(d, void contextMenuAboutToShow())
     Q_PRIVATE_SLOT(d, void maybeQuit())
     Q_PRIVATE_SLOT(d, void minimizeRestore())

@@ -24,7 +24,10 @@ public:
     explicit NotifyByPortal(QObject *parent = nullptr);
     ~NotifyByPortal() override;
 
-    QString optionName() override { return QStringLiteral("Popup"); }
+    QString optionName() override
+    {
+        return QStringLiteral("Popup");
+    }
     void notify(KNotification *notification, KNotifyConfig *notifyConfig) override;
     void close(KNotification *notification) override;
     void update(KNotification *notification, KNotifyConfig *config) override;
@@ -41,8 +44,7 @@ private:
     void notify(KNotification *notification, const KNotifyConfig &notifyConfig);
     void update(KNotification *notification, const KNotifyConfig &notifyConfig);
 
-    NotifyByPortalPrivate * const d;
+    NotifyByPortalPrivate *const d;
 };
 
 #endif
-

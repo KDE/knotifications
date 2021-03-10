@@ -6,9 +6,9 @@
 */
 
 #include "kstatusnotifieritemdbus_p.h"
-#include "kstatusnotifieritemprivate_p.h"
-#include "kstatusnotifieritem.h"
 #include "debug_p.h"
+#include "kstatusnotifieritem.h"
+#include "kstatusnotifieritemprivate_p.h"
 
 #include <QMenu>
 
@@ -129,12 +129,10 @@ const QDBusArgument &operator>>(const QDBusArgument &argument, KDbusToolTipStruc
 int KStatusNotifierItemDBus::s_serviceCount = 0;
 
 KStatusNotifierItemDBus::KStatusNotifierItemDBus(KStatusNotifierItem *parent)
-    : QObject(parent),
-      m_statusNotifierItem(parent),
-      m_connId(QStringLiteral("org.kde.StatusNotifierItem-%1-%2")
-                .arg(QCoreApplication::applicationPid())
-                .arg(++s_serviceCount)),
-      m_dbus(QDBusConnection(m_connId))
+    : QObject(parent)
+    , m_statusNotifierItem(parent)
+    , m_connId(QStringLiteral("org.kde.StatusNotifierItem-%1-%2").arg(QCoreApplication::applicationPid()).arg(++s_serviceCount))
+    , m_dbus(QDBusConnection(m_connId))
 {
     m_dbus = QDBusConnection::connectToBus(QDBusConnection::SessionBus, m_connId);
 
@@ -164,11 +162,13 @@ bool KStatusNotifierItemDBus::ItemIsMenu() const
     return (m_statusNotifierItem->d->associatedWidget == m_statusNotifierItem->d->menu);
 }
 
-//DBUS slots
+// DBUS slots
 
 QString KStatusNotifierItemDBus::Category() const
 {
-    return QLatin1String(m_statusNotifierItem->metaObject()->enumerator(m_statusNotifierItem->metaObject()->indexOfEnumerator("ItemCategory")).valueToKey(m_statusNotifierItem->category()));
+    return QLatin1String(m_statusNotifierItem->metaObject()
+                             ->enumerator(m_statusNotifierItem->metaObject()->indexOfEnumerator("ItemCategory"))
+                             .valueToKey(m_statusNotifierItem->category()));
 }
 
 QString KStatusNotifierItemDBus::Title() const
@@ -183,7 +183,9 @@ QString KStatusNotifierItemDBus::Id() const
 
 QString KStatusNotifierItemDBus::Status() const
 {
-    return QLatin1String(m_statusNotifierItem->metaObject()->enumerator(m_statusNotifierItem->metaObject()->indexOfEnumerator("ItemStatus")).valueToKey(m_statusNotifierItem->status()));
+    return QLatin1String(m_statusNotifierItem->metaObject()
+                             ->enumerator(m_statusNotifierItem->metaObject()->indexOfEnumerator("ItemStatus"))
+                             .valueToKey(m_statusNotifierItem->status()));
 }
 
 int KStatusNotifierItemDBus::WindowId() const
@@ -195,7 +197,7 @@ int KStatusNotifierItemDBus::WindowId() const
     }
 }
 
-//Icon
+// Icon
 
 QString KStatusNotifierItemDBus::IconName() const
 {
@@ -217,7 +219,7 @@ KDbusImageVector KStatusNotifierItemDBus::OverlayIconPixmap() const
     return m_statusNotifierItem->d->serializedOverlayIcon;
 }
 
-//Requesting attention icon and movie
+// Requesting attention icon and movie
 
 QString KStatusNotifierItemDBus::AttentionIconName() const
 {
@@ -234,7 +236,7 @@ QString KStatusNotifierItemDBus::AttentionMovieName() const
     return m_statusNotifierItem->d->movieName;
 }
 
-//ToolTip
+// ToolTip
 
 KDbusToolTipStruct KStatusNotifierItemDBus::ToolTip() const
 {
@@ -252,13 +254,13 @@ QString KStatusNotifierItemDBus::IconThemePath() const
     return m_statusNotifierItem->d->iconThemePath;
 }
 
-//Menu
+// Menu
 QDBusObjectPath KStatusNotifierItemDBus::Menu() const
 {
     return QDBusObjectPath(m_statusNotifierItem->d->menuObjectPath);
 }
 
-//Interaction
+// Interaction
 
 void KStatusNotifierItemDBus::ContextMenu(int x, int y)
 {
@@ -266,7 +268,7 @@ void KStatusNotifierItemDBus::ContextMenu(int x, int y)
         return;
     }
 
-    //TODO: nicer placement, possible?
+    // TODO: nicer placement, possible?
     if (!m_statusNotifierItem->d->menu->isVisible()) {
         m_statusNotifierItem->d->menu->popup(QPoint(x, y));
     } else {
@@ -289,4 +291,3 @@ void KStatusNotifierItemDBus::Scroll(int delta, const QString &orientation)
     Qt::Orientation dir = (orientation.toLower() == QLatin1String("horizontal") ? Qt::Horizontal : Qt::Vertical);
     Q_EMIT m_statusNotifierItem->scrollRequested(delta, dir);
 }
-

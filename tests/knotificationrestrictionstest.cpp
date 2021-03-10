@@ -21,4 +21,3 @@ int main(int argc, char *argv[])
     mainWidget->show();
     return app.exec();
 }
-

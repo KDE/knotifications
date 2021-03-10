@@ -24,6 +24,7 @@ public Q_SLOTS:
     void setNeedsAttention();
     void setActive();
     void setPassive();
+
 private:
     KStatusNotifierItem *m_tray;
 };

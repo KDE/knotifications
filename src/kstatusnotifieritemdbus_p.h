@@ -8,14 +8,14 @@
 #ifndef KSTATUSNOTIFIERITEMDBUS_H
 #define KSTATUSNOTIFIERITEMDBUS_H
 
-#include <QObject>
-#include <QString>
 #include <QDBusArgument>
 #include <QDBusConnection>
 #include <QDBusObjectPath>
+#include <QObject>
+#include <QString>
 #include <QVector>
 
-//Custom message type for DBus
+// Custom message type for DBus
 struct KDbusImageStruct {
     int width;
     int height;
@@ -55,6 +55,7 @@ class KStatusNotifierItemDBus : public QObject
     Q_PROPERTY(QDBusObjectPath Menu READ Menu)
 
     friend class KStatusNotifierItem;
+
 public:
     explicit KStatusNotifierItemDBus(KStatusNotifierItem *parent);
     ~KStatusNotifierItemDBus();
@@ -156,7 +157,7 @@ public:
     QDBusObjectPath Menu() const;
 
 public Q_SLOTS:
-    //interaction
+    // interaction
     /**
      * Shows the context menu associated to this item
      * at the desired screen position

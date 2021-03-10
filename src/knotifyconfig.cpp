@@ -11,7 +11,7 @@
 #include <QStandardPaths>
 
 typedef QCache<QString, KSharedConfig::Ptr> ConfigCache;
-Q_GLOBAL_STATIC_WITH_ARGS(ConfigCache , static_cache, (15))
+Q_GLOBAL_STATIC_WITH_ARGS(ConfigCache, static_cache, (15))
 
 static KSharedConfig::Ptr retrieve_from_cache(const QString &filename, QStandardPaths::StandardLocation type = QStandardPaths::GenericConfigLocation)
 {
@@ -33,7 +33,7 @@ static KSharedConfig::Ptr retrieve_from_cache(const QString &filename, QStandard
 void KNotifyConfig::reparseConfiguration()
 {
     QCache<QString, KSharedConfig::Ptr> &cache = *static_cache;
-    const auto listFiles =  cache.keys();
+    const auto listFiles = cache.keys();
     for (const QString &filename : listFiles) {
         (*cache[filename])->reparseConfiguration();
     }
@@ -49,9 +49,9 @@ void KNotifyConfig::reparseSingleConfiguration(const QString &app)
 }
 
 KNotifyConfig::KNotifyConfig(const QString &_appname, const ContextList &_contexts, const QString &_eventid)
-    : appname (_appname),
-      contexts(_contexts),
-      eventid(_eventid)
+    : appname(_appname)
+    , contexts(_contexts)
+    , eventid(_eventid)
 {
     eventsfile = retrieve_from_cache(QLatin1String("knotifications5/") + _appname + QLatin1String(".notifyrc"), QStandardPaths::GenericDataLocation);
     configfile = retrieve_from_cache(_appname + QStringLiteral(".notifyrc"));
@@ -67,7 +67,6 @@ KNotifyConfig *KNotifyConfig::copy() const
     config->eventsfile = eventsfile;
     config->configfile = configfile;
     // appname, contexts, eventid already done in constructor
-
     return config;
 }
 
@@ -94,7 +93,7 @@ QString KNotifyConfig::readEntry(const QString &entry, bool path)
             }
         }
     }
-//    kDebug() << entry << " not found in contexts ";
+    //    kDebug() << entry << " not found in contexts ";
     const QString group = QLatin1String("Event/") + eventid;
 
     if (configfile->hasGroup(group)) {
@@ -105,7 +104,7 @@ QString KNotifyConfig::readEntry(const QString &entry, bool path)
             return p;
         }
     }
-//    kDebug() << entry << " not found in config ";
+    //    kDebug() << entry << " not found in config ";
     if (eventsfile->hasGroup(group)) {
         KConfigGroup cg(eventsfile, group);
         QString p = path ? cg.readPathEntry(entry, QString()) : cg.readEntry(entry, QString());
@@ -114,7 +113,7 @@ QString KNotifyConfig::readEntry(const QString &entry, bool path)
             return p;
         }
     }
-//    kDebug() << entry << " not found !!! ";
+    //    kDebug() << entry << " not found !!! ";
 
     return QString();
 }

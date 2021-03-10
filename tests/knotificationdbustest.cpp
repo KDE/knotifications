@@ -4,22 +4,25 @@
     SPDX-License-Identifier: LGPL-2.0-or-later
 */
 
-#include <knotification.h>
 #include <QTimer>
+#include <knotification.h>
 
 #include <QApplication>
-#include <QDebug>
 #include <QDBusConnection>
 #include <QDBusMessage>
+#include <QDebug>
 
 void notificationDBusCall(const QString &iconName, const QString &title, const QString &body, const QStringList &actions, bool persistent = false)
 {
-    QDBusMessage dbusNotificationMessage = QDBusMessage::createMethodCall(QStringLiteral("org.freedesktop.Notifications"), QStringLiteral("/org/freedesktop/Notifications"), QStringLiteral("org.freedesktop.Notifications"), QStringLiteral("Notify"));
+    QDBusMessage dbusNotificationMessage = QDBusMessage::createMethodCall(QStringLiteral("org.freedesktop.Notifications"),
+                                                                          QStringLiteral("/org/freedesktop/Notifications"),
+                                                                          QStringLiteral("org.freedesktop.Notifications"),
+                                                                          QStringLiteral("Notify"));
 
     QList<QVariant> args;
 
     args.append(QString()); // app_name
-    args.append((uint)0);  // notification to update
+    args.append((uint)0); // notification to update
     args.append(iconName); // app_icon
     args.append(title); // summary
     args.append(body); // body
@@ -34,7 +37,7 @@ void notificationDBusCall(const QString &iconName, const QString &title, const Q
 
     args.append(actionList); // actions
 
-   args.append(QVariantMap()); // hints
+    args.append(QVariantMap()); // hints
 
     // Persistent     => 0  == infinite timeout
     // CloseOnTimeout => -1 == let the server decide
@@ -82,4 +85,3 @@ int main(int argc, char *argv[])
 
     return app.exec();
 }
-

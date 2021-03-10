@@ -7,28 +7,28 @@
     SPDX-License-Identifier: LGPL-2.0-only
 */
 
-#include "knotificationmanager_p.h"
 #include "knotification.h"
+#include "knotificationmanager_p.h"
 
-#include <config-knotifications.h> 
+#include <config-knotifications.h>
 
-#include <QHash>
-#include <QFileInfo>
 #include <KPluginLoader>
 #include <KPluginMetaData>
+#include <QFileInfo>
+#include <QHash>
 
 #ifdef QT_DBUS_LIB
 #include <QDBusConnection>
 #include <QDBusConnectionInterface>
 #endif
 
-#include "knotifyconfig.h"
 #include "knotificationplugin.h"
 #include "knotificationreplyaction.h"
+#include "knotifyconfig.h"
 
+#include "notifybyexecute.h"
 #include "notifybylogfile.h"
 #include "notifybytaskbar.h"
-#include "notifybyexecute.h"
 
 #if defined(Q_OS_ANDROID)
 #include "notifybyandroid.h"
@@ -82,10 +82,10 @@ KNotificationManager::KNotificationManager()
     d->notifyPlugins.clear();
 
 #ifdef QT_DBUS_LIB
-     const bool inSandbox = QFileInfo::exists(QLatin1String("/.flatpak-info")) || qEnvironmentVariableIsSet("SNAP");
+    const bool inSandbox = QFileInfo::exists(QLatin1String("/.flatpak-info")) || qEnvironmentVariableIsSet("SNAP");
 
-     if (inSandbox) {
-         QDBusConnectionInterface *interface = QDBusConnection::sessionBus().interface();
+    if (inSandbox) {
+        QDBusConnectionInterface *interface = QDBusConnection::sessionBus().interface();
         d->portalDBusServiceExists = interface->isServiceRegistered(QStringLiteral("org.freedesktop.portal.Desktop"));
     }
 
@@ -114,12 +114,9 @@ KNotificationPlugin *KNotificationManager::pluginForAction(const QString &action
 
     auto addPlugin = [this](KNotificationPlugin *plugin) {
         d->notifyPlugins[plugin->optionName()] = plugin;
-        connect(plugin, &KNotificationPlugin::finished,
-                this, &KNotificationManager::notifyPluginFinished);
-        connect(plugin, &KNotificationPlugin::actionInvoked,
-                this, &KNotificationManager::notificationActivated);
-        connect(plugin, &KNotificationPlugin::replied,
-                this, &KNotificationManager::notificationReplied);
+        connect(plugin, &KNotificationPlugin::finished, this, &KNotificationManager::notifyPluginFinished);
+        connect(plugin, &KNotificationPlugin::actionInvoked, this, &KNotificationManager::notificationActivated);
+        connect(plugin, &KNotificationPlugin::replied, this, &KNotificationManager::notificationReplied);
     };
 
     // Load plugin.
@@ -127,16 +124,16 @@ KNotificationPlugin *KNotificationManager::pluginForAction(const QString &action
     // to instantiate an externally supplied plugin.
     if (action == QLatin1String("Popup")) {
 #if defined(Q_OS_ANDROID)
-            plugin = new NotifyByAndroid(this);
+        plugin = new NotifyByAndroid(this);
 #elif defined(WITH_SNORETOAST)
-            plugin = new NotifyBySnore(this);
+        plugin = new NotifyBySnore(this);
 #elif defined(Q_OS_MACOS)
-            plugin = new NotifyByMacOSNotificationCenter(this);
+        plugin = new NotifyByMacOSNotificationCenter(this);
 #else
-            if (d->portalDBusServiceExists) {
-                plugin = new NotifyByPortal(this);
-            } else {
-                plugin = new NotifyByPopup(this);
+        if (d->portalDBusServiceExists) {
+            plugin = new NotifyByPortal(this);
+        } else {
+            plugin = new NotifyByPopup(this);
         }
 #endif
         addPlugin(plugin);
@@ -145,8 +142,8 @@ KNotificationPlugin *KNotificationManager::pluginForAction(const QString &action
         addPlugin(plugin);
     } else if (action == QLatin1String("Sound")) {
 #if defined(HAVE_PHONON4QT5) || defined(HAVE_CANBERRA)
-            plugin = new NotifyByAudio(this);
-            addPlugin(plugin);
+        plugin = new NotifyByAudio(this);
+        addPlugin(plugin);
 #endif
     } else if (action == QLatin1String("Execute")) {
         plugin = new NotifyByExecute(this);
@@ -162,7 +159,8 @@ KNotificationPlugin *KNotificationManager::pluginForAction(const QString &action
     } else {
         bool pluginFound = false;
 
-        QList<QObject*> plugins = KPluginLoader::instantiatePlugins(QStringLiteral("knotification/notifyplugins"),
+        QList<QObject *> plugins = KPluginLoader::instantiatePlugins(
+            QStringLiteral("knotification/notifyplugins"),
             [&action, &pluginFound](const KPluginMetaData &data) {
                 // KPluginLoader::instantiatePlugins loops over the plugins it
                 // found and calls this function to determine whether to
@@ -196,7 +194,7 @@ KNotificationPlugin *KNotificationManager::pluginForAction(const QString &action
             this);
 
         for (QObject *pluginObj : qAsConst(plugins)) {
-            KNotificationPlugin *notifyPlugin = qobject_cast<KNotificationPlugin*>(pluginObj);
+            KNotificationPlugin *notifyPlugin = qobject_cast<KNotificationPlugin *>(pluginObj);
 
             if (notifyPlugin) {
                 // We try to avoid unnecessary instantiations (see above), but
@@ -254,7 +252,7 @@ void KNotificationManager::notificationReplied(int id, const QString &text)
 
 void KNotificationManager::notificationClosed()
 {
-    KNotification *notification = qobject_cast<KNotification*>(sender());
+    KNotification *notification = qobject_cast<KNotification *>(sender());
     if (!notification) {
         return;
     }

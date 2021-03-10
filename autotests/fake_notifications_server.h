@@ -7,8 +7,8 @@
 #ifndef FAKE_NOTIFICATIONS_SERVER_H
 #define FAKE_NOTIFICATIONS_SERVER_H
 
-#include <QObject>
 #include <QHash>
+#include <QObject>
 #include <QVariantMap>
 
 class NotificationItem

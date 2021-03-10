@@ -11,8 +11,8 @@
 
 #include "knotificationplugin.h"
 
-#include <QStringList>
 #include "knotifyconfig.h"
+#include <QStringList>
 
 #include "notifications_interface.h"
 
@@ -25,7 +25,10 @@ class NotifyByPopup : public KNotificationPlugin
 public:
     explicit NotifyByPopup(QObject *parent = nullptr);
 
-    QString optionName() override { return QStringLiteral("Popup"); }
+    QString optionName() override
+    {
+        return QStringLiteral("Popup");
+    }
     void notify(KNotification *notification, KNotifyConfig *notifyConfig) override;
     void close(KNotification *notification) override;
     void update(KNotification *notification, KNotifyConfig *config) override;
@@ -76,7 +79,7 @@ private:
      * so we queue all notifications while waiting for the capabilities
      * to return, then process them from this queue
      */
-    QList<QPair<KNotification*, KNotifyConfig> > m_notificationQueue;
+    QList<QPair<KNotification *, KNotifyConfig>> m_notificationQueue;
     /**
      * Whether the DBus notification daemon capability cache is up-to-date.
      */

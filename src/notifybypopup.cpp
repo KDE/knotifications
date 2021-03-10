@@ -15,18 +15,18 @@
 #include "notifications_interface.h"
 
 #include <QBuffer>
-#include <QGuiApplication>
 #include <QDBusConnection>
+#include <QGuiApplication>
 #include <QHash>
-#include <QPointer>
 #include <QMutableListIterator>
+#include <QPointer>
 #include <QUrl>
 
 #include <KConfigGroup>
 
 NotifyByPopup::NotifyByPopup(QObject *parent)
-  : KNotificationPlugin(parent)
-  , m_dbusInterface(QStringLiteral("org.freedesktop.Notifications"), QStringLiteral("/org/freedesktop/Notifications"), QDBusConnection::sessionBus())
+    : KNotificationPlugin(parent)
+    , m_dbusInterface(QStringLiteral("org.freedesktop.Notifications"), QStringLiteral("/org/freedesktop/Notifications"), QDBusConnection::sessionBus())
 {
     m_dbusServiceCapCacheDirty = true;
 
@@ -54,7 +54,7 @@ void NotifyByPopup::notify(KNotification *notification, const KNotifyConfig &not
         queryPopupServerCapabilities();
     } else {
         if (!sendNotificationToServer(notification, notifyConfig)) {
-            finish(notification); //an error occurred.
+            finish(notification); // an error occurred.
         }
     }
 }
@@ -71,7 +71,7 @@ void NotifyByPopup::update(KNotification *notification, const KNotifyConfig &not
 
 void NotifyByPopup::close(KNotification *notification)
 {
-    QMutableListIterator<QPair<KNotification*, KNotifyConfig> > iter(m_notificationQueue);
+    QMutableListIterator<QPair<KNotification *, KNotifyConfig>> iter(m_notificationQueue);
     while (iter.hasNext()) {
         auto &item = iter.next();
         if (item.first == notification) {
@@ -185,7 +185,7 @@ bool NotifyByPopup::sendNotificationToServer(KNotification *notification, const 
     QString iconName;
     getAppCaptionAndIconName(notifyConfig_nocheck, &appCaption, &iconName);
 
-    //did the user override the icon name?
+    // did the user override the icon name?
     if (!notification->iconName().isEmpty()) {
         iconName = notification->iconName();
     }
@@ -222,9 +222,7 @@ bool NotifyByPopup::sendNotificationToServer(KNotification *notification, const 
         if (auto *replyAction = notification->replyAction()) {
             const bool supportsInlineReply = m_popupServerCapabilities.contains(QLatin1String("inline-reply"));
 
-            if (supportsInlineReply
-                    || replyAction->fallbackBehavior() == KNotificationReplyAction::FallbackBehavior::UseRegularAction) {
-
+            if (supportsInlineReply || replyAction->fallbackBehavior() == KNotificationReplyAction::FallbackBehavior::UseRegularAction) {
                 actionList.append(QStringLiteral("inline-reply"));
                 actionList.append(replyAction->label());
 
@@ -295,7 +293,7 @@ bool NotifyByPopup::sendNotificationToServer(KNotification *notification, const 
         hintsMap[it.key()] = it.value();
     }
 
-    //FIXME - reenable/fix
+    // FIXME - reenable/fix
     // let's see if we've got an image, and store the image in the hints map
     if (!notification->pixmap().isNull()) {
         QByteArray pixmapData;
@@ -312,10 +310,10 @@ bool NotifyByPopup::sendNotificationToServer(KNotification *notification, const 
 
     const QDBusPendingReply<uint> reply = m_dbusInterface.Notify(appCaption, updateId, iconName, title, text, actionList, hintsMap, timeout);
 
-    //parent is set to the notification so that no-one ever accesses a dangling pointer on the notificationObject property
+    // parent is set to the notification so that no-one ever accesses a dangling pointer on the notificationObject property
     QDBusPendingCallWatcher *watcher = new QDBusPendingCallWatcher(reply, notification);
 
-    QObject::connect(watcher, &QDBusPendingCallWatcher::finished, this, [this, notification](QDBusPendingCallWatcher *watcher){
+    QObject::connect(watcher, &QDBusPendingCallWatcher::finished, this, [this, notification](QDBusPendingCallWatcher *watcher) {
         watcher->deleteLater();
         QDBusPendingReply<uint> reply = *watcher;
         m_notifications.insert(reply.argumentAt<0>(), notification);
@@ -342,7 +340,7 @@ void NotifyByPopup::queryPopupServerCapabilities()
         m_dbusServiceCapCacheDirty = false;
 
         // re-run notify() on all enqueued m_notifications
-        for (const QPair<KNotification*, KNotifyConfig> &noti : qAsConst(m_notificationQueue)) {
+        for (const QPair<KNotification *, KNotifyConfig> &noti : qAsConst(m_notificationQueue)) {
             notify(noti.first, noti.second);
         }
 

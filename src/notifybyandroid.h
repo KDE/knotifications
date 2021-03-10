@@ -24,7 +24,7 @@ public:
     QString optionName() override;
     void notify(KNotification *notification, KNotifyConfig *config) override;
     void update(KNotification *notification, KNotifyConfig *config) override;
-    void close(KNotification * notification) override;
+    void close(KNotification *notification) override;
 
     // interface from Java
     void notificationFinished(int id);

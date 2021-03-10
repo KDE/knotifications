@@ -8,22 +8,21 @@
 #ifndef KSTATUSNOTIFIERITEMPRIVATE_H
 #define KSTATUSNOTIFIERITEMPRIVATE_H
 
+#include <QEventLoopLocker>
+#include <QMovie>
 #include <QObject>
 #include <QString>
-#include <QMovie>
 #include <QSystemTrayIcon>
 #include <QWheelEvent>
-#include <QEventLoopLocker>
 
 #include "kstatusnotifieritem.h"
 
 #ifdef QT_DBUS_LIB
 #include "kstatusnotifieritemdbus_p.h"
 
-#include "statusnotifierwatcher_interface.h"
 #include "notifications_interface.h"
+#include "statusnotifierwatcher_interface.h"
 #endif
-
 
 class KSystemTrayIcon;
 class QMenu;
@@ -126,7 +125,6 @@ public:
     KDbusImageVector serializedOverlayIcon;
     KDbusImageVector serializedToolTipIcon;
 
-
     org::kde::StatusNotifierWatcher *statusNotifierWatcher = nullptr;
     org::freedesktop::Notifications *notificationsClient = nullptr;
 
@@ -162,7 +160,6 @@ public:
     QWidget *associatedWidget;
     QPoint associatedWidgetPos;
     QAction *titleAction;
-
 
     // Ensure that closing the last KMainWindow doesn't exit the application
     // if a system tray icon is still present.

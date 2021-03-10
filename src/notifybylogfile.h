@@ -19,7 +19,10 @@ public:
     explicit NotifyByLogfile(QObject *parent = nullptr);
     ~NotifyByLogfile() override;
 
-    QString optionName() override { return QStringLiteral("Logfile"); }
+    QString optionName() override
+    {
+        return QStringLiteral("Logfile");
+    }
     void notify(KNotification *notification, KNotifyConfig *config) override;
 };
 

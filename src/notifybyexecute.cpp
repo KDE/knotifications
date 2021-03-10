@@ -9,10 +9,10 @@
 #include <QHash>
 #include <QWidget>
 
+#include "debug_p.h"
+#include "knotification.h"
 #include <KProcess>
 #include <knotifyconfig.h>
-#include "knotification.h"
-#include "debug_p.h"
 
 #include <KMacroExpander>
 
@@ -20,7 +20,6 @@ NotifyByExecute::NotifyByExecute(QObject *parent)
     : KNotificationPlugin(parent)
 {
 }
-
 
 NotifyByExecute::~NotifyByExecute()
 {
@@ -31,7 +30,7 @@ void NotifyByExecute::notify(KNotification *notification, KNotifyConfig *config)
     QString command = config->readEntry(QStringLiteral("Execute"));
 
     if (!command.isEmpty()) {
-        QHash<QChar,QString> subst;
+        QHash<QChar, QString> subst;
         subst.insert(QLatin1Char('e'), notification->eventId());
         subst.insert(QLatin1Char('a'), notification->appName());
         subst.insert(QLatin1Char('s'), notification->text());
@@ -56,4 +55,3 @@ void NotifyByExecute::notify(KNotification *notification, KNotifyConfig *config)
 
     finish(notification);
 }
-

@@ -78,8 +78,7 @@ public:
     /**
      * Behavior when the notification server does not support inline replies
      */
-    enum class FallbackBehavior
-    {
+    enum class FallbackBehavior {
         /**
          * Don't add the reply action (default)
          */
@@ -120,7 +119,7 @@ Q_SIGNALS:
     void activated();
 
 private:
-    KNotificationReplyActionPrivate * const d;
+    KNotificationReplyActionPrivate *const d;
 };
 
 #endif // KNOTIFICATIONREPLYACTION_H

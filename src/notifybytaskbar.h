@@ -16,7 +16,10 @@ public:
     explicit NotifyByTaskbar(QObject *parent = nullptr);
     ~NotifyByTaskbar() override;
 
-    QString optionName() override { return QStringLiteral("Taskbar"); }
+    QString optionName() override
+    {
+        return QStringLiteral("Taskbar");
+    }
     void notify(KNotification *notification, KNotifyConfig *config) override;
 };
 

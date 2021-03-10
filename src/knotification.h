@@ -11,10 +11,10 @@
 
 #include <knotifications_export.h>
 
-#include <QPixmap>
-#include <QObject>
 #include <QList>
+#include <QObject>
 #include <QPair>
+#include <QPixmap>
 #include <QUrl>
 #include <QVariant>
 
@@ -53,7 +53,7 @@ public:
      * @see event
      */
     typedef QPair<QString, QString> Context;
-    typedef QList< Context > ContextList;
+    typedef QList<Context> ContextList;
 
     /**
      * @see NotificationFlags
@@ -119,7 +119,12 @@ public:
     /**
      * default events you can use in the event function
      */
-    enum StandardEvent { Notification, Warning, Error, Catastrophe, };
+    enum StandardEvent {
+        Notification,
+        Warning,
+        Error,
+        Catastrophe,
+    };
 
     /**
      * The urgency of a notification.
@@ -314,7 +319,7 @@ public:
     /**
      * @return the list of actions
      */
-    //KF6: Rename to "additionalActions"?
+    // KF6: Rename to "additionalActions"?
     QStringList actions() const;
 
     /**
@@ -329,7 +334,7 @@ public:
      *
      * @param actions List of strings used as action labels
      */
-    //KF6: Rename to "setAdditionalActions"?
+    // KF6: Rename to "setAdditionalActions"?
     void setActions(const QStringList &actions);
 
     /**
@@ -339,25 +344,25 @@ public:
     KNotificationReplyAction *replyAction() const;
 
     /**
-    * @brief Add an inline reply action to the notification.
-    *
-    * On supported platforms this lets the user type a reply to a notification,
-    * such as replying to a chat message, from the notification popup, for example:
-    *
-    * @code{.cpp}
-    * KNotification *notification = new KNotification(QStringLiteral("notification"));
-    * ...
-    * auto replyAction = std::make_unique<KNotificationReplyAction>(i18nc("@action:button", "Reply"));
-    * replyAction->setPlaceholderText(i18nc("@info:placeholder", "Reply to Dave..."));
-    * QObject::connect(replyAction.get(), &KNotificationReplyAction::replied, [](const QString &text) {
-    *     qDebug() << "you replied with" << text;
-    * });
-    * notification->setReplyAction(std::move(replyAction));
-    * @endcode
-    *
-    * @param replyAction the reply action to set
-    * @since 5.81
-    */
+     * @brief Add an inline reply action to the notification.
+     *
+     * On supported platforms this lets the user type a reply to a notification,
+     * such as replying to a chat message, from the notification popup, for example:
+     *
+     * @code{.cpp}
+     * KNotification *notification = new KNotification(QStringLiteral("notification"));
+     * ...
+     * auto replyAction = std::make_unique<KNotificationReplyAction>(i18nc("@action:button", "Reply"));
+     * replyAction->setPlaceholderText(i18nc("@info:placeholder", "Reply to Dave..."));
+     * QObject::connect(replyAction.get(), &KNotificationReplyAction::replied, [](const QString &text) {
+     *     qDebug() << "you replied with" << text;
+     * });
+     * notification->setReplyAction(std::move(replyAction));
+     * @endcode
+     *
+     * @param replyAction the reply action to set
+     * @since 5.81
+     */
     void setReplyAction(std::unique_ptr<KNotificationReplyAction> replyAction);
 
     /**
@@ -568,7 +573,8 @@ public Q_SLOTS:
 
     /**
      * @since 5.57
-     * Adds a custom hint to the notification. Those are key-value pairs that can be interpreted by the respective notification backend to trigger additional, non-standard features.
+     * Adds a custom hint to the notification. Those are key-value pairs that can be interpreted by the respective notification backend to trigger additional,
+     * non-standard features.
      * @param hint the hint's key
      * @param value the hint's value
      */
@@ -616,8 +622,11 @@ public:
      * @param componentName used to determine the location of the config file.  by default, appname is used
      * @since 4.4
      */
-    static KNotification *event(const QString &eventId, const QString &title, const QString &text,
-                                const QPixmap &pixmap = QPixmap(), QWidget *widget = nullptr,
+    static KNotification *event(const QString &eventId,
+                                const QString &title,
+                                const QString &text,
+                                const QPixmap &pixmap = QPixmap(),
+                                QWidget *widget = nullptr,
                                 const NotificationFlags &flags = CloseOnTimeout,
                                 const QString &componentName = QString());
 
@@ -635,8 +644,10 @@ public:
      * @param flags is a bitmask of NotificationFlag
      * @param componentName used to determine the location of the config file.  by default, plasma_workspace is used
      */
-    static KNotification *event(const QString &eventId, const QString &text = QString(),
-                                const QPixmap &pixmap = QPixmap(), QWidget *widget = nullptr,
+    static KNotification *event(const QString &eventId,
+                                const QString &text = QString(),
+                                const QPixmap &pixmap = QPixmap(),
+                                QWidget *widget = nullptr,
                                 const NotificationFlags &flags = CloseOnTimeout,
                                 const QString &componentName = QString());
 
@@ -653,8 +664,10 @@ public:
      * @param widget is a widget where the notification reports to
      * @param flags is a bitmask of NotificationFlag
      */
-    static KNotification *event(StandardEvent eventId, const QString &text = QString(),
-                                const QPixmap &pixmap = QPixmap(), QWidget *widget = nullptr,
+    static KNotification *event(StandardEvent eventId,
+                                const QString &text = QString(),
+                                const QPixmap &pixmap = QPixmap(),
+                                QWidget *widget = nullptr,
                                 const NotificationFlags &flags = CloseOnTimeout);
 
     /**
@@ -672,8 +685,11 @@ public:
      * @param flags is a bitmask of NotificationFlag
      * @since 4.4
      */
-    static KNotification *event(StandardEvent eventId, const QString &title, const QString &text,
-                                const QPixmap &pixmap, QWidget *widget = nullptr,
+    static KNotification *event(StandardEvent eventId,
+                                const QString &title,
+                                const QString &text,
+                                const QPixmap &pixmap,
+                                QWidget *widget = nullptr,
                                 const NotificationFlags &flags = CloseOnTimeout);
 
     /**
@@ -692,8 +708,11 @@ public:
      * @param componentName used to determine the location of the config file.  by default, plasma_workspace is used
      * @since 5.4
      */
-    static KNotification *event(const QString &eventId, const QString &title, const QString &text,
-                                const QString &iconName, QWidget *widget = nullptr,
+    static KNotification *event(const QString &eventId,
+                                const QString &title,
+                                const QString &text,
+                                const QString &iconName,
+                                QWidget *widget = nullptr,
                                 const NotificationFlags &flags = CloseOnTimeout,
                                 const QString &componentName = QString());
 
@@ -712,8 +731,11 @@ public:
      * @param flags is a bitmask of NotificationFlag
      * @since 5.9
      */
-    static KNotification *event(StandardEvent eventId, const QString &title, const QString &text,
-                                const QString &iconName, QWidget *widget = nullptr,
+    static KNotification *event(StandardEvent eventId,
+                                const QString &title,
+                                const QString &text,
+                                const QString &iconName,
+                                QWidget *widget = nullptr,
                                 const NotificationFlags &flags = CloseOnTimeout);
 
     /**
@@ -730,9 +752,8 @@ public:
      * @param flags is a bitmask of NotificationFlag
      * @since 5.9
      */
-    static KNotification *event(StandardEvent eventId, const QString &title, const QString &text,
-                                QWidget *widget = nullptr, const NotificationFlags &flags = CloseOnTimeout);
-
+    static KNotification *
+    event(StandardEvent eventId, const QString &title, const QString &text, QWidget *widget = nullptr, const NotificationFlags &flags = CloseOnTimeout);
 
     /**
      * This is a simple substitution for QApplication::beep()
@@ -742,7 +763,7 @@ public:
      */
     static void beep(const QString &reason = QString(), QWidget *widget = nullptr);
 
-    //prevent warning
+    // prevent warning
     using QObject::event;
 };
 

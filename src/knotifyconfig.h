@@ -9,12 +9,12 @@
 
 #include <KSharedConfig>
 
-#include <QPair>
-#include <QObject> //for Wid
-#include <QImage>
 #include "knotifications_export.h"
+#include <QImage>
+#include <QObject> //for Wid
+#include <QPair>
 
-typedef QList< QPair<QString,QString> > ContextList;
+typedef QList<QPair<QString, QString>> ContextList;
 
 /**
  * @class KNotifyImage knotifyconfig.h KNotifyConfig
@@ -23,71 +23,80 @@ typedef QList< QPair<QString,QString> > ContextList;
  */
 class KNOTIFICATIONS_EXPORT KNotifyImage
 {
-    public:
-        KNotifyImage() : dirty(false) {}
-        KNotifyImage(const QByteArray &data) : source(data), dirty(true) {}
-        QImage toImage();
-        bool isNull() {
-            return dirty ? source.isEmpty() : image.isNull();
-        }
-        QByteArray data() const {
-            return source;
-        }
-    private:
-        QByteArray source;
-        QImage image;
-        bool dirty;
-};
+public:
+    KNotifyImage()
+        : dirty(false)
+    {
+    }
+    KNotifyImage(const QByteArray &data)
+        : source(data)
+        , dirty(true)
+    {
+    }
+    QImage toImage();
+    bool isNull()
+    {
+        return dirty ? source.isEmpty() : image.isNull();
+    }
+    QByteArray data() const
+    {
+        return source;
+    }
 
+private:
+    QByteArray source;
+    QImage image;
+    bool dirty;
+};
 
 /**
  * @class KNotifyConfig knotifyconfig.h KNotifyConfig
  *
  * Represent the configuration for an event
  * @author Olivier Goffart <ogoffart@kde.org>
-*/
+ */
 class KNOTIFICATIONS_EXPORT KNotifyConfig
 {
 public:
-    KNotifyConfig(const QString &appname, const ContextList &_contexts , const QString &_eventid);
+    KNotifyConfig(const QString &appname, const ContextList &_contexts, const QString &_eventid);
     ~KNotifyConfig();
 
     KNotifyConfig *copy() const;
 
     /**
-        * @return entry from the knotifyrc file
-        *
-        * This will return the configuration from the user for the given key.
-        * It first look into the user config file, and then in the global config file.
-        *
-        * return a null string if the entry doesn't exist
-        */
-    QString readEntry(const QString &entry , bool path = false);
+     * @return entry from the knotifyrc file
+     *
+     * This will return the configuration from the user for the given key.
+     * It first look into the user config file, and then in the global config file.
+     *
+     * return a null string if the entry doesn't exist
+     */
+    QString readEntry(const QString &entry, bool path = false);
 
     /**
-        * the pixmap to put on the notification
-        */
+     * the pixmap to put on the notification
+     */
     KNotifyImage image;
 
     /**
-        * the name of the application that triggered the notification
-        */
+     * the name of the application that triggered the notification
+     */
     QString appname;
 
     /**
-        * @internal
-        */
-    KSharedConfig::Ptr eventsfile,configfile;
+     * @internal
+     */
+    KSharedConfig::Ptr eventsfile, configfile;
     ContextList contexts;
 
     /**
-        * the name of the notification
-        */
+     * the name of the notification
+     */
     QString eventid;
 
     /**
-        * reparse the cached configs.  to be used when the config may have changed
-        */
+     * reparse the cached configs.  to be used when the config may have changed
+     */
     static void reparseConfiguration();
 
     static void reparseSingleConfiguration(const QString &app);

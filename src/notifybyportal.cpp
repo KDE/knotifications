@@ -9,17 +9,17 @@
 
 #include "notifybyportal.h"
 
-#include "knotifyconfig.h"
-#include "knotification.h"
 #include "debug_p.h"
+#include "knotification.h"
+#include "knotifyconfig.h"
 
 #include <QBuffer>
 #include <QDBusConnection>
 #include <QDBusConnectionInterface>
-#include <QDBusServiceWatcher>
 #include <QDBusError>
 #include <QDBusMessage>
 #include <QDBusMetaType>
+#include <QDBusServiceWatcher>
 #include <QMap>
 
 #include <KConfigGroup>
@@ -27,14 +27,19 @@ static const char portalDbusServiceName[] = "org.freedesktop.portal.Desktop";
 static const char portalDbusInterfaceName[] = "org.freedesktop.portal.Notification";
 static const char portalDbusPath[] = "/org/freedesktop/portal/desktop";
 
-class NotifyByPortalPrivate {
+class NotifyByPortalPrivate
+{
 public:
     struct PortalIcon {
         QString str;
         QDBusVariant data;
     };
 
-    NotifyByPortalPrivate(NotifyByPortal *parent) : dbusServiceExists(false), q(parent) {}
+    NotifyByPortalPrivate(NotifyByPortal *parent)
+        : dbusServiceExists(false)
+        , q(parent)
+    {
+    }
 
     /**
      * Sends notification to DBus "org.freedesktop.notifications" interface.
@@ -76,7 +81,7 @@ public:
      */
     uint nextId;
 
-    NotifyByPortal * const q;
+    NotifyByPortal *const q;
 };
 
 QDBusArgument &operator<<(QDBusArgument &argument, const NotifyByPortalPrivate::PortalIcon &icon)
@@ -100,15 +105,15 @@ Q_DECLARE_METATYPE(NotifyByPortalPrivate::PortalIcon)
 //---------------------------------------------------------------------------------------
 
 NotifyByPortal::NotifyByPortal(QObject *parent)
-  : KNotificationPlugin(parent),
-    d(new NotifyByPortalPrivate(this))
+    : KNotificationPlugin(parent)
+    , d(new NotifyByPortalPrivate(this))
 {
     // check if service already exists on plugin instantiation
     QDBusConnectionInterface *interface = QDBusConnection::sessionBus().interface();
     d->dbusServiceExists = interface && interface->isServiceRegistered(QString::fromLatin1(portalDbusServiceName));
 
     if (d->dbusServiceExists) {
-        onServiceOwnerChanged(QString::fromLatin1(portalDbusServiceName), QString(), QStringLiteral("_")); //connect signals
+        onServiceOwnerChanged(QString::fromLatin1(portalDbusServiceName), QString(), QStringLiteral("_")); // connect signals
     }
 
     // to catch register/unregister events from service in runtime
@@ -116,9 +121,8 @@ NotifyByPortal::NotifyByPortal(QObject *parent)
     watcher->setConnection(QDBusConnection::sessionBus());
     watcher->setWatchMode(QDBusServiceWatcher::WatchForOwnerChange);
     watcher->addWatchedService(QString::fromLatin1(portalDbusServiceName));
-    connect(watcher,&QDBusServiceWatcher::serviceOwnerChanged, this, &NotifyByPortal::onServiceOwnerChanged);
+    connect(watcher, &QDBusServiceWatcher::serviceOwnerChanged, this, &NotifyByPortal::onServiceOwnerChanged);
 }
-
 
 NotifyByPortal::~NotifyByPortal()
 {
@@ -141,7 +145,7 @@ void NotifyByPortal::notify(KNotification *notification, const KNotifyConfig &no
     // check if Notifications DBus service exists on bus, use it if it does
     if (d->dbusServiceExists) {
         if (!d->sendNotificationToPortal(notification, notifyConfig)) {
-            finish(notification); //an error occurred.
+            finish(notification); // an error occurred.
         }
     }
 }
@@ -184,7 +188,7 @@ void NotifyByPortal::onServiceOwnerChanged(const QString &serviceName, const QSt
                                                                QString::fromLatin1(portalDbusInterfaceName),
                                                                QStringLiteral("ActionInvoked"),
                                                                this,
-                                                               SLOT(onPortalNotificationActionInvoked(QString,QString,QVariantList)));
+                                                               SLOT(onPortalNotificationActionInvoked(QString, QString, QVariantList)));
         if (!connected) {
             qCWarning(LOG_KNOTIFICATIONS) << "warning: failed to connect to ActionInvoked dbus signal";
         }
@@ -237,7 +241,7 @@ bool NotifyByPortalPrivate::sendNotificationToPortal(KNotification *notification
     QString iconName;
     getAppCaptionAndIconName(notifyConfig_nocheck, &appCaption, &iconName);
 
-    //did the user override the icon name?
+    // did the user override the icon name?
     if (!notification->iconName().isEmpty()) {
         iconName = notification->iconName();
     }
@@ -284,14 +288,11 @@ bool NotifyByPortalPrivate::sendNotificationToPortal(KNotification *notification
     const auto listActions = notification->actions();
     for (const QString &actionName : listActions) {
         actId++;
-        QVariantMap button = {
-            {QStringLiteral("action"), QString::number(actId)},
-            {QStringLiteral("label"), actionName}
-        };
+        QVariantMap button = {{QStringLiteral("action"), QString::number(actId)}, {QStringLiteral("label"), actionName}};
         buttons << button;
     }
 
-    qDBusRegisterMetaType<QList<QVariantMap> >();
+    qDBusRegisterMetaType<QList<QVariantMap>>();
     qDBusRegisterMetaType<PortalIcon>();
 
     if (!notification->pixmap().isNull()) {
@@ -313,7 +314,7 @@ bool NotifyByPortalPrivate::sendNotificationToPortal(KNotification *notification
 
     portalArgs.insert(QStringLiteral("title"), title);
     portalArgs.insert(QStringLiteral("body"), text);
-    portalArgs.insert(QStringLiteral("buttons"), QVariant::fromValue<QList<QVariantMap> >(buttons));
+    portalArgs.insert(QStringLiteral("buttons"), QVariant::fromValue<QList<QVariantMap>>(buttons));
 
     args.append(QString::number(nextId));
     args.append(portalArgs);

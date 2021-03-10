@@ -85,8 +85,8 @@ public:
      * Styles that a KPassivePopup can have.
      */
     enum PopupStyle {
-        Boxed,             ///< Information will appear in a framed box (default)
-        Balloon,           ///< Information will appear in a comic-alike balloon
+        Boxed, ///< Information will appear in a framed box (default)
+        Balloon, ///< Information will appear in a comic-alike balloon
     };
 
     /**
@@ -143,8 +143,7 @@ public:
      * @see setView( const QString&, const QString& )
      * @see setView( const QString&, const QString&, const QPixmap& )
      */
-    QWidget *standardView(const QString &caption, const QString &text,
-                          const QPixmap &icon, QWidget *parent = nullptr);
+    QWidget *standardView(const QString &caption, const QString &text, const QPixmap &icon, QWidget *parent = nullptr);
 
     /**
      * Returns the main view.
@@ -191,8 +190,7 @@ public:
      * @deprecated since 5.79, use KNotification
      */
     KNOTIFICATIONS_DEPRECATED_VERSION(5, 79, "Use KNotification")
-    static KPassivePopup *message(const QString &text, QWidget *parent,
-                                  const QPoint &p = QPoint());
+    static KPassivePopup *message(const QString &text, QWidget *parent, const QPoint &p = QPoint());
 
     /**
      * Convenience method that displays popup with the specified  message  beside the
@@ -212,8 +210,7 @@ public:
      * @deprecated since 5.79, use KNotification
      */
     KNOTIFICATIONS_DEPRECATED_VERSION(5, 79, "Use KNotification")
-    static KPassivePopup *message(const QString &caption, const QString &text,
-                                  QWidget *parent, const QPoint &p = QPoint());
+    static KPassivePopup *message(const QString &caption, const QString &text, QWidget *parent, const QPoint &p = QPoint());
 
     /**
      * Convenience method that displays popup with the specified caption and message
@@ -223,8 +220,7 @@ public:
      * @deprecated since 5.79, use KNotification
      */
     KNOTIFICATIONS_DEPRECATED_VERSION(5, 79, "Use KNotification")
-    static KPassivePopup *message(const QString &caption, const QString &text,
-                                  QSystemTrayIcon *parent);
+    static KPassivePopup *message(const QString &caption, const QString &text, QSystemTrayIcon *parent);
 
     /**
      * Convenience method that displays popup with the specified icon, caption and
@@ -234,9 +230,8 @@ public:
      * @deprecated since 5.79, use KNotification
      */
     KNOTIFICATIONS_DEPRECATED_VERSION(5, 79, "Use KNotification")
-    static KPassivePopup *message(const QString &caption, const QString &text,
-                                  const QPixmap &icon, QWidget *parent, int timeout = -1,
-                                  const QPoint &p = QPoint());
+    static KPassivePopup *
+    message(const QString &caption, const QString &text, const QPixmap &icon, QWidget *parent, int timeout = -1, const QPoint &p = QPoint());
 
     /**
      * Convenience method that displays popup with the specified icon, caption and
@@ -246,8 +241,7 @@ public:
      * @deprecated since 5.79, use KNotification
      */
     KNOTIFICATIONS_DEPRECATED_VERSION(5, 79, "Use KNotification")
-    static KPassivePopup *message(const QString &caption, const QString &text,
-                                  const QPixmap &icon, QSystemTrayIcon *parent, int timeout = -1);
+    static KPassivePopup *message(const QString &caption, const QString &text, const QPixmap &icon, QSystemTrayIcon *parent, int timeout = -1);
 
     /**
      * Convenience method that displays popup with the specified icon, caption and
@@ -257,9 +251,7 @@ public:
      * @deprecated since 5.79, use KNotification
      */
     KNOTIFICATIONS_DEPRECATED_VERSION(5, 79, "Use KNotification")
-    static KPassivePopup *message(const QString &caption, const QString &text,
-                                  const QPixmap &icon, WId parent,
-                                  int timeout = -1, const QPoint &p = QPoint());
+    static KPassivePopup *message(const QString &caption, const QString &text, const QPixmap &icon, WId parent, int timeout = -1, const QPoint &p = QPoint());
 
     /**
      * Convenience method that displays popup with the specified popup-style and message beside the
@@ -289,8 +281,7 @@ public:
      * @deprecated since 5.79, use KNotification
      */
     KNOTIFICATIONS_DEPRECATED_VERSION(5, 79, "Use KNotification")
-    static KPassivePopup *message(int popupStyle, const QString &caption, const QString &text,
-                                  QSystemTrayIcon *parent);
+    static KPassivePopup *message(int popupStyle, const QString &caption, const QString &text, QSystemTrayIcon *parent);
 
     /**
      * Convenience method that displays popup with the specified popup-style, caption and message
@@ -300,8 +291,7 @@ public:
      * @deprecated since 5.79, use KNotification
      */
     KNOTIFICATIONS_DEPRECATED_VERSION(5, 79, "Use KNotification")
-    static KPassivePopup *message(int popupStyle, const QString &caption, const QString &text,
-                                  QWidget *parent, const QPoint &p = QPoint());
+    static KPassivePopup *message(int popupStyle, const QString &caption, const QString &text, QWidget *parent, const QPoint &p = QPoint());
 
     /**
      * Convenience method that displays popup with the specified popup-style, icon, caption and
@@ -311,9 +301,8 @@ public:
      * @deprecated since 5.79, use KNotification
      */
     KNOTIFICATIONS_DEPRECATED_VERSION(5, 79, "Use KNotification")
-    static KPassivePopup *message(int popupStyle, const QString &caption, const QString &text,
-                                  const QPixmap &icon, QWidget *parent, int timeout = -1,
-                                  const QPoint &p = QPoint());
+    static KPassivePopup *
+    message(int popupStyle, const QString &caption, const QString &text, const QPixmap &icon, QWidget *parent, int timeout = -1, const QPoint &p = QPoint());
 
     /**
      * Convenience method that displays popup with the specified popup-style, icon, caption and
@@ -323,8 +312,7 @@ public:
      * @deprecated since 5.79, use KNotification
      */
     KNOTIFICATIONS_DEPRECATED_VERSION(5, 79, "Use KNotification")
-    static KPassivePopup *message(int popupStyle, const QString &caption, const QString &text,
-                                  const QPixmap &icon, QSystemTrayIcon *parent, int timeout = -1);
+    static KPassivePopup *message(int popupStyle, const QString &caption, const QString &text, const QPixmap &icon, QSystemTrayIcon *parent, int timeout = -1);
 
     /**
      * Convenience method that displays popup with the specified popup-style, icon, caption and
@@ -334,9 +322,8 @@ public:
      * @deprecated since 5.79, use KNotification
      */
     KNOTIFICATIONS_DEPRECATED_VERSION(5, 79, "Use KNotification")
-    static KPassivePopup *message(int popupStyle, const QString &caption, const QString &text,
-                                  const QPixmap &icon, WId parent, int timeout = -1,
-                                  const QPoint &p = QPoint());
+    static KPassivePopup *
+    message(int popupStyle, const QString &caption, const QString &text, const QPixmap &icon, WId parent, int timeout = -1, const QPoint &p = QPoint());
 
     // we create an overloaded version of show()
     using QFrame::show;
@@ -431,4 +418,3 @@ private:
 
 // Local Variables:
 // End:
-

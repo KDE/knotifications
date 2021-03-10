@@ -13,7 +13,6 @@ class QImage;
 
 namespace ImageConverter
 {
-
 /**
  * Returns a variant representing an image using the format describe in the
  * freedesktop.org spec

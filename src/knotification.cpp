@@ -21,9 +21,9 @@
 
 #include <QCoreApplication>
 
-#include <QTimer>
-#include <QTabWidget>
 #include <QStringList>
+#include <QTabWidget>
+#include <QTimer>
 #include <QUrl>
 
 // incremental notification ID
@@ -63,8 +63,9 @@ struct Q_DECL_HIDDEN KNotification::Private {
 };
 
 #if KNOTIFICATIONS_BUILD_DEPRECATED_SINCE(5, 75)
-KNotification::KNotification(const QString &eventId, QWidget *parent, const NotificationFlags &flags) :
-    QObject(parent), d(new Private)
+KNotification::KNotification(const QString &eventId, QWidget *parent, const NotificationFlags &flags)
+    : QObject(parent)
+    , d(new Private)
 {
     d->eventId = eventId;
     d->flags = flags;
@@ -76,12 +77,9 @@ KNotification::KNotification(const QString &eventId, QWidget *parent, const Noti
 }
 #endif
 
-KNotification::KNotification(
-    const QString &eventId,
-    const NotificationFlags &flags,
-    QObject *parent)
-    :   QObject(parent),
-        d(new Private)
+KNotification::KNotification(const QString &eventId, const NotificationFlags &flags, QObject *parent)
+    : QObject(parent)
+    , d(new Private)
 {
     d->eventId = eventId;
     d->flags = flags;
@@ -123,8 +121,8 @@ QWidget *KNotification::widget() const
 void KNotification::setWidget(QWidget *wid)
 {
     d->widget = wid;
-//     setParent(wid);
-    if (wid && d->flags &  CloseWhenWidgetActivated) {
+    //     setParent(wid);
+    if (wid && d->flags & CloseWhenWidgetActivated) {
         wid->installEventFilter(this);
     }
 }
@@ -365,7 +363,7 @@ void KNotification::raiseWidget()
 #if KNOTIFICATIONS_BUILD_DEPRECATED_SINCE(5, 67)
 void KNotification::Private::raiseWidget(QWidget *w)
 {
-    //TODO  this function is far from finished.
+    // TODO  this function is far from finished.
     if (w->isTopLevel()) {
         w->raise();
         w->activateWindow();
@@ -389,8 +387,13 @@ static QString defaultComponentName()
 #endif
 }
 
-KNotification *KNotification::event(const QString &eventid, const QString &title, const QString &text,
-                                    const QPixmap &pixmap, QWidget *widget, const NotificationFlags &flags, const QString &componentName)
+KNotification *KNotification::event(const QString &eventid,
+                                    const QString &title,
+                                    const QString &text,
+                                    const QPixmap &pixmap,
+                                    QWidget *widget,
+                                    const NotificationFlags &flags,
+                                    const QString &componentName)
 {
     KNotification *notify = new KNotification(eventid, flags);
     notify->setWidget(widget);
@@ -404,28 +407,34 @@ KNotification *KNotification::event(const QString &eventid, const QString &title
     return notify;
 }
 
-KNotification *KNotification::event(const QString &eventid, const QString &text,
-                                    const QPixmap &pixmap, QWidget *widget, const NotificationFlags &flags, const QString &componentName)
+KNotification *KNotification::event(const QString &eventid,
+                                    const QString &text,
+                                    const QPixmap &pixmap,
+                                    QWidget *widget,
+                                    const NotificationFlags &flags,
+                                    const QString &componentName)
 {
     return event(eventid, QString(), text, pixmap, widget, flags, componentName);
 }
 
-KNotification *KNotification::event(StandardEvent eventid, const QString &title, const QString &text,
-                                    const QPixmap &pixmap, QWidget *widget, const NotificationFlags &flags)
+KNotification *
+KNotification::event(StandardEvent eventid, const QString &title, const QString &text, const QPixmap &pixmap, QWidget *widget, const NotificationFlags &flags)
 {
-
     return event(standardEventToEventId(eventid), title, text, pixmap, widget, flags | DefaultEvent);
 }
 
-KNotification *KNotification::event(StandardEvent eventid, const QString &text,
-                                    const QPixmap &pixmap, QWidget *widget, const NotificationFlags &flags)
+KNotification *KNotification::event(StandardEvent eventid, const QString &text, const QPixmap &pixmap, QWidget *widget, const NotificationFlags &flags)
 {
     return event(eventid, QString(), text, pixmap, widget, flags);
 }
 
-KNotification *KNotification::event(const QString &eventid, const QString &title, const QString &text,
-                                const QString &iconName, QWidget *widget,
-                                const NotificationFlags &flags, const QString &componentName)
+KNotification *KNotification::event(const QString &eventid,
+                                    const QString &title,
+                                    const QString &text,
+                                    const QString &iconName,
+                                    QWidget *widget,
+                                    const NotificationFlags &flags,
+                                    const QString &componentName)
 {
     KNotification *notify = new KNotification(eventid, flags);
     notify->setWidget(widget);
@@ -439,15 +448,13 @@ KNotification *KNotification::event(const QString &eventid, const QString &title
     return notify;
 }
 
-KNotification *KNotification::event(StandardEvent eventid, const QString &title, const QString &text,
-                                    const QString &iconName, QWidget *widget,
-                                    const NotificationFlags &flags)
+KNotification *
+KNotification::event(StandardEvent eventid, const QString &title, const QString &text, const QString &iconName, QWidget *widget, const NotificationFlags &flags)
 {
     return event(standardEventToEventId(eventid), title, text, iconName, widget, flags | DefaultEvent);
 }
 
-KNotification* KNotification::event(StandardEvent eventid, const QString &title, const QString &text,
-                                    QWidget *widget, const NotificationFlags &flags)
+KNotification *KNotification::event(StandardEvent eventid, const QString &title, const QString &text, QWidget *widget, const NotificationFlags &flags)
 {
     return event(standardEventToEventId(eventid), title, text, standardEventToIconName(eventid), widget, flags | DefaultEvent);
 }
@@ -516,7 +523,7 @@ bool KNotification::eventFilter(QObject *watched, QEvent *event)
 {
     if (watched == d->widget) {
         if (event->type() == QEvent::WindowActivate) {
-            if (d->flags &  CloseWhenWidgetActivated) {
+            if (d->flags & CloseWhenWidgetActivated) {
                 QTimer::singleShot(500, this, &KNotification::close);
             }
         }
@@ -529,41 +536,40 @@ QString KNotification::standardEventToEventId(KNotification::StandardEvent event
 {
     QString eventId;
     switch (event) {
-        case Warning:
-            eventId = QStringLiteral("warning");
-            break;
-        case Error:
-            eventId = QStringLiteral("fatalerror");
-            break;
-        case Catastrophe:
-            eventId = QStringLiteral("catastrophe");
-            break;
-        case Notification: // fall through
-        default:
-            eventId = QStringLiteral("notification");
-            break;
+    case Warning:
+        eventId = QStringLiteral("warning");
+        break;
+    case Error:
+        eventId = QStringLiteral("fatalerror");
+        break;
+    case Catastrophe:
+        eventId = QStringLiteral("catastrophe");
+        break;
+    case Notification: // fall through
+    default:
+        eventId = QStringLiteral("notification");
+        break;
     }
     return eventId;
 }
-
 
 QString KNotification::standardEventToIconName(KNotification::StandardEvent event)
 {
     QString iconName;
     switch (event) {
-        case Warning:
-            iconName = QStringLiteral("dialog-warning");
-            break;
-        case Error:
-            iconName = QStringLiteral("dialog-error");
-            break;
-        case Catastrophe:
-            iconName = QStringLiteral("dialog-error");
-            break;
-        case Notification: // fall through
-        default:
-            iconName = QStringLiteral("dialog-information");
-            break;
+    case Warning:
+        iconName = QStringLiteral("dialog-warning");
+        break;
+    case Error:
+        iconName = QStringLiteral("dialog-error");
+        break;
+    case Catastrophe:
+        iconName = QStringLiteral("dialog-error");
+        break;
+    case Notification: // fall through
+    default:
+        iconName = QStringLiteral("dialog-information");
+        break;
     }
     return iconName;
 }
@@ -585,4 +591,3 @@ QVariantMap KNotification::hints() const
 {
     return d->hints;
 }
-

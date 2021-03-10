@@ -1,7 +1,7 @@
 #include "kpassivepopuptest.h"
 #include <QApplication>
-#include <kpassivepopup.h>
 #include <QPushButton>
+#include <kpassivepopup.h>
 
 #include <kwindowsystem.h>
 
@@ -49,7 +49,10 @@ void Test::showIt6()
 void Test::showIt7()
 {
     int iconDimension = QApplication::fontMetrics().height();
-    KPassivePopup::message(QStringLiteral("The caption is..."), QStringLiteral("Hello World"), QIcon::fromTheme(QStringLiteral("dialog-ok")).pixmap(iconDimension, iconDimension), pb2);
+    KPassivePopup::message(QStringLiteral("The caption is..."),
+                           QStringLiteral("Hello World"),
+                           QIcon::fromTheme(QStringLiteral("dialog-ok")).pixmap(iconDimension, iconDimension),
+                           pb2);
 }
 
 void Test::showItIcon(QSystemTrayIcon::ActivationReason reason)
@@ -110,5 +113,4 @@ int main(int argc, char **argv)
     icon->show();
 
     return app.exec();
-
 }

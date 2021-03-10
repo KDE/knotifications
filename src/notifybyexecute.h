@@ -4,8 +4,6 @@
     SPDX-License-Identifier: LGPL-2.1-only OR LGPL-3.0-only OR LicenseRef-KDE-Accepted-LGPL
 */
 
-
-
 #ifndef NOTIFYBYEXECUTE_H
 #define NOTIFYBYEXECUTE_H
 
@@ -18,7 +16,10 @@ public:
     explicit NotifyByExecute(QObject *parent = nullptr);
     ~NotifyByExecute() override;
 
-    QString optionName() override { return QStringLiteral("Execute"); }
+    QString optionName() override
+    {
+        return QStringLiteral("Execute");
+    }
     void notify(KNotification *notification, KNotifyConfig *config) override;
 };
 

@@ -5,13 +5,13 @@
 */
 
 #include "notifybysnore.h"
+#include "debug_p.h"
 #include "knotification.h"
 #include "knotifyconfig.h"
-#include "debug_p.h"
 
+#include <QGuiApplication>
 #include <QIcon>
 #include <QLocalSocket>
-#include <QGuiApplication>
 
 #include <snoretoastactions.h>
 
@@ -44,25 +44,28 @@
  * appID: use as-is from your app's QCoreApplication::applicationName() when installing the shortcut.
  * NOTE: Install the shortcut in Windows Start Menu folder.
  * For example, check out Craft Blueprint for Quassel-IRC or KDE Connect.
-*/
+ */
 
-namespace {
-    const QString SnoreToastExecName() { return QStringLiteral("SnoreToast.exe"); }
+namespace
+{
+const QString SnoreToastExecName()
+{
+    return QStringLiteral("SnoreToast.exe");
+}
 }
 
-NotifyBySnore::NotifyBySnore(QObject* parent) :
-    KNotificationPlugin(parent)
+NotifyBySnore::NotifyBySnore(QObject *parent)
+    : KNotificationPlugin(parent)
 {
     m_server.listen(QString::number(qHash(qApp->applicationDirPath())));
     connect(&m_server, &QLocalServer::newConnection, this, [this]() {
-        QLocalSocket* responseSocket = m_server.nextPendingConnection();
-        connect(responseSocket, &QLocalSocket::readyRead, [this, responseSocket](){
+        QLocalSocket *responseSocket = m_server.nextPendingConnection();
+        connect(responseSocket, &QLocalSocket::readyRead, [this, responseSocket]() {
             const QByteArray rawNotificationResponse = responseSocket->readAll();
             responseSocket->deleteLater();
 
-            const QString notificationResponse =
-                        QString::fromWCharArray(reinterpret_cast<const wchar_t *>(rawNotificationResponse.constData()),
-                                            rawNotificationResponse.size() / sizeof(wchar_t));
+            const QString notificationResponse = QString::fromWCharArray(reinterpret_cast<const wchar_t *>(rawNotificationResponse.constData()),
+                                                                         rawNotificationResponse.size() / sizeof(wchar_t));
             QMap<QString, QStringRef> notificationResponseMap;
             for (auto &str : notificationResponse.splitRef(QLatin1Char(';'))) {
                 const int equalIndex = str.indexOf(QLatin1Char('='));
@@ -77,8 +80,7 @@ NotifyBySnore::NotifyBySnore(QObject* parent) :
             const auto iter = m_notifications.constFind(responseNotificationId);
             if (iter != m_notifications.constEnd()) {
                 notification = iter.value();
-            }
-            else {
+            } else {
                 qCWarning(LOG_KNOTIFICATIONS) << "Received a response for an unknown notification.";
                 return;
             }
@@ -107,7 +109,7 @@ NotifyBySnore::NotifyBySnore(QObject* parent) :
                 qCDebug(LOG_KNOTIFICATIONS) << "User clicked an action button in the toast.";
                 const QString responseButton = notificationResponseMap[QStringLiteral("button")].toString();
                 QStringList s = m_notifications.value(responseNotificationId)->actions();
-                int actionNum = s.indexOf(responseButton) + 1;       // QStringList starts with index 0 but not actions
+                int actionNum = s.indexOf(responseButton) + 1; // QStringList starts with index 0 but not actions
                 Q_EMIT actionInvoked(responseNotificationId, actionNum);
                 break;
             }
@@ -139,28 +141,36 @@ void NotifyBySnore::notify(KNotification *notification, KNotifyConfig *config)
     Q_UNUSED(config);
     // HACK work around that notification->id() is only populated after returning from here
     // note that config will be invalid at that point, so we can't pass that along
-    QMetaObject::invokeMethod(this, [this, notification](){ NotifyBySnore::notifyDeferred(notification); }, Qt::QueuedConnection);
+    QMetaObject::invokeMethod(
+        this,
+        [this, notification]() {
+            NotifyBySnore::notifyDeferred(notification);
+        },
+        Qt::QueuedConnection);
 }
 
-void NotifyBySnore::notifyDeferred(KNotification* notification)
+void NotifyBySnore::notifyDeferred(KNotification *notification)
 {
     m_notifications.insert(notification->id(), notification);
 
-    const QString notificationTitle = ((!notification->title().isEmpty()) ? notification->title()
-                                                                          : qApp->applicationDisplayName());
-    QStringList snoretoastArgsList {
-        QStringLiteral("-id"), QString::number(notification->id()),
-        QStringLiteral("-t"), notificationTitle,
-        QStringLiteral("-m"), stripRichText(notification->text()),
-        QStringLiteral("-appID"), qApp->applicationName(),
-        QStringLiteral("-pid"), QString::number(qApp->applicationPid()),
-        QStringLiteral("-pipename"), m_server.fullServerName()
-    };
+    const QString notificationTitle = ((!notification->title().isEmpty()) ? notification->title() : qApp->applicationDisplayName());
+    QStringList snoretoastArgsList{QStringLiteral("-id"),
+                                   QString::number(notification->id()),
+                                   QStringLiteral("-t"),
+                                   notificationTitle,
+                                   QStringLiteral("-m"),
+                                   stripRichText(notification->text()),
+                                   QStringLiteral("-appID"),
+                                   qApp->applicationName(),
+                                   QStringLiteral("-pid"),
+                                   QString::number(qApp->applicationPid()),
+                                   QStringLiteral("-pipename"),
+                                   m_server.fullServerName()};
 
     // handle the icon for toast notification
     const QString iconPath = m_iconDir.path() + QLatin1Char('/') + QString::number(notification->id());
-    const bool hasIcon = (notification->pixmap().isNull()) ? qApp->windowIcon().pixmap(1024, 1024).save(iconPath, "PNG")
-                                                           : notification->pixmap().save(iconPath, "PNG");
+    const bool hasIcon =
+        (notification->pixmap().isNull()) ? qApp->windowIcon().pixmap(1024, 1024).save(iconPath, "PNG") : notification->pixmap().save(iconPath, "PNG");
     if (hasIcon) {
         snoretoastArgsList << QStringLiteral("-p") << iconPath;
     }
@@ -170,33 +180,29 @@ void NotifyBySnore::notifyDeferred(KNotification* notification)
         snoretoastArgsList << QStringLiteral("-b") << notification->actions().join(QLatin1Char(';'));
     }
 
-    QProcess* snoretoastProcess = new QProcess();
-    connect(snoretoastProcess, &QProcess::readyReadStandardError,
-            [snoretoastProcess, snoretoastArgsList]() {
-                const auto data = snoretoastProcess->readAllStandardError();
-                qCDebug(LOG_KNOTIFICATIONS) << "SnoreToast process stderr:"
-                    << snoretoastArgsList << data;
+    QProcess *snoretoastProcess = new QProcess();
+    connect(snoretoastProcess, &QProcess::readyReadStandardError, [snoretoastProcess, snoretoastArgsList]() {
+        const auto data = snoretoastProcess->readAllStandardError();
+        qCDebug(LOG_KNOTIFICATIONS) << "SnoreToast process stderr:" << snoretoastArgsList << data;
     });
-    connect(snoretoastProcess, &QProcess::readyReadStandardOutput,
-            [snoretoastProcess, snoretoastArgsList]() {
-                const auto data = snoretoastProcess->readAllStandardOutput();
-                qCDebug(LOG_KNOTIFICATIONS) << "SnoreToast process stdout:"
-                    << snoretoastArgsList << data;
+    connect(snoretoastProcess, &QProcess::readyReadStandardOutput, [snoretoastProcess, snoretoastArgsList]() {
+        const auto data = snoretoastProcess->readAllStandardOutput();
+        qCDebug(LOG_KNOTIFICATIONS) << "SnoreToast process stdout:" << snoretoastArgsList << data;
     });
-    connect(snoretoastProcess, &QProcess::errorOccurred, this,
-            [this, snoretoastProcess, snoretoastArgsList, iconPath](QProcess::ProcessError error) {
-                qCWarning(LOG_KNOTIFICATIONS) << "SnoreToast process errored:"
-                    << snoretoastArgsList << error;
-                snoretoastProcess->deleteLater();
-                QFile::remove(iconPath);
+    connect(snoretoastProcess, &QProcess::errorOccurred, this, [this, snoretoastProcess, snoretoastArgsList, iconPath](QProcess::ProcessError error) {
+        qCWarning(LOG_KNOTIFICATIONS) << "SnoreToast process errored:" << snoretoastArgsList << error;
+        snoretoastProcess->deleteLater();
+        QFile::remove(iconPath);
     });
-    connect(snoretoastProcess, QOverload<int, QProcess::ExitStatus>::of(&QProcess::finished), this,
+    connect(snoretoastProcess,
+            QOverload<int, QProcess::ExitStatus>::of(&QProcess::finished),
+            this,
             [this, snoretoastProcess, snoretoastArgsList, iconPath](int exitCode, QProcess::ExitStatus exitStatus) {
                 qCDebug(LOG_KNOTIFICATIONS) << "SnoreToast process finished:" << snoretoastArgsList;
                 qCDebug(LOG_KNOTIFICATIONS) << "code:" << exitCode << "status:" << exitStatus;
                 snoretoastProcess->deleteLater();
                 QFile::remove(iconPath);
-    });
+            });
 
     qCDebug(LOG_KNOTIFICATIONS) << "SnoreToast process starting:" << snoretoastArgsList;
     snoretoastProcess->start(SnoreToastExecName(), snoretoastArgsList);
@@ -212,11 +218,7 @@ void NotifyBySnore::close(KNotification *notification)
 
     m_notifications.remove(notification->id());
 
-    const QStringList snoretoastArgsList{ QStringLiteral("-close"),
-                                          QString::number(notification->id()),
-                                          QStringLiteral("-appID"),
-                                          qApp->applicationName()
-                                        };
+    const QStringList snoretoastArgsList{QStringLiteral("-close"), QString::number(notification->id()), QStringLiteral("-appID"), qApp->applicationName()};
 
     qCDebug(LOG_KNOTIFICATIONS) << "Closing notification; SnoreToast process arguments:" << snoretoastArgsList;
     QProcess::startDetached(SnoreToastExecName(), snoretoastArgsList);
@@ -230,4 +232,3 @@ void NotifyBySnore::update(KNotification *notification, KNotifyConfig *config)
     Q_UNUSED(config);
     qCWarning(LOG_KNOTIFICATIONS) << "updating a notification is not supported yet.";
 }
-

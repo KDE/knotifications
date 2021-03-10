@@ -9,19 +9,19 @@
 #include "debug_p.h"
 
 #include <QFile>
-#include <QUrl>
 #include <QString>
+#include <QUrl>
 
-#include "knotifyconfig.h"
 #include "knotification.h"
+#include "knotifyconfig.h"
 
+#include <phonon/audiooutput.h>
 #include <phonon/mediaobject.h>
 #include <phonon/mediasource.h>
-#include <phonon/audiooutput.h>
 
 NotifyByAudio::NotifyByAudio(QObject *parent)
-    : KNotificationPlugin(parent),
-      m_audioOutput(nullptr)
+    : KNotificationPlugin(parent)
+    , m_audioOutput(nullptr)
 {
 }
 
@@ -47,9 +47,7 @@ void NotifyByAudio::notify(KNotification *notification, KNotifyConfig *config)
     QUrl soundURL;
     const auto dataLocations = QStandardPaths::standardLocations(QStandardPaths::GenericDataLocation);
     for (const QString &dataLocation : dataLocations) {
-        soundURL = QUrl::fromUserInput(soundFilename,
-                                       dataLocation + QStringLiteral("/sounds"),
-                                       QUrl::AssumeLocalFile);
+        soundURL = QUrl::fromUserInput(soundFilename, dataLocation + QStringLiteral("/sounds"), QUrl::AssumeLocalFile);
         if (soundURL.isLocalFile() && QFile::exists(soundURL.toLocalFile())) {
             break;
         } else if (!soundURL.isLocalFile() && soundURL.isValid()) {
@@ -92,8 +90,7 @@ void NotifyByAudio::notify(KNotification *notification, KNotifyConfig *config)
         m->enqueue(soundURL);
         m->enqueue(soundURL);
 
-        connect(m, &Phonon::MediaObject::currentSourceChanged,
-                this, &NotifyByAudio::onAudioSourceChanged);
+        connect(m, &Phonon::MediaObject::currentSourceChanged, this, &NotifyByAudio::onAudioSourceChanged);
     }
 
     Q_ASSERT(!m_notifications.value(m));
@@ -119,7 +116,7 @@ void NotifyByAudio::close(KNotification *notification)
 
 void NotifyByAudio::onAudioFinished()
 {
-    Phonon::MediaObject *m = qobject_cast<Phonon::MediaObject*>(sender());
+    Phonon::MediaObject *m = qobject_cast<Phonon::MediaObject *>(sender());
 
     if (!m) {
         return;
@@ -136,9 +133,9 @@ void NotifyByAudio::onAudioFinished()
         return;
     }
 
-    //if the sound is short enough, we can't guarantee new sounds are
-    //enqueued before finished is emitted.
-    //so to make sure we are looping restart it when the sound finished
+    // if the sound is short enough, we can't guarantee new sounds are
+    // enqueued before finished is emitted.
+    // so to make sure we are looping restart it when the sound finished
     if (notification && (notification->flags() & KNotification::LoopSound)) {
         m->play();
         return;
@@ -155,15 +152,14 @@ void NotifyByAudio::finishNotification(KNotification *notification, Phonon::Medi
         finish(notification);
     }
 
-    disconnect(m, &Phonon::MediaObject::currentSourceChanged,
-               this, &NotifyByAudio::onAudioSourceChanged);
+    disconnect(m, &Phonon::MediaObject::currentSourceChanged, this, &NotifyByAudio::onAudioSourceChanged);
 
     m_reusablePhonons.append(m);
 }
 
 void NotifyByAudio::onAudioSourceChanged(const Phonon::MediaSource &source)
 {
-    Phonon::MediaObject *m = qobject_cast<Phonon::MediaObject*>(sender());
+    Phonon::MediaObject *m = qobject_cast<Phonon::MediaObject *>(sender());
 
     if (!m) {
         return;
@@ -171,4 +167,3 @@ void NotifyByAudio::onAudioSourceChanged(const Phonon::MediaSource &source)
 
     m->enqueue(source);
 }
-

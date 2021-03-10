@@ -75,7 +75,7 @@ public:
         NonCriticalServices = ScreenSaver |
                               MessagingPopups |
                               Notifications,
-        AllServices = NonCriticalServices | CriticalNotifications
+        AllServices = NonCriticalServices | CriticalNotifications,
     };
     /**
      * Stores a combination of #Service values.

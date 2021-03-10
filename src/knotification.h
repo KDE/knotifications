@@ -107,7 +107,7 @@ public:
          * @internal
          * The event is a standard kde event, and not an event of the application
          */
-        DefaultEvent = 0xF000
+        DefaultEvent = 0xF000,
 
     };
 
@@ -119,7 +119,7 @@ public:
     /**
      * default events you can use in the event function
      */
-    enum StandardEvent { Notification, Warning, Error, Catastrophe };
+    enum StandardEvent { Notification, Warning, Error, Catastrophe, };
 
     /**
      * The urgency of a notification.
@@ -132,7 +132,7 @@ public:
         LowUrgency = 10,
         NormalUrgency = 50,
         HighUrgency = 70,
-        CriticalUrgency = 90
+        CriticalUrgency = 90,
     };
 
 #if KNOTIFICATIONS_ENABLE_DEPRECATED_SINCE(5, 75)

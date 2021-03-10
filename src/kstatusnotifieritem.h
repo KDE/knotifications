@@ -84,7 +84,7 @@ public:
         Active = 2,
         /// The application requests the attention of the user, for instance
         /// battery running out or a new IM message was received
-        NeedsAttention = 3
+        NeedsAttention = 3,
     };
     Q_ENUM(ItemStatus)
 
@@ -104,7 +104,7 @@ public:
         SystemServices = 3,
         /// This application shows hardware status or a means to control it
         Hardware = 4,
-        Reserved = 129
+        Reserved = 129,
     };
     Q_ENUM(ItemCategory)
 

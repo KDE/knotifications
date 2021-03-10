@@ -91,7 +91,7 @@ public:
          *
          * @note The @c activated signal is emitted instead of @c replied!
          */
-        UseRegularAction
+        UseRegularAction,
     };
     /**
      * Gets the fallback behavior when the notification server does not support inline replies

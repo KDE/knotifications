@@ -111,7 +111,12 @@ public:
         bool bottom = (anchor.y() + height) > ((deskRect.y() + deskRect.height() - 48));
         bool right = (anchor.x() + width) > ((deskRect.x() + deskRect.width() - 48));
 
-        QPoint corners[4] = {QPoint(width - 50, 10), QPoint(10, 10), QPoint(10, height - 50), QPoint(width - 50, height - 50)};
+        /* clang-format off */
+        QPoint corners[4] = {QPoint(width - 50, 10),
+                             QPoint(10, 10),
+                             QPoint(10, height - 50),
+                             QPoint(width - 50, height - 50)};
+        /* clang-format on */
 
         QBitmap mask(width, height);
         mask.clear();
@@ -163,7 +168,8 @@ public:
         p.drawPolygon(surround);
         q->setMask(mask);
 
-        q->move(right ? anchor.x() - width + 20 : (anchor.x() < 11 ? 11 : anchor.x() - 20), bottom ? anchor.y() - height : (anchor.y() < 11 ? 11 : anchor.y()));
+        q->move(right ? anchor.x() - width + 20 : (anchor.x() < 11 ? 11 : anchor.x() - 20), //
+                bottom ? anchor.y() - height : (anchor.y() < 11 ? 11 : anchor.y()));
 
         q->update();
     }

@@ -288,7 +288,8 @@ bool NotifyByPortalPrivate::sendNotificationToPortal(KNotification *notification
     const auto listActions = notification->actions();
     for (const QString &actionName : listActions) {
         actId++;
-        QVariantMap button = {{QStringLiteral("action"), QString::number(actId)}, {QStringLiteral("label"), actionName}};
+        QVariantMap button = {{QStringLiteral("action"), QString::number(actId)}, //
+                              {QStringLiteral("label"), actionName}};
         buttons << button;
     }
 

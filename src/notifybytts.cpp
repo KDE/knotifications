@@ -11,6 +11,7 @@
 #include "knotification.h"
 #include "knotifyconfig.h"
 #include <KMacroExpander>
+
 #include <QTextToSpeech>
 
 NotifyByTTS::NotifyByTTS(QObject *parent)

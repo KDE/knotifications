@@ -339,7 +339,9 @@ void KStatusNotifierItem::setToolTip(const QString &iconName, const QString &tit
 
 void KStatusNotifierItem::setToolTip(const QIcon &icon, const QString &title, const QString &subTitle)
 {
-    if (d->toolTipIconName.isEmpty() && d->toolTipIcon.cacheKey() == icon.cacheKey() && d->toolTipTitle == title && d->toolTipSubTitle == subTitle) {
+    if (d->toolTipIconName.isEmpty() && d->toolTipIcon.cacheKey() == icon.cacheKey() //
+        && d->toolTipTitle == title //
+        && d->toolTipSubTitle == subTitle) {
         return;
     }
 
@@ -707,8 +709,19 @@ bool KStatusNotifierItemPrivate::checkVisibility(QPoint pos, bool perform)
                 continue; // obscured by window kept above -> ignore
             }
 
-            NET::WindowType type = info2.windowType(NET::NormalMask | NET::DesktopMask | NET::DockMask | NET::ToolbarMask | NET::MenuMask | NET::DialogMask
-                                                    | NET::OverrideMask | NET::TopMenuMask | NET::UtilityMask | NET::SplashMask);
+            /* clang-format off */
+            static constexpr auto flags = (NET::NormalMask
+                                           | NET::DesktopMask
+                                           | NET::DockMask
+                                           | NET::ToolbarMask
+                                           | NET::MenuMask
+                                           | NET::DialogMask
+                                           | NET::OverrideMask
+                                           | NET::TopMenuMask
+                                           | NET::UtilityMask
+                                           | NET::SplashMask);
+            /* clang-format on */
+            NET::WindowType type = info2.windowType(flags);
 
             if (type == NET::Dock || type == NET::TopMenu) {
                 continue; // obscured by dock or topmenu -> ignore

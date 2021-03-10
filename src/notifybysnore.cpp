@@ -169,8 +169,8 @@ void NotifyBySnore::notifyDeferred(KNotification *notification)
 
     // handle the icon for toast notification
     const QString iconPath = m_iconDir.path() + QLatin1Char('/') + QString::number(notification->id());
-    const bool hasIcon =
-        (notification->pixmap().isNull()) ? qApp->windowIcon().pixmap(1024, 1024).save(iconPath, "PNG") : notification->pixmap().save(iconPath, "PNG");
+    const bool hasIcon = (notification->pixmap().isNull()) ? qApp->windowIcon().pixmap(1024, 1024).save(iconPath, "PNG") //
+                                                           : notification->pixmap().save(iconPath, "PNG");
     if (hasIcon) {
         snoretoastArgsList << QStringLiteral("-p") << iconPath;
     }

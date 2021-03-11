@@ -332,9 +332,6 @@ void KStatusNotifierItem::setToolTip(const QString &iconName, const QString &tit
     d->toolTipIconName = iconName;
 
     d->toolTipTitle = title;
-//     if (d->systemTrayIcon) {
-//         d->systemTrayIcon->setToolTip(title);
-//     }
     setTrayToolTip(d->systemTrayIcon, title, subTitle);
     d->toolTipSubTitle = subTitle;
 
@@ -356,9 +353,6 @@ void KStatusNotifierItem::setToolTip(const QIcon &icon, const QString &title, co
     d->toolTipIcon = icon;
 
     d->toolTipTitle = title;
-//     if (d->systemTrayIcon) {
-//         d->systemTrayIcon->setToolTip(title);
-//     }
     setTrayToolTip(d->systemTrayIcon, title, subTitle);
 
     d->toolTipSubTitle = subTitle;
@@ -417,9 +411,6 @@ void KStatusNotifierItem::setToolTipTitle(const QString &title)
 #ifdef QT_DBUS_LIB
     Q_EMIT d->statusNotifierItemDBus->NewToolTip();
 #endif
-//     if (d->systemTrayIcon) {
-//         d->systemTrayIcon->setToolTip(title);
-//     }
     setTrayToolTip(d->systemTrayIcon, title, d->toolTipSubTitle);
 }
 

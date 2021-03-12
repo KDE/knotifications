@@ -359,12 +359,12 @@ Q_SIGNALS:
     /**
      * Emitted when the popup is clicked.
      */
-    void clicked();
+    void clicked(); // clazy:exclude=overloaded-signal
 
     /**
      * Emitted when the popup is clicked.
      */
-    void clicked(const QPoint &pos);
+    void clicked(const QPoint &pos); // clazy:exclude=overloaded-signal
 
 protected:
     /**

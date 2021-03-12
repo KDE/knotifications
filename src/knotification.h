@@ -468,7 +468,7 @@ Q_SIGNALS:
      * @deprecated Since 5.67, use defaultActivated() instead
      */
     KNOTIFICATIONS_DEPRECATED_VERSION_BELATED(5, 76, 5, 67, "Use defaultActivated() instead")
-    void activated();
+    void activated(); // clazy:exclude=overloaded-signal
 #endif
 
     /**
@@ -485,7 +485,7 @@ Q_SIGNALS:
      *
      * @param action will be 0 if the default action was activated, or the index of the action in the actions QStringList
      */
-    void activated(unsigned int action);
+    void activated(unsigned int action); // clazy:exclude=overloaded-signal
 
     /**
      * Convenience signal that is emitted when the first action is activated.

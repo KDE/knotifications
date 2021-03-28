@@ -2,7 +2,7 @@
     This file is part of the KDE Frameworks
     SPDX-FileCopyrightText: 2020 Kai Uwe Broulik <kde@broulik.de>
 
-    SPDX-License-Identifier: LGPL-2.0-only
+    SPDX-License-Identifier: LGPL-2.0-or-later
 */
 
 #ifndef KNOTIFICATIONJOBUIDELEGATE_H

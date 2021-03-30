@@ -1,7 +1,7 @@
 /*
     SPDX-FileCopyrightText: 2016 Martin Klapetek <mklapetek@kde.org>
 
-    SPDX-License-Identifier: LGPL-2.0-only
+    SPDX-License-Identifier: LGPL-2.0-or-later
 */
 
 #ifndef FAKE_NOTIFICATIONS_SERVER_H

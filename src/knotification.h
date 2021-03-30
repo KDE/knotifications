@@ -3,7 +3,7 @@
     SPDX-FileCopyrightText: 2005-2006 Olivier Goffart <ogoffart at kde.org>
     SPDX-FileCopyrightText: 2013-2015 Martin Klapetek <mklapetek@kde.org>
 
-    SPDX-License-Identifier: LGPL-2.0-only
+    SPDX-License-Identifier: LGPL-2.0-or-later
 */
 
 #ifndef KNOTIFICATION_H

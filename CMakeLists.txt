@@ -34,7 +34,7 @@ ecm_setup_version(PROJECT
                         SOVERSION 5)
 
 # Dependencies
-set(REQUIRED_QT_VERSION 5.14.0)
+set(REQUIRED_QT_VERSION 5.15.0)
 set(CMAKE_AUTORCC TRUE)
 
 find_package(Qt5 ${REQUIRED_QT_VERSION} CONFIG REQUIRED Widgets)
@@ -125,7 +125,7 @@ if (IS_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/po")
     ecm_install_po_files_as_qm(po)
 endif()
 if (NOT APPLE) # QtMac::setBadgeLabelText is deprecated
-add_definitions(-DQT_DISABLE_DEPRECATED_BEFORE=0x050e00)
+add_definitions(-DQT_DISABLE_DEPRECATED_BEFORE=0x050f00)
 endif()
 add_definitions(-DKF_DISABLE_DEPRECATED_BEFORE_AND_AT=0x055000)
 add_subdirectory(src)

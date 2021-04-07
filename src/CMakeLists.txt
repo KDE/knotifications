@@ -235,9 +235,11 @@ if (TARGET Qt5::DBus)
         RENAME kf5_org.kde.StatusNotifierWatcher.xml)
 endif()
 
-install(FILES
-    knotificationplugin.desktop
-    DESTINATION ${KDE_INSTALL_KSERVICETYPES5DIR})
+if (NOT ANDROID)
+    install(FILES
+        knotificationplugin.desktop
+        DESTINATION ${KDE_INSTALL_KSERVICETYPES5DIR})
+endif()
 
 include(ECMGeneratePriFile)
 ecm_generate_pri_file(BASE_NAME KNotifications LIB_NAME KF5Notifications DEPS "widgets" FILENAME_VAR PRI_FILENAME INCLUDE_INSTALL_DIR ${KDE_INSTALL_INCLUDEDIR_KF5}/KNotifications)

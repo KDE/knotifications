@@ -17,14 +17,14 @@ set(knotifications_SRCS
   knotifyconfig.cpp
   knotificationplugin.cpp
   knotificationjobuidelegate.cpp
-  notifybyexecute.cpp
   notifybylogfile.cpp
-  notifybytaskbar.cpp
   ${knotifications_QM_LOADER}
 )
 
 if (NOT ANDROID)
     list(APPEND knotifications_SRCS
+        notifybyexecute.cpp
+        notifybytaskbar.cpp
         kstatusnotifieritem.cpp)
 endif()
 

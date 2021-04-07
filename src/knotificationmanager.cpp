@@ -138,16 +138,20 @@ KNotificationPlugin *KNotificationManager::pluginForAction(const QString &action
 #endif
         addPlugin(plugin);
     } else if (action == QLatin1String("Taskbar")) {
+#if !defined(Q_OS_ANDROID)
         plugin = new NotifyByTaskbar(this);
         addPlugin(plugin);
+#endif
     } else if (action == QLatin1String("Sound")) {
 #if defined(HAVE_PHONON4QT5) || defined(HAVE_CANBERRA)
         plugin = new NotifyByAudio(this);
         addPlugin(plugin);
 #endif
     } else if (action == QLatin1String("Execute")) {
+#if !defined(Q_OS_ANDROID)
         plugin = new NotifyByExecute(this);
         addPlugin(plugin);
+#endif
     } else if (action == QLatin1String("Logfile")) {
         plugin = new NotifyByLogfile(this);
         addPlugin(plugin);

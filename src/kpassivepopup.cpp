@@ -10,6 +10,7 @@
 #include "debug_p.h"
 #include <config-knotifications.h>
 
+#if KNOTIFICATIONS_BUILD_DEPRECATED_SINCE(5, 79)
 // Qt
 #include <QBitmap>
 #include <QBoxLayout>
@@ -33,7 +34,6 @@
 #include <KWindowInfo>
 #endif
 
-#if KNOTIFICATIONS_BUILD_DEPRECATED_SINCE(5, 79)
 
 static const int DEFAULT_POPUP_TYPE = KPassivePopup::Boxed;
 static const int DEFAULT_POPUP_TIME = 6 * 1000;

@@ -11,7 +11,9 @@
 
 #include <knotifications_export.h>
 
+#ifdef QT_WIDGETS_LIB
 #include <QFrame>
+#endif
 
 class QSystemTrayIcon;
 

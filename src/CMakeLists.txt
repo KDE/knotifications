@@ -110,9 +110,10 @@ ecm_generate_export_header(KF5Notifications
 
 target_include_directories(KF5Notifications INTERFACE "$<INSTALL_INTERFACE:${KDE_INSTALL_INCLUDEDIR_KF5}/KNotifications>")
 
-target_link_libraries(KF5Notifications PUBLIC
-   Qt5::Widgets
-)
+target_link_libraries(KF5Notifications PUBLIC Qt5::Gui)
+if (TARGET Qt5::Widgets)
+    target_link_libraries(KF5Notifications PUBLIC Qt5::Widgets)
+endif()
 if (TARGET Qt5::DBus)
    target_link_libraries(KF5Notifications PUBLIC Qt5::DBus)
 endif()

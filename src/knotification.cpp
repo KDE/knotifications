@@ -22,7 +22,9 @@
 #include <QCoreApplication>
 
 #include <QStringList>
+#ifdef QT_WIDGETS_LIB
 #include <QTabWidget>
+#endif
 #include <QTimer>
 #include <QUrl>
 
@@ -120,11 +122,13 @@ QWidget *KNotification::widget() const
 
 void KNotification::setWidget(QWidget *wid)
 {
+#ifdef QT_WIDGETS_LIB
     d->widget = wid;
     //     setParent(wid);
     if (wid && d->flags & CloseWhenWidgetActivated) {
         wid->installEventFilter(this);
     }
+#endif
 }
 
 void KNotification::setTitle(const QString &title)
@@ -521,6 +525,7 @@ void KNotification::update()
 
 bool KNotification::eventFilter(QObject *watched, QEvent *event)
 {
+#ifdef QT_WIDGETS_LIB
     if (watched == d->widget) {
         if (event->type() == QEvent::WindowActivate) {
             if (d->flags & CloseWhenWidgetActivated) {
@@ -528,6 +533,7 @@ bool KNotification::eventFilter(QObject *watched, QEvent *event)
             }
         }
     }
+#endif
 
     return false;
 }

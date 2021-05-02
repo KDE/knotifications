@@ -164,7 +164,7 @@ if (ANDROID)
     target_link_libraries(KF5Notifications PRIVATE Qt5::AndroidExtras)
 endif()
 
-set_target_properties(KF5Notifications PROPERTIES VERSION   ${KNOTIFICATIONS_VERSION_STRING}
+set_target_properties(KF5Notifications PROPERTIES VERSION   ${KNOTIFICATIONS_VERSION}
                                                   SOVERSION ${KNOTIFICATIONS_SOVERSION}
                                                   EXPORT_NAME Notifications
 )

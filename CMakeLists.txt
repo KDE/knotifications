@@ -130,7 +130,6 @@ if (TARGET Qt5::Widgets)
 endif()
 
 remove_definitions(-DQT_NO_CAST_FROM_BYTEARRAY)
-#add_definitions(-DQT_NO_FOREACH)
 ecm_install_po_files_as_qm(po)
 if (NOT APPLE) # QtMac::setBadgeLabelText is deprecated
 add_definitions(-DQT_DISABLE_DEPRECATED_BEFORE=0x050f00)

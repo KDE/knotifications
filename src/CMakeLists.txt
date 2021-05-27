@@ -1,9 +1,6 @@
 if (Phonon4Qt5_FOUND)
     include_directories(${PHONON_INCLUDE_DIR})
 endif()
-if (CANBERRA_FOUND)
-    include_directories(${CANBERRA_INCLUDE_DIRS})
-endif()
 
 ecm_create_qm_loader(knotifications_QM_LOADER knotifications5_qt)
 

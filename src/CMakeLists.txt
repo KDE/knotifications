@@ -1,7 +1,3 @@
-if (Phonon4Qt5_FOUND)
-    include_directories(${PHONON_INCLUDE_DIR})
-endif()
-
 ecm_create_qm_loader(knotifications_QM_LOADER knotifications5_qt)
 
 set(knotifications_SRCS
@@ -129,7 +125,7 @@ endif ()
 
 if (Phonon4Qt5_FOUND)
     target_link_libraries(KF5Notifications PRIVATE
-        ${PHONON_LIBRARIES})
+        Phonon::phonon4qt5)
 endif()
 
 if (Canberra_FOUND)

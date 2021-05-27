@@ -1,7 +1,9 @@
-ecm_create_qm_loader(knotifications_QM_LOADER knotifications5_qt)
+add_library(KF5Notifications)
+add_library(KF5::Notifications ALIAS KF5Notifications)
 
-set(knotifications_SRCS
+ecm_create_qm_loader(KF5Notifications knotifications5_qt)
 
+target_sources(KF5Notifications PRIVATE
   knotification.cpp
   knotificationreplyaction.cpp
   knotificationmanager.cpp
@@ -11,18 +13,17 @@ set(knotifications_SRCS
   knotificationplugin.cpp
   knotificationjobuidelegate.cpp
   notifybylogfile.cpp
-  ${knotifications_QM_LOADER}
 )
 
 if (NOT ANDROID)
-    list(APPEND knotifications_SRCS
+    target_sources(KF5Notifications PRIVATE
         notifybyexecute.cpp
         notifybytaskbar.cpp
         kstatusnotifieritem.cpp)
 endif()
 
 if (TARGET Qt5::DBus)
-  list(APPEND knotifications_SRCS
+  target_sources(KF5Notifications PRIVATE
     kstatusnotifieritemdbus_p.cpp
     knotificationrestrictions.cpp
 
@@ -34,18 +35,21 @@ endif()
 
 if (ANDROID)
     add_subdirectory(android)
-    list(APPEND knotifications_SRCS notifybyandroid.cpp knotifications.qrc)
+    target_sources(KF5Notifications PRIVATE
+        notifybyandroid.cpp
+        knotifications.qrc
+    )
 endif()
 
 if (WITH_SNORETOAST)
-  list(APPEND knotifications_SRCS notifybysnore.cpp)
+    target_sources(KF5Notifications PRIVATE notifybysnore.cpp)
 endif ()
 
 if (APPLE)
-  list(APPEND knotifications_SRCS notifybymacosnotificationcenter.mm)
+    target_sources(KF5Notifications PRIVATE notifybymacosnotificationcenter.mm)
 endif()
 
-ecm_qt_declare_logging_category(knotifications_SRCS
+ecm_qt_declare_logging_category(KF5Notifications
     HEADER debug_p.h
     IDENTIFIER LOG_KNOTIFICATIONS
     CATEGORY_NAME kf.notifications
@@ -55,41 +59,43 @@ ecm_qt_declare_logging_category(knotifications_SRCS
 )
 
 if (Canberra_FOUND)
-  set(knotifications_SRCS ${knotifications_SRCS}
-  notifybyaudio_canberra.cpp)
+    target_sources(KF5Notifications PRIVATE
+        notifybyaudio_canberra.cpp
+    )
 elseif (Phonon4Qt5_FOUND)
-  set(knotifications_SRCS ${knotifications_SRCS}
-  notifybyaudio_phonon.cpp)
+    target_sources(KF5Notifications PRIVATE
+        notifybyaudio_phonon.cpp
+    )
 endif()
 
 if (Qt5TextToSpeech_FOUND)
-  set(knotifications_SRCS ${knotifications_SRCS}
-    notifybytts.cpp)
+    target_sources(KF5Notifications PRIVATE
+        notifybytts.cpp
+    )
 endif()
 
 if (TARGET Qt5::DBus)
   if (dbusmenu-qt5_FOUND)
     message("dbusmenu-qt5_FOUND")
     set(HAVE_DBUSMENUQT 1)
-    include_directories(${dbusmenu-qt5_INCLUDE_DIRS})
+    target_include_directories(KF5Notifications PRIVATE ${dbusmenu-qt5_INCLUDE_DIRS})
   else()
     set(HAVE_DBUSMENUQT 0)
   endif()
 
-  qt_add_dbus_adaptor(knotifications_SRCS     org.kde.StatusNotifierItem.xml
+  set(knotifications_dbus_SRCS)
+  qt_add_dbus_adaptor(knotifications_dbus_SRCS     org.kde.StatusNotifierItem.xml
                     kstatusnotifieritemdbus_p.h KStatusNotifierItemDBus)
 
 
   set(statusnotifierwatcher_xml org.kde.StatusNotifierWatcher.xml)
-  qt_add_dbus_interface(knotifications_SRCS ${statusnotifierwatcher_xml} statusnotifierwatcher_interface)
+  qt_add_dbus_interface(knotifications_dbus_SRCS ${statusnotifierwatcher_xml} statusnotifierwatcher_interface)
   set(notifications_xml org.freedesktop.Notifications.xml)
-  qt_add_dbus_interface(knotifications_SRCS ${notifications_xml} notifications_interface)
+  qt_add_dbus_interface(knotifications_dbus_SRCS ${notifications_xml} notifications_interface)
+  target_sources(KF5Notifications PRIVATE ${knotifications_dbus_SRCS})
 endif()
 
 configure_file(config-knotifications.h.cmake ${CMAKE_CURRENT_BINARY_DIR}/config-knotifications.h )
-
-add_library(KF5Notifications ${knotifications_SRCS})
-add_library(KF5::Notifications ALIAS KF5Notifications)
 
 ecm_generate_export_header(KF5Notifications
     EXPORT_FILE_NAME knotifications_export.h

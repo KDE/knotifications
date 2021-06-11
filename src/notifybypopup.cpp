@@ -12,7 +12,6 @@
 #include "imageconverter.h"
 #include "knotification.h"
 #include "knotificationreplyaction.h"
-#include "notifications_interface.h"
 
 #include <QBuffer>
 #include <QDBusConnection>

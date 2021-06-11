@@ -423,6 +423,11 @@ public:
      */
     void showMessage(const QString &title, const QString &message, const QString &icon, int timeout = 10000);
 
+    /**
+     * @return the last provided token to be used with Wayland's xdg_activation_v1
+     */
+    QString providedToken() const;
+
 public Q_SLOTS:
 
     /**

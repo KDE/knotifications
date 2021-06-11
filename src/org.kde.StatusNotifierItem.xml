@@ -49,6 +49,9 @@
       <annotation name="org.qtproject.QtDBus.QtTypeName" value="KDbusToolTipStruct"/>
     </property>
 
+    <method name="ProvideXdgActivationToken">
+        <arg name="token" type="s" direction="in"/>
+    </method>
 
     <!-- interaction: the systemtray wants the application to do something -->
     <method name="ContextMenu">

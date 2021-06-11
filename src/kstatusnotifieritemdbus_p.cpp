@@ -291,3 +291,9 @@ void KStatusNotifierItemDBus::Scroll(int delta, const QString &orientation)
     Qt::Orientation dir = (orientation.toLower() == QLatin1String("horizontal") ? Qt::Horizontal : Qt::Vertical);
     Q_EMIT m_statusNotifierItem->scrollRequested(delta, dir);
 }
+
+void KStatusNotifierItemDBus::ProvideXdgActivationToken(const QString &token)
+{
+    m_xdgActivationToken = token;
+    KWindowSystem::setCurrentXdgActivationToken(token);
+}

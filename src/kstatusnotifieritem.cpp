@@ -653,6 +653,11 @@ void KStatusNotifierItem::activate(const QPoint &pos)
     d->checkVisibility(pos);
 }
 
+QString KStatusNotifierItem::providedToken() const
+{
+    return d->statusNotifierItemDBus->m_xdgActivationToken;
+}
+
 bool KStatusNotifierItemPrivate::checkVisibility(QPoint pos, bool perform)
 {
 #ifdef Q_OS_WIN
@@ -1147,6 +1152,9 @@ void KStatusNotifierItemPrivate::minimizeRestore(bool show)
         associatedWidget->setWindowState(state);
         associatedWidget->show();
         associatedWidget->raise();
+        if (associatedWidget->window()) {
+            KWindowSystem::activateWindow(associatedWidget->window()->winId());
+        }
     } else {
         onAllDesktops = info.onAllDesktops();
         associatedWidget->hide();

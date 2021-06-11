@@ -180,6 +180,13 @@ public Q_SLOTS:
      */
     void Scroll(int delta, const QString &orientation);
 
+    /**
+     * Provide a @p token for xdg_activation_v1
+     *
+     * So that the Wayland compositor knows who is requesting an activation.
+     */
+    void ProvideXdgActivationToken(const QString &token);
+
 Q_SIGNALS:
     /**
      * Inform the systemtray that the own main icon has been changed,
@@ -217,6 +224,7 @@ Q_SIGNALS:
 private:
     KStatusNotifierItem *m_statusNotifierItem;
     QString m_connId;
+    QString m_xdgActivationToken;
     QDBusConnection m_dbus;
     static int s_serviceCount;
 };

@@ -8,6 +8,7 @@
 #include "debug_p.h"
 #include "knotification.h"
 #include "knotifyconfig.h"
+#include "knotificationreplyaction.h"
 
 #include <QGuiApplication>
 #include <QIcon>
@@ -66,11 +67,14 @@ NotifyBySnore::NotifyBySnore(QObject *parent)
 
             const QString notificationResponse = QString::fromWCharArray(reinterpret_cast<const wchar_t *>(rawNotificationResponse.constData()),
                                                                          rawNotificationResponse.size() / sizeof(wchar_t));
+            qCDebug(LOG_KNOTIFICATIONS) << notificationResponse;
+
             QMap<QString, QStringRef> notificationResponseMap;
             for (auto &str : notificationResponse.splitRef(QLatin1Char(';'))) {
                 const int equalIndex = str.indexOf(QLatin1Char('='));
                 notificationResponseMap.insert(str.mid(0, equalIndex).toString(), str.mid(equalIndex + 1));
             }
+
             const QString responseAction = notificationResponseMap[QStringLiteral("action")].toString();
             const int responseNotificationId = notificationResponseMap[QStringLiteral("notificationId")].toInt();
 
@@ -114,9 +118,13 @@ NotifyBySnore::NotifyBySnore(QObject *parent)
                 break;
             }
 
-            case SnoreToastActions::Actions::TextEntered:
-                qCWarning(LOG_KNOTIFICATIONS) << "User entered some text in the toast. This is is not handled yet.";
+            case SnoreToastActions::Actions::TextEntered: {
+                qCWarning(LOG_KNOTIFICATIONS) << "User entered some text in the toast.";
+                const QString replyText = notificationResponseMap[QStringLiteral("text")].toString();
+                qCWarning(LOG_KNOTIFICATIONS) << "Text entered was :: " << replyText;
+                Q_EMIT replied(responseNotificationId, replyText);
                 break;
+            }
 
             default:
                 qCWarning(LOG_KNOTIFICATIONS) << "Unexpected behaviour with the toast. Please file a bug report / feature request.";
@@ -175,8 +183,11 @@ void NotifyBySnore::notifyDeferred(KNotification *notification)
         snoretoastArgsList << QStringLiteral("-p") << iconPath;
     }
 
-    // add actions if any
-    if (!notification->actions().isEmpty()) {
+    // if'd below, because SnoreToast currently doesn't support both textbox and buttons in the same notification
+    if (notification->replyAction()) {
+        snoretoastArgsList << QStringLiteral("-tb");
+    } else if (!notification->actions().isEmpty()) {
+        // add actions if any
         snoretoastArgsList << QStringLiteral("-b") << notification->actions().join(QLatin1Char(';'));
     }
 

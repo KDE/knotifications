@@ -2,7 +2,7 @@
     SPDX-FileCopyrightText: 2009 Canonical
     SPDX-FileContributor: Aurélien Gâteau <aurelien.gateau@canonical.com>
 
-    SPDX-License-Identifier: LGPL-2.0-only or LGPL-3.0-only
+    SPDX-License-Identifier: LGPL-2.0-only OR LGPL-3.0-only
 */
 
 #include "imageconverter.h"

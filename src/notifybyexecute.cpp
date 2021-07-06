@@ -6,6 +6,7 @@
 
 #include "notifybyexecute.h"
 
+#include <QGuiApplication>
 #include <QHash>
 #include <QWidget>
 
@@ -36,10 +37,12 @@ void NotifyByExecute::notify(KNotification *notification, KNotifyConfig *config)
         subst.insert(QLatin1Char('s'), notification->text());
         if (notification->widget()) {
             subst.insert(QLatin1Char('w'), QString::number(notification->widget()->topLevelWidget()->winId()));
+            subst.insert(QLatin1Char('t'), notification->widget()->topLevelWidget()->windowTitle());
         } else {
             subst.insert(QLatin1Char('w'), QStringLiteral("0"));
         }
         subst.insert(QLatin1Char('i'), QString::number(notification->id()));
+        subst.insert(QLatin1Char('d'), QGuiApplication::applicationDisplayName());
 
         QString execLine = KMacroExpander::expandMacrosShellQuote(command, subst);
         if (execLine.isEmpty()) {

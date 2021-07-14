@@ -24,7 +24,7 @@ import android.util.Log;
 import java.util.HashMap;
 import java.util.HashSet;
 
-/** Java side of the Android notfication backend. */
+/** Java side of the Android notification backend. */
 public class NotifyByAndroid extends BroadcastReceiver
 {
     private static final String TAG = "org.kde.knotifications";
@@ -199,7 +199,7 @@ public class NotifyByAndroid extends BroadcastReceiver
             builder.addAction(replyAction);
         }
 
-        // notfication about user closing the notification
+        // notification about user closing the notification
         Intent deleteIntent = new Intent(m_ctx.getPackageName() + NOTIFICATION_DELETED);
         deleteIntent.putExtra(NOTIFICATION_ID_EXTRA, notification.id);
         if (notification.group != null) {

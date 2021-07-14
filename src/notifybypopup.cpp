@@ -292,7 +292,7 @@ bool NotifyByPopup::sendNotificationToServer(KNotification *notification, const 
         hintsMap[it.key()] = it.value();
     }
 
-    // FIXME - reenable/fix
+    // FIXME - re-enable/fix
     // let's see if we've got an image, and store the image in the hints map
     if (!notification->pixmap().isNull()) {
         QByteArray pixmapData;

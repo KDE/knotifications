@@ -339,7 +339,7 @@ void KNotificationManager::notify(KNotification *n)
     const auto actionsList = notifyActions.split(QLatin1Char('|'));
 
     // Make sure all plugins can ref the notification
-    // otherwise a plugin may finish and deref before everone got a chance to ref
+    // otherwise a plugin may finish and deref before everyone got a chance to ref
     for (const QString &action : actionsList) {
         KNotificationPlugin *notifyPlugin = pluginForAction(action);
 

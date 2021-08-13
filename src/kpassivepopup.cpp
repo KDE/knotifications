@@ -53,12 +53,11 @@ public:
 #if HAVE_X11
         if (QX11Info::isPlatformX11()) {
             q->setWindowFlags(POPUP_FLAGS | Qt::X11BypassWindowManagerHint);
-        } else {
+        } else
 #else
         q->setWindowFlags(POPUP_FLAGS);
 #endif
             q->setFrameStyle(QFrame::Box | QFrame::Plain);
-        }
         q->setLineWidth(2);
 
         if (popupStyle == Boxed) {

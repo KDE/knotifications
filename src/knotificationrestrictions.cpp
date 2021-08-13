@@ -116,7 +116,10 @@ void KNotificationRestrictions::Private::startScreenSaverPrevention()
         return;
     }
     if (!haveXTest) {
-        int a, b, c, e;
+        int a;
+        int b;
+        int c;
+        int e;
         haveXTest = XTestQueryExtension(QX11Info::display(), &a, &b, &c, &e);
 
         if (!haveXTest) {

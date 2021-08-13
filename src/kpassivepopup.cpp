@@ -53,11 +53,12 @@ public:
 #if HAVE_X11
         if (QX11Info::isPlatformX11()) {
             q->setWindowFlags(POPUP_FLAGS | Qt::X11BypassWindowManagerHint);
-        } else
+        } else {
 #else
         q->setWindowFlags(POPUP_FLAGS);
 #endif
             q->setFrameStyle(QFrame::Box | QFrame::Plain);
+        }
         q->setLineWidth(2);
 
         if (popupStyle == Boxed) {
@@ -101,7 +102,8 @@ public:
         const int width = q->width();
         const int height = q->height();
 
-        int xh = 70, xl = 40;
+        int xh = 70;
+        int xl = 40;
         if (width < 80) {
             xh = xl = 40;
         } else if (width < 110) {
@@ -124,7 +126,8 @@ public:
         QBrush brush(Qt::color1, Qt::SolidPattern);
         p.setBrush(brush);
 
-        int i = 0, z = 0;
+        int i = 0;
+        int z = 0;
         for (; i < 4; ++i) {
             QPainterPath path;
             path.moveTo(corners[i].x(), corners[i].y());

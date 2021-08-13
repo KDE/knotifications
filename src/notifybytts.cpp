@@ -42,8 +42,9 @@ void NotifyByTTS::notify(KNotification *notification, KNotifyConfig *config)
             say = KMacroExpander::expandMacrosShellQuote(say, subst);
         }
 
-        if (say.isEmpty())
+        if (say.isEmpty()) {
             say = notification->text(); // fallback on the plain text
+        }
 
         m_speech->say(say);
 

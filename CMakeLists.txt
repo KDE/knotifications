@@ -34,7 +34,7 @@ ecm_setup_version(PROJECT
                         SOVERSION 5)
 
 # Dependencies
-set(REQUIRED_QT_VERSION 5.15.0)
+set(REQUIRED_QT_VERSION 5.15.2)
 set(CMAKE_AUTORCC TRUE)
 
 if (ANDROID)
@@ -132,7 +132,7 @@ endif()
 remove_definitions(-DQT_NO_CAST_FROM_BYTEARRAY)
 ecm_install_po_files_as_qm(po)
 if (NOT APPLE) # QtMac::setBadgeLabelText is deprecated
-add_definitions(-DQT_DISABLE_DEPRECATED_BEFORE=0x050f00)
+add_definitions(-DQT_DISABLE_DEPRECATED_BEFORE=0x050f02)
 endif()
 add_definitions(-DKF_DISABLE_DEPRECATED_BEFORE_AND_AT=0x055100)
 add_subdirectory(src)

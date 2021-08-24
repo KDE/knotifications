@@ -6,7 +6,7 @@ platforms:
     - name: Linux
     - name: FreeBSD
     - name: Windows
-    - name: MacOSX
+    - name: macOS
     - name: Android
       note: KStatusNotifierItem and KNotificationRestrictions are not supported.
 portingAid: false

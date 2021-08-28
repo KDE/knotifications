@@ -339,7 +339,7 @@ void NotifyByPopup::queryPopupServerCapabilities()
         m_dbusServiceCapCacheDirty = false;
 
         // re-run notify() on all enqueued m_notifications
-        for (const QPair<KNotification *, KNotifyConfig> &noti : qAsConst(m_notificationQueue)) {
+        for (const QPair<KNotification *, KNotifyConfig> &noti : std::as_const(m_notificationQueue)) {
             notify(noti.first, noti.second);
         }
 

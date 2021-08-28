@@ -168,7 +168,7 @@ void NotifyByPortal::onServiceOwnerChanged(const QString &serviceName, const QSt
 {
     Q_UNUSED(serviceName);
     // close all notifications we currently hold reference to
-    for (KNotification *n : qAsConst(d->portalNotifications)) {
+    for (KNotification *n : std::as_const(d->portalNotifications)) {
         if (n) {
             Q_EMIT finished(n);
         }

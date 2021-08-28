@@ -72,7 +72,7 @@ KNotifyConfig *KNotifyConfig::copy() const
 
 QString KNotifyConfig::readEntry(const QString &entry, bool path)
 {
-    for (const QPair<QString, QString> &context : qAsConst(contexts)) {
+    for (const QPair<QString, QString> &context : std::as_const(contexts)) {
         const QString group = QLatin1String("Event/") + eventid + QLatin1Char('/') + context.first + QLatin1Char('/') + context.second;
 
         if (configfile->hasGroup(group)) {

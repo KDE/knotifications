@@ -197,7 +197,7 @@ KNotificationPlugin *KNotificationManager::pluginForAction(const QString &action
             },
             this);
 
-        for (QObject *pluginObj : qAsConst(plugins)) {
+        for (QObject *pluginObj : std::as_const(plugins)) {
             KNotificationPlugin *notifyPlugin = qobject_cast<KNotificationPlugin *>(pluginObj);
 
             if (notifyPlugin) {
@@ -370,7 +370,7 @@ void KNotificationManager::update(KNotification *n)
 {
     KNotifyConfig notifyConfig(n->appName(), n->contexts(), n->eventId());
 
-    for (KNotificationPlugin *p : qAsConst(d->notifyPlugins)) {
+    for (KNotificationPlugin *p : std::as_const(d->notifyPlugins)) {
         p->update(n, &notifyConfig);
     }
 }

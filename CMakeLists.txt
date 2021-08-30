@@ -52,7 +52,7 @@ if (NOT ANDROID AND NOT WIN32)
     find_package(Qt5 ${REQUIRED_QT_VERSION} CONFIG REQUIRED DBus)
 endif()
 
-find_package(Qt5 ${REQUIRED_QT_VERSION} QUIET OPTIONAL_COMPONENTS TextToSpeech)
+find_package(Qt5 ${REQUIRED_QT_VERSION} QUIET OPTIONAL_COMPONENTS Qml TextToSpeech)
 set_package_properties(Qt5TextToSpeech PROPERTIES
    DESCRIPTION "Qt text to speech module"
    TYPE OPTIONAL

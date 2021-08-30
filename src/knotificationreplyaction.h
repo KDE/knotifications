@@ -27,6 +27,31 @@ class KNotificationReplyActionPrivate;
 class KNOTIFICATIONS_EXPORT KNotificationReplyAction : public QObject
 {
     Q_OBJECT
+    /**
+     * @copydoc label
+     * @since 5.88
+     */
+    Q_PROPERTY(QString label READ label WRITE setLabel NOTIFY labelChanged)
+    /**
+     * @copydoc placeholderText
+     * @since 5.88
+     */
+    Q_PROPERTY(QString placeholderText READ placeholderText WRITE setPlaceholderText NOTIFY placeholderTextChanged)
+    /**
+     * @copydoc submitButtonText
+     * @since 5.88
+     */
+    Q_PROPERTY(QString submitButtonText READ submitButtonText WRITE setSubmitButtonText NOTIFY submitButtonTextChanged)
+    /**
+     * @copydoc submitButtonIconName
+     * @since 5.88
+     */
+    Q_PROPERTY(QString submitButtonIconName READ submitButtonIconName WRITE setSubmitButtonIconName NOTIFY submitButtonIconNameChanged)
+    /**
+     * @copydoc fallbackBehavior
+     * @since 5.88
+     */
+    Q_PROPERTY(FallbackBehavior fallbackBehavior READ fallbackBehavior WRITE setFallbackBehavior NOTIFY fallbackBehaviorChanged)
 
 public:
     /**
@@ -92,6 +117,8 @@ public:
          */
         UseRegularAction,
     };
+    Q_ENUM(FallbackBehavior)
+
     /**
      * Gets the fallback behavior when the notification server does not support inline replies
      */
@@ -117,6 +144,32 @@ Q_SIGNALS:
      * and fallbackBehavior is set to @c UseRegularAction.
      */
     void activated();
+
+    /**
+     * Emitted when @p label changed.
+     * @since 5.88
+     */
+    void labelChanged();
+    /**
+     * Emitted when @p placeholderText changed.
+     * @since 5.88
+     */
+    void placeholderTextChanged();
+    /**
+     * Emitted when @p submitButtonText changed.
+     * @since 5.88
+     */
+    void submitButtonTextChanged();
+    /**
+     * Emitted when @p submitButtonIconName changed.
+     * @since 5.88
+     */
+    void submitButtonIconNameChanged();
+    /**
+     * Emitted when @p fallbackBehavior changed.
+     * @since 5.88
+     */
+    void fallbackBehaviorChanged();
 
 private:
     KNotificationReplyActionPrivate *const d;

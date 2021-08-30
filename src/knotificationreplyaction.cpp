@@ -38,7 +38,10 @@ QString KNotificationReplyAction::label() const
 
 void KNotificationReplyAction::setLabel(const QString &label)
 {
-    d->label = label;
+    if (d->label != label) {
+        d->label = label;
+        Q_EMIT labelChanged();
+    }
 }
 
 QString KNotificationReplyAction::placeholderText() const
@@ -48,7 +51,10 @@ QString KNotificationReplyAction::placeholderText() const
 
 void KNotificationReplyAction::setPlaceholderText(const QString &placeholderText)
 {
-    d->placeholderText = placeholderText;
+    if (d->placeholderText != placeholderText) {
+        d->placeholderText = placeholderText;
+        Q_EMIT placeholderTextChanged();
+    }
 }
 
 QString KNotificationReplyAction::submitButtonText() const
@@ -58,7 +64,10 @@ QString KNotificationReplyAction::submitButtonText() const
 
 void KNotificationReplyAction::setSubmitButtonText(const QString &submitButtonText)
 {
-    d->submitButtonText = submitButtonText;
+    if (d->submitButtonText != submitButtonText) {
+        d->submitButtonText = submitButtonText;
+        Q_EMIT submitButtonTextChanged();
+    }
 }
 
 QString KNotificationReplyAction::submitButtonIconName() const
@@ -68,7 +77,10 @@ QString KNotificationReplyAction::submitButtonIconName() const
 
 void KNotificationReplyAction::setSubmitButtonIconName(const QString &submitButtonIconName)
 {
-    d->submitButtonIconName = submitButtonIconName;
+    if (d->submitButtonIconName != submitButtonIconName) {
+        d->submitButtonIconName = submitButtonIconName;
+        Q_EMIT submitButtonIconNameChanged();
+    }
 }
 
 KNotificationReplyAction::FallbackBehavior KNotificationReplyAction::fallbackBehavior() const
@@ -78,5 +90,8 @@ KNotificationReplyAction::FallbackBehavior KNotificationReplyAction::fallbackBeh
 
 void KNotificationReplyAction::setFallbackBehavior(FallbackBehavior fallbackBehavior)
 {
-    d->fallbackBehavior = fallbackBehavior;
+    if (d->fallbackBehavior != fallbackBehavior) {
+        d->fallbackBehavior = fallbackBehavior;
+        Q_EMIT fallbackBehaviorChanged();
+    }
 }

@@ -45,7 +45,7 @@ struct Q_DECL_HIDDEN KNotification::Private {
     std::unique_ptr<KNotificationReplyAction> replyAction;
     QPixmap pixmap;
     ContextList contexts;
-    NotificationFlags flags;
+    NotificationFlags flags = KNotification::CloseOnTimeout;
     QString componentName;
     KNotification::Urgency urgency = KNotification::DefaultUrgency;
     QVariantMap hints;
@@ -53,6 +53,7 @@ struct Q_DECL_HIDDEN KNotification::Private {
     QTimer updateTimer;
     bool needUpdate = false;
     bool isNew = true;
+    bool autoDelete = true;
 
 #if KNOTIFICATIONS_BUILD_DEPRECATED_SINCE(5, 67)
     /**
@@ -88,7 +89,6 @@ KNotification::KNotification(const QString &eventId, const NotificationFlags &fl
     connect(&d->updateTimer, &QTimer::timeout, this, &KNotification::update);
     d->updateTimer.setSingleShot(true);
     d->updateTimer.setInterval(100);
-    d->widget = nullptr;
     d->id = ++notificationIdCounter;
 }
 
@@ -103,6 +103,14 @@ KNotification::~KNotification()
 QString KNotification::eventId() const
 {
     return d->eventId;
+}
+
+void KNotification::setEventId(const QString &eventId)
+{
+    if (d->eventId != eventId) {
+        d->eventId = eventId;
+        Q_EMIT eventIdChanged();
+    }
 }
 
 QString KNotification::title() const
@@ -139,6 +147,7 @@ void KNotification::setTitle(const QString &title)
 
     d->needUpdate = true;
     d->title = title;
+    Q_EMIT titleChanged();
     if (d->id >= 0) {
         d->updateTimer.start();
     }
@@ -152,6 +161,7 @@ void KNotification::setText(const QString &text)
 
     d->needUpdate = true;
     d->text = text;
+    Q_EMIT textChanged();
     if (d->id >= 0) {
         d->updateTimer.start();
     }
@@ -165,6 +175,7 @@ void KNotification::setIconName(const QString &icon)
 
     d->needUpdate = true;
     d->iconName = icon;
+    Q_EMIT iconNameChanged();
     if (d->id >= 0) {
         d->updateTimer.start();
     }
@@ -202,6 +213,7 @@ void KNotification::setActions(const QStringList &as)
 
     d->needUpdate = true;
     d->actions = as;
+    Q_EMIT actionsChanged();
     if (d->id >= 0) {
         d->updateTimer.start();
     }
@@ -233,6 +245,7 @@ void KNotification::setDefaultAction(const QString &defaultAction)
 
     d->needUpdate = true;
     d->defaultAction = defaultAction;
+    Q_EMIT defaultActionChanged();
     if (d->id >= 0) {
         d->updateTimer.start();
     }
@@ -276,14 +289,23 @@ void KNotification::setFlags(const NotificationFlags &flags)
 
     d->needUpdate = true;
     d->flags = flags;
+    Q_EMIT flagsChanged();
     if (d->id >= 0) {
         d->updateTimer.start();
     }
 }
 
+QString KNotification::componentName() const
+{
+    return d->componentName;
+}
+
 void KNotification::setComponentName(const QString &c)
 {
-    d->componentName = c;
+    if (d->componentName != c) {
+        d->componentName = c;
+        Q_EMIT componentNameChanged();
+    }
 }
 
 QList<QUrl> KNotification::urls() const
@@ -294,6 +316,7 @@ QList<QUrl> KNotification::urls() const
 void KNotification::setUrls(const QList<QUrl> &urls)
 {
     setHint(QStringLiteral("x-kde-urls"), QUrl::toStringList(urls));
+    Q_EMIT urlsChanged();
 }
 
 KNotification::Urgency KNotification::urgency() const
@@ -309,6 +332,7 @@ void KNotification::setUrgency(Urgency urgency)
 
     d->needUpdate = true;
     d->urgency = urgency;
+    Q_EMIT urgencyChanged();
     if (d->id >= 0) {
         d->updateTimer.start();
     }
@@ -349,7 +373,13 @@ void KNotification::close()
     if (d->id == -1) {
         d->id = -2;
         Q_EMIT closed();
-        deleteLater();
+        if (d->autoDelete) {
+            deleteLater();
+        } else {
+            // reset for being reused
+            d->isNew = true;
+            d->id = ++notificationIdCounter;
+        }
     }
 }
 
@@ -514,6 +544,19 @@ QString KNotification::appName() const
     }
 
     return appname;
+}
+
+bool KNotification::isAutoDelete() const
+{
+    return d->autoDelete;
+}
+
+void KNotification::setAutoDelete(bool autoDelete)
+{
+    if (d->autoDelete != autoDelete) {
+        d->autoDelete = autoDelete;
+        Q_EMIT autoDeleteChanged();
+    }
 }
 
 void KNotification::update()

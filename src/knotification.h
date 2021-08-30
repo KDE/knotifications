@@ -32,6 +32,61 @@ class KNotificationReplyAction;
 class KNOTIFICATIONS_EXPORT KNotification : public QObject
 {
     Q_OBJECT
+    /**
+     * @copydoc setEventId
+     * @since 5.88
+     */
+    Q_PROPERTY(QString eventId READ eventId WRITE setEventId NOTIFY eventIdChanged)
+    /**
+     * @copydoc setTitle
+     * @since 5.88
+     */
+    Q_PROPERTY(QString title READ title WRITE setTitle NOTIFY titleChanged)
+    /**
+     * @copydoc setText
+     * @since 5.88
+     */
+    Q_PROPERTY(QString text READ text WRITE setText NOTIFY textChanged)
+    /**
+     * @copydoc setIconName
+     * @since 5.88
+     */
+    Q_PROPERTY(QString iconName READ iconName WRITE setIconName NOTIFY iconNameChanged)
+    /**
+     * @copydoc setDefaultAction
+     * @since 5.88
+     */
+    Q_PROPERTY(QString defaultAction READ defaultAction WRITE setDefaultAction NOTIFY defaultActionChanged)
+    /**
+     * @copydoc setActions
+     * @since 5.88
+     */
+    Q_PROPERTY(QStringList actions READ actions WRITE setActions NOTIFY actionsChanged)
+    /**
+     * @copydoc setFlags
+     * @since 5.88
+     */
+    Q_PROPERTY(NotificationFlags flags READ flags WRITE setFlags NOTIFY flagsChanged)
+    /**
+     * @copydoc setComponentName
+     * @since 5.88
+     */
+    Q_PROPERTY(QString componentName READ componentName WRITE setComponentName NOTIFY componentNameChanged)
+    /**
+     * @copydoc setUrls
+     * @since 5.88
+     */
+    Q_PROPERTY(QList<QUrl> urls READ urls WRITE setUrls NOTIFY urlsChanged)
+    /**
+     * @copydoc setUrgency
+     * @since 5.88
+     */
+    Q_PROPERTY(Urgency urgency READ urgency WRITE setUrgency NOTIFY urgencyChanged)
+    /**
+     * @copydoc setAutoDelete
+     * @seince 5.88
+     */
+    Q_PROPERTY(bool autoDelete READ isAutoDelete WRITE setAutoDelete NOTIFY autoDeleteChanged)
 
 public:
     /**
@@ -115,6 +170,7 @@ public:
      * Stores a combination of #NotificationFlag values.
      */
     Q_DECLARE_FLAGS(NotificationFlags, NotificationFlag)
+    Q_FLAG(NotificationFlags)
 
     /**
      * default events you can use in the event function
@@ -139,6 +195,7 @@ public:
         HighUrgency = 70,
         CriticalUrgency = 90,
     };
+    Q_ENUM(Urgency)
 
 #if KNOTIFICATIONS_ENABLE_DEPRECATED_SINCE(5, 75)
     /**
@@ -227,6 +284,11 @@ public:
      * @return the name of the event
      */
     QString eventId() const;
+    /**
+     * Set the event id, if not already passed to the constructor.
+     * @since 5.88
+     */
+    void setEventId(const QString &eventId);
 
     /**
      * @return the notification title
@@ -399,6 +461,11 @@ public:
     void setFlags(const NotificationFlags &flags);
 
     /**
+     * Returns the component name used to determine the location of the configuration file.
+     * @since 5.88
+     */
+    QString componentName() const;
+    /**
      * The componentData is used to determine the location of the config file.
      *
      * If no componentName is set, the app name is used by default
@@ -461,6 +528,18 @@ public:
      */
     QString appName() const;
 
+    /**
+     * Returns whether this notification object will be automatically deleted after closing.
+     * @since 5.88
+     */
+    bool isAutoDelete() const;
+    /**
+     * Sets whether this notification object will be automatically deleted after closing.
+     * This is on by default for C++, and off by default for QML.
+     * @since 5.88
+     */
+    void setAutoDelete(bool autoDelete);
+
 Q_SIGNALS:
 #if KNOTIFICATIONS_ENABLE_DEPRECATED_SINCE(5, 76)
     /**
@@ -514,6 +593,62 @@ Q_SIGNALS:
      * The notification has been ignored
      */
     void ignored();
+
+    /**
+     * Emitted when @c eventId changed.
+     * @since 5.88
+     */
+    void eventIdChanged();
+    /**
+     * Emitted when @c title changed.
+     * @since 5.88
+     */
+    void titleChanged();
+    /**
+     * Emitted when @c text changed.
+     * @since 5.88
+     */
+    void textChanged();
+    /**
+     * Emitted when @c iconName changed.
+     * @since 5.88
+     */
+    void iconNameChanged();
+    /**
+     * Emitted when @c defaultAction changed.
+     * @since 5.88
+     */
+    void defaultActionChanged();
+    /**
+     * Emitted when @c actions changed.
+     * @since 5.88
+     */
+    void actionsChanged();
+    /**
+     * Emitted when @p flags changed.
+     * @since 5.88
+     */
+    void flagsChanged();
+    /**
+     * Emitted when @p componentName changed.
+     * @since 5.88
+     */
+    void componentNameChanged();
+    /**
+     * Emitted when @p urls changed.
+     * @since 5.88
+     */
+    void urlsChanged();
+    /**
+     * Emitted when @p urgency changed.
+     * @since 5.88
+     */
+    void urgencyChanged();
+    /**
+     * Emitted when @p autoDelete changed.
+     * @since 5.88
+     */
+    void autoDeleteChanged();
 
 public Q_SLOTS:
     /**

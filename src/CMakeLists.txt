@@ -251,3 +251,7 @@ if (ANDROID)
         RENAME KF5Notifications_${CMAKE_ANDROID_ARCH_ABI}-android-dependencies.xml
     )
 endif()
+
+if (TARGET Qt5::Qml)
+    add_subdirectory(qml)
+endif()

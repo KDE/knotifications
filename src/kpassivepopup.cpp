@@ -67,7 +67,7 @@ public:
             q->setPalette(QToolTip::palette());
         }
         connect(hideTimer, &QTimer::timeout, q, &QWidget::hide);
-        connect(q, QOverload<>::of(&KPassivePopup::clicked), q, &QWidget::hide);
+        connect(q, qOverload<>(&KPassivePopup::clicked), q, &QWidget::hide);
     }
 
     KPassivePopup *const q;

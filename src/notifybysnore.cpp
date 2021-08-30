@@ -206,7 +206,7 @@ void NotifyBySnore::notifyDeferred(KNotification *notification)
         QFile::remove(iconPath);
     });
     connect(snoretoastProcess,
-            QOverload<int, QProcess::ExitStatus>::of(&QProcess::finished),
+            qOverload<int, QProcess::ExitStatus>(&QProcess::finished),
             this,
             [this, snoretoastProcess, snoretoastArgsList, iconPath](int exitCode, QProcess::ExitStatus exitStatus) {
                 qCDebug(LOG_KNOTIFICATIONS) << "SnoreToast process finished:" << snoretoastArgsList;

@@ -6,7 +6,6 @@ Dependencies:
     'frameworks/kconfig' : '@same'
     'frameworks/kcoreaddons' : '@same'
     'kdesupport/phonon' : '@same'
-    'third-party/libdbusmenu-qt' : '@same'
 
 Options:
   test-before-installing: True

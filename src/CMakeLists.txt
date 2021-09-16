@@ -58,7 +58,7 @@ ecm_qt_declare_logging_category(KF5Notifications
     EXPORT KNOTIFICATIONS
 )
 
-if (Canberra_FOUND)
+if (CANBERRA_FOUND)
     target_sources(KF5Notifications PRIVATE
         notifybyaudio_canberra.cpp
     )
@@ -134,9 +134,9 @@ if (Phonon4Qt5_FOUND)
         Phonon::phonon4qt5)
 endif()
 
-if (Canberra_FOUND)
+if (CANBERRA_FOUND)
     target_link_libraries(KF5Notifications PRIVATE
-        Canberra::Canberra)
+        PkgConfig::CANBERRA)
 endif()
 
 if (Qt5TextToSpeech_FOUND)

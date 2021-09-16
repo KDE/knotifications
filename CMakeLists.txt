@@ -99,11 +99,15 @@ find_package(KF5CoreAddons ${KF_DEP_VERSION} REQUIRED)
 
 if (NOT ANDROID AND NOT WIN32 OR (WIN32 AND NOT WITH_SNORETOAST))
     find_package(Qt5 ${REQUIRED_QT_VERSION} CONFIG REQUIRED DBus)
-    find_package(Canberra)
+
+    find_package(PkgConfig REQUIRED)
+
+    pkg_check_modules(CANBERRA REQUIRED libcanberra IMPORTED_TARGET)
+
     set_package_properties(Canberra PROPERTIES
         PURPOSE "Needed to build audio notification support"
         TYPE OPTIONAL)
-    if (Canberra_FOUND)
+    if (CANBERRA_FOUND)
         add_definitions(-DHAVE_CANBERRA)
     else()
         # This is REQUIRED since you cannot tell CMake "either one of those two optional ones are required"

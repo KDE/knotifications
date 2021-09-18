@@ -4,7 +4,7 @@ KNotifications is a cross-platform library for creating popup notifications.
 
 It currently supports Linux (and other Unix platforms that implement freedesktop.org notifications), Windows (8 or later), macOS and Android (version 5.0 or later).
 
-Please consult the <a href="https://hig.kde.org/platform/notification.html">KDE Human Interface Guidelines</a> for when using Notifications is appropriate.
+Please consult the <a href="https://hig.kde.org/platform/notification/">KDE Human Interface Guidelines</a> for when using Notifications is appropriate.
 
 KNotification is the main entry point for using KNotifications.
 

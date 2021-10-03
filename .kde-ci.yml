@@ -5,6 +5,8 @@ Dependencies:
     'frameworks/kwindowsystem' : '@same'
     'frameworks/kconfig' : '@same'
     'frameworks/kcoreaddons' : '@same'
+- 'on': ['Linux', 'FreeBSD', 'macOS']
+  'require':
     'libraries/phonon' : '@stable'
 
 Options:

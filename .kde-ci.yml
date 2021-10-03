@@ -2,9 +2,11 @@ Dependencies:
 - 'on': ['@all']
   'require':
     'frameworks/extra-cmake-modules': '@same'
-    'frameworks/kwindowsystem' : '@same'
     'frameworks/kconfig' : '@same'
     'frameworks/kcoreaddons' : '@same'
+- 'on': ['Linux', 'FreeBSD', 'Windows', 'macOS']
+  'require':
+    'frameworks/kwindowsystem' : '@same'
 - 'on': ['Linux', 'FreeBSD', 'macOS']
   'require':
     'libraries/phonon' : '@stable'

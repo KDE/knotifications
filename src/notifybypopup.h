@@ -24,6 +24,7 @@ class NotifyByPopup : public KNotificationPlugin
     Q_OBJECT
 public:
     explicit NotifyByPopup(QObject *parent = nullptr);
+    ~NotifyByPopup() override;
 
     QString optionName() override
     {
@@ -92,6 +93,8 @@ private:
     QHash<uint, QPointer<KNotification>> m_notifications;
 
     org::freedesktop::Notifications m_dbusInterface;
+
+    Q_DISABLE_COPY_MOVE(NotifyByPopup)
 };
 
 #endif

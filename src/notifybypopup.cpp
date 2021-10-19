@@ -38,6 +38,13 @@ NotifyByPopup::NotifyByPopup(QObject *parent)
     connect(&m_dbusInterface, &org::freedesktop::Notifications::NotificationClosed, this, &NotifyByPopup::onNotificationClosed);
 }
 
+NotifyByPopup::~NotifyByPopup()
+{
+    if (!m_notificationQueue.isEmpty()) {
+        qCWarning(LOG_KNOTIFICATIONS) << "Had queued notifications on destruction. Was the eventloop running?";
+    }
+}
+
 void NotifyByPopup::notify(KNotification *notification, KNotifyConfig *notifyConfig)
 {
     notify(notification, *notifyConfig);

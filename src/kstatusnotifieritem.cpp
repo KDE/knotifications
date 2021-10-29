@@ -655,7 +655,11 @@ void KStatusNotifierItem::activate(const QPoint &pos)
 
 QString KStatusNotifierItem::providedToken() const
 {
+#ifdef QT_DBUS_LIB
     return d->statusNotifierItemDBus->m_xdgActivationToken;
+#else
+    return {};
+#endif
 }
 
 bool KStatusNotifierItemPrivate::checkVisibility(QPoint pos, bool perform)

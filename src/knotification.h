@@ -259,7 +259,7 @@ public:
     explicit KNotification(const QString &eventId, const NotificationFlags &flags, QObject *parent = nullptr);
     // TODO KF6: pass flags by value instead of reference, set CloseOnTimeout as default value
 
-    ~KNotification();
+    ~KNotification() override;
 
     /**
      * @brief the widget associated to the notification

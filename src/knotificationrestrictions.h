@@ -87,7 +87,7 @@ public:
      * @param parent the parent of this object
      */
     explicit KNotificationRestrictions(Services control = NonCriticalServices, QObject *parent = nullptr);
-    virtual ~KNotificationRestrictions();
+    ~KNotificationRestrictions() override;
 
     /**
      * Constructs a new service for restrict some services.

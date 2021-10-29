@@ -24,7 +24,7 @@ class KNotificationManager : public QObject
     Q_OBJECT
 public:
     static KNotificationManager *self();
-    ~KNotificationManager();
+    ~KNotificationManager() override;
 
     KNotificationPlugin *pluginForAction(const QString &action);
 

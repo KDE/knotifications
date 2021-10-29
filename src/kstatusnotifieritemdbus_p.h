@@ -58,7 +58,7 @@ class KStatusNotifierItemDBus : public QObject
 
 public:
     explicit KStatusNotifierItemDBus(KStatusNotifierItem *parent);
-    ~KStatusNotifierItemDBus();
+    ~KStatusNotifierItemDBus() override;
 
     /**
      * @return the dbus connection used by this object

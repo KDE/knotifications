@@ -13,7 +13,7 @@ public:
         : QObject()
     {
     }
-    ~Test()
+    ~Test() override
     {
     }
 

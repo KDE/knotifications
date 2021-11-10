@@ -8,7 +8,7 @@
 import QtQuick 2.0
 
 import QtQuick.Window 2.14
-import QtQuick.Controls 2.10
+import QtQuick.Controls 2.14
 import QtQuick.Layouts 1.11
 
 import org.kde.notification 1.0
@@ -42,7 +42,7 @@ ApplicationWindow {
             defaultAction: "Default Action"
             actions: ["Action 1", "Action 2", "Action 3"]
             flags: (persistentFlag.checked ? Notification.Persistent : Notification.CloseOnTimeout) | (skipGroupingFlag ? Notification.SkipGrouping : 0)
-            urgency: Notification.DefaultUrgency
+            urgency: urgencyCombo.currentValue
 
             onClosed: log.append("Notification closed.")
             onDefaultActivated: log.append("Default action activated.")
@@ -89,10 +89,10 @@ ApplicationWindow {
             ListElement { name: "Critical"; value: Notification.CriticalUrgency }
         }
         ComboBox {
+            id: urgencyCombo
             model: urgencyModel
             textRole: "name"
             valueRole: "value"
-            onCurrentValueChanged: basicNotification.urgency = currentValue
         }
 
         RowLayout {
@@ -112,6 +112,7 @@ ApplicationWindow {
             eventId: "notification"
             title: titleField.text
             text: textField.text
+            urgency: urgencyCombo.currentValue
             replyAction {
                 label: "Reply"
                 placeholderText: "Reply to chat group..."

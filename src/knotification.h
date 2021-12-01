@@ -87,6 +87,10 @@ class KNOTIFICATIONS_EXPORT KNotification : public QObject
      * @seince 5.88
      */
     Q_PROPERTY(bool autoDelete READ isAutoDelete WRITE setAutoDelete NOTIFY autoDeleteChanged)
+    /**
+     * @since 5.90
+     */
+    Q_PROPERTY(QString xdgActivationToken READ xdgActivationToken NOTIFY xdgActivationTokenChanged)
 
 public:
     /**
@@ -540,6 +544,12 @@ public:
      */
     void setAutoDelete(bool autoDelete);
 
+    /**
+     * Returns the activation token to use to activate a window.
+     * @since 5.90
+     */
+    QString xdgActivationToken() const;
+
 Q_SIGNALS:
 #if KNOTIFICATIONS_ENABLE_DEPRECATED_SINCE(5, 76)
     /**
@@ -649,6 +659,11 @@ Q_SIGNALS:
      * @since 5.88
      */
     void autoDeleteChanged();
+    /**
+     * Emitted when @p xdgActivationToken changes.
+     * @since 5.90
+     */
+    void xdgActivationTokenChanged();
 
 public Q_SLOTS:
     /**
@@ -722,6 +737,7 @@ public Q_SLOTS:
     QVariantMap hints() const;
 
 private:
+    friend class KNotificationManager;
     struct Private;
     Private *const d;
 

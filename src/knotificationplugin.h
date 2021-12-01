@@ -98,6 +98,8 @@ Q_SIGNALS:
      */
     void actionInvoked(int id, int action);
 
+    void xdgActivationTokenReceived(int id, const QString &token);
+
     void replied(int id, const QString &text);
 
 private:

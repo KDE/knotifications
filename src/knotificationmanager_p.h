@@ -53,6 +53,7 @@ public:
 
 private Q_SLOTS:
     void notificationClosed();
+    void xdgActivationTokenReceived(int id, const QString &token);
     void notificationActivated(int id, int action);
     void notificationReplied(int id, const QString &text);
     void notifyPluginFinished(KNotification *notification);

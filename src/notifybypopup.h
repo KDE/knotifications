@@ -37,6 +37,7 @@ public:
 private Q_SLOTS:
     // slot which gets called when DBus signals that some notification action was invoked
     void onNotificationActionInvoked(uint notificationId, const QString &actionKey);
+    void onNotificationActionTokenReceived(uint notificationId, const QString &xdgActionToken);
     // slot which gets called when DBus signals that some notification was closed
     void onNotificationClosed(uint, uint);
     void onNotificationReplied(uint notificationId, const QString &text);

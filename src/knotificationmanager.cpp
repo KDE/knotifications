@@ -8,6 +8,7 @@
 */
 
 #include "knotification.h"
+#include "knotification_p.h"
 #include "knotificationmanager_p.h"
 
 #include <config-knotifications.h>
@@ -115,6 +116,7 @@ KNotificationPlugin *KNotificationManager::pluginForAction(const QString &action
     auto addPlugin = [this](KNotificationPlugin *plugin) {
         d->notifyPlugins[plugin->optionName()] = plugin;
         connect(plugin, &KNotificationPlugin::finished, this, &KNotificationManager::notifyPluginFinished);
+        connect(plugin, &KNotificationPlugin::xdgActivationTokenReceived, this, &KNotificationManager::xdgActivationTokenReceived);
         connect(plugin, &KNotificationPlugin::actionInvoked, this, &KNotificationManager::notificationActivated);
         connect(plugin, &KNotificationPlugin::replied, this, &KNotificationManager::notificationReplied);
     };
@@ -239,6 +241,16 @@ void KNotificationManager::notificationActivated(int id, int action)
         if (!n->hints().value(QStringLiteral("resident")).toBool()) {
             close(id);
         }
+    }
+}
+
+void KNotificationManager::xdgActivationTokenReceived(int id, const QString &token)
+{
+    KNotification *n = d->notifications.value(id);
+    if (n) {
+        qCDebug(LOG_KNOTIFICATIONS) << "Token received for" << id << token;
+        n->d->xdgActivationToken = token;
+        Q_EMIT n->xdgActivationTokenChanged();
     }
 }
 

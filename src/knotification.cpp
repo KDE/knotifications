@@ -16,54 +16,22 @@
 */
 
 #include "knotification.h"
+#include "knotification_p.h"
 #include "knotificationmanager_p.h"
 #include "knotificationreplyaction.h"
 
-#include <QCoreApplication>
+#include <KWindowSystem>
+#include <QGuiApplication>
 
 #include <QStringList>
 #ifdef QT_WIDGETS_LIB
 #include <QTabWidget>
 #endif
-#include <QTimer>
 #include <QUrl>
 
 // incremental notification ID
 static int notificationIdCounter = 0;
 
-struct Q_DECL_HIDDEN KNotification::Private {
-    QString eventId;
-    int id = -1;
-    int ref = 0;
-
-    QWidget *widget = nullptr;
-    QString title;
-    QString text;
-    QString iconName;
-    QString defaultAction;
-    QStringList actions;
-    std::unique_ptr<KNotificationReplyAction> replyAction;
-    QPixmap pixmap;
-    ContextList contexts;
-    NotificationFlags flags = KNotification::CloseOnTimeout;
-    QString componentName;
-    KNotification::Urgency urgency = KNotification::DefaultUrgency;
-    QVariantMap hints;
-
-    QTimer updateTimer;
-    bool needUpdate = false;
-    bool isNew = true;
-    bool autoDelete = true;
-
-#if KNOTIFICATIONS_BUILD_DEPRECATED_SINCE(5, 67)
-    /**
-     * recursive function that raise the widget. @p w
-     *
-     * @see raiseWidget()
-     */
-    static void raiseWidget(QWidget *w);
-#endif
-};
 
 #if KNOTIFICATIONS_BUILD_DEPRECATED_SINCE(5, 75)
 KNotification::KNotification(const QString &eventId, QWidget *parent, const NotificationFlags &flags)
@@ -77,6 +45,10 @@ KNotification::KNotification(const QString &eventId, QWidget *parent, const Noti
     d->updateTimer.setSingleShot(true);
     d->updateTimer.setInterval(100);
     d->id = ++notificationIdCounter;
+
+    if (KWindowSystem::isPlatformWayland()) {
+        setHint(QStringLiteral("x-kde-xdgTokenAppId"), QGuiApplication::desktopFileName());
+    }
 }
 #endif
 
@@ -90,6 +62,10 @@ KNotification::KNotification(const QString &eventId, const NotificationFlags &fl
     d->updateTimer.setSingleShot(true);
     d->updateTimer.setInterval(100);
     d->id = ++notificationIdCounter;
+
+    if (KWindowSystem::isPlatformWayland()) {
+        setHint(QStringLiteral("x-kde-xdgTokenAppId"), QGuiApplication::desktopFileName());
+    }
 }
 
 KNotification::~KNotification()
@@ -390,7 +366,7 @@ void KNotification::raiseWidget()
         return;
     }
 
-    Private::raiseWidget(d->widget);
+    d->Private::raiseWidget(d->widget);
 }
 #endif
 
@@ -400,7 +376,10 @@ void KNotification::Private::raiseWidget(QWidget *w)
     // TODO  this function is far from finished.
     if (w->isTopLevel()) {
         w->raise();
-        w->activateWindow();
+        if (!xdgActivationToken.isEmpty()) {
+            KWindowSystem::setCurrentXdgActivationToken(xdgActivationToken);
+        }
+        KWindowSystem::activateWindow(w->winId());
     } else {
         QWidget *pw = w->parentWidget();
         raiseWidget(pw);
@@ -639,4 +618,9 @@ void KNotification::setHint(const QString &hint, const QVariant &value)
 QVariantMap KNotification::hints() const
 {
     return d->hints;
+}
+
+QString KNotification::xdgActivationToken() const
+{
+    return d->xdgActivationToken;
 }

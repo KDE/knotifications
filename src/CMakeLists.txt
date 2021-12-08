@@ -22,7 +22,7 @@ if (NOT ANDROID)
         kstatusnotifieritem.cpp)
 endif()
 
-if (TARGET Qt5::DBus)
+if (TARGET Qt${QT_MAJOR_VERSION}::DBus)
   target_sources(KF5Notifications PRIVATE
     kstatusnotifieritemdbus_p.cpp
     knotificationrestrictions.cpp
@@ -74,7 +74,7 @@ if (Qt5TextToSpeech_FOUND)
     )
 endif()
 
-if (TARGET Qt5::DBus)
+if (TARGET Qt${QT_MAJOR_VERSION}::DBus)
   if (dbusmenu-qt5_FOUND)
     message("dbusmenu-qt5_FOUND")
     set(HAVE_DBUSMENUQT 1)
@@ -107,14 +107,14 @@ ecm_generate_export_header(KF5Notifications
     EXCLUDE_DEPRECATED_BEFORE_AND_AT ${EXCLUDE_DEPRECATED_BEFORE_AND_AT}
 )
 
-target_include_directories(KF5Notifications INTERFACE "$<INSTALL_INTERFACE:${KDE_INSTALL_INCLUDEDIR_KF5}/KNotifications>")
+target_include_directories(KF5Notifications INTERFACE "$<INSTALL_INTERFACE:${KDE_INSTALL_INCLUDEDIR_KF}/KNotifications>")
 
-target_link_libraries(KF5Notifications PUBLIC Qt5::Gui)
-if (TARGET Qt5::Widgets)
-    target_link_libraries(KF5Notifications PUBLIC Qt5::Widgets)
+target_link_libraries(KF5Notifications PUBLIC Qt${QT_MAJOR_VERSION}::Gui)
+if (TARGET Qt${QT_MAJOR_VERSION}::Widgets)
+    target_link_libraries(KF5Notifications PUBLIC Qt${QT_MAJOR_VERSION}::Widgets)
 endif()
-if (TARGET Qt5::DBus)
-   target_link_libraries(KF5Notifications PUBLIC Qt5::DBus)
+if (TARGET Qt${QT_MAJOR_VERSION}::DBus)
+   target_link_libraries(KF5Notifications PUBLIC Qt${QT_MAJOR_VERSION}::DBus)
 endif()
 target_link_libraries(KF5Notifications PRIVATE
    KF5::CoreAddons
@@ -126,7 +126,7 @@ if (TARGET KF5::WindowSystem)
 endif()
 
 if (TARGET SnoreToast::SnoreToastActions)
-  target_link_libraries(KF5Notifications PRIVATE Qt5::Network SnoreToast::SnoreToastActions)
+  target_link_libraries(KF5Notifications PRIVATE Qt${QT_MAJOR_VERSION}::Network SnoreToast::SnoreToastActions)
 endif ()
 
 if (Phonon4Qt5_FOUND)
@@ -144,7 +144,12 @@ if (Qt5TextToSpeech_FOUND)
 endif()
 
 if(X11_FOUND)
-   target_link_libraries(KF5Notifications PRIVATE ${X11_X11_LIB} Qt5::X11Extras)
+   target_link_libraries(KF5Notifications PRIVATE ${X11_X11_LIB})
+    if (TARGET Qt5::X11Extras)
+        target_link_libraries(KF5Notifications PRIVATE Qt5::X11Extras)
+    elseif (TARGET Qt6::Gui)
+        target_link_libraries(KF5Notifications PRIVATE Qt6::GuiPrivate) # qtx11extras_p.h
+    endif()
 endif()
 
 if(APPLE)
@@ -187,7 +192,7 @@ install(TARGETS KF5Notifications EXPORT KF5NotificationsTargets ${KF5_INSTALL_TA
 install(FILES
   ${CMAKE_CURRENT_BINARY_DIR}/knotifications_export.h
   ${KNotifications_HEADERS}
-  DESTINATION ${KDE_INSTALL_INCLUDEDIR_KF5}/KNotifications COMPONENT Devel
+  DESTINATION ${KDE_INSTALL_INCLUDEDIR_KF}/KNotifications COMPONENT Devel
 )
 
 ecm_qt_install_logging_categories(
@@ -223,7 +228,7 @@ if(BUILD_QCH)
     )
 endif()
 
-if (TARGET Qt5::DBus)
+if (TARGET Qt${QT_MAJOR_VERSION}::DBus)
     install(FILES
         org.kde.StatusNotifierItem.xml
         DESTINATION ${KDE_INSTALL_DBUSINTERFACEDIR}
@@ -238,11 +243,11 @@ endif()
 if (NOT ANDROID)
     install(FILES
         knotificationplugin.desktop
-        DESTINATION ${KDE_INSTALL_KSERVICETYPES5DIR})
+        DESTINATION ${KDE_INSTALL_KSERVICETYPESDIR})
 endif()
 
 include(ECMGeneratePriFile)
-ecm_generate_pri_file(BASE_NAME KNotifications LIB_NAME KF5Notifications DEPS "widgets" FILENAME_VAR PRI_FILENAME INCLUDE_INSTALL_DIR ${KDE_INSTALL_INCLUDEDIR_KF5}/KNotifications)
+ecm_generate_pri_file(BASE_NAME KNotifications LIB_NAME KF5Notifications DEPS "widgets" FILENAME_VAR PRI_FILENAME INCLUDE_INSTALL_DIR ${KDE_INSTALL_INCLUDEDIR_KF}/KNotifications)
 install(FILES ${PRI_FILENAME} DESTINATION ${ECM_MKSPECS_INSTALL_DIR})
 
 if (ANDROID)
@@ -252,6 +257,6 @@ if (ANDROID)
     )
 endif()
 
-if (TARGET Qt5::Qml)
+if (TARGET Qt${QT_MAJOR_VERSION}::Qml)
     add_subdirectory(qml)
 endif()

@@ -38,27 +38,32 @@ set(REQUIRED_QT_VERSION 5.15.2)
 set(CMAKE_AUTORCC TRUE)
 
 if (ANDROID)
-    find_package(Qt5 ${REQUIRED_QT_VERSION} CONFIG REQUIRED Gui AndroidExtras)
+    find_package(Qt${QT_MAJOR_VERSION} ${REQUIRED_QT_VERSION} CONFIG REQUIRED Gui AndroidExtras)
     find_package(Gradle REQUIRED)
-    find_package(Qt5 ${REQUIRED_QT_VERSION} QUIET OPTIONAL_COMPONENTS Widgets)
-    if (NOT TARGET Qt5::Widgets AND EXCLUDE_DEPRECATED_BEFORE_AND_AT EQUAL 0)
+    find_package(Qt${QT_MAJOR_VERSION} ${REQUIRED_QT_VERSION} QUIET OPTIONAL_COMPONENTS Widgets)
+    if (NOT TARGET Qt${QT_MAJOR_VERSION}::Widgets AND EXCLUDE_DEPRECATED_BEFORE_AND_AT EQUAL 0)
         set(EXCLUDE_DEPRECATED_BEFORE_AND_AT 5.79.0)
     endif()
 else()
-    find_package(Qt5 ${REQUIRED_QT_VERSION} CONFIG REQUIRED Widgets)
+    find_package(Qt${QT_MAJOR_VERSION} ${REQUIRED_QT_VERSION} CONFIG REQUIRED Widgets)
 endif()
 
 if (NOT ANDROID AND NOT WIN32)
-    find_package(Qt5 ${REQUIRED_QT_VERSION} CONFIG REQUIRED DBus)
+    find_package(Qt${QT_MAJOR_VERSION} ${REQUIRED_QT_VERSION} CONFIG REQUIRED DBus)
 endif()
 
-find_package(Qt5 ${REQUIRED_QT_VERSION} QUIET OPTIONAL_COMPONENTS Qml TextToSpeech)
-set_package_properties(Qt5TextToSpeech PROPERTIES
-   DESCRIPTION "Qt text to speech module"
-   TYPE OPTIONAL
-   PURPOSE "Required to build text to speech notification support")
-if (Qt5TextToSpeech_FOUND)
-  add_definitions(-DHAVE_SPEECH)
+find_package(Qt${QT_MAJOR_VERSION} ${REQUIRED_QT_VERSION} QUIET OPTIONAL_COMPONENTS Qml)
+
+# QTextToSpeech doesn't exist in Qt 6.2
+if (QT_MAJOR_VERSION STREQUAL "5")
+    find_package(Qt5 ${REQUIRED_QT_VERSION} QUIET OPTIONAL_COMPONENTS TextToSpeech)
+    set_package_properties(Qt5TextToSpeech PROPERTIES
+    DESCRIPTION "Qt text to speech module"
+    TYPE OPTIONAL
+    PURPOSE "Required to build text to speech notification support")
+    if (TARGET Qt5::TextToSpeech)
+        add_definitions(-DHAVE_SPEECH)
+    endif()
 endif()
 
 include(KDEInstallDirs)
@@ -73,18 +78,22 @@ endif()
 set(HAVE_X11 ${X11_FOUND})
 set(HAVE_XTEST ${X11_XTest_FOUND})
 if(X11_FOUND)
-   find_package(Qt5X11Extras ${REQUIRED_QT_VERSION} REQUIRED NO_MODULE)
+    if (QT_MAJOR_VERSION STREQUAL "5")
+        find_package(Qt5X11Extras ${REQUIRED_QT_VERSION} NO_MODULE REQUIRED)
+    elseif (QT_MAJOR_VERSION STREQUAL "6")
+        find_package(Qt${QT_MAJOR_VERSION} ${REQUIRED_QT_VERSION} CONFIG REQUIRED Gui) # qtx11extras_p.h
+    endif()
 endif()
 if(APPLE)
    find_package(Qt5MacExtras ${REQUIRED_QT_VERSION} REQUIRED NO_MODULE)
 endif()
 if (WIN32)
     find_package(LibSnoreToast)
-    find_package(Qt5Network REQUIRED)
+    find_package(Qt${QT_MAJOR_VERSION}Network REQUIRED)
     
     include(CMakeDependentOption)
     cmake_dependent_option(WITH_SNORETOAST "for the Windows Toast Notifications" ON
-                           "Qt5Network_FOUND;LibSnoreToast_FOUND" OFF
+                           "Qt${QT_MAJOR_VERSION}Network_FOUND;LibSnoreToast_FOUND" OFF
     )    
 endif()
 
@@ -98,7 +107,7 @@ find_package(KF5Config ${KF_DEP_VERSION} REQUIRED)
 find_package(KF5CoreAddons ${KF_DEP_VERSION} REQUIRED)
 
 if (NOT ANDROID AND NOT WIN32 OR (WIN32 AND NOT WITH_SNORETOAST))
-    find_package(Qt5 ${REQUIRED_QT_VERSION} CONFIG REQUIRED DBus)
+    find_package(Qt${QT_MAJOR_VERSION} ${REQUIRED_QT_VERSION} CONFIG REQUIRED DBus)
     find_package(Canberra)
     set_package_properties(Canberra PROPERTIES
         PURPOSE "Needed to build audio notification support"
@@ -116,6 +125,7 @@ if (NOT ANDROID AND NOT WIN32 OR (WIN32 AND NOT WITH_SNORETOAST))
 endif()
 
 set(HAVE_DBUS FALSE)
+# dbusmenu-qt5 needs to be built with Qt6 first
 if (TARGET Qt5::DBus)
     find_package(dbusmenu-qt5 CONFIG)
     set_package_properties(dbusmenu-qt5 PROPERTIES DESCRIPTION "DBusMenuQt"
@@ -125,7 +135,7 @@ if (TARGET Qt5::DBus)
     set(HAVE_DBUS TRUE)
 endif()
 set(HAVE_WIDGETS FALSE)
-if (TARGET Qt5::Widgets)
+if (TARGET Qt${QT_MAJOR_VERSION}::Widgets)
     set(HAVE_WIDGETS TRUE)
 endif()
 
@@ -175,7 +185,7 @@ install(EXPORT KF5NotificationsTargets DESTINATION "${CMAKECONFIG_INSTALL_DIR}" 
 
 install(FILES
    ${CMAKE_CURRENT_BINARY_DIR}/knotifications_version.h
-  DESTINATION ${KDE_INSTALL_INCLUDEDIR_KF5} COMPONENT Devel
+  DESTINATION ${KDE_INSTALL_INCLUDEDIR_KF} COMPONENT Devel
 )
 
 feature_summary(WHAT ALL INCLUDE_QUIET_PACKAGES FATAL_ON_MISSING_REQUIRED_PACKAGES)

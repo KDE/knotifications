@@ -7,7 +7,7 @@ target_sources(knotificationqmlplugin PRIVATE
 )
 target_link_libraries(knotificationqmlplugin PRIVATE
     KF5Notifications
-    Qt5::Qml
+    Qt${QT_MAJOR_VERSION}::Qml
 )
 
 install(TARGETS knotificationqmlplugin DESTINATION ${KDE_INSTALL_QMLDIR}/org/kde/notification)

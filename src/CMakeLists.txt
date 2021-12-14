@@ -122,7 +122,6 @@ target_link_libraries(KF5Notifications PRIVATE
 )
 
 if (TARGET KF5::WindowSystem)
-    target_compile_definitions(KF5Notifications PRIVATE -DWITH_KWINDOWSYSTEM)
     target_link_libraries(KF5Notifications PRIVATE KF5::WindowSystem)
 endif()
 

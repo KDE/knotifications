@@ -20,7 +20,9 @@
 #include "knotificationmanager_p.h"
 #include "knotificationreplyaction.h"
 
+#if defined(WITH_KWINDOWSYSTEM)
 #include <KWindowSystem>
+#endif
 #include <QGuiApplication>
 
 #include <QStringList>
@@ -46,9 +48,11 @@ KNotification::KNotification(const QString &eventId, QWidget *parent, const Noti
     d->updateTimer.setInterval(100);
     d->id = ++notificationIdCounter;
 
+#if defined(WITH_KWINDOWSYSTEM)
     if (KWindowSystem::isPlatformWayland()) {
         setHint(QStringLiteral("x-kde-xdgTokenAppId"), QGuiApplication::desktopFileName());
     }
+#endif
 }
 #endif
 
@@ -63,9 +67,11 @@ KNotification::KNotification(const QString &eventId, const NotificationFlags &fl
     d->updateTimer.setInterval(100);
     d->id = ++notificationIdCounter;
 
+#if defined(WITH_KWINDOWSYSTEM)
     if (KWindowSystem::isPlatformWayland()) {
         setHint(QStringLiteral("x-kde-xdgTokenAppId"), QGuiApplication::desktopFileName());
     }
+#endif
 }
 
 KNotification::~KNotification()
@@ -376,10 +382,12 @@ void KNotification::Private::raiseWidget(QWidget *w)
     // TODO  this function is far from finished.
     if (w->isTopLevel()) {
         w->raise();
+#if defined(WITH_KWINDOWSYSTEM)
         if (!xdgActivationToken.isEmpty()) {
             KWindowSystem::setCurrentXdgActivationToken(xdgActivationToken);
         }
         KWindowSystem::activateWindow(w->winId());
+#endif
     } else {
         QWidget *pw = w->parentWidget();
         raiseWidget(pw);

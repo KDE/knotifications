@@ -13,7 +13,6 @@
 
 #include <config-knotifications.h>
 
-#include <KPluginLoader>
 #include <KPluginMetaData>
 #include <QFileInfo>
 #include <QHash>

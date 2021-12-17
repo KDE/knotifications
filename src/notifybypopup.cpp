@@ -30,7 +30,7 @@ NotifyByPopup::NotifyByPopup(QObject *parent)
     m_dbusServiceCapCacheDirty = true;
 
     connect(&m_dbusInterface, &org::freedesktop::Notifications::ActionInvoked, this, &NotifyByPopup::onNotificationActionInvoked);
-    connect(&m_dbusInterface, &org::freedesktop::Notifications::ActionToken, this, &NotifyByPopup::onNotificationActionTokenReceived);
+    connect(&m_dbusInterface, &org::freedesktop::Notifications::ActivationToken, this, &NotifyByPopup::onNotificationActionTokenReceived);
 
     // TODO can we check if this actually worked?
     // probably not as this just does a DBus filter which will work but the signal might still get caught in apparmor :/

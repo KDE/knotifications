@@ -14,10 +14,9 @@
       <arg name="id" type="u" direction="out"/>
       <arg name="text" type="s" direction="out"/>
     </signal>
-    <!-- non-standard -->
-    <signal name="ActionToken">
+    <signal name="ActivationToken">
       <arg name="id" type="u" direction="out"/>
-      <arg name="xdg_activation_v1_token" type="s" direction="out"/>
+      <arg name="activation_token" type="s" direction="out"/>
     </signal>
     <method name="Notify">
       <annotation name="org.qtproject.QtDBus.QtTypeName.In6" value="QVariantMap"/>

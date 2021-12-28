@@ -37,7 +37,7 @@ if (NOT @BUILD_SHARED_LIBS@)
     endif()
 
     if(@X11_FOUND@)
-        if (@Qt5X11Extras_FOUND@)
+        if (NOT TARGET Qt6::Gui)
             find_dependency(Qt5X11Extras @REQUIRED_QT_VERSION@)
         else()
             # qtx11extras_p.h is in QtGuiPrivate, and QtGui is already a dependency

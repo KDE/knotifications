@@ -1,0 +1,71 @@
+# translation of kdelibs4.po to தமிழ்
+# Copyright (C) 2000,2002, 2004, 2007, 2008 Free Software Foundation, Inc.
+#
+# Sivakumar Shanmugasundaram <sshanmu@yahoo.com>, 2000.
+# Thuraiappah Vaseeharan <t_vasee@yahoo.com>, 2000-2001.
+# ம. ஸ்ரீ ராமதாஸ் | Sri Ramadoss M <amachu@yavarkkum.org>, 2007-2012
+msgid ""
+msgstr ""
+"Project-Id-Version: kdelibs4\n"
+"Report-Msgid-Bugs-To: http://bugs.kde.org\n"
+"POT-Creation-Date: 2014-03-23 01:50+0000\n"
+"PO-Revision-Date: 2012-03-25 21:39+0530\n"
+"Last-Translator: Sri Ramadoss M <amachu@yavarkkum.org>\n"
+"Language-Team: Tamil <podhu@madaladal.yavarkkum.org>\n"
+"Language: ta\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: Lokalize 1.2\n"
+"X-Qt-Contexts: true\n"
+
+#. Job name, e.g. Copying has failed
+#: knotificationjobuidelegate.cpp:28
+#, fuzzy, qt-format
+#| msgid "%1 (Link)"
+msgctxt "KNotificationJobUiDelegate|"
+msgid "%1 (Failed)"
+msgstr "%1 (இணைப்பு) "
+
+#: knotificationrestrictions.cpp:187
+#, fuzzy
+#| msgid "Unknown Application"
+msgctxt "KNotificationRestrictions|"
+msgid "Unknown Application"
+msgstr "அறியப்படாத பயன்பாடு"
+
+#: kstatusnotifieritem.cpp:515 kstatusnotifieritem.cpp:1116
+#, fuzzy
+#| msgid "&Minimize"
+msgctxt "KStatusNotifierItem|@action:inmenu"
+msgid "&Minimize"
+msgstr "&சிறிதாக்கு"
+
+#: kstatusnotifieritem.cpp:856
+#, fuzzy
+#| msgid "Quit"
+msgctxt "KStatusNotifierItem|@action:inmenu"
+msgid "Quit"
+msgstr "வெளிவருக"
+
+#: kstatusnotifieritem.cpp:1114
+#, fuzzy
+#| msgid "&Restore"
+msgctxt "KStatusNotifierItem|@action:inmenu"
+msgid "&Restore"
+msgstr "&மீட்டமை"
+
+#: kstatusnotifieritem.cpp:1128
+#, fuzzy, qt-format
+#| msgid "<qt>Are you sure you want to quit <b>%1</b>?</qt>"
+msgctxt "KStatusNotifierItem|"
+msgid "<qt>Are you sure you want to quit <b>%1</b>?</qt>"
+msgstr "<qt><b>%1</b> விட்டு விலக விரும்புகிறீர்களா?</qt>"
+
+#: kstatusnotifieritem.cpp:1130
+#, fuzzy
+#| msgid "Confirm Quit From System Tray"
+msgctxt "KStatusNotifierItem|@title:window"
+msgid "Confirm Quit From System Tray"
+msgstr "அமைப்பின் இழுதியிலிருந்து வெளிவருவதை உறுதி செய்க"

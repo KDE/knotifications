@@ -1,0 +1,72 @@
+# translation of kdelibs4.po to Irish
+# Translation of kdelibs4.po to Irish
+# Copyright (C) 1999,2003,2004 Free Software Foundation, Inc.
+# Sean V. Kelley <s_oceallaigh@yahoo.com>, 1999
+# Séamus Ó Ciardhuáin <seoc at iolfree.ie>, 2003,2004
+# Kevin Scannell <kscanne@gmail.com>, 2004-2009
+msgid ""
+msgstr ""
+"Project-Id-Version: kdelibs4\n"
+"Report-Msgid-Bugs-To: http://bugs.kde.org\n"
+"POT-Creation-Date: 2014-03-23 01:50+0000\n"
+"PO-Revision-Date: 2004-12-14 09:11-0600\n"
+"Last-Translator: Kevin Scannell <kscanne@gmail.com>\n"
+"Language-Team: Irish <gaeilge-gnulinux@lists.sourceforge.net>\n"
+"Language: ga\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: KBabel 1.9.1\n"
+"Plural-Forms: nplurals=5; plural=n==1 ? 0 : n==2 ? 1 : n<7 ? 2 : n < 11 ? "
+"3 : 4\n"
+"X-Qt-Contexts: true\n"
+
+#. Job name, e.g. Copying has failed
+#: knotificationjobuidelegate.cpp:28
+#, fuzzy, qt-format
+#| msgid "%1 (Link)"
+msgctxt "KNotificationJobUiDelegate|"
+msgid "%1 (Failed)"
+msgstr "%1 (Nasc)"
+
+#: knotificationrestrictions.cpp:187
+#, fuzzy
+#| msgid "Unknown Application"
+msgctxt "KNotificationRestrictions|"
+msgid "Unknown Application"
+msgstr "Feidhmchlár Anaithnid"
+
+#: kstatusnotifieritem.cpp:515 kstatusnotifieritem.cpp:1116
+#, fuzzy
+#| msgid "&Minimize"
+msgctxt "KStatusNotifierItem|@action:inmenu"
+msgid "&Minimize"
+msgstr "Íos&laghdaigh"
+
+#: kstatusnotifieritem.cpp:856
+#, fuzzy
+#| msgid "Quit"
+msgctxt "KStatusNotifierItem|@action:inmenu"
+msgid "Quit"
+msgstr "Scoir"
+
+#: kstatusnotifieritem.cpp:1114
+#, fuzzy
+#| msgid "&Restore"
+msgctxt "KStatusNotifierItem|@action:inmenu"
+msgid "&Restore"
+msgstr "Athchói&righ"
+
+#: kstatusnotifieritem.cpp:1128
+#, fuzzy, qt-format
+#| msgid "<qt>Are you sure you want to quit <b>%1</b>?</qt>"
+msgctxt "KStatusNotifierItem|"
+msgid "<qt>Are you sure you want to quit <b>%1</b>?</qt>"
+msgstr "<qt>An bhfuil tú cinnte gur mian leat <b>%1</b> a scor?</qt>"
+
+#: kstatusnotifieritem.cpp:1130
+#, fuzzy
+#| msgid "Confirm Quit From System Tray"
+msgctxt "KStatusNotifierItem|@title:window"
+msgid "Confirm Quit From System Tray"
+msgstr "Deimhnigh Scor ó thráidire an chórais"

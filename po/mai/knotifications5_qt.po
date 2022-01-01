@@ -1,0 +1,72 @@
+# translation of kdelibs4.po to Hindi
+# Copyright (C) YEAR This_file_is_part_of_KDE
+# This file is distributed under the same license as the PACKAGE package.
+#
+# Sangeeta Kumari <sangeeta09@gmail.com>, 2008.
+# Rajesh Ranjan <rajesh672@gmail.com>, 2010.
+# Rajesh Ranjan <rranjan@redhat.com>, 2010.
+msgid ""
+msgstr ""
+"Project-Id-Version: kdelibs4\n"
+"Report-Msgid-Bugs-To: http://bugs.kde.org\n"
+"POT-Creation-Date: 2014-03-23 01:50+0000\n"
+"PO-Revision-Date: 2010-09-24 15:44+0530\n"
+"Last-Translator: Rajesh Ranjan <rranjan@redhat.com>\n"
+"Language-Team: Hindi <fedora-trans-hi@redhat.com>\n"
+"Language: mai\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n!=1);\n"
+"X-Generator: KBabel 1.11.4\n"
+"X-Qt-Contexts: true\n"
+
+#. Job name, e.g. Copying has failed
+#: knotificationjobuidelegate.cpp:28
+#, fuzzy, qt-format
+#| msgid "%1 (Link)"
+msgctxt "KNotificationJobUiDelegate|"
+msgid "%1 (Failed)"
+msgstr "%1 (लिंक )"
+
+#: knotificationrestrictions.cpp:187
+#, fuzzy
+#| msgid "KDE Application"
+msgctxt "KNotificationRestrictions|"
+msgid "Unknown Application"
+msgstr "केडीइ अनुप्रयोग"
+
+#: kstatusnotifieritem.cpp:515 kstatusnotifieritem.cpp:1116
+#, fuzzy
+#| msgid "&Minimize"
+msgctxt "KStatusNotifierItem|@action:inmenu"
+msgid "&Minimize"
+msgstr "न्यूनतम (&M)"
+
+#: kstatusnotifieritem.cpp:856
+#, fuzzy
+#| msgid "Quit"
+msgctxt "KStatusNotifierItem|@action:inmenu"
+msgid "Quit"
+msgstr "बाहर"
+
+#: kstatusnotifieritem.cpp:1114
+#, fuzzy
+#| msgid "&Restore"
+msgctxt "KStatusNotifierItem|@action:inmenu"
+msgid "&Restore"
+msgstr "घुराबू (&R)"
+
+#: kstatusnotifieritem.cpp:1128
+#, fuzzy, qt-format
+#| msgid "<qt>Are you sure you want to quit <b>%1</b>?</qt>"
+msgctxt "KStatusNotifierItem|"
+msgid "<qt>Are you sure you want to quit <b>%1</b>?</qt>"
+msgstr "<qt>की अहाँ सुनिश्चित छी जे अहाँ <b>%1</b> सँ बाहर जएनाइ चाहैत छी?</qt>"
+
+#: kstatusnotifieritem.cpp:1130
+#, fuzzy
+#| msgid "Confirm Quit From System Tray"
+msgctxt "KStatusNotifierItem|@title:window"
+msgid "Confirm Quit From System Tray"
+msgstr "तंत्र तश्तरी सँ बाहर जाए कए पुष्टि करू"

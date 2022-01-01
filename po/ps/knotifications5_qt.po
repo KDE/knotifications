@@ -1,0 +1,71 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR This_file_is_part_of_KDE
+# This file is distributed under the same license as the Kde package.
+# Zabeeh Khan <zabeehkhan@gmail.com>, 2008.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: kdelibs4\n"
+"Report-Msgid-Bugs-To: http://bugs.kde.org\n"
+"POT-Creation-Date: 2014-03-23 01:50+0000\n"
+"PO-Revision-Date: 2008-08-16 16:01-0800\n"
+"Last-Translator: Zabeeh Khan <zabeehkhan@gmail.com>\n"
+"Language-Team: Pashto <pathanisation@googlegroups.com>\n"
+"Language: ps\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Poedit-Language: Pashto, Pushto\n"
+"X-Poedit-Country: AFGHANISTAN\n"
+"X-Qt-Contexts: true\n"
+
+#. Job name, e.g. Copying has failed
+#: knotificationjobuidelegate.cpp:28
+#, fuzzy, qt-format
+#| msgid "%1 (Link)"
+msgctxt "KNotificationJobUiDelegate|"
+msgid "%1 (Failed)"
+msgstr "(تړنه) %1"
+
+#: knotificationrestrictions.cpp:187
+#, fuzzy
+#| msgid "Quit application"
+msgctxt "KNotificationRestrictions|"
+msgid "Unknown Application"
+msgstr "کاريال بندول"
+
+#: kstatusnotifieritem.cpp:515 kstatusnotifieritem.cpp:1116
+#, fuzzy
+#| msgid "&Minimize"
+msgctxt "KStatusNotifierItem|@action:inmenu"
+msgid "&Minimize"
+msgstr "ووړول"
+
+#: kstatusnotifieritem.cpp:856
+#, fuzzy
+#| msgid "Quit"
+msgctxt "KStatusNotifierItem|@action:inmenu"
+msgid "Quit"
+msgstr "وتل"
+
+#: kstatusnotifieritem.cpp:1114
+#, fuzzy
+#| msgid "&Restore"
+msgctxt "KStatusNotifierItem|@action:inmenu"
+msgid "&Restore"
+msgstr "بيازېرمل"
+
+#: kstatusnotifieritem.cpp:1128
+#, fuzzy, qt-format
+#| msgid "<qt>Are you sure you want to quit <b>%1</b>?</qt>"
+msgctxt "KStatusNotifierItem|"
+msgid "<qt>Are you sure you want to quit <b>%1</b>?</qt>"
+msgstr "<qt>بند کړﺉ؟ <b>%1</b> تاسو په ډاډمنه توګه غواړﺉ چې</qt>"
+
+#: kstatusnotifieritem.cpp:1130
+#, fuzzy
+#| msgid "Confirm Quit From System Tray"
+msgctxt "KStatusNotifierItem|@title:window"
+msgid "Confirm Quit From System Tray"
+msgstr "د غونډال مجمې نه بندول باوري کړﺉ"

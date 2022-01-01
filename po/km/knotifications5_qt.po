@@ -1,0 +1,68 @@
+# translation of kdelibs4.po to Khmer
+# Khoem Sokhem <khoemsokhem@khmeros.info>, 2008, 2009, 2010, 2011, 2012.
+msgid ""
+msgstr ""
+"Project-Id-Version: kdelibs4\n"
+"Report-Msgid-Bugs-To: http://bugs.kde.org\n"
+"POT-Creation-Date: 2014-03-23 01:50+0000\n"
+"PO-Revision-Date: 2012-06-27 10:04+0700\n"
+"Last-Translator: Khoem Sokhem <khoemsokhem@khmeros.info>\n"
+"Language-Team: Khmer\n"
+"Language: km\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"X-Generator: KBabel 1.11.4\n"
+"X-Language: km-KH\n"
+"X-Qt-Contexts: true\n"
+
+#. Job name, e.g. Copying has failed
+#: knotificationjobuidelegate.cpp:28
+#, fuzzy, qt-format
+#| msgid "%1 (Link)"
+msgctxt "KNotificationJobUiDelegate|"
+msgid "%1 (Failed)"
+msgstr "%1 (តំណ)"
+
+#: knotificationrestrictions.cpp:187
+#, fuzzy
+#| msgid "Unknown Application"
+msgctxt "KNotificationRestrictions|"
+msgid "Unknown Application"
+msgstr "មិន​ស្គាល់​កម្មវិធី"
+
+#: kstatusnotifieritem.cpp:515 kstatusnotifieritem.cpp:1116
+#, fuzzy
+#| msgid "&Minimize"
+msgctxt "KStatusNotifierItem|@action:inmenu"
+msgid "&Minimize"
+msgstr "បង្រួម​អប្បបរមា"
+
+#: kstatusnotifieritem.cpp:856
+#, fuzzy
+#| msgid "Quit"
+msgctxt "KStatusNotifierItem|@action:inmenu"
+msgid "Quit"
+msgstr "ចេញ"
+
+#: kstatusnotifieritem.cpp:1114
+#, fuzzy
+#| msgid "&Restore"
+msgctxt "KStatusNotifierItem|@action:inmenu"
+msgid "&Restore"
+msgstr "ស្តារ "
+
+#: kstatusnotifieritem.cpp:1128
+#, fuzzy, qt-format
+#| msgid "<qt>Are you sure you want to quit <b>%1</b>?</qt>"
+msgctxt "KStatusNotifierItem|"
+msgid "<qt>Are you sure you want to quit <b>%1</b>?</qt>"
+msgstr "<qt>តើ​អ្នក​ពិត​ជា​ចង់ចេញ​ពី <b>%1</b> ឬ ?</qt>"
+
+#: kstatusnotifieritem.cpp:1130
+#, fuzzy
+#| msgid "Confirm Quit From System Tray"
+msgctxt "KStatusNotifierItem|@title:window"
+msgid "Confirm Quit From System Tray"
+msgstr "អះអាង​ការ​ចេញ​ពី​ថាស​ប្រព័ន្ធ"

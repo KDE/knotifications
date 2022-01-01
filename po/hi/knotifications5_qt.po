@@ -1,0 +1,61 @@
+# translation of kdelibs4.po to Hindi
+# Copyright (C) YEAR This_file_is_part_of_KDE
+# This file is distributed under the same license as the PACKAGE package.
+#
+# Ravishankar Shrivastava <raviratlami@yahoo.com>, 2007.
+# Ravishankar Shrivastava <raviratlami@aol.in>, 2008.
+# G Karunakar <karunakar@indlinux.org>, 2009, 2010, 2012, 2020.
+# Raghavendra Kamath <raghu@raghukamath.com>, 2021.
+msgid ""
+msgstr ""
+"Project-Id-Version: kdelibs4\n"
+"Report-Msgid-Bugs-To: http://bugs.kde.org\n"
+"POT-Creation-Date: 2014-03-23 01:50+0000\n"
+"PO-Revision-Date: 2021-06-29 20:35+0530\n"
+"Last-Translator: Raghavendra Kamath <raghu@raghukamath.com>\n"
+"Language-Team: kde-hindi\n"
+"Language: hi\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n!=1);\n"
+"X-Generator: Lokalize 21.04.2\n"
+"X-Qt-Contexts: true\n"
+
+#. Job name, e.g. Copying has failed
+#: knotificationjobuidelegate.cpp:28
+#, qt-format
+msgctxt "KNotificationJobUiDelegate|"
+msgid "%1 (Failed)"
+msgstr "%1 (असफल)"
+
+#: knotificationrestrictions.cpp:187
+msgctxt "KNotificationRestrictions|"
+msgid "Unknown Application"
+msgstr "अज्ञात अनुप्रयोग"
+
+#: kstatusnotifieritem.cpp:515 kstatusnotifieritem.cpp:1116
+msgctxt "KStatusNotifierItem|@action:inmenu"
+msgid "&Minimize"
+msgstr "न्यूनतम (&M)"
+
+#: kstatusnotifieritem.cpp:856
+msgctxt "KStatusNotifierItem|@action:inmenu"
+msgid "Quit"
+msgstr "बाहर जाएँ"
+
+#: kstatusnotifieritem.cpp:1114
+msgctxt "KStatusNotifierItem|@action:inmenu"
+msgid "&Restore"
+msgstr "बहाल करें (&R)"
+
+#: kstatusnotifieritem.cpp:1128
+#, qt-format
+msgctxt "KStatusNotifierItem|"
+msgid "<qt>Are you sure you want to quit <b>%1</b>?</qt>"
+msgstr "<qt>क्या आप सुनिश्चित हैं कि आप <b>%1</b> से बाहर जाना चाहते हैं?</qt>"
+
+#: kstatusnotifieritem.cpp:1130
+msgctxt "KStatusNotifierItem|@title:window"
+msgid "Confirm Quit From System Tray"
+msgstr "सिस्टम तश्तरी से बाहर जाने की पुष्टि करें"

@@ -440,6 +440,17 @@ public Q_SLOTS:
      */
     virtual void activate(const QPoint &pos = QPoint());
 
+    /**
+     * Hides the main widget, if not already hidden.
+     *
+     * Stores some information about the window which otherwise would be lost due to unmapping
+     * from the window system. Use when toggling the main widget via activate(const QPoint &)
+     * is not wanted, but instead the hidden state should be reached in any case.
+     *
+     * @since 5.91
+     */
+    void hideAssociatedWidget();
+
 Q_SIGNALS:
     /**
      * Inform the host application that the mouse wheel

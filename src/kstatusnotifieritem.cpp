@@ -653,6 +653,14 @@ void KStatusNotifierItem::activate(const QPoint &pos)
     d->checkVisibility(pos);
 }
 
+void KStatusNotifierItem::hideAssociatedWidget()
+{
+    if (!d->associatedWidget) {
+        return;
+    }
+    d->minimizeRestore(false);
+}
+
 QString KStatusNotifierItem::providedToken() const
 {
 #ifdef QT_DBUS_LIB

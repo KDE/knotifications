@@ -12,6 +12,8 @@
 
 #include <QObject>
 
+#include <memory>
+
 class QString;
 
 class KNotificationReplyActionPrivate;
@@ -172,7 +174,7 @@ Q_SIGNALS:
     void fallbackBehaviorChanged();
 
 private:
-    KNotificationReplyActionPrivate *const d;
+    std::unique_ptr<KNotificationReplyActionPrivate> const d;
 };
 
 #endif // KNOTIFICATIONREPLYACTION_H

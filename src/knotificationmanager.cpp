@@ -98,10 +98,7 @@ KNotificationManager::KNotificationManager()
 #endif
 }
 
-KNotificationManager::~KNotificationManager()
-{
-    delete d;
-}
+KNotificationManager::~KNotificationManager() = default;
 
 KNotificationPlugin *KNotificationManager::pluginForAction(const QString &action)
 {

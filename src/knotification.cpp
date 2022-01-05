@@ -81,7 +81,6 @@ KNotification::~KNotification()
     if (d->id >= 0) {
         KNotificationManager::self()->close(d->id);
     }
-    delete d;
 }
 
 QString KNotification::eventId() const

@@ -70,7 +70,6 @@ KStatusNotifierItem::~KStatusNotifierItem()
     if (d->associatedWidget) {
         KWindowSystem::self()->disconnect(d->associatedWidget);
     }
-    delete d;
 }
 
 QString KStatusNotifierItem::id() const

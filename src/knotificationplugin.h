@@ -14,6 +14,8 @@
 
 #include "knotifications_export.h"
 
+#include <memory>
+
 class KNotification;
 class KNotificationPluginPrivate;
 class KNotifyConfig;
@@ -103,7 +105,7 @@ Q_SIGNALS:
     void replied(int id, const QString &text);
 
 private:
-    KNotificationPluginPrivate *const d;
+    std::unique_ptr<KNotificationPluginPrivate> const d;
 };
 
 #endif

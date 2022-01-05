@@ -14,6 +14,8 @@
 
 #include <QVariantList>
 
+#include <memory>
+
 class KNotification;
 class NotifyByPortalPrivate;
 
@@ -44,7 +46,7 @@ private:
     void notify(KNotification *notification, const KNotifyConfig &notifyConfig);
     void update(KNotification *notification, const KNotifyConfig &notifyConfig);
 
-    NotifyByPortalPrivate *const d;
+    std::unique_ptr<NotifyByPortalPrivate> const d;
 };
 
 #endif

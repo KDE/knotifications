@@ -82,8 +82,6 @@ KNotificationRestrictions::~KNotificationRestrictions()
     if (d->control & ScreenSaver) {
         d->stopScreenSaverPrevention();
     }
-
-    delete d;
 }
 
 void KNotificationRestrictions::Private::screensaverFakeKeyEvent()

@@ -257,10 +257,7 @@ KPassivePopup::KPassivePopup(WId win)
 {
 }
 
-KPassivePopup::~KPassivePopup()
-{
-    delete d;
-}
+KPassivePopup::~KPassivePopup() = default;
 
 void KPassivePopup::setPopupStyle(int popupstyle)
 {

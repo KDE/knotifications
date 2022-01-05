@@ -739,7 +739,7 @@ public Q_SLOTS:
 private:
     friend class KNotificationManager;
     struct Private;
-    Private *const d;
+    std::unique_ptr<Private> const d;
 
 protected:
     /**

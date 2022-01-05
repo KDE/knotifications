@@ -11,6 +11,8 @@
 
 #include <knotification.h>
 
+#include <memory>
+
 class KNotification;
 class QPixmap;
 class KNotificationPlugin;
@@ -61,7 +63,7 @@ private Q_SLOTS:
 
 private:
     struct Private;
-    Private *const d;
+    std::unique_ptr<Private> const d;
     KNotificationManager();
 
     friend class KNotificationManagerSingleton;

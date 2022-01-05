@@ -15,6 +15,8 @@
 #include <QFrame>
 #endif
 
+#include <memory>
+
 class QSystemTrayIcon;
 
 #if KNOTIFICATIONS_ENABLE_DEPRECATED_SINCE(5, 79)
@@ -411,7 +413,7 @@ protected:
 private:
     /* @internal */
     class Private;
-    Private *const d;
+    std::unique_ptr<Private> const d;
 };
 
 #endif

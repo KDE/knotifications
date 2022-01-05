@@ -124,10 +124,7 @@ NotifyByPortal::NotifyByPortal(QObject *parent)
     connect(watcher, &QDBusServiceWatcher::serviceOwnerChanged, this, &NotifyByPortal::onServiceOwnerChanged);
 }
 
-NotifyByPortal::~NotifyByPortal()
-{
-    delete d;
-}
+NotifyByPortal::~NotifyByPortal() = default;
 
 void NotifyByPortal::notify(KNotification *notification, KNotifyConfig *notifyConfig)
 {

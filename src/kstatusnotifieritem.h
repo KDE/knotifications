@@ -14,6 +14,8 @@
 
 #include <knotifications_export.h>
 
+#include <memory>
+
 class QAction;
 class QMenu;
 
@@ -473,7 +475,7 @@ protected:
     bool eventFilter(QObject *watched, QEvent *event) override;
 
 private:
-    KStatusNotifierItemPrivate *const d;
+    std::unique_ptr<KStatusNotifierItemPrivate> const d;
 
     Q_PRIVATE_SLOT(d, void serviceChange(const QString &name, const QString &oldOwner, const QString &newOwner))
     Q_PRIVATE_SLOT(d, void contextMenuAboutToShow())

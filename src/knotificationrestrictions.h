@@ -12,6 +12,8 @@
 
 #include <QObject>
 
+#include <memory>
+
 /**
  * @class KNotificationRestrictions knotificationrestrictions.h KNotificationRestrictions
  *
@@ -101,7 +103,7 @@ public:
 
 private:
     class Private;
-    Private *const d;
+    std::unique_ptr<Private> const d;
 
     Q_PRIVATE_SLOT(d, void screensaverFakeKeyEvent())
 };

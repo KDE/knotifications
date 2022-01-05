@@ -26,10 +26,7 @@ KNotificationReplyAction::KNotificationReplyAction(const QString &label)
     d->label = label;
 }
 
-KNotificationReplyAction::~KNotificationReplyAction()
-{
-    delete d;
-}
+KNotificationReplyAction::~KNotificationReplyAction() = default;
 
 QString KNotificationReplyAction::label() const
 {

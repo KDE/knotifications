@@ -6,6 +6,10 @@
 
 #include "knotificationplugin.h"
 
+class KNotificationPluginPrivate
+{
+};
+
 KNotificationPlugin::KNotificationPlugin(QObject *parent, const QVariantList &args)
     : QObject(parent)
     , d(nullptr)

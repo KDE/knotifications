@@ -10,8 +10,15 @@
 #include "knotificationreplyaction.h"
 #include "knotifyconfig.h"
 
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
 #include <QAndroidJniEnvironment>
 #include <QtAndroid>
+#else
+#include <QCoreApplication>
+#include <QJniEnvironment>
+// TODO KF6 remove this porting aid
+using QAndroidJniEnvironment = QJniEnvironment;
+#endif
 
 #include <QBuffer>
 #include <QIcon>
@@ -78,7 +85,12 @@ NotifyByAndroid::NotifyByAndroid(QObject *parent)
     : KNotificationPlugin(parent)
 {
     s_instance = this;
-    m_backend = QAndroidJniObject("org/kde/knotifications/NotifyByAndroid", "(Landroid/content/Context;)V", QtAndroid::androidContext().object<jobject>());
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
+    QAndroidJniObject context = QtAndroid::androidContext();
+#else
+    QJniObject context = QNativeInterface::QAndroidApplication::context();
+#endif
+    m_backend = QAndroidJniObject("org/kde/knotifications/NotifyByAndroid", "(Landroid/content/Context;)V", context.object<jobject>());
 }
 
 NotifyByAndroid::~NotifyByAndroid()

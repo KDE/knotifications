@@ -164,7 +164,7 @@ if(HAVE_DBUSMENUQT)
   target_link_libraries(KF5Notifications PRIVATE dbusmenu-qt5)
 endif()
 
-if (ANDROID)
+if (TARGET Qt5::AndroidExtras)
     target_link_libraries(KF5Notifications PRIVATE Qt5::AndroidExtras)
 endif()
 

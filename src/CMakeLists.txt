@@ -147,8 +147,6 @@ if(X11_FOUND)
    target_link_libraries(KF5Notifications PRIVATE ${X11_X11_LIB})
     if (TARGET Qt5::X11Extras)
         target_link_libraries(KF5Notifications PRIVATE Qt5::X11Extras)
-    elseif (TARGET Qt6::Gui)
-        target_link_libraries(KF5Notifications PRIVATE Qt6::GuiPrivate) # qtx11extras_p.h in knotificationrestrictions
     endif()
 endif()
 

@@ -18,9 +18,7 @@
 #if HAVE_XTEST
 #include <QTimer>
 
-#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
-#include <private/qtx11extras_p.h>
-#else
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
 #include <QX11Info>
 #endif
 
@@ -40,7 +38,7 @@ public:
         , screensaverTimer(nullptr)
         , haveXTest(0)
         , XTestKeyCode(0)
-        , isX11(QX11Info::isPlatformX11())
+        , isX11(QGuiApplication::platformName() == QLatin1String("xcb"))
 #endif // HAVE_XTEST
     {
     }
@@ -92,7 +90,12 @@ void KNotificationRestrictions::Private::screensaverFakeKeyEvent()
         return;
     }
     qCDebug(LOG_KNOTIFICATIONS) << "---- using XTestFakeKeyEvent";
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
     Display *display = QX11Info::display();
+#else
+    Display *display = qGuiApp->nativeInterface<QNativeInterface::QX11Application>()->display();
+#endif
+
     XTestFakeKeyEvent(display, XTestKeyCode, true, CurrentTime);
     XTestFakeKeyEvent(display, XTestKeyCode, false, CurrentTime);
     XSync(display, false);
@@ -118,12 +121,19 @@ void KNotificationRestrictions::Private::startScreenSaverPrevention()
     if (!isX11) {
         return;
     }
+
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
+    Display *display = QX11Info::display();
+#else
+    Display *display = qGuiApp->nativeInterface<QNativeInterface::QX11Application>()->display();
+#endif
+
     if (!haveXTest) {
         int a;
         int b;
         int c;
         int e;
-        haveXTest = XTestQueryExtension(QX11Info::display(), &a, &b, &c, &e);
+        haveXTest = XTestQueryExtension(display, &a, &b, &c, &e);
 
         if (!haveXTest) {
             qCDebug(LOG_KNOTIFICATIONS) << "--- No XTEST!";
@@ -132,7 +142,7 @@ void KNotificationRestrictions::Private::startScreenSaverPrevention()
     }
 
     if (!XTestKeyCode) {
-        XTestKeyCode = XKeysymToKeycode(QX11Info::display(), XK_Shift_L);
+        XTestKeyCode = XKeysymToKeycode(display, XK_Shift_L);
 
         if (!XTestKeyCode) {
             qCDebug(LOG_KNOTIFICATIONS) << "--- No XKeyCode for XK_Shift_L!";

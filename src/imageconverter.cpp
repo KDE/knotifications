@@ -53,7 +53,13 @@ QVariant variantForImage(const QImage &_image)
 {
     qDBusRegisterMetaType<SpecImage>();
 
-    QImage image = _image.convertToFormat(QImage::Format_RGBA8888);
+    const bool hasAlpha = _image.hasAlphaChannel();
+    QImage image;
+    if (hasAlpha) {
+        image = _image.convertToFormat(QImage::Format_RGBA8888);
+    } else {
+        image = _image.convertToFormat(QImage::Format_RGB888);
+    }
 
     QByteArray data((const char *)image.constBits(), image.sizeInBytes());
 
@@ -61,9 +67,9 @@ QVariant variantForImage(const QImage &_image)
     specImage.width = image.width();
     specImage.height = image.height();
     specImage.rowStride = image.bytesPerLine();
-    specImage.hasAlpha = true;
+    specImage.hasAlpha = hasAlpha;
     specImage.bitsPerSample = 8;
-    specImage.channels = 4;
+    specImage.channels = hasAlpha ? 4 : 3;
     specImage.data = data;
 
     return QVariant::fromValue(specImage);

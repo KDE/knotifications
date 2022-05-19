@@ -442,7 +442,7 @@ public:
      */
     void setContexts(const ContextList &contexts);
     /**
-     * append a context at the list of contexts, see KNotificaiton::Context
+     * append a context at the list of contexts, see KNotification::Context
      * @param context the context which is added
      */
     void addContext(const Context &context);

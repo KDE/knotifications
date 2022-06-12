@@ -18,8 +18,10 @@ The filename must either match QCoreApplication::applicationName or be specified
 component name to the KNotification object.
 @warning Notifications won't be visible otherwise.
 
-You can do this with the following CMake command:
-install(FILES appname.notifyrc  DESTINATION ${KNOTIFYRC_INSTALL_DIR}))
+You can do this with the following CMake command, if you use ECM's KDEInstallDirs:
+@code
+install(FILES appname.notifyrc  DESTINATION ${KDE_INSTALL_KNOTIFYRCDIR})
+@endcode
 
  This file contains  mainly 3 parts
   <ol>

@@ -208,7 +208,7 @@ if(BUILD_QCH)
         ORG_DOMAIN org.kde
         SOURCES # using only public headers, to cover only public API
             ${KNotifications_HEADERS}
-        MD_MAINPAGE "${CMAKE_SOURCE_DIR}/README.md"
+            "${CMAKE_SOURCE_DIR}/Mainpage.dox"
         IMAGE_DIRS "${CMAKE_SOURCE_DIR}/docs/pics"
         LINK_QCHS
             Qt5Widgets_QCH

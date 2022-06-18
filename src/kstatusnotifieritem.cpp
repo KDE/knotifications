@@ -1140,7 +1140,6 @@ void KStatusNotifierItemPrivate::maybeQuit()
     dialog->setAttribute(Qt::WA_DeleteOnClose);
     auto *quitButton = dialog->addButton(KStatusNotifierItem::tr("Quit", "@action:button"), QMessageBox::AcceptRole);
     quitButton->setIcon(QIcon::fromTheme(QStringLiteral("application-exit")));
-    ;
     dialog->addButton(QMessageBox::Cancel);
     QObject::connect(dialog, &QDialog::accepted, qApp, &QApplication::quit);
     dialog->show();

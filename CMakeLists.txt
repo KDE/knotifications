@@ -24,6 +24,7 @@ include(ECMQtDeclareLoggingCategory)
 include(ECMPoQmTools)
 include(ECMAddQch)
 include(ECMGenerateExportHeader)
+include(ECMDeprecationSettings)
 
 set(EXCLUDE_DEPRECATED_BEFORE_AND_AT 0 CACHE STRING "Control the range of deprecated API excluded from the build [default=0].")
 
@@ -138,11 +139,14 @@ if (TARGET Qt${QT_MAJOR_VERSION}::Widgets)
 endif()
 
 remove_definitions(-DQT_NO_CAST_FROM_BYTEARRAY)
+
 ecm_install_po_files_as_qm(po)
+
 if (NOT APPLE) # QtMac::setBadgeLabelText is deprecated
-add_definitions(-DQT_DISABLE_DEPRECATED_BEFORE=0x050f02)
+ecm_set_disabled_deprecation_versions(QT 5.15.2)
 endif()
-add_definitions(-DKF_DISABLE_DEPRECATED_BEFORE_AND_AT=0x055900)
+ecm_set_disabled_deprecation_versions(KF 5.95)
+
 add_subdirectory(src)
 if (BUILD_TESTING)
     add_subdirectory(tests)

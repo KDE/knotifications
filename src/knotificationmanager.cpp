@@ -3,6 +3,7 @@
     SPDX-FileCopyrightText: 2005 Olivier Goffart <ogoffart at kde.org>
     SPDX-FileCopyrightText: 2013-2015 Martin Klapetek <mklapetek@kde.org>
     SPDX-FileCopyrightText: 2017 Eike Hein <hein@kde.org>
+    SPDX-FileCopyrightText: 2022 Harald Sitter <sitter@kde.org>
 
     SPDX-License-Identifier: LGPL-2.0-only
 */
@@ -14,6 +15,7 @@
 #include <config-knotifications.h>
 
 #include <KPluginMetaData>
+#include <KSandbox>
 #include <QFileInfo>
 #include <QHash>
 
@@ -82,9 +84,7 @@ KNotificationManager::KNotificationManager()
     d->notifyPlugins.clear();
 
 #ifdef QT_DBUS_LIB
-    const bool inSandbox = QFileInfo::exists(QLatin1String("/.flatpak-info")) || qEnvironmentVariableIsSet("SNAP");
-
-    if (inSandbox) {
+    if (KSandbox::isInside()) {
         QDBusConnectionInterface *interface = QDBusConnection::sessionBus().interface();
         d->portalDBusServiceExists = interface->isServiceRegistered(QStringLiteral("org.freedesktop.portal.Desktop"));
     }

@@ -10,5 +10,9 @@ target_link_libraries(knotificationqmlplugin PRIVATE
     Qt${QT_MAJOR_VERSION}::Qml
 )
 
+if(MINGW)
+    set_target_properties(knotificationqmlplugin PROPERTIES PREFIX "")
+endif()
+
 install(TARGETS knotificationqmlplugin DESTINATION ${KDE_INSTALL_QMLDIR}/org/kde/notification)
 install(FILES qmldir DESTINATION ${KDE_INSTALL_QMLDIR}/org/kde/notification)

@@ -1,5 +1,0 @@
-[Desktop Entry]
-Type=ServiceType
-X-KDE-ServiceType=KNotification/NotifyPlugin
-[PropertyDef::X-KDE-KNotification-OptionName]
-Type=QString

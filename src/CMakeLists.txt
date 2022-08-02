@@ -143,7 +143,7 @@ if (Qt5TextToSpeech_FOUND)
     target_link_libraries(KF5Notifications PRIVATE Qt5::TextToSpeech)
 endif()
 
-if(X11_FOUND)
+if(HAVE_X11)
    target_link_libraries(KF5Notifications PRIVATE ${X11_X11_LIB})
     if (TARGET Qt5::X11Extras)
         target_link_libraries(KF5Notifications PRIVATE Qt5::X11Extras)

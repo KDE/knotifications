@@ -185,7 +185,7 @@ ecm_generate_headers(KNotifications_HEADERS
   REQUIRED_HEADERS KNotifications_HEADERS
 )
 
-install(TARGETS KF5Notifications EXPORT KF5NotificationsTargets ${KF5_INSTALL_TARGETS_DEFAULT_ARGS})
+install(TARGETS KF5Notifications EXPORT KF5NotificationsTargets ${KF_INSTALL_TARGETS_DEFAULT_ARGS})
 
 install(FILES
   ${CMAKE_CURRENT_BINARY_DIR}/knotifications_export.h

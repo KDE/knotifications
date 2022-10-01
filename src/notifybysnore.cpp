@@ -69,8 +69,8 @@ NotifyBySnore::NotifyBySnore(QObject *parent)
                                                                          rawNotificationResponse.size() / sizeof(wchar_t));
             qCDebug(LOG_KNOTIFICATIONS) << notificationResponse;
 
-            QMap<QString, QStringRef> notificationResponseMap;
-            for (auto &str : notificationResponse.splitRef(QLatin1Char(';'))) {
+            QMap<QString, QStringView> notificationResponseMap;
+            for (const auto str : QStringView(notificationResponse).split(QLatin1Char(';'))) {
                 const int equalIndex = str.indexOf(QLatin1Char('='));
                 notificationResponseMap.insert(str.mid(0, equalIndex).toString(), str.mid(equalIndex + 1));
             }

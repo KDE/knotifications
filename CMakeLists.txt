@@ -143,7 +143,7 @@ endif()
 
 remove_definitions(-DQT_NO_CAST_FROM_BYTEARRAY)
 
-ecm_install_po_files_as_qm(po)
+ecm_install_po_files_as_qm(poqm)
 
 if (NOT APPLE) # QtMac::setBadgeLabelText is deprecated
 ecm_set_disabled_deprecation_versions(QT 5.15.2)

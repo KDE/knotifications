@@ -27,7 +27,11 @@ NotifyByTTS::~NotifyByTTS()
 
 void NotifyByTTS::notify(KNotification *notification, KNotifyConfig *config)
 {
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
     if (m_speech->state() != QTextToSpeech::BackendError) {
+#else
+    if (m_speech->state() != QTextToSpeech::Error) {
+#endif
         QString say = config->readEntry(QStringLiteral("TTS"));
 
         if (!say.isEmpty()) {

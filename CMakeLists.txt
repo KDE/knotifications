@@ -60,18 +60,15 @@ if (NOT ANDROID AND NOT WIN32)
     find_package(Qt${QT_MAJOR_VERSION} ${REQUIRED_QT_VERSION} CONFIG REQUIRED DBus)
 endif()
 
-find_package(Qt${QT_MAJOR_VERSION} ${REQUIRED_QT_VERSION} QUIET OPTIONAL_COMPONENTS Qml)
+find_package(Qt${QT_MAJOR_VERSION} ${REQUIRED_QT_VERSION} QUIET OPTIONAL_COMPONENTS Qml TextToSpeech)
 
-# QTextToSpeech doesn't exist in Qt 6.2
-if (QT_MAJOR_VERSION STREQUAL "5")
-    find_package(Qt5 ${REQUIRED_QT_VERSION} QUIET OPTIONAL_COMPONENTS TextToSpeech)
-    set_package_properties(Qt5TextToSpeech PROPERTIES
+find_package(Qt${QT_MAJOR_VERSION}TextToSpeech ${REQUIRED_QT_VERSION} QUIET CONFIG)
+set_package_properties(Qt${QT_MAJOR_VERSION}TextToSpeech PROPERTIES
     DESCRIPTION "Qt text to speech module"
     TYPE OPTIONAL
     PURPOSE "Required to build text to speech notification support")
-    if (TARGET Qt5::TextToSpeech)
-        add_definitions(-DHAVE_SPEECH)
-    endif()
+if (TARGET Qt${QT_MAJOR_VERSION}::TextToSpeech)
+    add_definitions(-DHAVE_SPEECH)
 endif()
 
 if (NOT APPLE AND NOT WIN32)

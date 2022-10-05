@@ -68,7 +68,7 @@ elseif (Phonon4Qt5_FOUND)
     )
 endif()
 
-if (Qt5TextToSpeech_FOUND)
+if (Qt${QT_MAJOR_VERSION}TextToSpeech_FOUND)
     target_sources(KF5Notifications PRIVATE
         notifybytts.cpp
     )
@@ -139,8 +139,8 @@ if (Canberra_FOUND)
         Canberra::Canberra)
 endif()
 
-if (Qt5TextToSpeech_FOUND)
-    target_link_libraries(KF5Notifications PRIVATE Qt5::TextToSpeech)
+if (Qt${QT_MAJOR_VERSION}TextToSpeech_FOUND)
+    target_link_libraries(KF5Notifications PRIVATE Qt${QT_MAJOR_VERSION}::TextToSpeech)
 endif()
 
 if(HAVE_X11)

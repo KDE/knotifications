@@ -42,7 +42,7 @@ msgstr "Aplicació desconeguda"
 #: kstatusnotifieritem.cpp:515 kstatusnotifieritem.cpp:1124
 msgctxt "KStatusNotifierItem|@action:inmenu"
 msgid "&Minimize"
-msgstr "&Minimitza"
+msgstr "Mi&nimitza"
 
 #: kstatusnotifieritem.cpp:864
 msgctxt "KStatusNotifierItem|@action:inmenu"

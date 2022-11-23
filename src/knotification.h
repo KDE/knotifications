@@ -91,6 +91,11 @@ class KNOTIFICATIONS_EXPORT KNotification : public QObject
      * @since 5.90
      */
     Q_PROPERTY(QString xdgActivationToken READ xdgActivationToken NOTIFY xdgActivationTokenChanged)
+    /**
+     * @copydoc setHint
+     * @since 5.101
+     */
+    Q_PROPERTY(QVariantMap hints READ hints WRITE setHints NOTIFY hintsChanged)
 
 public:
     /**
@@ -664,6 +669,11 @@ Q_SIGNALS:
      * @since 5.90
      */
     void xdgActivationTokenChanged();
+    /**
+     * Emitted when @p hints changes.
+     * @since 5.101
+     */
+    void hintsChanged();
 
 public Q_SLOTS:
     /**
@@ -728,13 +738,20 @@ public Q_SLOTS:
      * @param hint the hint's key
      * @param value the hint's value
      */
-    void setHint(const QString &hint, const QVariant &value);
+    Q_INVOKABLE void setHint(const QString &hint, const QVariant &value);
 
     /**
      * @since 5.57
      * Returns the custom hints set by setHint()
      */
     QVariantMap hints() const;
+
+    /**
+     * @since 5.101
+     * Set custom hints on the notification.
+     * @sa setHint
+     */
+    void setHints(const QVariantMap &hints);
 
 private:
     friend class KNotificationManager;

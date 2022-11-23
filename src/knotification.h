@@ -84,7 +84,7 @@ class KNOTIFICATIONS_EXPORT KNotification : public QObject
     Q_PROPERTY(Urgency urgency READ urgency WRITE setUrgency NOTIFY urgencyChanged)
     /**
      * @copydoc setAutoDelete
-     * @seince 5.88
+     * @since 5.88
      */
     Q_PROPERTY(bool autoDelete READ isAutoDelete WRITE setAutoDelete NOTIFY autoDeleteChanged)
     /**

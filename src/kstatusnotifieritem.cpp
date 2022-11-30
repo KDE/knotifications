@@ -35,8 +35,12 @@
 #endif
 
 #include <KWindowInfo>
+#include <KWindowSystem>
 #include <QTimer>
-#include <kwindowsystem.h>
+
+#if HAVE_X11
+#include <KX11Extras>
+#endif
 
 #include <cstdlib>
 
@@ -67,9 +71,12 @@ KStatusNotifierItem::~KStatusNotifierItem()
     if (!qApp->closingDown()) {
         delete d->menu;
     }
+
+#if HAVE_X11
     if (d->associatedWidget) {
-        KWindowSystem::self()->disconnect(d->associatedWidget);
+        KX11Extras::self()->disconnect(d->associatedWidget);
     }
+#endif
 }
 
 QString KStatusNotifierItem::id() const
@@ -484,19 +491,23 @@ void KStatusNotifierItem::setAssociatedWidget(QWidget *associatedWidget)
         d->associatedWidget = associatedWidget->window();
         d->associatedWidgetPos = QPoint(-1, -1);
 
-        QObject::connect(KWindowSystem::self(), &KWindowSystem::windowAdded, d->associatedWidget, [this](WId id) {
+#if HAVE_X11
+        QObject::connect(KX11Extras::self(), &KX11Extras::windowAdded, d->associatedWidget, [this](WId id) {
             if (d->associatedWidget->winId() == id && d->associatedWidgetPos != QPoint(-1, -1)) {
                 d->associatedWidget->move(d->associatedWidgetPos);
             }
         });
 
-        QObject::connect(KWindowSystem::self(), &KWindowSystem::windowRemoved, d->associatedWidget, [this](WId id) {
+        QObject::connect(KX11Extras::self(), &KX11Extras::windowRemoved, d->associatedWidget, [this](WId id) {
             if (d->associatedWidget->winId() == id) {
                 d->associatedWidgetPos = d->associatedWidget->pos();
             }
         });
+#endif
     } else if (d->associatedWidget) {
-        KWindowSystem::self()->disconnect(d->associatedWidget);
+#if HAVE_X11
+        KX11Extras::self()->disconnect(d->associatedWidget);
+#endif
         d->associatedWidget = nullptr;
     }
 
@@ -703,8 +714,9 @@ bool KStatusNotifierItemPrivate::checkVisibility(QPoint pos, bool perform)
 
         return true;
     } else if (QGuiApplication::platformName() == QLatin1String("xcb")) {
+#if HAVE_X11
         const KWindowInfo info1(associatedWidget->winId(), NET::XAWMState | NET::WMState | NET::WMDesktop);
-        QListIterator<WId> it(KWindowSystem::stackingOrder());
+        QListIterator<WId> it(KX11Extras::stackingOrder());
         it.toBack();
         while (it.hasPrevious()) {
             WId id = it.previous();
@@ -746,7 +758,7 @@ bool KStatusNotifierItemPrivate::checkVisibility(QPoint pos, bool perform)
 
             if (perform) {
                 KWindowSystem::raiseWindow(associatedWidget->winId());
-                KWindowSystem::forceActiveWindow(associatedWidget->winId());
+                KX11Extras::forceActiveWindow(associatedWidget->winId());
                 Q_EMIT q->activateRequested(true, pos);
             }
 
@@ -756,7 +768,7 @@ bool KStatusNotifierItemPrivate::checkVisibility(QPoint pos, bool perform)
         // not on current desktop?
         if (!info1.isOnCurrentDesktop()) {
             if (perform) {
-                KWindowSystem::activateWindow(associatedWidget->winId());
+                KX11Extras::activateWindow(associatedWidget->winId());
                 Q_EMIT q->activateRequested(true, pos);
             }
 
@@ -767,8 +779,8 @@ bool KStatusNotifierItemPrivate::checkVisibility(QPoint pos, bool perform)
             minimizeRestore(false); // hide
             Q_EMIT q->activateRequested(false, pos);
         }
-
         return false;
+#endif
     } else {
         if (perform) {
             minimizeRestore(false); // hide
@@ -1159,18 +1171,21 @@ void KStatusNotifierItemPrivate::minimizeRestore(bool show)
 {
     KWindowInfo info(associatedWidget->winId(), NET::WMDesktop);
     if (show) {
+#if HAVE_X11
         if (onAllDesktops) {
-            KWindowSystem::setOnAllDesktops(associatedWidget->winId(), true);
+            KX11Extras::setOnAllDesktops(associatedWidget->winId(), true);
         } else {
-            KWindowSystem::setCurrentDesktop(info.desktop());
+            KX11Extras::setCurrentDesktop(info.desktop());
         }
+#endif
 
         auto state = associatedWidget->windowState() & ~Qt::WindowMinimized;
         associatedWidget->setWindowState(state);
         associatedWidget->show();
         associatedWidget->raise();
+
         if (associatedWidget->window()) {
-            KWindowSystem::activateWindow(associatedWidget->window()->winId());
+            associatedWidget->window()->activateWindow();
         }
     } else {
         onAllDesktops = info.onAllDesktops();

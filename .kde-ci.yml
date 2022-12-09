@@ -10,6 +10,9 @@ Dependencies:
 - 'on': ['FreeBSD', 'macOS']
   'require':
     'libraries/phonon' : '@stable'
+- 'on': ['Linux', 'FreeBSD']
+  'require':
+    'third-party/libdbusmenu-qt' : '@latest'
 
 Options:
   test-before-installing: True

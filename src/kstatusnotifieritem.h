@@ -80,7 +80,7 @@ public:
      * importance of the events that happens in the parent application
      */
     enum ItemStatus {
-        /// Nothing is happening in the application, so showing this icon is not required
+        /// Nothing is happening in the application, so showing this icon is not required. This is the default value
         Passive = 1,
         /// The application is doing something, or it is important that the
         /// icon is always reachable from the user
@@ -96,7 +96,7 @@ public:
      * so can be drawn in a different way or in a different place
      */
     enum ItemCategory {
-        /// An icon for a normal application, can be seen as its taskbar entry
+        /// An icon for a normal application, can be seen as its taskbar entry. This is the default value
         ApplicationStatus = 1,
         /// This is a communication oriented application; this icon will be used
         /// for things such as the notification of a new message

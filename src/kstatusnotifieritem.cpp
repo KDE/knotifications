@@ -513,6 +513,7 @@ void KStatusNotifierItem::setAssociatedWidget(QWidget *associatedWidget)
             action = new QAction(this);
             d->actionCollection.insert(QStringLiteral("minimizeRestore"), action);
             action->setText(tr("&Minimize", "@action:inmenu"));
+            action->setIcon(QIcon::fromTheme(QStringLiteral("window-minimize")));
             connect(action, SIGNAL(triggered(bool)), this, SLOT(minimizeRestore()));
         }
 
@@ -1120,8 +1121,10 @@ void KStatusNotifierItemPrivate::contextMenuAboutToShow()
         QAction *action = actionCollection.value(QStringLiteral("minimizeRestore"));
         if (checkVisibility(QPoint(0, 0), false)) {
             action->setText(KStatusNotifierItem::tr("&Restore", "@action:inmenu"));
+            action->setIcon(QIcon::fromTheme(QStringLiteral("window-restore")));
         } else {
             action->setText(KStatusNotifierItem::tr("&Minimize", "@action:inmenu"));
+            action->setIcon(QIcon::fromTheme(QStringLiteral("window-minimize")));
         }
     }
 }

@@ -39,7 +39,7 @@ ecm_setup_version(PROJECT
                         SOVERSION 5)
 
 # Dependencies
-set(REQUIRED_QT_VERSION 5.15.2)
+set(REQUIRED_QT_VERSION 6.4.0)
 set(CMAKE_AUTORCC TRUE)
 
 if (ANDROID)

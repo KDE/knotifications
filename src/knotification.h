@@ -704,7 +704,7 @@ public Q_SLOTS:
      * if you want to show your own presentation in your application, you should use this
      * function, so it will not be automatically closed when there is nothing to show.
      *
-     * Don't forgot to deref, or the notification may be never closed if there is no timeout.
+     * Don't forget to deref, or the notification may be never closed if there is no timeout.
      *
      * @see deref
      */

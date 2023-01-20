@@ -6,7 +6,7 @@ target_sources(knotificationqmlplugin PRIVATE
     knotificationqmlplugin.cpp
 )
 target_link_libraries(knotificationqmlplugin PRIVATE
-    KF5Notifications
+    KF6Notifications
     Qt${QT_MAJOR_VERSION}::Qml
 )
 

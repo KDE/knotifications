@@ -34,9 +34,9 @@ add_feature_info(QCH ${BUILD_QCH} "API documentation in QCH format (for e.g. Qt 
 ecm_setup_version(PROJECT
   VARIABLE_PREFIX KNOTIFICATIONS
   VERSION_HEADER "${CMAKE_CURRENT_BINARY_DIR}/knotifications_version.h"
-  PACKAGE_VERSION_FILE "${CMAKE_CURRENT_BINARY_DIR}/KF5NotificationsConfigVersion.cmake"
+  PACKAGE_VERSION_FILE "${CMAKE_CURRENT_BINARY_DIR}/KF6NotificationsConfigVersion.cmake"
 
-                        SOVERSION 5)
+                        SOVERSION 6)
 
 # Dependencies
 set(REQUIRED_QT_VERSION 6.4.0)
@@ -98,12 +98,12 @@ endif()
 
 set(HAVE_KWINDOWSYSTEM FALSE)
 if(NOT ANDROID)
-    find_package(KF5WindowSystem ${KF_DEP_VERSION} REQUIRED)
+    find_package(KF6WindowSystem ${KF_DEP_VERSION} REQUIRED)
     set(HAVE_KWINDOWSYSTEM TRUE)
 endif()
 
-find_package(KF5Config ${KF_DEP_VERSION} REQUIRED)
-find_package(KF5CoreAddons ${KF_DEP_VERSION} REQUIRED)
+find_package(KF6Config ${KF_DEP_VERSION} REQUIRED)
+find_package(KF6CoreAddons ${KF_DEP_VERSION} REQUIRED)
 
 if (NOT ANDROID AND NOT WIN32 OR (WIN32 AND NOT WITH_SNORETOAST))
     find_package(Qt${QT_MAJOR_VERSION} ${REQUIRED_QT_VERSION} CONFIG REQUIRED DBus)
@@ -155,35 +155,35 @@ if (BUILD_TESTING)
 endif()
 
 # create a Config.cmake and a ConfigVersion.cmake file and install them
-set(CMAKECONFIG_INSTALL_DIR "${KDE_INSTALL_CMAKEPACKAGEDIR}/KF5Notifications")
+set(CMAKECONFIG_INSTALL_DIR "${KDE_INSTALL_CMAKEPACKAGEDIR}/KF6Notifications")
 
 if (BUILD_QCH)
     ecm_install_qch_export(
-        TARGETS KF5Notifications_QCH
-        FILE KF5NotificationsQchTargets.cmake
+        TARGETS KF6Notifications_QCH
+        FILE KF6NotificationsQchTargets.cmake
         DESTINATION "${CMAKECONFIG_INSTALL_DIR}"
         COMPONENT Devel
     )
-    set(PACKAGE_INCLUDE_QCHTARGETS "include(\"\${CMAKE_CURRENT_LIST_DIR}/KF5NotificationsQchTargets.cmake\")")
+    set(PACKAGE_INCLUDE_QCHTARGETS "include(\"\${CMAKE_CURRENT_LIST_DIR}/KF6NotificationsQchTargets.cmake\")")
 endif()
 
 include(CMakePackageConfigHelpers)
 
 configure_package_config_file(
-  "${CMAKE_CURRENT_SOURCE_DIR}/KF5NotificationsConfig.cmake.in"
-  "${CMAKE_CURRENT_BINARY_DIR}/KF5NotificationsConfig.cmake"
+  "${CMAKE_CURRENT_SOURCE_DIR}/KF6NotificationsConfig.cmake.in"
+  "${CMAKE_CURRENT_BINARY_DIR}/KF6NotificationsConfig.cmake"
   PATH_VARS KDE_INSTALL_DBUSINTERFACEDIR
   INSTALL_DESTINATION  ${CMAKECONFIG_INSTALL_DIR}
 )
 
 install(FILES
-  "${CMAKE_CURRENT_BINARY_DIR}/KF5NotificationsConfig.cmake"
-  "${CMAKE_CURRENT_BINARY_DIR}/KF5NotificationsConfigVersion.cmake"
+  "${CMAKE_CURRENT_BINARY_DIR}/KF6NotificationsConfig.cmake"
+  "${CMAKE_CURRENT_BINARY_DIR}/KF6NotificationsConfigVersion.cmake"
   DESTINATION "${CMAKECONFIG_INSTALL_DIR}"
   COMPONENT Devel
 )
 
-install(EXPORT KF5NotificationsTargets DESTINATION "${CMAKECONFIG_INSTALL_DIR}" FILE KF5NotificationsTargets.cmake NAMESPACE KF5:: )
+install(EXPORT KF6NotificationsTargets DESTINATION "${CMAKECONFIG_INSTALL_DIR}" FILE KF6NotificationsTargets.cmake NAMESPACE KF6:: )
 
 install(FILES
    ${CMAKE_CURRENT_BINARY_DIR}/knotifications_version.h

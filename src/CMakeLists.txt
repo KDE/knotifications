@@ -1,9 +1,9 @@
-add_library(KF5Notifications)
-add_library(KF5::Notifications ALIAS KF5Notifications)
+add_library(KF6Notifications)
+add_library(KF6::Notifications ALIAS KF6Notifications)
 
-ecm_create_qm_loader(KF5Notifications knotifications5_qt)
+ecm_create_qm_loader(KF6Notifications knotifications5_qt)
 
-target_sources(KF5Notifications PRIVATE
+target_sources(KF6Notifications PRIVATE
   knotification.cpp
   knotificationreplyaction.cpp
   knotificationmanager.cpp
@@ -16,14 +16,14 @@ target_sources(KF5Notifications PRIVATE
 )
 
 if (NOT ANDROID)
-    target_sources(KF5Notifications PRIVATE
+    target_sources(KF6Notifications PRIVATE
         notifybyexecute.cpp
         notifybytaskbar.cpp
         kstatusnotifieritem.cpp)
 endif()
 
 if (TARGET Qt${QT_MAJOR_VERSION}::DBus)
-  target_sources(KF5Notifications PRIVATE
+  target_sources(KF6Notifications PRIVATE
     kstatusnotifieritemdbus_p.cpp
     knotificationrestrictions.cpp
 
@@ -35,21 +35,21 @@ endif()
 
 if (ANDROID)
     add_subdirectory(android)
-    target_sources(KF5Notifications PRIVATE
+    target_sources(KF6Notifications PRIVATE
         notifybyandroid.cpp
         knotifications.qrc
     )
 endif()
 
 if (WITH_SNORETOAST)
-    target_sources(KF5Notifications PRIVATE notifybysnore.cpp)
+    target_sources(KF6Notifications PRIVATE notifybysnore.cpp)
 endif ()
 
 if (APPLE)
-    target_sources(KF5Notifications PRIVATE notifybymacosnotificationcenter.mm)
+    target_sources(KF6Notifications PRIVATE notifybymacosnotificationcenter.mm)
 endif()
 
-ecm_qt_declare_logging_category(KF5Notifications
+ecm_qt_declare_logging_category(KF6Notifications
     HEADER debug_p.h
     IDENTIFIER LOG_KNOTIFICATIONS
     CATEGORY_NAME kf.notifications
@@ -59,17 +59,17 @@ ecm_qt_declare_logging_category(KF5Notifications
 )
 
 if (Canberra_FOUND)
-    target_sources(KF5Notifications PRIVATE
+    target_sources(KF6Notifications PRIVATE
         notifybyaudio_canberra.cpp
     )
 elseif (Phonon4Qt5_FOUND)
-    target_sources(KF5Notifications PRIVATE
+    target_sources(KF6Notifications PRIVATE
         notifybyaudio_phonon.cpp
     )
 endif()
 
 if (Qt${QT_MAJOR_VERSION}TextToSpeech_FOUND)
-    target_sources(KF5Notifications PRIVATE
+    target_sources(KF6Notifications PRIVATE
         notifybytts.cpp
     )
 endif()
@@ -78,7 +78,7 @@ if (TARGET Qt${QT_MAJOR_VERSION}::DBus)
   if (dbusmenu-qt5_FOUND)
     message("dbusmenu-qt5_FOUND")
     set(HAVE_DBUSMENUQT 1)
-    target_include_directories(KF5Notifications PRIVATE ${dbusmenu-qt5_INCLUDE_DIRS})
+    target_include_directories(KF6Notifications PRIVATE ${dbusmenu-qt5_INCLUDE_DIRS})
   else()
     set(HAVE_DBUSMENUQT 0)
   endif()
@@ -92,12 +92,12 @@ if (TARGET Qt${QT_MAJOR_VERSION}::DBus)
   qt_add_dbus_interface(knotifications_dbus_SRCS ${statusnotifierwatcher_xml} statusnotifierwatcher_interface)
   set(notifications_xml org.freedesktop.Notifications.xml)
   qt_add_dbus_interface(knotifications_dbus_SRCS ${notifications_xml} notifications_interface)
-  target_sources(KF5Notifications PRIVATE ${knotifications_dbus_SRCS})
+  target_sources(KF6Notifications PRIVATE ${knotifications_dbus_SRCS})
 endif()
 
 configure_file(config-knotifications.h.cmake ${CMAKE_CURRENT_BINARY_DIR}/config-knotifications.h )
 
-ecm_generate_export_header(KF5Notifications
+ecm_generate_export_header(KF6Notifications
     EXPORT_FILE_NAME knotifications_export.h
     BASE_NAME KNotifications
     GROUP_BASE_NAME KF
@@ -107,66 +107,66 @@ ecm_generate_export_header(KF5Notifications
     EXCLUDE_DEPRECATED_BEFORE_AND_AT ${EXCLUDE_DEPRECATED_BEFORE_AND_AT}
 )
 
-target_include_directories(KF5Notifications INTERFACE "$<INSTALL_INTERFACE:${KDE_INSTALL_INCLUDEDIR_KF}/KNotifications>")
+target_include_directories(KF6Notifications INTERFACE "$<INSTALL_INTERFACE:${KDE_INSTALL_INCLUDEDIR_KF}/KNotifications>")
 
-target_link_libraries(KF5Notifications PUBLIC Qt${QT_MAJOR_VERSION}::Gui)
+target_link_libraries(KF6Notifications PUBLIC Qt${QT_MAJOR_VERSION}::Gui)
 if (TARGET Qt${QT_MAJOR_VERSION}::Widgets)
-    target_link_libraries(KF5Notifications PUBLIC Qt${QT_MAJOR_VERSION}::Widgets)
+    target_link_libraries(KF6Notifications PUBLIC Qt${QT_MAJOR_VERSION}::Widgets)
 endif()
 if (TARGET Qt${QT_MAJOR_VERSION}::DBus)
-   target_link_libraries(KF5Notifications PUBLIC Qt${QT_MAJOR_VERSION}::DBus)
+   target_link_libraries(KF6Notifications PUBLIC Qt${QT_MAJOR_VERSION}::DBus)
 endif()
-target_link_libraries(KF5Notifications PRIVATE
-   KF5::CoreAddons
-   KF5::ConfigCore
+target_link_libraries(KF6Notifications PRIVATE
+   KF6::CoreAddons
+   KF6::ConfigCore
 )
 
-if (TARGET KF5::WindowSystem)
-    target_link_libraries(KF5Notifications PRIVATE KF5::WindowSystem)
+if (TARGET KF6::WindowSystem)
+    target_link_libraries(KF6Notifications PRIVATE KF6::WindowSystem)
 endif()
 
 if (TARGET SnoreToast::SnoreToastActions)
-  target_link_libraries(KF5Notifications PRIVATE Qt${QT_MAJOR_VERSION}::Network SnoreToast::SnoreToastActions)
+  target_link_libraries(KF6Notifications PRIVATE Qt${QT_MAJOR_VERSION}::Network SnoreToast::SnoreToastActions)
 endif ()
 
 if (Phonon4Qt5_FOUND)
-    target_link_libraries(KF5Notifications PRIVATE
+    target_link_libraries(KF6Notifications PRIVATE
         Phonon::phonon4qt5)
 endif()
 
 if (Canberra_FOUND)
-    target_link_libraries(KF5Notifications PRIVATE
+    target_link_libraries(KF6Notifications PRIVATE
         Canberra::Canberra)
 endif()
 
 if (Qt${QT_MAJOR_VERSION}TextToSpeech_FOUND)
-    target_link_libraries(KF5Notifications PRIVATE Qt${QT_MAJOR_VERSION}::TextToSpeech)
+    target_link_libraries(KF6Notifications PRIVATE Qt${QT_MAJOR_VERSION}::TextToSpeech)
 endif()
 
 if(HAVE_X11)
-   target_link_libraries(KF5Notifications PRIVATE ${X11_X11_LIB})
+   target_link_libraries(KF6Notifications PRIVATE ${X11_X11_LIB})
     if (TARGET Qt5::X11Extras)
-        target_link_libraries(KF5Notifications PRIVATE Qt5::X11Extras)
+        target_link_libraries(KF6Notifications PRIVATE Qt5::X11Extras)
     endif()
 endif()
 
 if(APPLE)
-  target_link_libraries(KF5Notifications PRIVATE Qt5::MacExtras "-framework Foundation" "-framework AppKit")
+  target_link_libraries(KF6Notifications PRIVATE Qt5::MacExtras "-framework Foundation" "-framework AppKit")
 endif()
 
 if(X11_XTest_FOUND)
-  target_link_libraries(KF5Notifications PRIVATE ${X11_XTest_LIB})
+  target_link_libraries(KF6Notifications PRIVATE ${X11_XTest_LIB})
 endif()
 
 if(HAVE_DBUSMENUQT)
-  target_link_libraries(KF5Notifications PRIVATE dbusmenu-qt5)
+  target_link_libraries(KF6Notifications PRIVATE dbusmenu-qt5)
 endif()
 
 if (TARGET Qt5::AndroidExtras)
-    target_link_libraries(KF5Notifications PRIVATE Qt5::AndroidExtras)
+    target_link_libraries(KF6Notifications PRIVATE Qt5::AndroidExtras)
 endif()
 
-set_target_properties(KF5Notifications PROPERTIES VERSION   ${KNOTIFICATIONS_VERSION}
+set_target_properties(KF6Notifications PROPERTIES VERSION   ${KNOTIFICATIONS_VERSION}
                                                   SOVERSION ${KNOTIFICATIONS_SOVERSION}
                                                   EXPORT_NAME Notifications
 )
@@ -185,7 +185,7 @@ ecm_generate_headers(KNotifications_HEADERS
   REQUIRED_HEADERS KNotifications_HEADERS
 )
 
-install(TARGETS KF5Notifications EXPORT KF5NotificationsTargets ${KF_INSTALL_TARGETS_DEFAULT_ARGS})
+install(TARGETS KF6Notifications EXPORT KF6NotificationsTargets ${KF_INSTALL_TARGETS_DEFAULT_ARGS})
 
 install(FILES
   ${CMAKE_CURRENT_BINARY_DIR}/knotifications_export.h
@@ -201,9 +201,9 @@ ecm_qt_install_logging_categories(
 
 if(BUILD_QCH)
     ecm_add_qch(
-        KF5Notifications_QCH
+        KF6Notifications_QCH
         NAME KNotifications
-        BASE_NAME KF5Notifications
+        BASE_NAME KF6Notifications
         VERSION ${KF_VERSION}
         ORG_DOMAIN org.kde
         SOURCES # using only public headers, to cover only public API
@@ -239,13 +239,13 @@ if (TARGET Qt${QT_MAJOR_VERSION}::DBus)
 endif()
 
 include(ECMGeneratePriFile)
-ecm_generate_pri_file(BASE_NAME KNotifications LIB_NAME KF5Notifications DEPS "widgets" FILENAME_VAR PRI_FILENAME INCLUDE_INSTALL_DIR ${KDE_INSTALL_INCLUDEDIR_KF}/KNotifications)
+ecm_generate_pri_file(BASE_NAME KNotifications LIB_NAME KF6Notifications DEPS "widgets" FILENAME_VAR PRI_FILENAME INCLUDE_INSTALL_DIR ${KDE_INSTALL_INCLUDEDIR_KF}/KNotifications)
 install(FILES ${PRI_FILENAME} DESTINATION ${ECM_MKSPECS_INSTALL_DIR})
 
 if (ANDROID)
-    install(FILES KF5Notifications-android-dependencies.xml
+    install(FILES KF6Notifications-android-dependencies.xml
         DESTINATION ${KDE_INSTALL_LIBDIR}
-        RENAME KF5Notifications_${CMAKE_ANDROID_ARCH_ABI}-android-dependencies.xml
+        RENAME KF6Notifications_${CMAKE_ANDROID_ARCH_ABI}-android-dependencies.xml
     )
 endif()
 

@@ -1,8 +1,8 @@
 <rules>
     <dependencies>
-        <lib name="KF5Notifications">
+        <lib name="KF6Notifications">
             <depends>
-                <jar bundling="1" file="jar/KF5Notifications.aar"/>
+                <jar bundling="1" file="jar/KF6Notifications.aar"/>
             </depends>
         </lib>
     </dependencies>

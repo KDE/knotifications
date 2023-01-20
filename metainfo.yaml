@@ -14,8 +14,8 @@ deprecated: false
 release: true
 libraries:
  - qmake: KNotifications
-   cmake: "KF5::Notifications"
-cmakename: KF5Notifications
+   cmake: "KF6::Notifications"
+cmakename: KF6Notifications
 
 public_lib: true
 group: Frameworks

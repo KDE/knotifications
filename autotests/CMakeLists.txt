@@ -9,5 +9,5 @@ endif()
 
 #if (TARGET Qt${QT_MAJOR_VERSION}::DBus)
 #    set(KNotificationTest_SRCS knotification_test.cpp fake_notifications_server.cpp)
-#    ecm_add_test(${KNotificationTest_SRCS} TEST_NAME "KNotificationTest" LINK_LIBRARIES Qt${QT_MAJOR_VERSION}::Test Qt${QT_MAJOR_VERSION}::DBus KF5::Notifications)
+#    ecm_add_test(${KNotificationTest_SRCS} TEST_NAME "KNotificationTest" LINK_LIBRARIES Qt${QT_MAJOR_VERSION}::Test Qt${QT_MAJOR_VERSION}::DBus KF6::Notifications)
 #endif()

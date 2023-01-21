@@ -18,6 +18,7 @@
 #include <KSandbox>
 #include <QFileInfo>
 #include <QHash>
+#include <QPluginLoader>
 
 #ifdef QT_DBUS_LIB
 #include <QDBusConnection>

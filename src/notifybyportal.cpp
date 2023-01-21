@@ -21,6 +21,7 @@
 #include <QDBusMetaType>
 #include <QDBusServiceWatcher>
 #include <QMap>
+#include <QPointer>
 
 #include <KConfigGroup>
 static const char portalDbusServiceName[] = "org.freedesktop.portal.Desktop";

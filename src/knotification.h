@@ -206,27 +206,6 @@ public:
     };
     Q_ENUM(Urgency)
 
-#if KNOTIFICATIONS_ENABLE_DEPRECATED_SINCE(5, 75)
-    /**
-     * Create a new notification.
-     *
-     * You have to use sendEvent to show the notification.
-     *
-     * The pointer is automatically deleted when the event is closed.
-     *
-     * Make sure you use one of the NotificationFlags CloseOnTimeOut or
-     * CloseWhenWidgetActivated, if not,
-     * you have to close the notification yourself.
-     *
-     * @param eventId is the name of the event
-     * @param widget is a widget where the notification reports to
-     * @param flags is a bitmask of NotificationFlag
-     * @deprecated Since 5.75, use other constructor and call setWidget() explicitly
-     */
-    KNOTIFICATIONS_DEPRECATED_VERSION(5, 75, "Use other constructor and call setWidget() explicitly")
-    explicit KNotification(const QString &eventId, QWidget *widget, const NotificationFlags &flags = CloseOnTimeout);
-#endif
-
     /**
      * Create a new notification.
      *
@@ -556,15 +535,6 @@ public:
     QString xdgActivationToken() const;
 
 Q_SIGNALS:
-#if KNOTIFICATIONS_ENABLE_DEPRECATED_SINCE(5, 76)
-    /**
-     * Emitted only when the default activation has occurred
-     * @deprecated Since 5.67, use defaultActivated() instead
-     */
-    KNOTIFICATIONS_DEPRECATED_VERSION_BELATED(5, 76, 5, 67, "Use defaultActivated() instead")
-    void activated(); // clazy:exclude=overloaded-signal
-#endif
-
     /**
      * Emitted when the default action has been activated.
      * @since 5.67
@@ -688,16 +658,6 @@ public Q_SLOTS:
      * This will delete the notification.
      */
     void close();
-
-#if KNOTIFICATIONS_ENABLE_DEPRECATED_SINCE(5, 67)
-    /**
-     * @brief Raise the widget.
-     * This will change the desktop, activate the window, and the tab if needed.
-     * @deprecated since 5.67, use QWindow raise + requestActivate instead.
-     */
-    KNOTIFICATIONS_DEPRECATED_VERSION(5, 67, "Use QWindow raise + requestActivate instead")
-    void raiseWidget();
-#endif
 
     /**
      * The notification will automatically be closed if all presentations are finished.

@@ -36,28 +36,6 @@
 // incremental notification ID
 static int notificationIdCounter = 0;
 
-
-#if KNOTIFICATIONS_BUILD_DEPRECATED_SINCE(5, 75)
-KNotification::KNotification(const QString &eventId, QWidget *parent, const NotificationFlags &flags)
-    : QObject(parent)
-    , d(new Private)
-{
-    d->eventId = eventId;
-    d->flags = flags;
-    setWidget(parent);
-    connect(&d->updateTimer, &QTimer::timeout, this, &KNotification::update);
-    d->updateTimer.setSingleShot(true);
-    d->updateTimer.setInterval(100);
-    d->id = ++notificationIdCounter;
-
-#if HAVE_KWINDOWSYSTEM
-    if (KWindowSystem::isPlatformWayland()) {
-        setHint(QStringLiteral("x-kde-xdgTokenAppId"), QGuiApplication::desktopFileName());
-    }
-#endif
-}
-#endif
-
 KNotification::KNotification(const QString &eventId, const NotificationFlags &flags, QObject *parent)
     : QObject(parent)
     , d(new Private)
@@ -325,9 +303,6 @@ void KNotification::activate(unsigned int action)
 {
     switch (action) {
     case 0:
-#if KNOTIFICATIONS_BUILD_DEPRECATED_SINCE(5, 76)
-        Q_EMIT activated();
-#endif
         Q_EMIT defaultActivated();
         break;
     case 1:
@@ -365,40 +340,6 @@ void KNotification::close()
         }
     }
 }
-
-#if KNOTIFICATIONS_BUILD_DEPRECATED_SINCE(5, 67)
-void KNotification::raiseWidget()
-{
-    if (!d->widget) {
-        return;
-    }
-
-    d->Private::raiseWidget(d->widget);
-}
-#endif
-
-#if KNOTIFICATIONS_BUILD_DEPRECATED_SINCE(5, 67)
-void KNotification::Private::raiseWidget(QWidget *w)
-{
-    // TODO  this function is far from finished.
-    if (w->isTopLevel()) {
-        w->raise();
-#if HAVE_KWINDOWSYSTEM
-        if (!xdgActivationToken.isEmpty()) {
-            KWindowSystem::setCurrentXdgActivationToken(xdgActivationToken);
-        }
-        KWindowSystem::activateWindow(w->winId());
-#endif
-    } else {
-        QWidget *pw = w->parentWidget();
-        raiseWidget(pw);
-
-        if (QTabWidget *tab_widget = qobject_cast<QTabWidget *>(pw)) {
-            tab_widget->setCurrentIndex(tab_widget->indexOf(w));
-        }
-    }
-}
-#endif
 
 static QString defaultComponentName()
 {

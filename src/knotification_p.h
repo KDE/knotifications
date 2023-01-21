@@ -44,15 +44,6 @@ struct Q_DECL_HIDDEN KNotification::Private {
     bool needUpdate = false;
     bool isNew = true;
     bool autoDelete = true;
-
-#if KNOTIFICATIONS_BUILD_DEPRECATED_SINCE(5, 67)
-    /**
-     * recursive function that raise the widget. @p w
-     *
-     * @see raiseWidget()
-     */
-    void raiseWidget(QWidget *w);
-#endif
 };
 
 #endif

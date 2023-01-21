@@ -20,6 +20,7 @@
 #include <QDBusMessage>
 #include <QDBusMetaType>
 #include <QDBusServiceWatcher>
+#include <QHash>
 #include <QMap>
 #include <QPointer>
 

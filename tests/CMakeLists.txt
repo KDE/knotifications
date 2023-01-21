@@ -9,13 +9,6 @@ macro(knotifications_executable_tests)
 endmacro()
 
 if (TARGET Qt${QT_MAJOR_VERSION}::DBus)
-    if(NOT EXCLUDE_DEPRECATED_BEFORE_AND_AT STREQUAL "CURRENT" AND
-       EXCLUDE_DEPRECATED_BEFORE_AND_AT VERSION_LESS 5.79.0)
-        knotifications_executable_tests(
-            kpassivepopuptest
-        )
-        target_link_libraries(kpassivepopuptest KF6::WindowSystem)
-    endif()
     knotifications_executable_tests(
         knotificationrestrictionstest
         unitylaunchertest

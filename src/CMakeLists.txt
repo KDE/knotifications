@@ -7,7 +7,6 @@ target_sources(KF6Notifications PRIVATE
   knotification.cpp
   knotificationreplyaction.cpp
   knotificationmanager.cpp
-  kpassivepopup.cpp
 
   knotifyconfig.cpp
   knotificationplugin.cpp
@@ -103,7 +102,7 @@ ecm_generate_export_header(KF6Notifications
     GROUP_BASE_NAME KF
     VERSION ${KF_VERSION}
     DEPRECATED_BASE_VERSION 0
-    DEPRECATION_VERSIONS 5.67 5.75 5.76 5.79
+    DEPRECATION_VERSIONS
     EXCLUDE_DEPRECATED_BEFORE_AND_AT ${EXCLUDE_DEPRECATED_BEFORE_AND_AT}
 )
 
@@ -174,7 +173,6 @@ set_target_properties(KF6Notifications PROPERTIES VERSION   ${KNOTIFICATIONS_VER
 ecm_generate_headers(KNotifications_HEADERS
   HEADER_NAMES
   KNotification
-  KPassivePopup
   KStatusNotifierItem
   KNotificationJobUiDelegate
   KNotificationReplyAction

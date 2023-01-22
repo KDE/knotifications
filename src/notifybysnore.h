@@ -10,6 +10,7 @@
 #include "knotificationplugin.h"
 
 #include <QLocalServer>
+#include <QPointer>
 #include <QProcess>
 #include <QTemporaryDir>
 

@@ -7,7 +7,7 @@ target_sources(knotificationqmlplugin PRIVATE
 )
 target_link_libraries(knotificationqmlplugin PRIVATE
     KF6Notifications
-    Qt${QT_MAJOR_VERSION}::Qml
+    Qt6::Qml
 )
 
 if(MINGW)

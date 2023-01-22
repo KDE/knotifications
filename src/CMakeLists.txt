@@ -21,7 +21,7 @@ if (NOT ANDROID)
         kstatusnotifieritem.cpp)
 endif()
 
-if (TARGET Qt${QT_MAJOR_VERSION}::DBus)
+if (TARGET Qt6::DBus)
   target_sources(KF6Notifications PRIVATE
     kstatusnotifieritemdbus_p.cpp
     knotificationrestrictions.cpp
@@ -61,23 +61,23 @@ if (Canberra_FOUND)
     target_sources(KF6Notifications PRIVATE
         notifybyaudio_canberra.cpp
     )
-elseif (Phonon4Qt5_FOUND)
+elseif (Phonon4Qt6_FOUND)
     target_sources(KF6Notifications PRIVATE
         notifybyaudio_phonon.cpp
     )
 endif()
 
-if (Qt${QT_MAJOR_VERSION}TextToSpeech_FOUND)
+if (Qt6TextToSpeech_FOUND)
     target_sources(KF6Notifications PRIVATE
         notifybytts.cpp
     )
 endif()
 
-if (TARGET Qt${QT_MAJOR_VERSION}::DBus)
-  if (dbusmenu-qt5_FOUND)
-    message("dbusmenu-qt5_FOUND")
+if (TARGET Qt6::DBus)
+  if (dbusmenu-qt6_FOUND)
+    message("dbusmenu-qt6_FOUND")
     set(HAVE_DBUSMENUQT 1)
-    target_include_directories(KF6Notifications PRIVATE ${dbusmenu-qt5_INCLUDE_DIRS})
+    target_include_directories(KF6Notifications PRIVATE ${dbusmenu-qt6_INCLUDE_DIRS})
   else()
     set(HAVE_DBUSMENUQT 0)
   endif()
@@ -108,12 +108,12 @@ ecm_generate_export_header(KF6Notifications
 
 target_include_directories(KF6Notifications INTERFACE "$<INSTALL_INTERFACE:${KDE_INSTALL_INCLUDEDIR_KF}/KNotifications>")
 
-target_link_libraries(KF6Notifications PUBLIC Qt${QT_MAJOR_VERSION}::Gui)
-if (TARGET Qt${QT_MAJOR_VERSION}::Widgets)
-    target_link_libraries(KF6Notifications PUBLIC Qt${QT_MAJOR_VERSION}::Widgets)
+target_link_libraries(KF6Notifications PUBLIC Qt6::Gui)
+if (TARGET Qt6::Widgets)
+    target_link_libraries(KF6Notifications PUBLIC Qt6::Widgets)
 endif()
-if (TARGET Qt${QT_MAJOR_VERSION}::DBus)
-   target_link_libraries(KF6Notifications PUBLIC Qt${QT_MAJOR_VERSION}::DBus)
+if (TARGET Qt6::DBus)
+   target_link_libraries(KF6Notifications PUBLIC Qt6::DBus)
 endif()
 target_link_libraries(KF6Notifications PRIVATE
    KF6::CoreAddons
@@ -125,12 +125,12 @@ if (TARGET KF6::WindowSystem)
 endif()
 
 if (TARGET SnoreToast::SnoreToastActions)
-  target_link_libraries(KF6Notifications PRIVATE Qt${QT_MAJOR_VERSION}::Network SnoreToast::SnoreToastActions)
+  target_link_libraries(KF6Notifications PRIVATE Qt6::Network SnoreToast::SnoreToastActions)
 endif ()
 
-if (Phonon4Qt5_FOUND)
+if (Phonon4Qt6_FOUND)
     target_link_libraries(KF6Notifications PRIVATE
-        Phonon::phonon4qt5)
+        Phonon::phonon4qt6)
 endif()
 
 if (Canberra_FOUND)
@@ -138,19 +138,16 @@ if (Canberra_FOUND)
         Canberra::Canberra)
 endif()
 
-if (Qt${QT_MAJOR_VERSION}TextToSpeech_FOUND)
-    target_link_libraries(KF6Notifications PRIVATE Qt${QT_MAJOR_VERSION}::TextToSpeech)
+if (Qt6TextToSpeech_FOUND)
+    target_link_libraries(KF6Notifications PRIVATE Qt6::TextToSpeech)
 endif()
 
 if(HAVE_X11)
    target_link_libraries(KF6Notifications PRIVATE ${X11_X11_LIB})
-    if (TARGET Qt5::X11Extras)
-        target_link_libraries(KF6Notifications PRIVATE Qt5::X11Extras)
-    endif()
 endif()
 
 if(APPLE)
-  target_link_libraries(KF6Notifications PRIVATE Qt5::MacExtras "-framework Foundation" "-framework AppKit")
+  target_link_libraries(KF6Notifications PRIVATE "-framework Foundation" "-framework AppKit")
 endif()
 
 if(X11_XTest_FOUND)
@@ -158,11 +155,7 @@ if(X11_XTest_FOUND)
 endif()
 
 if(HAVE_DBUSMENUQT)
-  target_link_libraries(KF6Notifications PRIVATE dbusmenu-qt5)
-endif()
-
-if (TARGET Qt5::AndroidExtras)
-    target_link_libraries(KF6Notifications PRIVATE Qt5::AndroidExtras)
+  target_link_libraries(KF6Notifications PRIVATE dbusmenu-qt6)
 endif()
 
 set_target_properties(KF6Notifications PROPERTIES VERSION   ${KNOTIFICATIONS_VERSION}
@@ -209,7 +202,7 @@ if(BUILD_QCH)
             "${CMAKE_SOURCE_DIR}/Mainpage.dox"
         IMAGE_DIRS "${CMAKE_SOURCE_DIR}/docs/pics"
         LINK_QCHS
-            Qt5Widgets_QCH
+            Qt6Widgets_QCH
         INCLUDE_DIRS
             ${CMAKE_CURRENT_BINARY_DIR}
         BLANK_MACROS
@@ -224,7 +217,7 @@ if(BUILD_QCH)
     )
 endif()
 
-if (TARGET Qt${QT_MAJOR_VERSION}::DBus)
+if (TARGET Qt6::DBus)
     install(FILES
         org.kde.StatusNotifierItem.xml
         DESTINATION ${KDE_INSTALL_DBUSINTERFACEDIR}
@@ -247,6 +240,6 @@ if (ANDROID)
     )
 endif()
 
-if (TARGET Qt${QT_MAJOR_VERSION}::Qml)
+if (TARGET Qt6::Qml)
     add_subdirectory(qml)
 endif()

@@ -3,12 +3,12 @@
 set(KNOTIFICATIONS_DBUS_INTERFACES_DIR "@PACKAGE_KDE_INSTALL_DBUSINTERFACEDIR@")
 
 include(CMakeFindDependencyMacro)
-find_dependency(Qt@QT_MAJOR_VERSION@Gui @REQUIRED_QT_VERSION@)
+find_dependency(Qt6Gui @REQUIRED_QT_VERSION@)
 if (@HAVE_WIDGETS@)
-    find_dependency(Qt@QT_MAJOR_VERSION@Widgets @REQUIRED_QT_VERSION@)
+    find_dependency(Qt6Widgets @REQUIRED_QT_VERSION@)
 endif()
 if (@HAVE_DBUS@)
-    find_dependency(Qt@QT_MAJOR_VERSION@DBus @REQUIRED_QT_VERSION@)
+    find_dependency(Qt6DBus @REQUIRED_QT_VERSION@)
 endif()
 
 if (NOT @BUILD_SHARED_LIBS@) 
@@ -21,37 +21,23 @@ if (NOT @BUILD_SHARED_LIBS@)
 
     if (@WITH_SNORETOAST@)
         find_dependency(LibSnoreToast)
-        find_dependency(Qt@QT_MAJOR_VERSION@Network @REQUIRED_QT_VERSION@)
+        find_dependency(Qt6Network @REQUIRED_QT_VERSION@)
     endif()
 
-    if (@HAVE_PHONON4QT5@)
-        find_dependency(Phonon4Qt5)
+    if (@HAVE_PHONON4QT6@)
+        find_dependency(Phonon4Qt6)
     endif()
 
     if (@Canberra_FOUND@)
         find_dependency(Canberra)
     endif()
 
-    if (@Qt5TextToSpeech_FOUND@)
-        find_dependency(Qt5TextToSpeech @REQUIRED_QT_VERSION@)
-    endif()
-
-    if(@HAVE_X11@)
-        if (NOT TARGET Qt6::Gui)
-            find_dependency(Qt5X11Extras @REQUIRED_QT_VERSION@)
-        endif()
-    endif()
-
-    if(APPLE)
-        find_dependency(Qt5MacExtras @REQUIRED_QT_VERSION@)
+    if (@Qt6TextToSpeech_FOUND@)
+        find_dependency(Qt6TextToSpeech @REQUIRED_QT_VERSION@)
     endif()
 
     if(@HAVE_DBUSMENUQT@)
-        find_dependency(dbusmenu-qt5)
-    endif()
-
-    if (ANDROID)
-        find_dependency(Qt5AndroidExtras @REQUIRED_QT_VERSION@)
+        find_dependency(dbusmenu-qt6)
     endif()
 endif()
 

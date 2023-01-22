@@ -43,28 +43,25 @@ set(REQUIRED_QT_VERSION 6.4.0)
 set(CMAKE_AUTORCC TRUE)
 
 if (ANDROID)
-    find_package(Qt${QT_MAJOR_VERSION} ${REQUIRED_QT_VERSION} CONFIG REQUIRED Gui)
-    if (QT_MAJOR_VERSION EQUAL "5")
-        find_package(Qt5 ${REQUIRED_QT_VERSION} CONFIG REQUIRED AndroidExtras)
-    endif()
+    find_package(Qt6 ${REQUIRED_QT_VERSION} CONFIG REQUIRED Gui)
     find_package(Gradle REQUIRED)
-    find_package(Qt${QT_MAJOR_VERSION} ${REQUIRED_QT_VERSION} QUIET OPTIONAL_COMPONENTS Widgets)
+    find_package(Qt6 ${REQUIRED_QT_VERSION} QUIET OPTIONAL_COMPONENTS Widgets)
 else()
-    find_package(Qt${QT_MAJOR_VERSION} ${REQUIRED_QT_VERSION} CONFIG REQUIRED Widgets)
+    find_package(Qt6 ${REQUIRED_QT_VERSION} CONFIG REQUIRED Widgets)
 endif()
 
 if (NOT ANDROID AND NOT WIN32)
-    find_package(Qt${QT_MAJOR_VERSION} ${REQUIRED_QT_VERSION} CONFIG REQUIRED DBus)
+    find_package(Qt6 ${REQUIRED_QT_VERSION} CONFIG REQUIRED DBus)
 endif()
 
-find_package(Qt${QT_MAJOR_VERSION} ${REQUIRED_QT_VERSION} QUIET OPTIONAL_COMPONENTS Qml TextToSpeech)
+find_package(Qt6 ${REQUIRED_QT_VERSION} QUIET OPTIONAL_COMPONENTS Qml TextToSpeech)
 
-find_package(Qt${QT_MAJOR_VERSION}TextToSpeech ${REQUIRED_QT_VERSION} QUIET CONFIG)
-set_package_properties(Qt${QT_MAJOR_VERSION}TextToSpeech PROPERTIES
+find_package(Qt6TextToSpeech ${REQUIRED_QT_VERSION} QUIET CONFIG)
+set_package_properties(Qt6TextToSpeech PROPERTIES
     DESCRIPTION "Qt text to speech module"
     TYPE OPTIONAL
     PURPOSE "Required to build text to speech notification support")
-if (TARGET Qt${QT_MAJOR_VERSION}::TextToSpeech)
+if (TARGET Qt6::TextToSpeech)
     add_definitions(-DHAVE_SPEECH)
 endif()
 
@@ -74,22 +71,16 @@ if (NOT APPLE AND NOT WIN32)
         find_package(X11)
         set(HAVE_X11 ${X11_FOUND})
         set(HAVE_XTEST ${X11_XTest_FOUND})
-        if(X11_FOUND AND QT_MAJOR_VERSION STREQUAL "5")
-            find_package(Qt5X11Extras ${REQUIRED_QT_VERSION} NO_MODULE REQUIRED)
-        endif()
     endif()
 endif()
 
-if(APPLE)
-   find_package(Qt5MacExtras ${REQUIRED_QT_VERSION} REQUIRED NO_MODULE)
-endif()
 if (WIN32)
     find_package(LibSnoreToast)
-    find_package(Qt${QT_MAJOR_VERSION}Network REQUIRED)
+    find_package(Qt6Network REQUIRED)
     
     include(CMakeDependentOption)
     cmake_dependent_option(WITH_SNORETOAST "for the Windows Toast Notifications" ON
-                           "Qt${QT_MAJOR_VERSION}Network_FOUND;LibSnoreToast_FOUND" OFF
+                           "Qt6Network_FOUND;LibSnoreToast_FOUND" OFF
     )    
 endif()
 
@@ -103,7 +94,7 @@ find_package(KF6Config ${KF_DEP_VERSION} REQUIRED)
 find_package(KF6CoreAddons ${KF_DEP_VERSION} REQUIRED)
 
 if (NOT ANDROID AND NOT WIN32 OR (WIN32 AND NOT WITH_SNORETOAST))
-    find_package(Qt${QT_MAJOR_VERSION} ${REQUIRED_QT_VERSION} CONFIG REQUIRED DBus)
+    find_package(Qt6 ${REQUIRED_QT_VERSION} CONFIG REQUIRED DBus)
     find_package(Canberra)
     set_package_properties(Canberra PROPERTIES
         PURPOSE "Needed to build audio notification support"
@@ -112,26 +103,26 @@ if (NOT ANDROID AND NOT WIN32 OR (WIN32 AND NOT WITH_SNORETOAST))
         add_definitions(-DHAVE_CANBERRA)
     else()
         # This is REQUIRED since you cannot tell CMake "either one of those two optional ones are required"
-        find_package(Phonon4Qt5 4.6.60 NO_MODULE REQUIRED)
-        set_package_properties(Phonon4Qt5 PROPERTIES
+        find_package(Phonon4Qt6 4.6.60 NO_MODULE REQUIRED)
+        set_package_properties(Phonon4Qt6 PROPERTIES
             DESCRIPTION "Qt-based audio library"
             PURPOSE "Needed to build audio notification support when Canberra isn't available")
-        add_definitions(-DHAVE_PHONON4QT5)
+        add_definitions(-DHAVE_PHONON4QT6)
     endif()
 endif()
 
 set(HAVE_DBUS FALSE)
 # dbusmenu-qt5 needs to be built with Qt6 first
-if (TARGET Qt5::DBus)
-    find_package(dbusmenu-qt5 CONFIG)
-    set_package_properties(dbusmenu-qt5 PROPERTIES DESCRIPTION "DBusMenuQt"
+if (TARGET Qt6::DBus)
+    find_package(dbusmenu-qt6 CONFIG)
+    set_package_properties(dbusmenu-qt6 PROPERTIES DESCRIPTION "DBusMenuQt"
                             URL "https://launchpad.net/libdbusmenu-qt" TYPE OPTIONAL
                             PURPOSE "Support for notification area menus via the DBusMenu protocol")
 
     set(HAVE_DBUS TRUE)
 endif()
 set(HAVE_WIDGETS FALSE)
-if (TARGET Qt${QT_MAJOR_VERSION}::Widgets)
+if (TARGET Qt6::Widgets)
     set(HAVE_WIDGETS TRUE)
 endif()
 
@@ -139,10 +130,10 @@ remove_definitions(-DQT_NO_CAST_FROM_BYTEARRAY)
 
 ecm_install_po_files_as_qm(poqm)
 
-if (NOT APPLE) # QtMac::setBadgeLabelText is deprecated
-ecm_set_disabled_deprecation_versions(QT 5.15.2)
-endif()
-ecm_set_disabled_deprecation_versions(KF 5.97)
+ecm_set_disabled_deprecation_versions(
+    QT 6.4
+    KF 5.97
+)
 
 add_subdirectory(src)
 if (BUILD_TESTING)

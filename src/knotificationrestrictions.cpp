@@ -18,10 +18,6 @@
 #if HAVE_XTEST
 #include <QTimer>
 
-#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
-#include <QX11Info>
-#endif
-
 #include <X11/extensions/XTest.h>
 #include <X11/keysym.h>
 #endif // HAVE_XTEST
@@ -90,11 +86,7 @@ void KNotificationRestrictions::Private::screensaverFakeKeyEvent()
         return;
     }
     qCDebug(LOG_KNOTIFICATIONS) << "---- using XTestFakeKeyEvent";
-#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
-    Display *display = QX11Info::display();
-#else
     Display *display = qGuiApp->nativeInterface<QNativeInterface::QX11Application>()->display();
-#endif
 
     XTestFakeKeyEvent(display, XTestKeyCode, true, CurrentTime);
     XTestFakeKeyEvent(display, XTestKeyCode, false, CurrentTime);
@@ -122,11 +114,7 @@ void KNotificationRestrictions::Private::startScreenSaverPrevention()
         return;
     }
 
-#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
-    Display *display = QX11Info::display();
-#else
     Display *display = qGuiApp->nativeInterface<QNativeInterface::QX11Application>()->display();
-#endif
 
     if (!haveXTest) {
         int a;

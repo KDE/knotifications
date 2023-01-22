@@ -9,13 +9,7 @@
 
 #include "knotificationplugin.h"
 
-#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
-#include <QAndroidJniObject>
-#else
 #include <QJniObject>
-// TODO KF6 remove this porting aid
-using QAndroidJniObject = QJniObject;
-#endif
 #include <QPointer>
 
 /** Android notification backend. */
@@ -39,9 +33,9 @@ public:
 
 private:
     void notifyDeferred(KNotification *notification);
-    QAndroidJniObject createAndroidNotification(KNotification *notification, KNotifyConfig *config) const;
+    QJniObject createAndroidNotification(KNotification *notification, KNotifyConfig *config) const;
 
-    QAndroidJniObject m_backend;
+    QJniObject m_backend;
     QHash<int, QPointer<KNotification>> m_notifications;
 };
 

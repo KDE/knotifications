@@ -47,7 +47,7 @@
 
 #if defined(HAVE_CANBERRA)
 #include "notifybyaudio_canberra.h"
-#elif defined(HAVE_PHONON4QT5)
+#elif defined(HAVE_PHONON4QT6)
 #include "notifybyaudio_phonon.h"
 #endif
 
@@ -142,7 +142,7 @@ KNotificationPlugin *KNotificationManager::pluginForAction(const QString &action
         addPlugin(plugin);
 #endif
     } else if (action == QLatin1String("Sound")) {
-#if defined(HAVE_PHONON4QT5) || defined(HAVE_CANBERRA)
+#if defined(HAVE_PHONON4QT6) || defined(HAVE_CANBERRA)
         plugin = new NotifyByAudio(this);
         addPlugin(plugin);
 #endif

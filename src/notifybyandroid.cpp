@@ -10,15 +10,8 @@
 #include "knotificationreplyaction.h"
 #include "knotifyconfig.h"
 
-#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
-#include <QAndroidJniEnvironment>
-#include <QtAndroid>
-#else
 #include <QCoreApplication>
 #include <QJniEnvironment>
-// TODO KF6 remove this porting aid
-using QAndroidJniEnvironment = QJniEnvironment;
-#endif
 
 #include <QBuffer>
 #include <QIcon>
@@ -85,12 +78,8 @@ NotifyByAndroid::NotifyByAndroid(QObject *parent)
     : KNotificationPlugin(parent)
 {
     s_instance = this;
-#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
-    QAndroidJniObject context = QtAndroid::androidContext();
-#else
     QJniObject context = QNativeInterface::QAndroidApplication::context();
-#endif
-    m_backend = QAndroidJniObject("org/kde/knotifications/NotifyByAndroid", "(Landroid/content/Context;)V", context.object<jobject>());
+    m_backend = QJniObject("org/kde/knotifications/NotifyByAndroid", "(Landroid/content/Context;)V", context.object<jobject>());
 }
 
 NotifyByAndroid::~NotifyByAndroid()
@@ -116,24 +105,23 @@ void NotifyByAndroid::notify(KNotification *notification, KNotifyConfig *config)
         Qt::QueuedConnection);
 }
 
-QAndroidJniObject NotifyByAndroid::createAndroidNotification(KNotification *notification, KNotifyConfig *config) const
+QJniObject NotifyByAndroid::createAndroidNotification(KNotification *notification, KNotifyConfig *config) const
 {
-    QAndroidJniEnvironment env;
-    QAndroidJniObject n("org/kde/knotifications/KNotification", "()V");
+    QJniEnvironment env;
+    QJniObject n("org/kde/knotifications/KNotification", "()V");
     n.setField("id", notification->id());
-    n.setField("text", QAndroidJniObject::fromString(stripRichText(notification->text())).object<jstring>());
-    n.setField("richText", QAndroidJniObject::fromString(notification->text()).object<jstring>());
-    n.setField("title", QAndroidJniObject::fromString(notification->title()).object<jstring>());
+    n.setField("text", QJniObject::fromString(stripRichText(notification->text())).object<jstring>());
+    n.setField("richText", QJniObject::fromString(notification->text()).object<jstring>());
+    n.setField("title", QJniObject::fromString(notification->title()).object<jstring>());
     n.setField("urgency", (jint)(notification->urgency() == KNotification::DefaultUrgency ? KNotification::HighUrgency : notification->urgency()));
-    n.setField("visibility",
-               QAndroidJniObject::fromString(notification->hints().value(QLatin1String("x-kde-visibility")).toString().toLower()).object<jstring>());
+    n.setField("visibility", QJniObject::fromString(notification->hints().value(QLatin1String("x-kde-visibility")).toString().toLower()).object<jstring>());
 
-    n.setField("channelId", QAndroidJniObject::fromString(notification->eventId()).object<jstring>());
-    n.setField("channelName", QAndroidJniObject::fromString(config->readEntry(QLatin1String("Name"))).object<jstring>());
-    n.setField("channelDescription", QAndroidJniObject::fromString(config->readEntry(QLatin1String("Comment"))).object<jstring>());
+    n.setField("channelId", QJniObject::fromString(notification->eventId()).object<jstring>());
+    n.setField("channelName", QJniObject::fromString(config->readEntry(QLatin1String("Name"))).object<jstring>());
+    n.setField("channelDescription", QJniObject::fromString(config->readEntry(QLatin1String("Comment"))).object<jstring>());
 
     if ((notification->flags() & KNotification::SkipGrouping) == 0) {
-        n.setField("group", QAndroidJniObject::fromString(notification->eventId()).object<jstring>());
+        n.setField("group", QJniObject::fromString(notification->eventId()).object<jstring>());
     }
 
     // icon
@@ -156,12 +144,12 @@ QAndroidJniObject NotifyByAndroid::createAndroidNotification(KNotification *noti
     // actions
     const auto actions = notification->actions();
     for (const auto &action : actions) {
-        n.callMethod<void>("addAction", "(Ljava/lang/String;)V", QAndroidJniObject::fromString(action).object<jstring>());
+        n.callMethod<void>("addAction", "(Ljava/lang/String;)V", QJniObject::fromString(action).object<jstring>());
     }
 
     if (notification->replyAction()) {
-        n.setField("inlineReplyLabel", QAndroidJniObject::fromString(notification->replyAction()->label()).object<jstring>());
-        n.setField("inlineReplyPlaceholder", QAndroidJniObject::fromString(notification->replyAction()->placeholderText()).object<jstring>());
+        n.setField("inlineReplyLabel", QJniObject::fromString(notification->replyAction()->label()).object<jstring>());
+        n.setField("inlineReplyPlaceholder", QJniObject::fromString(notification->replyAction()->placeholderText()).object<jstring>());
     }
 
     return n;
@@ -184,7 +172,7 @@ void NotifyByAndroid::update(KNotification *notification, KNotifyConfig *config)
 
 void NotifyByAndroid::close(KNotification *notification)
 {
-    m_backend.callMethod<void>("close", "(ILjava/lang/String;)V", notification->id(), QAndroidJniObject::fromString(notification->eventId()).object<jstring>());
+    m_backend.callMethod<void>("close", "(ILjava/lang/String;)V", notification->id(), QJniObject::fromString(notification->eventId()).object<jstring>());
     KNotificationPlugin::close(notification);
 }
 

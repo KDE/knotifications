@@ -36,7 +36,7 @@
 // incremental notification ID
 static int notificationIdCounter = 0;
 
-KNotification::KNotification(const QString &eventId, const NotificationFlags &flags, QObject *parent)
+KNotification::KNotification(const QString &eventId, NotificationFlags flags, QObject *parent)
     : QObject(parent)
     , d(new Private)
 {

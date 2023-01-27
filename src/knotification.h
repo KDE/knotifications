@@ -213,27 +213,6 @@ public:
      *
      * The pointer is automatically deleted when the event is closed.
      *
-     * The NotificationFlags is set to CloseOnTimeout.
-     *
-     * @param eventId is the name of the event
-     * @since 5.75
-     */
-    inline explicit KNotification(const QString &eventId)
-        : KNotification(eventId, CloseOnTimeout, nullptr)
-    {
-    }
-    // TODO KF6: remove thic constructor, in favour of other non-deprecated constructor
-    // It is a helper constructor for software binary compatibility of code which called the
-    // deprecated constructor so far due to it's second parameter "widget" having had
-    // a default nullptr value.
-
-    /**
-     * Create a new notification.
-     *
-     * You have to use sendEvent to show the notification.
-     *
-     * The pointer is automatically deleted when the event is closed.
-     *
      * Make sure you use one of the NotificationFlags CloseOnTimeOut or
      * CloseWhenWidgetActivated, if not,
      * you have to close the notification yourself.
@@ -244,8 +223,7 @@ public:
      * @param flags is a bitmask of NotificationFlag
      * @param parent parent object
      */
-    explicit KNotification(const QString &eventId, const NotificationFlags &flags, QObject *parent = nullptr);
-    // TODO KF6: pass flags by value instead of reference, set CloseOnTimeout as default value
+    explicit KNotification(const QString &eventId, NotificationFlags flags = CloseOnTimeout, QObject *parent = nullptr);
 
     ~KNotification() override;
 

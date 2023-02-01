@@ -20,9 +20,9 @@ NotifyByTaskbar::~NotifyByTaskbar()
 {
 }
 
-void NotifyByTaskbar::notify(KNotification *notification, KNotifyConfig *config)
+void NotifyByTaskbar::notify(KNotification *notification, const KNotifyConfig &notifyConfig)
 {
-    Q_UNUSED(config);
+    Q_UNUSED(notifyConfig);
     if (!notification->widget()) {
         qCWarning(LOG_KNOTIFICATIONS) << "Could not notify " << notification->eventId() << "by taskbar, notification has no associated widget";
         finish(notification);

@@ -21,8 +21,8 @@ public:
     {
         return QStringLiteral("Popup");
     }
-    void notify(KNotification *notification, KNotifyConfig *config) override;
-    void update(KNotification *notification, KNotifyConfig *config) override;
+    void notify(KNotification *notification, const KNotifyConfig &notifyConfig) override;
+    void update(KNotification *notification, const KNotifyConfig &notifyConfig) override;
     void close(KNotification *notification) override;
 };
 

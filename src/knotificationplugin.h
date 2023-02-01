@@ -30,6 +30,18 @@ class KNotifyConfig;
  *
  * You should reimplement the KNotificationPlugin::notify method to display the notification.
  *
+ * Porting from KF5 to KF6:
+ *
+ * The signature of the virtual method
+ * KNotificationPlugin::notify(KNotification *notification, KNotifyConfig *)
+ * was changed to
+ * KNotificationPlugin::notify(KNotification *notification, const KNotifyConfig &).
+ *
+ * The signature of the virtual method
+ * KNotificationPlugin::update(KNotification *notification, KNotifyConfig *)
+ * was changed to
+ * KNotificationPlugin::update(KNotification *notification, const KNotifyConfig &).
+ *
  * @author Olivier Goffart <ogoffart at kde.org>
  */
 class KNOTIFICATIONS_EXPORT KNotificationPlugin : public QObject
@@ -48,7 +60,6 @@ public:
      */
     virtual QString optionName() = 0;
 
-    // TODO KF6 make notifyConfig const reference
     /**
      * This function is called when the notification is sent.
      * (or re-sent)
@@ -59,13 +70,12 @@ public:
      * @param notification is the KNotification object
      * @param notifyConfig is the configuration of the notification
      */
-    virtual void notify(KNotification *notification, KNotifyConfig *notifyConfig) = 0;
+    virtual void notify(KNotification *notification, const KNotifyConfig &notifyConfig) = 0;
 
-    // TODO KF6 make config const reference
     /**
      * This function is called when the notification has changed (such as the text or the icon)
      */
-    virtual void update(KNotification *notification, KNotifyConfig *config);
+    virtual void update(KNotification *notification, const KNotifyConfig &notifyConfig);
 
     /**
      * This function is called when the notification has been closed

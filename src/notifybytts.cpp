@@ -25,10 +25,10 @@ NotifyByTTS::~NotifyByTTS()
     delete m_speech;
 }
 
-void NotifyByTTS::notify(KNotification *notification, KNotifyConfig *config)
+void NotifyByTTS::notify(KNotification *notification, const KNotifyConfig &notifyConfig)
 {
     if (m_speech->state() != QTextToSpeech::Error) {
-        QString say = config->readEntry(QStringLiteral("TTS"));
+        QString say = notifyConfig.readEntry(QStringLiteral("TTS"));
 
         if (!say.isEmpty()) {
             // Create a hash of characters to strings to expand text into the notification text.
@@ -36,7 +36,7 @@ void NotifyByTTS::notify(KNotification *notification, KNotifyConfig *config)
             subst.insert(QLatin1Char('e'), notification->eventId());
             subst.insert(QLatin1Char('a'), notification->appName());
             subst.insert(QLatin1Char('s'), notification->text());
-            // subst.insert('w', QString::number((quintptr)config->winId));
+            // subst.insert('w', QString::number((quintptr)notifyConfig.winId));
             // subst.insert('i', QString::number(id));
             subst.insert(QLatin1Char('m'), notification->text());
             say = KMacroExpander::expandMacrosShellQuote(say, subst);

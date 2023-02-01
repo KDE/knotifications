@@ -30,9 +30,9 @@ public:
     {
         return QStringLiteral("Popup");
     }
-    void notify(KNotification *notification, KNotifyConfig *notifyConfig) override;
+    void notify(KNotification *notification, const KNotifyConfig &notifyConfig) override;
     void close(KNotification *notification) override;
-    void update(KNotification *notification, KNotifyConfig *config) override;
+    void update(KNotification *notification, const KNotifyConfig &notifyConfig) override;
 
 private Q_SLOTS:
 
@@ -42,10 +42,6 @@ private Q_SLOTS:
     void onPortalNotificationActionInvoked(const QString &, const QString &, const QVariantList &);
 
 private:
-    // TODO KF6, replace current public notify/update
-    void notify(KNotification *notification, const KNotifyConfig &notifyConfig);
-    void update(KNotification *notification, const KNotifyConfig &notifyConfig);
-
     std::unique_ptr<NotifyByPortalPrivate> const d;
 };
 

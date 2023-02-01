@@ -31,12 +31,12 @@ NotifyByAudio::~NotifyByAudio()
     delete m_audioOutput;
 }
 
-void NotifyByAudio::notify(KNotification *notification, KNotifyConfig *config)
+void NotifyByAudio::notify(KNotification *notification, const KNotifyConfig &notifyConfig)
 {
     if (!m_audioOutput) {
         m_audioOutput = new Phonon::AudioOutput(Phonon::NotificationCategory, this);
     }
-    const QString soundFilename = config->readEntry(QStringLiteral("Sound"));
+    const QString soundFilename = notifyConfig.readEntry(QStringLiteral("Sound"));
     if (soundFilename.isEmpty()) {
         qCWarning(LOG_KNOTIFICATIONS) << "Audio notification requested, but no sound file provided in notifyrc file, aborting audio notification";
 

@@ -22,8 +22,8 @@ public:
 
     // interface of KNotificationPlugin
     QString optionName() override;
-    void notify(KNotification *notification, KNotifyConfig *config) override;
-    void update(KNotification *notification, KNotifyConfig *config) override;
+    void notify(KNotification *notification, const KNotifyConfig &notifyConfig) override;
+    void update(KNotification *notification, const KNotifyConfig &notifyConfig) override;
     void close(KNotification *notification) override;
 
     // interface from Java
@@ -33,7 +33,7 @@ public:
 
 private:
     void notifyDeferred(KNotification *notification);
-    QJniObject createAndroidNotification(KNotification *notification, KNotifyConfig *config) const;
+    QJniObject createAndroidNotification(KNotification *notification, const KNotifyConfig &notifyConfig) const;
 
     QJniObject m_backend;
     QHash<int, QPointer<KNotification>> m_notifications;

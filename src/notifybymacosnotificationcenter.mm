@@ -148,9 +148,9 @@ NotifyByMacOSNotificationCenter::NotifyByMacOSNotificationCenter(QObject* parent
 
 NotifyByMacOSNotificationCenter::~NotifyByMacOSNotificationCenter() {}
 
-void NotifyByMacOSNotificationCenter::notify(KNotification *notification, KNotifyConfig *config)
+void NotifyByMacOSNotificationCenter::notify(KNotification *notification, const KNotifyConfig &notifyConfig)
 {
-    Q_UNUSED(config);
+    Q_UNUSED(notifyConfig);
 
     int internalId = MacOSNotificationCenterPrivate::instance()->m_internalCounter++;
     NSUserNotification *osxNotification = [[[NSUserNotification alloc] init] autorelease];
@@ -227,8 +227,8 @@ void NotifyByMacOSNotificationCenter::close(KNotification *notification)
     finish(notification);
 }
 
-void NotifyByMacOSNotificationCenter::update(KNotification *notification, KNotifyConfig *config)
+void NotifyByMacOSNotificationCenter::update(KNotification *notification, const KNotifyConfig &notifyConfig)
 {
     close(notification);
-    notify(notification, config);
+    notify(notification, notifyConfig);
 }

@@ -21,10 +21,10 @@ KNotificationPlugin::~KNotificationPlugin()
 {
 }
 
-void KNotificationPlugin::update(KNotification *notification, KNotifyConfig *config)
+void KNotificationPlugin::update(KNotification *notification, const KNotifyConfig &notifyConfig)
 {
     Q_UNUSED(notification);
-    Q_UNUSED(config);
+    Q_UNUSED(notifyConfig);
 }
 
 void KNotificationPlugin::close(KNotification *notification)

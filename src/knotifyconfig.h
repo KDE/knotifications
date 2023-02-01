@@ -71,7 +71,7 @@ public:
      *
      * return a null string if the entry doesn't exist
      */
-    QString readEntry(const QString &entry, bool path = false);
+    QString readEntry(const QString &entry, bool path = false) const;
 
     /**
      * the pixmap to put on the notification

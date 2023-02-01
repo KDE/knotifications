@@ -46,11 +46,6 @@ NotifyByPopup::~NotifyByPopup()
     }
 }
 
-void NotifyByPopup::notify(KNotification *notification, KNotifyConfig *notifyConfig)
-{
-    notify(notification, *notifyConfig);
-}
-
 void NotifyByPopup::notify(KNotification *notification, const KNotifyConfig &notifyConfig)
 {
     if (m_dbusServiceCapCacheDirty) {
@@ -64,11 +59,6 @@ void NotifyByPopup::notify(KNotification *notification, const KNotifyConfig &not
             finish(notification); // an error occurred.
         }
     }
-}
-
-void NotifyByPopup::update(KNotification *notification, KNotifyConfig *notifyConfig)
-{
-    update(notification, *notifyConfig);
 }
 
 void NotifyByPopup::update(KNotification *notification, const KNotifyConfig &notifyConfig)

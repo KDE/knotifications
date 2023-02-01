@@ -144,9 +144,9 @@ NotifyBySnore::~NotifyBySnore()
     m_server.close();
 }
 
-void NotifyBySnore::notify(KNotification *notification, KNotifyConfig *config)
+void NotifyBySnore::notify(KNotification *notification, const KNotifyConfig &notifyConfig)
 {
-    Q_UNUSED(config);
+    Q_UNUSED(notifyConfig);
     // HACK work around that notification->id() is only populated after returning from here
     // note that config will be invalid at that point, so we can't pass that along
     QMetaObject::invokeMethod(
@@ -237,9 +237,9 @@ void NotifyBySnore::close(KNotification *notification)
     finish(notification);
 }
 
-void NotifyBySnore::update(KNotification *notification, KNotifyConfig *config)
+void NotifyBySnore::update(KNotification *notification, const KNotifyConfig &notifyConfig)
 {
     Q_UNUSED(notification);
-    Q_UNUSED(config);
+    Q_UNUSED(notifyConfig);
     qCWarning(LOG_KNOTIFICATIONS) << "updating a notification is not supported yet.";
 }

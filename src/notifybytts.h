@@ -23,7 +23,7 @@ public:
     {
         return QStringLiteral("TTS");
     }
-    void notify(KNotification *notification, KNotifyConfig *config) override;
+    void notify(KNotification *notification, const KNotifyConfig &notifyConfig) override;
 
 private:
     QTextToSpeech *const m_speech;

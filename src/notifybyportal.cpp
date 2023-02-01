@@ -128,11 +128,6 @@ NotifyByPortal::NotifyByPortal(QObject *parent)
 
 NotifyByPortal::~NotifyByPortal() = default;
 
-void NotifyByPortal::notify(KNotification *notification, KNotifyConfig *notifyConfig)
-{
-    notify(notification, *notifyConfig);
-}
-
 void NotifyByPortal::notify(KNotification *notification, const KNotifyConfig &notifyConfig)
 {
     if (d->portalNotifications.contains(notification->id())) {
@@ -156,7 +151,7 @@ void NotifyByPortal::close(KNotification *notification)
     }
 }
 
-void NotifyByPortal::update(KNotification *notification, KNotifyConfig *notifyConfig)
+void NotifyByPortal::update(KNotification *notification, const KNotifyConfig &notifyConfig)
 {
     // TODO not supported by portals
     Q_UNUSED(notification);

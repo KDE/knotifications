@@ -33,7 +33,7 @@ public:
     {
         return QStringLiteral("Sound");
     }
-    void notify(KNotification *notification, KNotifyConfig *config) override;
+    void notify(KNotification *notification, const KNotifyConfig &notifyConfig) override;
     void close(KNotification *notification) override;
 
 private Q_SLOTS:

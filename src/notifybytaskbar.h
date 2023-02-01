@@ -20,7 +20,7 @@ public:
     {
         return QStringLiteral("Taskbar");
     }
-    void notify(KNotification *notification, KNotifyConfig *config) override;
+    void notify(KNotification *notification, const KNotifyConfig &notifyConfig) override;
 };
 
 #endif

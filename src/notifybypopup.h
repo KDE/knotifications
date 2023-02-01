@@ -30,9 +30,9 @@ public:
     {
         return QStringLiteral("Popup");
     }
-    void notify(KNotification *notification, KNotifyConfig *notifyConfig) override;
+    void notify(KNotification *notification, const KNotifyConfig &notifyConfig) override;
     void close(KNotification *notification) override;
-    void update(KNotification *notification, KNotifyConfig *config) override;
+    void update(KNotification *notification, const KNotifyConfig &notifyConfig) override;
 
 private Q_SLOTS:
     // slot which gets called when DBus signals that some notification action was invoked
@@ -43,10 +43,6 @@ private Q_SLOTS:
     void onNotificationReplied(uint notificationId, const QString &text);
 
 private:
-    // TODO KF6, replace current public notify/update
-    void notify(KNotification *notification, const KNotifyConfig &notifyConfig);
-    void update(KNotification *notification, const KNotifyConfig &notifyConfig);
-
     /**
      * Sends notification to DBus "org.freedesktop.notifications" interface.
      * @param id knotify-sid identifier of notification

@@ -24,9 +24,9 @@ NotifyByLogfile::~NotifyByLogfile()
 {
 }
 
-void NotifyByLogfile::notify(KNotification *notification, KNotifyConfig *config)
+void NotifyByLogfile::notify(KNotification *notification, const KNotifyConfig &notifyConfig)
 {
-    QString file = config->readEntry(QStringLiteral("Logfile"));
+    const QString file = notifyConfig.readEntry(QStringLiteral("Logfile"));
 
     if (file.isEmpty()) {
         finish(notification);
@@ -43,7 +43,7 @@ void NotifyByLogfile::notify(KNotification *notification, KNotifyConfig *config)
 
     QString text = notification->text();
     if (text.isEmpty()) {
-        text = config->readEntry(QStringLiteral("Name"));
+        text = notifyConfig.readEntry(QStringLiteral("Name"));
     }
     // append msg
     QTextStream strm(&logFile);

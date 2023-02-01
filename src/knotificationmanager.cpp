@@ -375,7 +375,7 @@ void KNotificationManager::notify(KNotification *n)
         }
 
         qCDebug(LOG_KNOTIFICATIONS) << "Calling notify on" << notifyPlugin->optionName();
-        notifyPlugin->notify(n, &notifyConfig);
+        notifyPlugin->notify(n, notifyConfig);
     }
 
     connect(n, &KNotification::closed, this, &KNotificationManager::notificationClosed);
@@ -386,7 +386,7 @@ void KNotificationManager::update(KNotification *n)
     KNotifyConfig notifyConfig(n->appName(), n->contexts(), n->eventId());
 
     for (KNotificationPlugin *p : std::as_const(d->notifyPlugins)) {
-        p->update(n, &notifyConfig);
+        p->update(n, notifyConfig);
     }
 }
 

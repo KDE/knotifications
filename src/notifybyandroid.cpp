@@ -92,9 +92,9 @@ QString NotifyByAndroid::optionName()
     return QStringLiteral("Popup");
 }
 
-void NotifyByAndroid::notify(KNotification *notification, KNotifyConfig *config)
+void NotifyByAndroid::notify(KNotification *notification, const KNotifyConfig &notifyConfig)
 {
-    Q_UNUSED(config);
+    Q_UNUSED(notifyConfig);
     // HACK work around that notification->id() is only populated after returning from here
     // note that config will be invalid at that point, so we can't pass that along
     QMetaObject::invokeMethod(
@@ -105,7 +105,7 @@ void NotifyByAndroid::notify(KNotification *notification, KNotifyConfig *config)
         Qt::QueuedConnection);
 }
 
-QJniObject NotifyByAndroid::createAndroidNotification(KNotification *notification, KNotifyConfig *config) const
+QJniObject NotifyByAndroid::createAndroidNotification(KNotification *notification, const KNotifyConfig &notifyConfig) const
 {
     QJniEnvironment env;
     QJniObject n("org/kde/knotifications/KNotification", "()V");
@@ -117,8 +117,8 @@ QJniObject NotifyByAndroid::createAndroidNotification(KNotification *notificatio
     n.setField("visibility", QJniObject::fromString(notification->hints().value(QLatin1String("x-kde-visibility")).toString().toLower()).object<jstring>());
 
     n.setField("channelId", QJniObject::fromString(notification->eventId()).object<jstring>());
-    n.setField("channelName", QJniObject::fromString(config->readEntry(QLatin1String("Name"))).object<jstring>());
-    n.setField("channelDescription", QJniObject::fromString(config->readEntry(QLatin1String("Comment"))).object<jstring>());
+    n.setField("channelName", QJniObject::fromString(notifyConfig.readEntry(QLatin1String("Name"))).object<jstring>());
+    n.setField("channelDescription", QJniObject::fromString(notifyConfig.readEntry(QLatin1String("Comment"))).object<jstring>());
 
     if ((notification->flags() & KNotification::SkipGrouping) == 0) {
         n.setField("group", QJniObject::fromString(notification->eventId()).object<jstring>());
@@ -158,15 +158,15 @@ QJniObject NotifyByAndroid::createAndroidNotification(KNotification *notificatio
 void NotifyByAndroid::notifyDeferred(KNotification *notification)
 {
     KNotifyConfig config(notification->appName(), notification->contexts(), notification->eventId());
-    const auto n = createAndroidNotification(notification, &config);
+    const auto n = createAndroidNotification(notification, config);
     m_notifications.insert(notification->id(), notification);
 
     m_backend.callMethod<void>("notify", "(Lorg/kde/knotifications/KNotification;)V", n.object<jobject>());
 }
 
-void NotifyByAndroid::update(KNotification *notification, KNotifyConfig *config)
+void NotifyByAndroid::update(KNotification *notification, const KNotifyConfig &notifyConfig)
 {
-    const auto n = createAndroidNotification(notification, config);
+    const auto n = createAndroidNotification(notification, notifyConfig);
     m_backend.callMethod<void>("notify", "(Lorg/kde/knotifications/KNotification;)V", n.object<jobject>());
 }
 

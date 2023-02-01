@@ -26,9 +26,9 @@ NotifyByExecute::~NotifyByExecute()
 {
 }
 
-void NotifyByExecute::notify(KNotification *notification, KNotifyConfig *config)
+void NotifyByExecute::notify(KNotification *notification, const KNotifyConfig &notifyConfig)
 {
-    QString command = config->readEntry(QStringLiteral("Execute"));
+    const QString command = notifyConfig.readEntry(QStringLiteral("Execute"));
 
     if (!command.isEmpty()) {
         QHash<QChar, QString> subst;

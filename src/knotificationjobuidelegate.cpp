@@ -30,12 +30,6 @@ void KNotificationJobUiDelegatePrivate::showNotification(KNotification::Standard
     KNotification::event(standardEvent, title, text);
 }
 
-KNotificationJobUiDelegate::KNotificationJobUiDelegate()
-    : KJobUiDelegate()
-    , d(new KNotificationJobUiDelegatePrivate)
-{
-}
-
 KNotificationJobUiDelegate::KNotificationJobUiDelegate(KJobUiDelegate::Flags flags)
     : KJobUiDelegate(flags)
     , d(new KNotificationJobUiDelegatePrivate)

@@ -30,15 +30,10 @@ class KNOTIFICATIONS_EXPORT KNotificationJobUiDelegate : public KJobUiDelegate
 public:
     /**
      * Constructs a new KNotificationJobUiDelegate.
-     */
-    KNotificationJobUiDelegate();
-
-    /**
-     * Constructs a new KNotificationJobUiDelegate.
      * @param flags allows to enable automatic error/warning handling
      * @since 5.70
      */
-    explicit KNotificationJobUiDelegate(KJobUiDelegate::Flags flags); // KF6 TODO merge with default constructor, using AutoHandlingDisabled as default value
+    explicit KNotificationJobUiDelegate(KJobUiDelegate::Flags flags = {KJobUiDelegate::AutoHandlingDisabled});
 
     /**
      * Destroys the KNotificationJobUiDelegate.

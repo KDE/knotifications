@@ -742,7 +742,6 @@ bool KStatusNotifierItemPrivate::checkVisibility(QPoint pos, bool perform)
             }
 
             if (perform) {
-                KWindowSystem::raiseWindow(associatedWidget->winId());
                 KX11Extras::forceActiveWindow(associatedWidget->winId());
                 Q_EMIT q->activateRequested(true, pos);
             }

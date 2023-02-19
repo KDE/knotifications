@@ -489,8 +489,10 @@ void KStatusNotifierItem::setAssociatedWidget(QWidget *associatedWidget)
         d->associatedWidget->installEventFilter(this);
         d->associatedWidgetPos = QPoint(-1, -1);
     } else {
-        d->associatedWidget->removeEventFilter(this);
-        d->associatedWidget = nullptr;
+        if (d->associatedWidget) {
+            d->associatedWidget->removeEventFilter(this);
+            d->associatedWidget = nullptr;
+        }
     }
 
     if (d->systemTrayIcon) {

@@ -71,8 +71,8 @@ KStatusNotifierItem::~KStatusNotifierItem()
     if (!qApp->closingDown()) {
         delete d->menu;
     }
-    if (d->associatedWidget) {
-        KWindowSystem::self()->disconnect(d->associatedWidget);
+    if (d->associatedWindow) {
+        KWindowSystem::self()->disconnect(d->associatedWindow);
     }
 }
 
@@ -482,16 +482,16 @@ QMenu *KStatusNotifierItem::contextMenu() const
     return d->menu;
 }
 
-void KStatusNotifierItem::setAssociatedWidget(QWidget *associatedWidget)
+void KStatusNotifierItem::setAssociatedWindow(QWindow *associatedWidget)
 {
     if (associatedWidget) {
-        d->associatedWidget = associatedWidget->window();
-        d->associatedWidget->installEventFilter(this);
-        d->associatedWidgetPos = QPoint(-1, -1);
+        d->associatedWindow = associatedWidget;
+        d->associatedWindow->installEventFilter(this);
+        d->associatedWindowPos = QPoint(-1, -1);
     } else {
-        if (d->associatedWidget) {
-            d->associatedWidget->removeEventFilter(this);
-            d->associatedWidget = nullptr;
+        if (d->associatedWindow) {
+            d->associatedWindow->removeEventFilter(this);
+            d->associatedWindow = nullptr;
         }
     }
 
@@ -501,7 +501,7 @@ void KStatusNotifierItem::setAssociatedWidget(QWidget *associatedWidget)
         d->setLegacySystemTrayEnabled(true);
     }
 
-    if (d->associatedWidget && d->associatedWidget != d->menu) {
+    if (d->associatedWindow) {
         QAction *action = d->actionCollection.value(QStringLiteral("minimizeRestore"));
 
         if (!action) {
@@ -512,7 +512,7 @@ void KStatusNotifierItem::setAssociatedWidget(QWidget *associatedWidget)
             connect(action, SIGNAL(triggered(bool)), this, SLOT(minimizeRestore()));
         }
 
-        KWindowInfo info(d->associatedWidget->winId(), NET::WMDesktop);
+        KWindowInfo info(d->associatedWindow->winId(), NET::WMDesktop);
         d->onAllDesktops = info.onAllDesktops();
     } else {
         if (d->menu && d->hasQuit) {
@@ -526,9 +526,9 @@ void KStatusNotifierItem::setAssociatedWidget(QWidget *associatedWidget)
     }
 }
 
-QWidget *KStatusNotifierItem::associatedWidget() const
+QWindow *KStatusNotifierItem::associatedWindow() const
 {
-    return d->associatedWidget;
+    return d->associatedWindow;
 }
 
 QList<QAction *> KStatusNotifierItem::actionCollection() const
@@ -630,18 +630,11 @@ void KStatusNotifierItem::activate(const QPoint &pos)
 #endif
     }
 
-#ifdef QT_DBUS_LIB
-    if (d->associatedWidget && d->associatedWidget == d->menu) {
-        d->statusNotifierItemDBus->ContextMenu(pos.x(), pos.y());
-        return;
-    }
-#endif
-
     if (d->menu && d->menu->isVisible()) {
         d->menu->hide();
     }
 
-    if (!d->associatedWidget) {
+    if (!d->associatedWindow) {
         Q_EMIT activateRequested(true, pos);
         return;
     }
@@ -651,7 +644,7 @@ void KStatusNotifierItem::activate(const QPoint &pos)
 
 void KStatusNotifierItem::hideAssociatedWidget()
 {
-    if (!d->associatedWidget) {
+    if (!d->associatedWindow) {
         return;
     }
     d->minimizeRestore(false);
@@ -684,7 +677,7 @@ bool KStatusNotifierItemPrivate::checkVisibility(QPoint pos, bool perform)
 #endif
 #else
     // mapped = visible (but possibly obscured)
-    const bool mapped = associatedWidget->isVisible() && !associatedWidget->isMinimized();
+    const bool mapped = associatedWindow->isVisible() && !(associatedWindow->windowState() & Qt::WindowMinimized);
 
     //    - not mapped -> show, raise, focus
     //    - mapped
@@ -700,12 +693,12 @@ bool KStatusNotifierItemPrivate::checkVisibility(QPoint pos, bool perform)
         return true;
     } else if (QGuiApplication::platformName() == QLatin1String("xcb")) {
 #if HAVE_X11
-        const KWindowInfo info1(associatedWidget->winId(), NET::XAWMState | NET::WMState | NET::WMDesktop);
+        const KWindowInfo info1(associatedWindow->winId(), NET::XAWMState | NET::WMState | NET::WMDesktop);
         QListIterator<WId> it(KX11Extras::stackingOrder());
         it.toBack();
         while (it.hasPrevious()) {
             WId id = it.previous();
-            if (id == associatedWidget->winId()) {
+            if (id == associatedWindow->winId()) {
                 break;
             }
 
@@ -715,7 +708,7 @@ bool KStatusNotifierItemPrivate::checkVisibility(QPoint pos, bool perform)
                 continue; // not visible on current desktop -> ignore
             }
 
-            if (!info2.geometry().intersects(associatedWidget->geometry())) {
+            if (!info2.geometry().intersects(associatedWindow->geometry())) {
                 continue; // not obscuring the window -> ignore
             }
 
@@ -742,7 +735,7 @@ bool KStatusNotifierItemPrivate::checkVisibility(QPoint pos, bool perform)
             }
 
             if (perform) {
-                KX11Extras::forceActiveWindow(associatedWidget->winId());
+                KX11Extras::forceActiveWindow(associatedWindow->winId());
                 Q_EMIT q->activateRequested(true, pos);
             }
 
@@ -752,7 +745,7 @@ bool KStatusNotifierItemPrivate::checkVisibility(QPoint pos, bool perform)
         // not on current desktop?
         if (!info1.isOnCurrentDesktop()) {
             if (perform) {
-                KWindowSystem::activateWindow(associatedWidget->windowHandle());
+                KWindowSystem::activateWindow(associatedWindow);
                 Q_EMIT q->activateRequested(true, pos);
             }
 
@@ -779,11 +772,11 @@ bool KStatusNotifierItemPrivate::checkVisibility(QPoint pos, bool perform)
 
 bool KStatusNotifierItem::eventFilter(QObject *watched, QEvent *event)
 {
-    if (watched == d->associatedWidget) {
+    if (watched == d->associatedWindow) {
         if (event->type() == QEvent::Show) {
-            d->associatedWidget->move(d->associatedWidgetPos);
+            d->associatedWindow->setPosition(d->associatedWindowPos);
         } else if (event->type() == QEvent::Hide) {
-            d->associatedWidgetPos = d->associatedWidget->pos();
+            d->associatedWindowPos = d->associatedWindow->position();
         }
     }
 
@@ -812,7 +805,7 @@ KStatusNotifierItemPrivate::KStatusNotifierItemPrivate(KStatusNotifierItem *item
     , movie(nullptr)
     , systemTrayIcon(nullptr)
     , menu(nullptr)
-    , associatedWidget(nullptr)
+    , associatedWindow(nullptr)
     , titleAction(nullptr)
     , hasQuit(false)
     , onAllDesktops(false)
@@ -822,7 +815,9 @@ KStatusNotifierItemPrivate::KStatusNotifierItemPrivate(KStatusNotifierItem *item
 
 void KStatusNotifierItemPrivate::init(const QString &extraId)
 {
-    q->setAssociatedWidget(qobject_cast<QWidget *>(q->parent()));
+    QWidget *parentWidget = qobject_cast<QWidget *>(q->parent());
+
+    q->setAssociatedWindow(parentWidget ? parentWidget->window()->windowHandle() : nullptr);
 #ifdef QT_DBUS_LIB
     qDBusRegisterMetaType<KDbusImageStruct>();
     qDBusRegisterMetaType<KDbusImageVector>();
@@ -838,7 +833,7 @@ void KStatusNotifierItemPrivate::init(const QString &extraId)
 #endif
 
     // create a default menu, just like in KSystemtrayIcon
-    QMenu *m = new QMenu(associatedWidget);
+    QMenu *m = new QMenu(parentWidget);
 
     title = QGuiApplication::applicationDisplayName();
     if (title.isEmpty()) {
@@ -990,7 +985,7 @@ void KStatusNotifierItemPrivate::setLegacySystemTrayEnabled(bool enabled)
             if (!QSystemTrayIcon::isSystemTrayAvailable()) {
                 return;
             }
-            systemTrayIcon = new KStatusNotifierLegacyIcon(associatedWidget);
+            systemTrayIcon = new KStatusNotifierLegacyIcon(q);
             syncLegacySystemTrayIcon();
             systemTrayIcon->setToolTip(toolTipTitle);
             systemTrayIcon->show();
@@ -1103,7 +1098,7 @@ void KStatusNotifierItemPrivate::contextMenuAboutToShow()
         // we need to add the actions to the menu afterwards so that these items
         // appear at the _END_ of the menu
         menu->addSeparator();
-        if (associatedWidget && associatedWidget != menu) {
+        if (associatedWindow) {
             QAction *action = actionCollection.value(QStringLiteral("minimizeRestore"));
 
             if (action) {
@@ -1120,7 +1115,7 @@ void KStatusNotifierItemPrivate::contextMenuAboutToShow()
         hasQuit = true;
     }
 
-    if (associatedWidget && associatedWidget != menu) {
+    if (associatedWindow) {
         QAction *action = actionCollection.value(QStringLiteral("minimizeRestore"));
         if (checkVisibility(QPoint(0, 0), false)) {
             action->setText(KStatusNotifierItem::tr("&Restore", "@action:inmenu"));
@@ -1142,13 +1137,15 @@ void KStatusNotifierItemPrivate::maybeQuit()
     const QString title = KStatusNotifierItem::tr("Confirm Quit From System Tray", "@title:window");
     const QString query = KStatusNotifierItem::tr("<qt>Are you sure you want to quit <b>%1</b>?</qt>").arg(caption);
 
-    auto *dialog = new QMessageBox(QMessageBox::Question, title, query, QMessageBox::NoButton, associatedWidget);
+    auto *dialog = new QMessageBox(QMessageBox::Question, title, query, QMessageBox::NoButton);
     dialog->setAttribute(Qt::WA_DeleteOnClose);
+
     auto *quitButton = dialog->addButton(KStatusNotifierItem::tr("Quit", "@action:button"), QMessageBox::AcceptRole);
     quitButton->setIcon(QIcon::fromTheme(QStringLiteral("application-exit")));
     dialog->addButton(QMessageBox::Cancel);
     QObject::connect(dialog, &QDialog::accepted, qApp, &QApplication::quit);
     dialog->show();
+    dialog->windowHandle()->setTransientParent(associatedWindow);
 }
 
 void KStatusNotifierItemPrivate::minimizeRestore()
@@ -1164,11 +1161,11 @@ void KStatusNotifierItemPrivate::hideMenu()
 void KStatusNotifierItemPrivate::minimizeRestore(bool show)
 {
 #if HAVE_X11
-    KWindowInfo info(associatedWidget->winId(), NET::WMDesktop);
+    KWindowInfo info(associatedWindow->winId(), NET::WMDesktop);
 
     if (show) {
         if (onAllDesktops) {
-            KX11Extras::setOnAllDesktops(associatedWidget->winId(), true);
+            KX11Extras::setOnAllDesktops(associatedWindow->winId(), true);
         } else {
             KX11Extras::setCurrentDesktop(info.desktop());
         }
@@ -1178,15 +1175,15 @@ void KStatusNotifierItemPrivate::minimizeRestore(bool show)
 #endif
 
     if (show) {
-        auto state = associatedWidget->windowState() & ~Qt::WindowMinimized;
-        associatedWidget->setWindowState(state);
-        associatedWidget->show();
-        associatedWidget->raise();
-        if (associatedWidget->window()) {
-            KWindowSystem::activateWindow(associatedWidget->window()->windowHandle());
+        Qt::WindowState state = (Qt::WindowState)(associatedWindow->windowState() & ~Qt::WindowMinimized);
+        associatedWindow->setWindowState(state);
+        associatedWindow->show();
+        associatedWindow->raise();
+        if (associatedWindow) {
+            KWindowSystem::activateWindow(associatedWindow);
         }
     } else {
-        associatedWidget->hide();
+        associatedWindow->hide();
     }
 }
 

@@ -11,6 +11,7 @@
 #include <QObject>
 #include <QPoint>
 #include <QString>
+#include <QWindow>
 
 #include <knotifications_export.h>
 
@@ -360,21 +361,20 @@ public:
     QMenu *contextMenu() const;
 
     /**
-     * Sets the main widget associated with this StatusNotifierItem
+     * Sets the main window associated with this StatusNotifierItem
      *
-     * If you pass contextMenu() as a parent then the menu will be displayed
-     * when the user activate the icon. In this case the activate() method will
-     * not be called and the activateRequested() signal will not be emitted
+     * @param window The window to be used.
      *
-     * @param parent the new main widget: must be a top level window,
-     *               if it's not parent->window() will be used instead.
+     * @since 6.0
      */
-    void setAssociatedWidget(QWidget *parent);
+    void setAssociatedWindow(QWindow *window);
 
     /**
-     * Access the main widget associated with this StatusNotifierItem
+     * Access the main window associated with this StatusNotifierItem
+     *
+     * @since 6.0
      */
-    QWidget *associatedWidget() const;
+    QWindow *associatedWindow() const;
 
     /**
      * All the actions present in the menu

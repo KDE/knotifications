@@ -159,7 +159,7 @@ QString KStatusNotifierItemDBus::service() const
 
 bool KStatusNotifierItemDBus::ItemIsMenu() const
 {
-    return (m_statusNotifierItem->d->associatedWidget == m_statusNotifierItem->d->menu);
+    return false;
 }
 
 // DBUS slots
@@ -190,8 +190,8 @@ QString KStatusNotifierItemDBus::Status() const
 
 int KStatusNotifierItemDBus::WindowId() const
 {
-    if (m_statusNotifierItem->d->associatedWidget && m_statusNotifierItem->d->associatedWidget != m_statusNotifierItem->d->menu) {
-        return toInt(m_statusNotifierItem->d->associatedWidget->winId());
+    if (m_statusNotifierItem->d->associatedWindow) {
+        return toInt(m_statusNotifierItem->d->associatedWindow->winId());
     } else {
         return 0;
     }

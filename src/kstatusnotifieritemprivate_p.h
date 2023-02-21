@@ -157,8 +157,8 @@ public:
 
     QMenu *menu;
     QHash<QString, QAction *> actionCollection;
-    QWidget *associatedWidget;
-    QPoint associatedWidgetPos;
+    QWindow *associatedWindow;
+    QPoint associatedWindowPos;
     QAction *titleAction;
 
     // Ensure that closing the last KMainWindow doesn't exit the application

@@ -13,13 +13,13 @@
 # Kristof Bal <kristof.bal@gmail.com>, 2008, 2009.
 # Freek de Kruijf <freekdekruijf@kde.nl>, 2009, 2010.
 # Freek de Kruijf <freekdekruijf@kde.nl>, 2010, 2011, 2012.
-# Freek de Kruijf <freekdekruijf@kde.nl>, 2010, 2011, 2013, 2014, 2020, 2022.
+# Freek de Kruijf <freekdekruijf@kde.nl>, 2010, 2011, 2013, 2014, 2020, 2022, 2023.
 msgid ""
 msgstr ""
 "Project-Id-Version: kdelibs4\n"
 "Report-Msgid-Bugs-To: http://bugs.kde.org\n"
 "POT-Creation-Date: 2014-03-23 01:50+0000\n"
-"PO-Revision-Date: 2022-01-02 15:04+0100\n"
+"PO-Revision-Date: 2023-02-17 11:06+0100\n"
 "Last-Translator: Freek de Kruijf <freekdekruijf@kde.nl>\n"
 "Language-Team: \n"
 "Language: nl\n"
@@ -28,7 +28,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Files: kfarch.cpp kfdird.cpp kfind.cpp kfindtop.cpp kfoptions.cpp kfsave.cpp "
 "kftabdlg.cpp kftypes.cpp kfwin.cpp main.cpp mkfdird.cpp mkfind.cpp\n"
-"X-Generator: Lokalize 21.12.0\n"
+"X-Generator: Lokalize 22.12.2\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
 "X-Qt-Contexts: true\n"
 
@@ -39,38 +39,38 @@ msgctxt "KNotificationJobUiDelegate|"
 msgid "%1 (Failed)"
 msgstr "%1 (mislukt)"
 
-#: knotificationrestrictions.cpp:195
+#: knotificationrestrictions.cpp:183
 msgctxt "KNotificationRestrictions|"
 msgid "Unknown Application"
-msgstr "Onbekende applicatie"
+msgstr "Onbekende toepassing"
 
-#: kstatusnotifieritem.cpp:515 kstatusnotifieritem.cpp:1124
+#: kstatusnotifieritem.cpp:510 kstatusnotifieritem.cpp:1130
 msgctxt "KStatusNotifierItem|@action:inmenu"
 msgid "&Minimize"
 msgstr "&Minimaliseren"
 
-#: kstatusnotifieritem.cpp:864
+#: kstatusnotifieritem.cpp:869
 msgctxt "KStatusNotifierItem|@action:inmenu"
 msgid "Quit"
 msgstr "Afsluiten"
 
-#: kstatusnotifieritem.cpp:1122
+#: kstatusnotifieritem.cpp:1127
 msgctxt "KStatusNotifierItem|@action:inmenu"
 msgid "&Restore"
 msgstr "He&rstellen"
 
-#: kstatusnotifieritem.cpp:1136
+#: kstatusnotifieritem.cpp:1143
 msgctxt "KStatusNotifierItem|@title:window"
 msgid "Confirm Quit From System Tray"
 msgstr "Afsluiten vanuit systeemvak bevestigen"
 
-#: kstatusnotifieritem.cpp:1137
+#: kstatusnotifieritem.cpp:1144
 #, qt-format
 msgctxt "KStatusNotifierItem|"
 msgid "<qt>Are you sure you want to quit <b>%1</b>?</qt>"
 msgstr "<qt>Wilt u <b>%1</b> afsluiten?</qt>"
 
-#: kstatusnotifieritem.cpp:1141
+#: kstatusnotifieritem.cpp:1148
 msgctxt "KStatusNotifierItem|@action:button"
 msgid "Quit"
 msgstr "Afsluiten"

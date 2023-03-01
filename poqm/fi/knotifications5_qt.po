@@ -45,38 +45,38 @@ msgctxt "KNotificationJobUiDelegate|"
 msgid "%1 (Failed)"
 msgstr "%1 (epäonnistui)"
 
-#: knotificationrestrictions.cpp:195
+#: knotificationrestrictions.cpp:183
 msgctxt "KNotificationRestrictions|"
 msgid "Unknown Application"
 msgstr "Tuntematon sovellus"
 
-#: kstatusnotifieritem.cpp:515 kstatusnotifieritem.cpp:1124
+#: kstatusnotifieritem.cpp:510 kstatusnotifieritem.cpp:1130
 msgctxt "KStatusNotifierItem|@action:inmenu"
 msgid "&Minimize"
 msgstr "P&ienennä"
 
-#: kstatusnotifieritem.cpp:864
+#: kstatusnotifieritem.cpp:869
 msgctxt "KStatusNotifierItem|@action:inmenu"
 msgid "Quit"
 msgstr "Lopeta"
 
-#: kstatusnotifieritem.cpp:1122
+#: kstatusnotifieritem.cpp:1127
 msgctxt "KStatusNotifierItem|@action:inmenu"
 msgid "&Restore"
 msgstr "&Palauta"
 
-#: kstatusnotifieritem.cpp:1136
+#: kstatusnotifieritem.cpp:1143
 msgctxt "KStatusNotifierItem|@title:window"
 msgid "Confirm Quit From System Tray"
 msgstr "Vahvista lopetus ilmoitusalueelta"
 
-#: kstatusnotifieritem.cpp:1137
+#: kstatusnotifieritem.cpp:1144
 #, qt-format
 msgctxt "KStatusNotifierItem|"
 msgid "<qt>Are you sure you want to quit <b>%1</b>?</qt>"
 msgstr "<qt>Lopetetaanko <b>%1</b>?</qt>"
 
-#: kstatusnotifieritem.cpp:1141
+#: kstatusnotifieritem.cpp:1148
 msgctxt "KStatusNotifierItem|@action:button"
 msgid "Quit"
 msgstr "Lopeta"

@@ -29,38 +29,38 @@ msgctxt "KNotificationJobUiDelegate|"
 msgid "%1 (Failed)"
 msgstr "%1 (असफल)"
 
-#: knotificationrestrictions.cpp:195
+#: knotificationrestrictions.cpp:183
 msgctxt "KNotificationRestrictions|"
 msgid "Unknown Application"
 msgstr "अज्ञात अनुप्रयोग"
 
-#: kstatusnotifieritem.cpp:515 kstatusnotifieritem.cpp:1124
+#: kstatusnotifieritem.cpp:510 kstatusnotifieritem.cpp:1130
 msgctxt "KStatusNotifierItem|@action:inmenu"
 msgid "&Minimize"
 msgstr "न्यूनतम (&M)"
 
-#: kstatusnotifieritem.cpp:864
+#: kstatusnotifieritem.cpp:869
 msgctxt "KStatusNotifierItem|@action:inmenu"
 msgid "Quit"
 msgstr "बाहर जाएँ"
 
-#: kstatusnotifieritem.cpp:1122
+#: kstatusnotifieritem.cpp:1127
 msgctxt "KStatusNotifierItem|@action:inmenu"
 msgid "&Restore"
 msgstr "बहाल करें (&R)"
 
-#: kstatusnotifieritem.cpp:1136
+#: kstatusnotifieritem.cpp:1143
 msgctxt "KStatusNotifierItem|@title:window"
 msgid "Confirm Quit From System Tray"
 msgstr "सिस्टम तश्तरी से बाहर जाने की पुष्टि करें"
 
-#: kstatusnotifieritem.cpp:1137
+#: kstatusnotifieritem.cpp:1144
 #, qt-format
 msgctxt "KStatusNotifierItem|"
 msgid "<qt>Are you sure you want to quit <b>%1</b>?</qt>"
 msgstr "<qt>क्या आप सुनिश्चित हैं कि आप <b>%1</b> से बाहर जाना चाहते हैं?</qt>"
 
-#: kstatusnotifieritem.cpp:1141
+#: kstatusnotifieritem.cpp:1148
 msgctxt "KStatusNotifierItem|@action:button"
 msgid "Quit"
 msgstr "बाहर जाएँ"

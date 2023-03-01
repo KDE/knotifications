@@ -30,49 +30,49 @@ msgctxt "KNotificationJobUiDelegate|"
 msgid "%1 (Failed)"
 msgstr "(Pautan) %1"
 
-#: knotificationrestrictions.cpp:195
+#: knotificationrestrictions.cpp:183
 #, fuzzy
 #| msgid "Unknown Application"
 msgctxt "KNotificationRestrictions|"
 msgid "Unknown Application"
 msgstr "Aplikasi Tidak Diketahui"
 
-#: kstatusnotifieritem.cpp:515 kstatusnotifieritem.cpp:1124
+#: kstatusnotifieritem.cpp:510 kstatusnotifieritem.cpp:1130
 #, fuzzy
 #| msgid "&Minimize"
 msgctxt "KStatusNotifierItem|@action:inmenu"
 msgid "&Minimize"
 msgstr "&Minimumkan"
 
-#: kstatusnotifieritem.cpp:864
+#: kstatusnotifieritem.cpp:869
 #, fuzzy
 #| msgid "Quit"
 msgctxt "KStatusNotifierItem|@action:inmenu"
 msgid "Quit"
 msgstr "Keluar"
 
-#: kstatusnotifieritem.cpp:1122
+#: kstatusnotifieritem.cpp:1127
 #, fuzzy
 #| msgid "&Restore"
 msgctxt "KStatusNotifierItem|@action:inmenu"
 msgid "&Restore"
 msgstr "&Pulih"
 
-#: kstatusnotifieritem.cpp:1136
+#: kstatusnotifieritem.cpp:1143
 #, fuzzy
 #| msgid "Confirm Quit From System Tray"
 msgctxt "KStatusNotifierItem|@title:window"
 msgid "Confirm Quit From System Tray"
 msgstr "Sahkan Keluar Dari Dulang Sistem"
 
-#: kstatusnotifieritem.cpp:1137
+#: kstatusnotifieritem.cpp:1144
 #, fuzzy, qt-format
 #| msgid "<qt>Are you sure you want to quit <b>%1</b>?</qt>"
 msgctxt "KStatusNotifierItem|"
 msgid "<qt>Are you sure you want to quit <b>%1</b>?</qt>"
 msgstr "<qt>Anda pasti ingin keluar <b>%1</b>?</qt>"
 
-#: kstatusnotifieritem.cpp:1141
+#: kstatusnotifieritem.cpp:1148
 #, fuzzy
 #| msgid "Quit"
 msgctxt "KStatusNotifierItem|@action:button"

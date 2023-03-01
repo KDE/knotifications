@@ -1,6 +1,3 @@
-# translation of kdelibs4.po to Belarusian
-# translation of kdelibs4.po to
-#
 # Eugene Zelenko <greendeath@mail.ru>, 2002-2004.
 # Ihar Hrachyshka <ihar.hrachyshka@gmail.com>, 2006.
 # Darafei Praliaskouski <komzpa@licei2.com>, 2007.
@@ -12,12 +9,12 @@
 # kom <me@komzpa.net>, 2008.
 msgid ""
 msgstr ""
-"Project-Id-Version: kdelibs4\n"
+"Project-Id-Version: 86ff119b1606fcaa910d6b44fc14b611\n"
 "Report-Msgid-Bugs-To: http://bugs.kde.org\n"
 "POT-Creation-Date: 2014-03-23 01:50+0000\n"
-"PO-Revision-Date: 2009-09-06 15:21+0300\n"
+"PO-Revision-Date: 2023-01-18 04:31\n"
 "Last-Translator: Darafei Praliaskouski <komzpa@gmail.com>\n"
-"Language-Team: Belarusian <i18n@mova.org>\n"
+"Language-Team: Belarusian\n"
 "Language: be\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -27,63 +24,54 @@ msgstr ""
 "%10<=4 && (n%100<12 || n%100>14) ? 1 : n%10==0 || n%10>=5 && n%10<=9 || n"
 "%100>=11 && n%100<=14 ? 2 : 3);\n"
 "X-Qt-Contexts: true\n"
+"X-Crowdin-Project: 86ff119b1606fcaa910d6b44fc14b611\n"
+"X-Crowdin-Project-ID: 127\n"
+"X-Crowdin-Language: be\n"
+"X-Crowdin-File: /main/be/knotifications/knotifications5_qt.po\n"
+"X-Crowdin-File-ID: 8137\n"
 
 #. Job name, e.g. Copying has failed
 #: knotificationjobuidelegate.cpp:28
-#, fuzzy, qt-format
-#| msgid "%1 (Link)"
+#, qt-format
 msgctxt "KNotificationJobUiDelegate|"
 msgid "%1 (Failed)"
-msgstr "%1 (спасылка)"
+msgstr "%1 (Памылка)"
 
-#: knotificationrestrictions.cpp:195
-#, fuzzy
-#| msgid "Quit application"
+#: knotificationrestrictions.cpp:183
 msgctxt "KNotificationRestrictions|"
 msgid "Unknown Application"
-msgstr "Выйсці з праграмы"
+msgstr "Невядомая праграма"
 
-#: kstatusnotifieritem.cpp:515 kstatusnotifieritem.cpp:1124
-#, fuzzy
-#| msgid "&Minimize"
+#: kstatusnotifieritem.cpp:510 kstatusnotifieritem.cpp:1130
 msgctxt "KStatusNotifierItem|@action:inmenu"
 msgid "&Minimize"
 msgstr "Зг&арнуць"
 
-#: kstatusnotifieritem.cpp:864
-#, fuzzy
-#| msgid "Quit"
+#: kstatusnotifieritem.cpp:869
 msgctxt "KStatusNotifierItem|@action:inmenu"
 msgid "Quit"
-msgstr "Выхад"
+msgstr "Выйсці"
 
-#: kstatusnotifieritem.cpp:1122
-#, fuzzy
-#| msgid "&Restore"
+#: kstatusnotifieritem.cpp:1127
 msgctxt "KStatusNotifierItem|@action:inmenu"
 msgid "&Restore"
 msgstr "&Аднавіць"
 
-#: kstatusnotifieritem.cpp:1136
-#, fuzzy
-#| msgid "Confirm Quit From System Tray"
+#: kstatusnotifieritem.cpp:1143
 msgctxt "KStatusNotifierItem|@title:window"
 msgid "Confirm Quit From System Tray"
-msgstr "Пацвердзіце выхад з панэлі значак"
+msgstr "Пацвердзіць выхад з прасторы апавяшчэнняў"
 
-#: kstatusnotifieritem.cpp:1137
-#, fuzzy, qt-format
-#| msgid "<qt>Are you sure you want to quit <b>%1</b>?</qt>"
+#: kstatusnotifieritem.cpp:1144
+#, qt-format
 msgctxt "KStatusNotifierItem|"
 msgid "<qt>Are you sure you want to quit <b>%1</b>?</qt>"
-msgstr "<qt>Ці вы сапраўды хочаце выйсці з <b>%1</b>?</qt>"
+msgstr "<qt>Сапраўды хочаце выйсці з <b>%1</b>?</qt>"
 
-#: kstatusnotifieritem.cpp:1141
-#, fuzzy
-#| msgid "Quit"
+#: kstatusnotifieritem.cpp:1148
 msgctxt "KStatusNotifierItem|@action:button"
 msgid "Quit"
-msgstr "Выхад"
+msgstr "Выйсці"
 
 #~ msgctxt "NAME OF TRANSLATORS"
 #~ msgid "Your names"

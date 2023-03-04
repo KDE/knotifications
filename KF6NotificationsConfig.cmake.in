@@ -32,10 +32,6 @@ if (NOT @BUILD_SHARED_LIBS@)
         find_dependency(Canberra)
     endif()
 
-    if (@Qt6TextToSpeech_FOUND@)
-        find_dependency(Qt6TextToSpeech @REQUIRED_QT_VERSION@)
-    endif()
-
     if(@HAVE_DBUSMENUQT@)
         find_dependency(dbusmenu-qt6)
     endif()

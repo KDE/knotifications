@@ -27,10 +27,6 @@
 #include "knotificationreplyaction.h"
 #include "knotifyconfig.h"
 
-#include "notifybyexecute.h"
-#include "notifybylogfile.h"
-#include "notifybytaskbar.h"
-
 #if defined(Q_OS_ANDROID)
 #include "notifybyandroid.h"
 #elif defined(Q_OS_MACOS)
@@ -47,10 +43,6 @@
 #include "notifybyaudio_canberra.h"
 #elif defined(HAVE_PHONON4QT6)
 #include "notifybyaudio_phonon.h"
-#endif
-
-#ifdef HAVE_SPEECH
-#include "notifybytts.h"
 #endif
 
 typedef QHash<QString, QString> Dict;
@@ -134,27 +126,9 @@ KNotificationPlugin *KNotificationManager::pluginForAction(const QString &action
         }
 #endif
         addPlugin(plugin);
-    } else if (action == QLatin1String("Taskbar")) {
-#if !defined(Q_OS_ANDROID)
-        plugin = new NotifyByTaskbar(this);
-        addPlugin(plugin);
-#endif
     } else if (action == QLatin1String("Sound")) {
 #if defined(HAVE_PHONON4QT6) || defined(HAVE_CANBERRA)
         plugin = new NotifyByAudio(this);
-        addPlugin(plugin);
-#endif
-    } else if (action == QLatin1String("Execute")) {
-#if !defined(Q_OS_ANDROID)
-        plugin = new NotifyByExecute(this);
-        addPlugin(plugin);
-#endif
-    } else if (action == QLatin1String("Logfile")) {
-        plugin = new NotifyByLogfile(this);
-        addPlugin(plugin);
-    } else if (action == QLatin1String("TTS")) {
-#ifdef HAVE_SPEECH
-        plugin = new NotifyByTTS(this);
         addPlugin(plugin);
 #endif
     }

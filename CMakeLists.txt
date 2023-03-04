@@ -55,16 +55,7 @@ if (NOT ANDROID AND NOT WIN32)
     find_package(Qt6 ${REQUIRED_QT_VERSION} CONFIG REQUIRED DBus)
 endif()
 
-find_package(Qt6 ${REQUIRED_QT_VERSION} QUIET OPTIONAL_COMPONENTS Qml TextToSpeech)
-
-find_package(Qt6TextToSpeech ${REQUIRED_QT_VERSION} QUIET CONFIG)
-set_package_properties(Qt6TextToSpeech PROPERTIES
-    DESCRIPTION "Qt text to speech module"
-    TYPE OPTIONAL
-    PURPOSE "Required to build text to speech notification support")
-if (TARGET Qt6::TextToSpeech)
-    add_definitions(-DHAVE_SPEECH)
-endif()
+find_package(Qt6 ${REQUIRED_QT_VERSION} QUIET OPTIONAL_COMPONENTS Qml)
 
 if (NOT APPLE AND NOT WIN32)
     option(WITHOUT_X11 "Build without X11 support (skips finding X11)." OFF)

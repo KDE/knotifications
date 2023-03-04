@@ -17,13 +17,10 @@ target_sources(KF6Notifications PRIVATE
   knotifyconfig.cpp
   knotificationplugin.cpp
   knotificationjobuidelegate.cpp
-  notifybylogfile.cpp
 )
 
 if (NOT ANDROID)
     target_sources(KF6Notifications PRIVATE
-        notifybyexecute.cpp
-        notifybytaskbar.cpp
         kstatusnotifieritem.cpp)
 endif()
 
@@ -70,12 +67,6 @@ if (Canberra_FOUND)
 elseif (Phonon4Qt6_FOUND)
     target_sources(KF6Notifications PRIVATE
         notifybyaudio_phonon.cpp
-    )
-endif()
-
-if (Qt6TextToSpeech_FOUND)
-    target_sources(KF6Notifications PRIVATE
-        notifybytts.cpp
     )
 endif()
 
@@ -143,10 +134,6 @@ endif()
 if (Canberra_FOUND)
     target_link_libraries(KF6Notifications PRIVATE
         Canberra::Canberra)
-endif()
-
-if (Qt6TextToSpeech_FOUND)
-    target_link_libraries(KF6Notifications PRIVATE Qt6::TextToSpeech)
 endif()
 
 if(HAVE_X11)

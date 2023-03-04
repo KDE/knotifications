@@ -14,11 +14,9 @@
 
 #include <config-knotifications.h>
 
-#include <KPluginMetaData>
 #include <KSandbox>
 #include <QFileInfo>
 #include <QHash>
-#include <QPluginLoader>
 
 #ifdef QT_DBUS_LIB
 #include <QDBusConnection>
@@ -159,66 +157,6 @@ KNotificationPlugin *KNotificationManager::pluginForAction(const QString &action
         plugin = new NotifyByTTS(this);
         addPlugin(plugin);
 #endif
-    } else {
-        bool pluginFound = false;
-
-        std::function<bool(const KPluginMetaData &)> filter = [&action, &pluginFound](const KPluginMetaData &data) {
-            // KPluginMetaData::findPlugins loops over the plugins it
-            // finds and calls this function to determine whether to
-            // deliver them. We use a `pluginFound` var outside the
-            // lambda to break out of the loop once we got a match.
-            // The reason we can't just have KPluginMetaData::findPlugins,
-            // loop over the meta data and instantiate only one plugin
-            // is because the X-KDE-KNotification-OptionName field is
-            // optional (see TODO note below) and the matching plugin
-            // may be among the plugins which don't have it.
-            if (pluginFound) {
-                return false;
-            }
-
-            const QJsonObject &rawData = data.rawData();
-
-            // This field is new-ish and optional. If it's not set we always
-            // instantiate the plugin, unless we already got a match.
-            // TODO KF6: Require X-KDE-KNotification-OptionName be set and
-            // reject plugins without it.
-            if (rawData.contains(QLatin1String("X-KDE-KNotification-OptionName"))) {
-                if (rawData.value(QStringLiteral("X-KDE-KNotification-OptionName")) == action) {
-                    pluginFound = true;
-                } else {
-                    return false;
-                }
-            }
-
-            return true;
-        };
-
-        QPluginLoader loader;
-        const QVector<KPluginMetaData> listMetaData = KPluginMetaData::findPlugins(QStringLiteral("knotification/notifyplugins"), filter);
-        for (const KPluginMetaData &metadata : listMetaData) {
-            loader.setFileName(metadata.fileName());
-            QObject *pluginObj = loader.instance();
-            if (!pluginObj) {
-                qCWarning(LOG_KNOTIFICATIONS).nospace() << "Could not instantiate plugin \"" << metadata.fileName() << "\": " << loader.errorString();
-                continue;
-            }
-            KNotificationPlugin *notifyPlugin = qobject_cast<KNotificationPlugin *>(pluginObj);
-
-            if (notifyPlugin) {
-                notifyPlugin->setParent(this);
-                // We try to avoid unnecessary instantiations (see above), but
-                // when they happen keep the resulting plugins around.
-                addPlugin(notifyPlugin);
-
-                // Get ready to return the plugin we got asked for.
-                if (notifyPlugin->optionName() == action) {
-                    plugin = notifyPlugin;
-                }
-            } else {
-                // Not our/valid plugin, so delete the created object.
-                pluginObj->deleteLater();
-            }
-        }
     }
 
     return plugin;

@@ -1,7 +1,7 @@
 add_library(KF6Notifications)
 add_library(KF6::Notifications ALIAS KF6Notifications)
 
-ecm_create_qm_loader(KF6Notifications knotifications5_qt)
+ecm_create_qm_loader(KF6Notifications knotifications6_qt)
 
 target_sources(KF6Notifications PRIVATE
   knotification.cpp

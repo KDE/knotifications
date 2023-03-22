@@ -44,33 +44,33 @@ msgctxt "KNotificationRestrictions|"
 msgid "Unknown Application"
 msgstr "Onbekende toepassing"
 
-#: kstatusnotifieritem.cpp:510 kstatusnotifieritem.cpp:1130
+#: kstatusnotifieritem.cpp:510 kstatusnotifieritem.cpp:1129
 msgctxt "KStatusNotifierItem|@action:inmenu"
 msgid "&Minimize"
 msgstr "&Minimaliseren"
 
-#: kstatusnotifieritem.cpp:869
+#: kstatusnotifieritem.cpp:868
 msgctxt "KStatusNotifierItem|@action:inmenu"
 msgid "Quit"
 msgstr "Afsluiten"
 
-#: kstatusnotifieritem.cpp:1127
+#: kstatusnotifieritem.cpp:1126
 msgctxt "KStatusNotifierItem|@action:inmenu"
 msgid "&Restore"
 msgstr "He&rstellen"
 
-#: kstatusnotifieritem.cpp:1143
+#: kstatusnotifieritem.cpp:1142
 msgctxt "KStatusNotifierItem|@title:window"
 msgid "Confirm Quit From System Tray"
 msgstr "Afsluiten vanuit systeemvak bevestigen"
 
-#: kstatusnotifieritem.cpp:1144
+#: kstatusnotifieritem.cpp:1143
 #, qt-format
 msgctxt "KStatusNotifierItem|"
 msgid "<qt>Are you sure you want to quit <b>%1</b>?</qt>"
 msgstr "<qt>Wilt u <b>%1</b> afsluiten?</qt>"
 
-#: kstatusnotifieritem.cpp:1148
+#: kstatusnotifieritem.cpp:1147
 msgctxt "KStatusNotifierItem|@action:button"
 msgid "Quit"
 msgstr "Afsluiten"

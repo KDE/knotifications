@@ -46,33 +46,33 @@ msgctxt "KNotificationRestrictions|"
 msgid "Unknown Application"
 msgstr "Bilinmeyen Uygulama"
 
-#: kstatusnotifieritem.cpp:510 kstatusnotifieritem.cpp:1130
+#: kstatusnotifieritem.cpp:510 kstatusnotifieritem.cpp:1129
 msgctxt "KStatusNotifierItem|@action:inmenu"
 msgid "&Minimize"
 msgstr "&Küçült"
 
-#: kstatusnotifieritem.cpp:869
+#: kstatusnotifieritem.cpp:868
 msgctxt "KStatusNotifierItem|@action:inmenu"
 msgid "Quit"
 msgstr "Çık"
 
-#: kstatusnotifieritem.cpp:1127
+#: kstatusnotifieritem.cpp:1126
 msgctxt "KStatusNotifierItem|@action:inmenu"
 msgid "&Restore"
 msgstr "&Geri Yükle"
 
-#: kstatusnotifieritem.cpp:1143
+#: kstatusnotifieritem.cpp:1142
 msgctxt "KStatusNotifierItem|@title:window"
 msgid "Confirm Quit From System Tray"
 msgstr "Sistem Tepsisinden Çıkmayı Onayla"
 
-#: kstatusnotifieritem.cpp:1144
+#: kstatusnotifieritem.cpp:1143
 #, qt-format
 msgctxt "KStatusNotifierItem|"
 msgid "<qt>Are you sure you want to quit <b>%1</b>?</qt>"
 msgstr "<qt><b>%1</b> programından çıkmak istiyor musunuz?</qt>"
 
-#: kstatusnotifieritem.cpp:1148
+#: kstatusnotifieritem.cpp:1147
 msgctxt "KStatusNotifierItem|@action:button"
 msgid "Quit"
 msgstr "Çık"

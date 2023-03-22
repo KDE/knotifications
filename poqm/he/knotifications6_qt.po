@@ -43,7 +43,7 @@ msgctxt "KNotificationRestrictions|"
 msgid "Unknown Application"
 msgstr "יישום לא ידוע"
 
-#: kstatusnotifieritem.cpp:510 kstatusnotifieritem.cpp:1130
+#: kstatusnotifieritem.cpp:510 kstatusnotifieritem.cpp:1129
 #, fuzzy
 #| msgctxt "KStatusNotifierItem|"
 #| msgid "&Minimize"
@@ -51,7 +51,7 @@ msgctxt "KStatusNotifierItem|@action:inmenu"
 msgid "&Minimize"
 msgstr "&מזער"
 
-#: kstatusnotifieritem.cpp:869
+#: kstatusnotifieritem.cpp:868
 #, fuzzy
 #| msgctxt "KStatusNotifierItem|"
 #| msgid "Quit"
@@ -59,7 +59,7 @@ msgctxt "KStatusNotifierItem|@action:inmenu"
 msgid "Quit"
 msgstr "יציאה"
 
-#: kstatusnotifieritem.cpp:1127
+#: kstatusnotifieritem.cpp:1126
 #, fuzzy
 #| msgctxt "KStatusNotifierItem|"
 #| msgid "&Restore"
@@ -67,7 +67,7 @@ msgctxt "KStatusNotifierItem|@action:inmenu"
 msgid "&Restore"
 msgstr "&שחזר"
 
-#: kstatusnotifieritem.cpp:1143
+#: kstatusnotifieritem.cpp:1142
 #, fuzzy
 #| msgctxt "KStatusNotifierItem|"
 #| msgid "Confirm Quit From System Tray"
@@ -75,13 +75,13 @@ msgctxt "KStatusNotifierItem|@title:window"
 msgid "Confirm Quit From System Tray"
 msgstr "אישור יציאה ממגש המערכת"
 
-#: kstatusnotifieritem.cpp:1144
+#: kstatusnotifieritem.cpp:1143
 #, qt-format
 msgctxt "KStatusNotifierItem|"
 msgid "<qt>Are you sure you want to quit <b>%1</b>?</qt>"
 msgstr "<qt>האם אתה בטוח שרצונך לצאת מ־<b>%1</b>?</qt>"
 
-#: kstatusnotifieritem.cpp:1148
+#: kstatusnotifieritem.cpp:1147
 #, fuzzy
 #| msgctxt "KStatusNotifierItem|"
 #| msgid "Quit"

@@ -35,42 +35,42 @@ msgctxt "KNotificationRestrictions|"
 msgid "Unknown Application"
 msgstr "Nieznónô programa"
 
-#: kstatusnotifieritem.cpp:510 kstatusnotifieritem.cpp:1130
+#: kstatusnotifieritem.cpp:510 kstatusnotifieritem.cpp:1129
 #, fuzzy
 #| msgid "&Minimize"
 msgctxt "KStatusNotifierItem|@action:inmenu"
 msgid "&Minimize"
 msgstr "&Minimalizëjë"
 
-#: kstatusnotifieritem.cpp:869
+#: kstatusnotifieritem.cpp:868
 #, fuzzy
 #| msgid "Quit"
 msgctxt "KStatusNotifierItem|@action:inmenu"
 msgid "Quit"
 msgstr "Zakùńczë"
 
-#: kstatusnotifieritem.cpp:1127
+#: kstatusnotifieritem.cpp:1126
 #, fuzzy
 #| msgid "&Restore"
 msgctxt "KStatusNotifierItem|@action:inmenu"
 msgid "&Restore"
 msgstr "&Przëwrócë"
 
-#: kstatusnotifieritem.cpp:1143
+#: kstatusnotifieritem.cpp:1142
 #, fuzzy
 #| msgid "Confirm Quit From System Tray"
 msgctxt "KStatusNotifierItem|@title:window"
 msgid "Confirm Quit From System Tray"
 msgstr "Pòcwierdzenié zamkniãcô z pòmòcą systemòwégò zabiérnika"
 
-#: kstatusnotifieritem.cpp:1144
+#: kstatusnotifieritem.cpp:1143
 #, fuzzy, qt-format
 #| msgid "<qt>Are you sure you want to quit <b>%1</b>?</qt>"
 msgctxt "KStatusNotifierItem|"
 msgid "<qt>Are you sure you want to quit <b>%1</b>?</qt>"
 msgstr "<qt>Jes të gwës, że chcesz zakùńczëc <b>%1</b>?</qt>"
 
-#: kstatusnotifieritem.cpp:1148
+#: kstatusnotifieritem.cpp:1147
 #, fuzzy
 #| msgid "Quit"
 msgctxt "KStatusNotifierItem|@action:button"

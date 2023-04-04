@@ -1,6 +1,12 @@
 add_library(KF6Notifications)
 add_library(KF6::Notifications ALIAS KF6Notifications)
 
+set_target_properties(KF6Notifications PROPERTIES
+    VERSION     ${KNOTIFICATIONS_VERSION}
+    SOVERSION   ${KNOTIFICATIONS_SOVERSION}
+    EXPORT_NAME Notifications
+)
+
 ecm_create_qm_loader(KF6Notifications knotifications6_qt)
 
 target_sources(KF6Notifications PRIVATE
@@ -157,11 +163,6 @@ endif()
 if(HAVE_DBUSMENUQT)
   target_link_libraries(KF6Notifications PRIVATE dbusmenu-qt6)
 endif()
-
-set_target_properties(KF6Notifications PROPERTIES VERSION   ${KNOTIFICATIONS_VERSION}
-                                                  SOVERSION ${KNOTIFICATIONS_SOVERSION}
-                                                  EXPORT_NAME Notifications
-)
 
 ecm_generate_headers(KNotifications_HEADERS
   HEADER_NAMES

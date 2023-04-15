@@ -40,42 +40,42 @@ msgctxt "KNotificationRestrictions|"
 msgid "Unknown Application"
 msgstr "తెలియని అనువర్తనము"
 
-#: kstatusnotifieritem.cpp:510 kstatusnotifieritem.cpp:1129
+#: kstatusnotifieritem.cpp:510 kstatusnotifieritem.cpp:1124
 #, fuzzy
 #| msgid "&Minimize"
 msgctxt "KStatusNotifierItem|@action:inmenu"
 msgid "&Minimize"
 msgstr "(&M) చిన్నది చెయండి"
 
-#: kstatusnotifieritem.cpp:868
+#: kstatusnotifieritem.cpp:863
 #, fuzzy
 #| msgid "Quit"
 msgctxt "KStatusNotifierItem|@action:inmenu"
 msgid "Quit"
 msgstr "విరమించు"
 
-#: kstatusnotifieritem.cpp:1126
+#: kstatusnotifieritem.cpp:1121
 #, fuzzy
 #| msgid "&Restore"
 msgctxt "KStatusNotifierItem|@action:inmenu"
 msgid "&Restore"
 msgstr "(&R) పునరుద్ధరణ"
 
-#: kstatusnotifieritem.cpp:1142
+#: kstatusnotifieritem.cpp:1137
 #, fuzzy
 #| msgid "Confirm Quit From System Tray"
 msgctxt "KStatusNotifierItem|@title:window"
 msgid "Confirm Quit From System Tray"
 msgstr "సిస్టమ్ ట్రే నుండి విరమింపును నిర్ధారించండి"
 
-#: kstatusnotifieritem.cpp:1143
+#: kstatusnotifieritem.cpp:1138
 #, fuzzy, qt-format
 #| msgid "<qt>Are you sure you want to quit <b>%1</b>?</qt>"
 msgctxt "KStatusNotifierItem|"
 msgid "<qt>Are you sure you want to quit <b>%1</b>?</qt>"
 msgstr "<qt>మీరు ఖచ్చితంగా విరమించాలని అనుకుంటున్నారా <b>%1</b>?</qt>"
 
-#: kstatusnotifieritem.cpp:1147
+#: kstatusnotifieritem.cpp:1143
 #, fuzzy
 #| msgid "Quit"
 msgctxt "KStatusNotifierItem|@action:button"

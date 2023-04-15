@@ -37,33 +37,33 @@ msgctxt "KNotificationRestrictions|"
 msgid "Unknown Application"
 msgstr "Aplikazio ezezaguna"
 
-#: kstatusnotifieritem.cpp:510 kstatusnotifieritem.cpp:1129
+#: kstatusnotifieritem.cpp:510 kstatusnotifieritem.cpp:1124
 msgctxt "KStatusNotifierItem|@action:inmenu"
 msgid "&Minimize"
 msgstr "&Ikonotu"
 
-#: kstatusnotifieritem.cpp:868
+#: kstatusnotifieritem.cpp:863
 msgctxt "KStatusNotifierItem|@action:inmenu"
 msgid "Quit"
 msgstr "Irten"
 
-#: kstatusnotifieritem.cpp:1126
+#: kstatusnotifieritem.cpp:1121
 msgctxt "KStatusNotifierItem|@action:inmenu"
 msgid "&Restore"
 msgstr "Lehen&goratu"
 
-#: kstatusnotifieritem.cpp:1142
+#: kstatusnotifieritem.cpp:1137
 msgctxt "KStatusNotifierItem|@title:window"
 msgid "Confirm Quit From System Tray"
 msgstr "Berretsi sistemako erretilutik irtetea"
 
-#: kstatusnotifieritem.cpp:1143
+#: kstatusnotifieritem.cpp:1138
 #, qt-format
 msgctxt "KStatusNotifierItem|"
 msgid "<qt>Are you sure you want to quit <b>%1</b>?</qt>"
 msgstr "<qt>Ziur zaude <b>%1</b>(e)tik irten nahi duzula?</qt>"
 
-#: kstatusnotifieritem.cpp:1147
+#: kstatusnotifieritem.cpp:1143
 msgctxt "KStatusNotifierItem|@action:button"
 msgid "Quit"
 msgstr "Irten"

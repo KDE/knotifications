@@ -36,37 +36,37 @@ msgctxt "KNotificationRestrictions|"
 msgid "Unknown Application"
 msgstr "അറിയാത്ത പ്രയോഗം"
 
-#: kstatusnotifieritem.cpp:510 kstatusnotifieritem.cpp:1129
+#: kstatusnotifieritem.cpp:510 kstatusnotifieritem.cpp:1124
 #, fuzzy
 msgctxt "KStatusNotifierItem|@action:inmenu"
 msgid "&Minimize"
 msgstr "ചുരുക്കുക &m"
 
-#: kstatusnotifieritem.cpp:868
+#: kstatusnotifieritem.cpp:863
 #, fuzzy
 msgctxt "KStatusNotifierItem|@action:inmenu"
 msgid "Quit"
 msgstr "പുറത്ത് കടക്കുക"
 
-#: kstatusnotifieritem.cpp:1126
+#: kstatusnotifieritem.cpp:1121
 #, fuzzy
 msgctxt "KStatusNotifierItem|@action:inmenu"
 msgid "&Restore"
 msgstr "പഴയരൂപത്തിലാക്കുക &r"
 
-#: kstatusnotifieritem.cpp:1142
+#: kstatusnotifieritem.cpp:1137
 #, fuzzy
 msgctxt "KStatusNotifierItem|@title:window"
 msgid "Confirm Quit From System Tray"
 msgstr "സിസ്റ്റം ട്രേയില്‍ നിന്നും പുറത്തു കടക്കുന്നതുറപ്പാക്കുക"
 
-#: kstatusnotifieritem.cpp:1143
+#: kstatusnotifieritem.cpp:1138
 #, fuzzy, qt-format
 msgctxt "KStatusNotifierItem|"
 msgid "<qt>Are you sure you want to quit <b>%1</b>?</qt>"
 msgstr "<qt>നിങ്ങള്‍ക്കു് പുറത്തു കടക്കണമെന്നുറപ്പാണോ <b>%1</b>?</qt>"
 
-#: kstatusnotifieritem.cpp:1147
+#: kstatusnotifieritem.cpp:1143
 #, fuzzy
 msgctxt "KStatusNotifierItem|@action:button"
 msgid "Quit"

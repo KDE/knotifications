@@ -16,6 +16,7 @@
 */
 
 #include "knotification.h"
+#include "debug_p.h"
 #include "knotification_p.h"
 #include "knotificationmanager_p.h"
 #include "knotificationreplyaction.h"
@@ -279,27 +280,29 @@ void KNotification::setUrgency(Urgency urgency)
     }
 }
 
-void KNotification::activate(unsigned int action)
+void KNotification::activate(const QString &action)
 {
-    switch (action) {
-    case 0:
+    if (action == QLatin1String("default")) {
         Q_EMIT defaultActivated();
-        break;
-    case 1:
+    } else if (action == QLatin1String("1")) {
         Q_EMIT action1Activated();
-        break;
-    case 2:
+    } else if (action == QLatin1String("2")) {
         Q_EMIT action2Activated();
-        break;
-    case 3:
+    } else if (action == QLatin1String("3")) {
         Q_EMIT action3Activated();
-        break;
     }
 
-    // emitting activated() makes the Manager close all the active plugins
-    // which will deref() the KNotification object, which will result
-    // in closing the notification
-    Q_EMIT activated(action);
+    bool ok;
+    int actionIndex = action.toInt(&ok);
+
+    if (!ok || actionIndex < 1 || actionIndex > actions().size()) {
+        qCWarning(LOG_KNOTIFICATIONS) << "Ignored invalid action key" << action;
+    } else {
+        // emitting activated() makes the Manager close all the active plugins
+        // which will deref() the KNotification object, which will result
+        // in closing the notification
+        Q_EMIT activated(actionIndex);
+    }
 }
 
 void KNotification::close()

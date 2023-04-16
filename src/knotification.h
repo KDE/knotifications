@@ -585,7 +585,7 @@ public Q_SLOTS:
      * @brief Activate the action specified action
      * If the action is zero, then the default action is activated
      */
-    void activate(unsigned int action = 0);
+    void activate(const QString &action);
 
     /**
      * Close the notification without activating it.

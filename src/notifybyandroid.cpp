@@ -192,7 +192,7 @@ void NotifyByAndroid::notificationFinished(int id)
 void NotifyByAndroid::notificationActionInvoked(int id, int action)
 {
     qCDebug(LOG_KNOTIFICATIONS) << id << action;
-    Q_EMIT actionInvoked(id, action);
+    Q_EMIT actionInvoked(id, QString::number(action));
 }
 
 void NotifyByAndroid::notificationInlineReply(int id, const QString &text)

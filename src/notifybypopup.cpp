@@ -108,19 +108,10 @@ void NotifyByPopup::onNotificationActionInvoked(uint notificationId, const QStri
 
     KNotification *n = *iter;
     if (n) {
-        if (actionKey == QLatin1String("default") && !n->defaultAction().isEmpty()) {
-            Q_EMIT actionInvoked(n->id(), 0);
-        } else if (actionKey == QLatin1String("inline-reply") && n->replyAction()) {
+        if (actionKey == QLatin1String("inline-reply") && n->replyAction()) {
             Q_EMIT replied(n->id(), QString());
         } else {
-            bool ok;
-            const int actionIndex = actionKey.toInt(&ok);
-
-            if (!ok || actionIndex < 1 || actionIndex > n->actions().size()) {
-                qCWarning(LOG_KNOTIFICATIONS) << "Ignored invalid action key" << actionKey;
-            } else {
-                Q_EMIT actionInvoked(n->id(), actionIndex);
-            }
+            Q_EMIT actionInvoked(n->id(), actionKey);
         }
     } else {
         m_notifications.erase(iter);

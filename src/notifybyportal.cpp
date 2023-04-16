@@ -200,7 +200,7 @@ void NotifyByPortal::onPortalNotificationActionInvoked(const QString &id, const 
 
     KNotification *n = *iter;
     if (n) {
-        Q_EMIT actionInvoked(n->id(), action.toUInt());
+        Q_EMIT actionInvoked(n->id(), action);
     } else {
         d->portalNotifications.erase(iter);
     }

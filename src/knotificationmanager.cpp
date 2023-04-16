@@ -145,7 +145,7 @@ void KNotificationManager::notifyPluginFinished(KNotification *notification)
     notification->deref();
 }
 
-void KNotificationManager::notificationActivated(int id, int action)
+void KNotificationManager::notificationActivated(int id, const QString &action)
 {
     if (d->notifications.contains(id)) {
         qCDebug(LOG_KNOTIFICATIONS) << id << " " << action;

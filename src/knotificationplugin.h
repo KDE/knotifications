@@ -108,7 +108,7 @@ Q_SIGNALS:
      * @param id is the id of the notification
      * @param action is the action number.  zero for the default action
      */
-    void actionInvoked(int id, int action);
+    void actionInvoked(int id, const QString &action);
 
     void xdgActivationTokenReceived(int id, const QString &token);
 

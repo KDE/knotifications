@@ -582,12 +582,6 @@ Q_SIGNALS:
 
 public Q_SLOTS:
     /**
-     * @brief Activate the action specified action
-     * If the action is zero, then the default action is activated
-     */
-    void activate(const QString &action);
-
-    /**
      * Close the notification without activating it.
      *
      * This will delete the notification.
@@ -651,6 +645,13 @@ public Q_SLOTS:
 private:
     friend class KNotificationManager;
     struct Private;
+
+    /**
+     * @brief Activate the action specified action
+     * If the action is zero, then the default action is activated
+     */
+    KNOTIFICATIONS_NO_EXPORT void activate(const QString &action);
+
     std::unique_ptr<Private> const d;
 
 protected:

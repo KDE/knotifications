@@ -609,12 +609,6 @@ public Q_SLOTS:
     void sendEvent();
 
     /**
-     * @internal
-     * update the texts, the icon, and the actions of one existing notification
-     */
-    void update();
-
-    /**
      * @since 5.57
      * Adds a custom hint to the notification. Those are key-value pairs that can be interpreted by the respective notification backend to trigger additional,
      * non-standard features.
@@ -658,6 +652,12 @@ private:
      * the id given by the notification manager
      */
     KNOTIFICATIONS_NO_EXPORT int id();
+
+    /**
+     * @internal
+     * update the texts, the icon, and the actions of one existing notification
+     */
+    KNOTIFICATIONS_NO_EXPORT void update();
 
     std::unique_ptr<Private> const d;
 

@@ -441,12 +441,6 @@ public:
 
     /**
      * @internal
-     * the id given by the notification manager
-     */
-    int id();
-
-    /**
-     * @internal
      * appname used for the D-Bus object
      */
     QString appName() const;
@@ -644,6 +638,13 @@ public Q_SLOTS:
 
 private:
     friend class KNotificationManager;
+    friend class NotifyByPopup;
+    friend class NotifyByPortal;
+    friend class NotifyByPortalPrivate;
+    friend class NotifyByExecute;
+    friend class NotifyBySnore;
+    friend class NotifyByAndroid;
+    friend class NotifyByMacOSNotificationCenter;
     struct Private;
 
     /**
@@ -651,6 +652,12 @@ private:
      * If the action is zero, then the default action is activated
      */
     KNOTIFICATIONS_NO_EXPORT void activate(const QString &action);
+
+    /**
+     * @internal
+     * the id given by the notification manager
+     */
+    KNOTIFICATIONS_NO_EXPORT int id();
 
     std::unique_ptr<Private> const d;
 

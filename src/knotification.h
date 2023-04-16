@@ -583,24 +583,6 @@ public Q_SLOTS:
     void close();
 
     /**
-     * The notification will automatically be closed if all presentations are finished.
-     * if you want to show your own presentation in your application, you should use this
-     * function, so it will not be automatically closed when there is nothing to show.
-     *
-     * Don't forgot to deref, or the notification may be never closed if there is no timeout.
-     *
-     * @see deref
-     */
-    void ref();
-    /**
-     * Remove a reference made with ref(). If the ref counter hits zero,
-     * the notification will be closed and deleted.
-     *
-     * @see ref
-     */
-    void deref();
-
-    /**
      * Send the notification to the server.
      *
      * This will cause all the configured plugins to execute their actions on this notification
@@ -658,6 +640,25 @@ private:
      * update the texts, the icon, and the actions of one existing notification
      */
     KNOTIFICATIONS_NO_EXPORT void update();
+
+    /**
+     * The notification will automatically be closed if all presentations are finished.
+     * if you want to show your own presentation in your application, you should use this
+     * function, so it will not be automatically closed when there is nothing to show.
+     *
+     * Don't forgot to deref, or the notification may be never closed if there is no timeout.
+     *
+     * @see deref
+     */
+    KNOTIFICATIONS_NO_EXPORT void ref();
+
+    /**
+     * Remove a reference made with ref(). If the ref counter hits zero,
+     * the notification will be closed and deleted.
+     *
+     * @see ref
+     */
+    KNOTIFICATIONS_NO_EXPORT void deref();
 
     std::unique_ptr<Private> const d;
 

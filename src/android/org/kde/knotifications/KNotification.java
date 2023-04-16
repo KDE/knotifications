@@ -11,6 +11,7 @@ import android.os.Build;
 
 import java.lang.Object;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 /** Java side of KNotification.
  *  Used to convey the relevant notification data to Java.
@@ -22,7 +23,7 @@ public class KNotification
     public String richText;
     public String title;
     public Object icon;
-    public ArrayList<String> actions = new ArrayList<String>();
+    public HashMap<String, String> actions = new HashMap<>();
     public String channelId;
     public String channelName;
     public String channelDescription;
@@ -46,8 +47,8 @@ public class KNotification
         }
     }
 
-    public void addAction(String action)
+    public void addAction(String id, String label)
     {
-        actions.add(action);
+        actions.put(id, label);
     }
 }

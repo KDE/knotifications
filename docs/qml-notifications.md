@@ -29,13 +29,23 @@ import org.kde.notification 1.0
         title: "Attention!"
         text: "Something important happened."
         iconName: "kde"
-        actions: [ "Action 1", "Action 2" ]
         flags: Notification.Persistent
         urgency: Notification.HighUrgency
         onClosed: console.log("Notification closed.")
-        onDefaultActivated: console.log("Default action activated.")
-        onAction1Activated: console.log("Action 1 activated.")
-        onAction2Activated: console.log("Action 2 activated.")
+        actions: [
+            NotificationAction {
+                label: "Action 1"
+                onActivated: log.append("Action 1 activated.")
+            },
+            NotificationAction {
+                label: "Action 2"
+                onActivated: log.append("Action 2 activated.")
+            },
+            NotificationAction {
+                label: "Action 3"
+                onActivated: log.append("Action 3 activated.")
+            }
+        ]
     }
 
     Button {

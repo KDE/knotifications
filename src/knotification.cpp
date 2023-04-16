@@ -31,6 +31,53 @@
 // incremental notification ID
 static int notificationIdCounter = 0;
 
+class KNotificationActionPrivate
+{
+public:
+    QString label;
+    QString id;
+};
+
+KNotificationAction::KNotificationAction(QObject *parent)
+    : QObject(parent)
+    , d(new KNotificationActionPrivate)
+{
+}
+
+KNotificationAction::KNotificationAction(const QString &label)
+    : QObject()
+    , d(new KNotificationActionPrivate)
+{
+    d->label = label;
+}
+
+KNotificationAction::~KNotificationAction()
+{
+}
+
+QString KNotificationAction::label() const
+{
+    return d->label;
+}
+
+void KNotificationAction::setLabel(const QString &label)
+{
+    if (d->label != label) {
+        d->label = label;
+        Q_EMIT labelChanged(label);
+    }
+}
+
+QString KNotificationAction::id() const
+{
+    return d->id;
+}
+
+void KNotificationAction::setId(const QString &id)
+{
+    d->id = id;
+}
+
 KNotification::KNotification(const QString &eventId, NotificationFlags flags, QObject *parent)
     : QObject(parent)
     , d(new Private)
@@ -49,6 +96,11 @@ KNotification::KNotification(const QString &eventId, NotificationFlags flags, QO
 
 KNotification::~KNotification()
 {
+    if (d->ownsActions) {
+        qDeleteAll(d->actions);
+        delete d->defaultAction;
+    }
+
     if (d->id >= 0) {
         KNotificationManager::self()->close(d->id);
     }
@@ -138,20 +190,64 @@ void KNotification::setPixmap(const QPixmap &pix)
     }
 }
 
-QStringList KNotification::actions() const
+QList<KNotificationAction *> KNotification::actions() const
 {
     return d->actions;
 }
 
-void KNotification::setActions(const QStringList &as)
+void KNotification::clearActions()
 {
-    if (as == d->actions) {
+    if (d->ownsActions) {
+        qDeleteAll(d->actions);
+    }
+    d->actions.clear();
+    d->actionIdCounter = 1;
+
+    d->needUpdate = true;
+    if (d->id >= 0) {
+        d->updateTimer.start();
+    }
+}
+
+KNotificationAction *KNotification::addAction(const QString &label)
+{
+    d->needUpdate = true;
+
+    KNotificationAction *action = new KNotificationAction(label);
+    action->setId(QString::number(d->actionIdCounter));
+    d->actionIdCounter++;
+
+    d->actions << action;
+    d->ownsActions = true;
+    Q_EMIT actionsChanged();
+
+    if (d->id >= 0) {
+        d->updateTimer.start();
+    }
+
+    return action;
+}
+
+void KNotification::setActionsQml(QList<KNotificationAction *> actions)
+{
+    if (actions == d->actions) {
         return;
     }
 
+    d->actions.clear();
+
     d->needUpdate = true;
-    d->actions = as;
+    d->actions = actions;
+    d->ownsActions = false;
     Q_EMIT actionsChanged();
+
+    int idCounter = 1;
+
+    for (KNotificationAction *action : d->actions) {
+        action->setId(QString::number(idCounter));
+        ++idCounter;
+    }
+
     if (d->id >= 0) {
         d->updateTimer.start();
     }
@@ -175,7 +271,27 @@ void KNotification::setReplyAction(std::unique_ptr<KNotificationReplyAction> rep
     }
 }
 
-void KNotification::setDefaultAction(const QString &defaultAction)
+KNotificationAction *KNotification::addDefaultAction(const QString &label)
+{
+    if (d->ownsActions) {
+        delete d->defaultAction;
+    }
+
+    d->needUpdate = true;
+    d->ownsActions = true;
+    d->defaultAction = new KNotificationAction(label);
+
+    d->defaultAction->setId(QStringLiteral("default"));
+
+    Q_EMIT defaultActionChanged();
+    if (d->id >= 0) {
+        d->updateTimer.start();
+    }
+
+    return d->defaultAction;
+}
+
+void KNotification::setDefaultActionQml(KNotificationAction *defaultAction)
 {
     if (defaultAction == d->defaultAction) {
         return;
@@ -183,13 +299,17 @@ void KNotification::setDefaultAction(const QString &defaultAction)
 
     d->needUpdate = true;
     d->defaultAction = defaultAction;
+    d->ownsActions = false;
+
+    d->defaultAction->setId(QStringLiteral("default"));
+
     Q_EMIT defaultActionChanged();
     if (d->id >= 0) {
         d->updateTimer.start();
     }
 }
 
-QString KNotification::defaultAction() const
+KNotificationAction *KNotification::defaultAction() const
 {
     return d->defaultAction;
 }
@@ -256,29 +376,15 @@ void KNotification::setUrgency(Urgency urgency)
     }
 }
 
-void KNotification::activate(const QString &action)
+void KNotification::activate(const QString &actionId)
 {
-    if (action == QLatin1String("default")) {
-        Q_EMIT defaultActivated();
-    } else if (action == QLatin1String("1")) {
-        Q_EMIT action1Activated();
-    } else if (action == QLatin1String("2")) {
-        Q_EMIT action2Activated();
-    } else if (action == QLatin1String("3")) {
-        Q_EMIT action3Activated();
+    if (d->defaultAction && actionId == QLatin1String("default")) {
+        Q_EMIT d->defaultAction->activated();
     }
 
-    bool ok;
-    int actionIndex = action.toInt(&ok);
-
-    if (action != QLatin1String("default")) {
-        if (!ok || actionIndex < 1 || actionIndex > actions().size()) {
-            qCWarning(LOG_KNOTIFICATIONS) << "Ignored invalid action key" << action;
-        } else {
-            // emitting activated() makes the Manager close all the active plugins
-            // which will deref() the KNotification object, which will result
-            // in closing the notification
-            Q_EMIT activated(actionIndex);
+    for (KNotificationAction *action : d->actions) {
+        if (action->id() == actionId) {
+            Q_EMIT action->activated();
         }
     }
 }

@@ -112,9 +112,7 @@ NotifyBySnore::NotifyBySnore(QObject *parent)
             case SnoreToastActions::Actions::ButtonClicked: {
                 qCDebug(LOG_KNOTIFICATIONS) << "User clicked an action button in the toast.";
                 const QString responseButton = notificationResponseMap[QStringLiteral("button")].toString();
-                QStringList s = m_notifications.value(responseNotificationId)->actions();
-                int actionNum = s.indexOf(responseButton) + 1; // QStringList starts with index 0 but not actions
-                Q_EMIT actionInvoked(responseNotificationId, QString::number(actionNum));
+                Q_EMIT actionInvoked(responseNotificationId, responseButton);
                 break;
             }
 
@@ -188,7 +186,16 @@ void NotifyBySnore::notifyDeferred(KNotification *notification)
         snoretoastArgsList << QStringLiteral("-tb");
     } else if (!notification->actions().isEmpty()) {
         // add actions if any
-        snoretoastArgsList << QStringLiteral("-b") << notification->actions().join(QLatin1Char(';'));
+
+        const auto actions = notification->actions();
+        QString actionsString;
+
+        for (KNotificationAction *action : actions) {
+            action->setId(action->label());
+            actionsString += QLatin1Char(';') + action->label();
+        }
+
+        snoretoastArgsList << QStringLiteral("-b") << actionsString;
     }
 
     QProcess *snoretoastProcess = new QProcess();

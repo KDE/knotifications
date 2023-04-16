@@ -217,17 +217,16 @@ bool NotifyByPopup::sendNotificationToServer(KNotification *notification, const 
     // (i.e. starting from 1)
     QStringList actionList;
     if (m_popupServerCapabilities.contains(QLatin1String("actions"))) {
-        QString defaultAction = notification->defaultAction();
-        if (!defaultAction.isEmpty()) {
+        if (notification->defaultAction()) {
             actionList.append(QStringLiteral("default"));
-            actionList.append(defaultAction);
+            actionList.append(notification->defaultAction()->label());
         }
         int actId = 0;
         const auto listActions = notification->actions();
-        for (const QString &actionName : listActions) {
+        for (const KNotificationAction *action : listActions) {
             actId++;
-            actionList.append(QString::number(actId));
-            actionList.append(actionName);
+            actionList.append(action->id());
+            actionList.append(action->label());
         }
 
         if (auto *replyAction = notification->replyAction()) {

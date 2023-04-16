@@ -254,8 +254,8 @@ bool NotifyByPortalPrivate::sendNotificationToPortal(KNotification *notification
     QString title = notification->title().isEmpty() ? appCaption : notification->title();
     QString text = notification->text();
 
-    if (!notification->defaultAction().isEmpty()) {
-        portalArgs.insert(QStringLiteral("default-action"), notification->defaultAction());
+    if (notification->defaultAction()) {
+        portalArgs.insert(QStringLiteral("default-action"), QStringLiteral("default"));
         portalArgs.insert(QStringLiteral("default-action-target"), QStringLiteral("0"));
     }
 
@@ -289,12 +289,10 @@ bool NotifyByPortalPrivate::sendNotificationToPortal(KNotification *notification
     QList<QVariantMap> buttons;
     buttons.reserve(notification->actions().count());
 
-    int actId = 0;
     const auto listActions = notification->actions();
-    for (const QString &actionName : listActions) {
-        actId++;
-        QVariantMap button = {{QStringLiteral("action"), QString::number(actId)}, //
-                              {QStringLiteral("label"), actionName}};
+    for (KNotificationAction *action : listActions) {
+        QVariantMap button = {{QStringLiteral("action"), action->id()}, //
+                              {QStringLiteral("label"), action->label()}};
         buttons << button;
     }
 

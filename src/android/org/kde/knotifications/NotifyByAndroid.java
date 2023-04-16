@@ -182,15 +182,16 @@ public class NotifyByAndroid extends BroadcastReceiver
         builder.setContentIntent(contentIntent);
 
         // actions
-        int actionId = 1;
-        for (String actionName : notification.actions) {
+        for (HashMap.Entry<String, String> entry : notification.actions.entrySet()) {
+            String id = entry.getKey();
+            String label = entry.getValue();
+
             Intent actionIntent = new Intent(m_ctx.getPackageName() + NOTIFICATION_ACTION);
             actionIntent.putExtra(NOTIFICATION_ID_EXTRA, notification.id);
-            actionIntent.putExtra(NOTIFICATION_ACTION_ID_EXTRA, actionId);
+            actionIntent.putExtra(NOTIFICATION_ACTION_ID_EXTRA, id);
             PendingIntent pendingIntent = PendingIntent.getBroadcast(m_ctx, m_uniquePendingIntentId++, actionIntent, PendingIntent.FLAG_UPDATE_CURRENT | PENDING_INTENT_FLAG_IMMUTABLE);
-            Notification.Action action = new Notification.Action.Builder(0, actionName, pendingIntent).build();
+            Notification.Action action = new Notification.Action.Builder(0, label, pendingIntent).build();
             builder.addAction(action);
-            ++actionId;
         }
 
         // inline reply actions
@@ -247,7 +248,7 @@ public class NotifyByAndroid extends BroadcastReceiver
 
         if (action.equals(m_ctx.getPackageName() + NOTIFICATION_ACTION)) {
             // user activated one of the custom actions
-            int actionId = intent.getIntExtra(NOTIFICATION_ACTION_ID_EXTRA, -1);
+            String actionId = intent.getStringExtra(NOTIFICATION_ACTION_ID_EXTRA);
             notificationActionInvoked(id, actionId);
         } else if (action.equals(m_ctx.getPackageName() + NOTIFICATION_DELETED)) {
             // user (or system) dismissed the notification - this can happen both for groups and regular notifications
@@ -275,7 +276,7 @@ public class NotifyByAndroid extends BroadcastReceiver
             Intent newintent = new Intent(m_ctx, m_ctx.getClass());
             newintent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             m_ctx.startActivity(newintent);
-            notificationActionInvoked(id, 0);
+            notificationActionInvoked(id, "default");
         } else if (action.equals(m_ctx.getPackageName() + NOTIFICATION_REPLIED)) {
             Bundle remoteInput = RemoteInput.getResultsFromIntent(intent);
             if (remoteInput != null) {
@@ -286,7 +287,7 @@ public class NotifyByAndroid extends BroadcastReceiver
     }
 
     public native void notificationFinished(int notificationId);
-    public native void notificationActionInvoked(int notificationId, int action);
+    public native void notificationActionInvoked(int notificationId, String action);
     public native void notificationInlineReply(int notificationId, String text);
 
     private void createGroupNotification(KNotification notification)

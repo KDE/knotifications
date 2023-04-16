@@ -142,12 +142,12 @@ void KNotificationManager::notifyPluginFinished(KNotification *notification)
     notification->deref();
 }
 
-void KNotificationManager::notificationActivated(int id, const QString &action)
+void KNotificationManager::notificationActivated(int id, const QString &actionId)
 {
     if (d->notifications.contains(id)) {
-        qCDebug(LOG_KNOTIFICATIONS) << id << " " << action;
+        qCDebug(LOG_KNOTIFICATIONS) << id << " " << actionId;
         KNotification *n = d->notifications[id];
-        n->activate(action);
+        n->activate(actionId);
 
         // Resident actions delegate control over notification lifetime to the client
         if (!n->hints().value(QStringLiteral("resident")).toBool()) {

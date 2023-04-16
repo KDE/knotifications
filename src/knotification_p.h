@@ -28,8 +28,9 @@ struct Q_DECL_HIDDEN KNotification::Private {
     QString title;
     QString text;
     QString iconName;
-    QString defaultAction;
-    QStringList actions;
+    KNotificationAction *defaultAction = nullptr;
+    QList<KNotificationAction *> actions;
+    bool ownsActions = true;
     QString xdgActivationToken;
     std::unique_ptr<KNotificationReplyAction> replyAction;
     QPixmap pixmap;
@@ -43,6 +44,7 @@ struct Q_DECL_HIDDEN KNotification::Private {
     bool isNew = true;
     bool autoDelete = true;
     QWindow *window = nullptr;
+    int actionIdCounter = 1;
 };
 
 #endif

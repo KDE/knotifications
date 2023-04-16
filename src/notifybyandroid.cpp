@@ -27,12 +27,14 @@ static void notificationFinished(JNIEnv *env, jobject that, jint notificationId)
     }
 }
 
-static void notificationActionInvoked(JNIEnv *env, jobject that, jint id, jint action)
+static void notificationActionInvoked(JNIEnv *env, jobject that, jint id, jstring action)
 {
     Q_UNUSED(env);
     Q_UNUSED(that);
     if (s_instance) {
-        s_instance->notificationActionInvoked(id, action);
+        const char *str = env->GetStringUTFChars(action, nullptr);
+        s_instance->notificationActionInvoked(id, QString::fromUtf8(str));
+        env->ReleaseStringUTFChars(action, str);
     }
 }
 
@@ -143,8 +145,11 @@ QJniObject NotifyByAndroid::createAndroidNotification(KNotification *notificatio
 
     // actions
     const auto actions = notification->actions();
-    for (const auto &action : actions) {
-        n.callMethod<void>("addAction", "(Ljava/lang/String;)V", QJniObject::fromString(action).object<jstring>());
+    for (const KNotificationAction *action : actions) {
+        n.callMethod<void>("addAction",
+                           "(Ljava/lang/String;Ljava/lang/String;)V",
+                           QJniObject::fromString(action->id()).object<jstring>(),
+                           QJniObject::fromString(action->label()).object<jstring>());
     }
 
     if (notification->replyAction()) {
@@ -189,10 +194,10 @@ void NotifyByAndroid::notificationFinished(int id)
     }
 }
 
-void NotifyByAndroid::notificationActionInvoked(int id, int action)
+void NotifyByAndroid::notificationActionInvoked(int id, const QString &action)
 {
     qCDebug(LOG_KNOTIFICATIONS) << id << action;
-    Q_EMIT actionInvoked(id, QString::number(action));
+    Q_EMIT actionInvoked(id, action);
 }
 
 void NotifyByAndroid::notificationInlineReply(int id, const QString &text)

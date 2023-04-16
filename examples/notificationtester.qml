@@ -39,16 +39,31 @@ ApplicationWindow {
             title: titleField.text
             text: textField.text
             iconName: "kde"
-            defaultAction: "Default Action"
-            actions: ["Action 1", "Action 2", "Action 3"]
+
+            defaultAction: NotificationAction {
+                label: "Default Action"
+                onActivated: log.append("Default action activated.")
+            }
+
+            actions: [
+                NotificationAction {
+                    label: "Action 1"
+                    onActivated: log.append("Action 1 activated.")
+                },
+                NotificationAction {
+                    label: "Action 2"
+                    onActivated: log.append("Action 2 activated.")
+                },
+                NotificationAction {
+                    label: "Action 3"
+                    onActivated: log.append("Action 3 activated.")
+                }
+            ]
+
             flags: (persistentFlag.checked ? Notification.Persistent : Notification.CloseOnTimeout) | (skipGroupingFlag ? Notification.SkipGrouping : 0)
             urgency: urgencyCombo.currentValue
 
             onClosed: log.append("Notification closed.")
-            onDefaultActivated: log.append("Default action activated.")
-            onAction1Activated: log.append("Action 1 activated.")
-            onAction2Activated: log.append("Action 2 activated.")
-            onAction3Activated: log.append("Action 3 activated.")
             onIgnored: log.append("Notification ignored.")
         }
 
@@ -123,7 +138,6 @@ ApplicationWindow {
             }
 
             onClosed: log.append("Reply notification closed.")
-            onDefaultActivated: log.append("Reply default action activated.")
             onIgnored: log.append("Reply notification ignored.")
         }
         Button {

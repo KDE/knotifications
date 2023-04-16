@@ -22,6 +22,70 @@
 #include <memory>
 
 class KNotificationReplyAction;
+class KNotificationAction;
+
+class KNotificationActionPrivate;
+
+/**
+ * @class KNotificationAction knotification.h KNotificationAction
+ *
+ * This class represents a notification. This can be a button on the notification
+ * popup, or triggered by clicking the notification popup itself.
+ *
+ * @since 6.0
+ */
+class KNOTIFICATIONS_EXPORT KNotificationAction : public QObject
+{
+    Q_OBJECT
+    /**
+     * @copydoc label
+     */
+    Q_PROPERTY(QString label READ label WRITE setLabel NOTIFY labelChanged)
+
+public:
+    explicit KNotificationAction(QObject *parent = nullptr);
+
+    /**
+     * Creates an action with given label
+     * @param label The label for the action
+     */
+    explicit KNotificationAction(const QString &label);
+
+    ~KNotificationAction() override;
+
+    /**
+     * The user-facing label for the action
+     */
+    QString label() const;
+
+    /**
+     * Set the user-facing label for the action
+     */
+    void setLabel(const QString &label);
+
+Q_SIGNALS:
+    /**
+     * Emitted when the user activates the action
+     */
+    void activated();
+
+    /**
+     * Emitted when @p label changed.
+     */
+    void labelChanged(const QString &label);
+
+private:
+    friend class KNotification;
+    friend class NotifyByPortalPrivate;
+    friend class NotifyByPopup;
+    friend class NotifyBySnore;
+    friend class NotifyByAndroid;
+
+    void setId(const QString &id);
+    QString id() const;
+
+    std::unique_ptr<KNotificationActionPrivate> const d;
+};
 
 /**
  * @class KNotification knotification.h KNotification
@@ -51,16 +115,6 @@ class KNOTIFICATIONS_EXPORT KNotification : public QObject
      * @since 5.88
      */
     Q_PROPERTY(QString iconName READ iconName WRITE setIconName NOTIFY iconNameChanged)
-    /**
-     * @copydoc setDefaultAction
-     * @since 5.88
-     */
-    Q_PROPERTY(QString defaultAction READ defaultAction WRITE setDefaultAction NOTIFY defaultActionChanged)
-    /**
-     * @copydoc setActions
-     * @since 5.88
-     */
-    Q_PROPERTY(QStringList actions READ actions WRITE setActions NOTIFY actionsChanged)
     /**
      * @copydoc setFlags
      * @since 5.88
@@ -264,15 +318,15 @@ public:
     void setPixmap(const QPixmap &pix);
 
     /**
-     * @return the default action, or an empty string if not set
-     * @since 5.31
+     * @return the default action, or nullptr if none is set
+     * @since 6.0
      */
-    QString defaultAction() const;
+    KNotificationAction *defaultAction() const;
 
     /**
-     * Set a default action that will be triggered when the notification is
+     * Add a default action that will be triggered when the notification is
      * activated (typically, by clicking on the notification popup). The default
-     * action should raise a window belonging to the application that sent it.
+     * action typically raises a window belonging to the application that sent it.
      *
      * The string will be used as a label for the action, so ideally it should
      * be wrapped in i18n() or tr() calls.
@@ -281,34 +335,35 @@ public:
      * In Plasma and Gnome desktops, the actions are performed by clicking on
      * the notification popup, and the label is not presented to the user.
      *
+     * Calling this overrides the current default action
      *
-     * @param action Label of the default action. The label might or might not
-     * be displayed to the user by the notification server, depending on the
-     * implementation. Passing an empty string disables the default action.
-     * @since 5.31
+     * @since 6.0
      */
-    void setDefaultAction(const QString &defaultAction);
+    [[nodiscard]] KNotificationAction *addDefaultAction(const QString &label);
 
     /**
-     * @return the list of actions
+     * Add an action to the notification.
+     *
+     * The visual representation of actions depends
+     * on the notification server.
+     *
+     * @param label the user-visible label of the action
+     *
+     * @see KNotificationAction
+     *
+     * @since 6.0
      */
-    // KF6: Rename to "additionalActions"?
-    QStringList actions() const;
+    [[nodiscard]] KNotificationAction *addAction(const QString &label);
 
     /**
-     * Set the list of actions shown in the popup. The strings passed
-     * in that QStringList will be used as labels for those actions,
-     * so ideally they should be wrapped in i18n() or tr() calls.
-     * In Plasma workspace, these will be shown as buttons inside
-     * the notification popup.
+     * Removes all actions previously added by addAction()
+     * from the notification.
      *
-     * The visual representation of actions however depends
-     * on the notification server
+     * @see addAction
      *
-     * @param actions List of strings used as action labels
+     * @since 6.0
      */
-    // KF6: Rename to "setAdditionalActions"?
-    void setActions(const QStringList &actions);
+    void clearActions();
 
     /**
      * @return the inline reply action.
@@ -447,37 +502,6 @@ public:
 
 Q_SIGNALS:
     /**
-     * Emitted when the default action has been activated.
-     * @since 5.67
-     */
-    void defaultActivated();
-
-    /**
-     * Emitted when an action has been activated.
-     *
-     * The parameter passed by the signal is the index of the action
-     * in the QStringList set by setActions() call.
-     *
-     * @param action will be 0 if the default action was activated, or the index of the action in the actions QStringList
-     */
-    void activated(unsigned int action); // clazy:exclude=overloaded-signal
-
-    /**
-     * Convenience signal that is emitted when the first action is activated.
-     */
-    void action1Activated();
-
-    /**
-     * \overload
-     */
-    void action2Activated();
-
-    /**
-     * \overload
-     */
-    void action3Activated();
-
-    /**
      * Emitted when the notification is closed.
      *
      * Can be closed either by the user clicking the close button,
@@ -596,6 +620,7 @@ public Q_SLOTS:
 
 private:
     friend class KNotificationManager;
+    friend class NotificationWrapper;
     friend class NotifyByPopup;
     friend class NotifyByPortal;
     friend class NotifyByPortalPrivate;
@@ -644,11 +669,15 @@ private:
      */
     KNOTIFICATIONS_NO_EXPORT void deref();
 
-    std::unique_ptr<Private> const d;
+    // Like setActions, but doesn't take ownership
+    void setActionsQml(QList<KNotificationAction *> actions);
+    void setDefaultActionQml(KNotificationAction *action);
+    QList<KNotificationAction *> actions() const;
 
-protected:
     static QString standardEventToEventId(StandardEvent event);
     static QString standardEventToIconName(StandardEvent event);
+
+    std::unique_ptr<Private> const d;
 
 public:
     /**

@@ -14,8 +14,6 @@
 #include <QObject> //for Wid
 #include <QPair>
 
-typedef QList<QPair<QString, QString>> ContextList;
-
 /**
  * @class KNotifyImage knotifyconfig.h KNotifyConfig
  *
@@ -58,7 +56,7 @@ private:
 class KNOTIFICATIONS_EXPORT KNotifyConfig
 {
 public:
-    KNotifyConfig(const QString &appname, const ContextList &_contexts, const QString &_eventid);
+    KNotifyConfig(const QString &appname, const QString &_eventid);
     ~KNotifyConfig();
 
     KNotifyConfig *copy() const;
@@ -87,7 +85,6 @@ public:
      * @internal
      */
     KSharedConfig::Ptr eventsfile, configfile;
-    ContextList contexts;
 
     /**
      * the name of the notification

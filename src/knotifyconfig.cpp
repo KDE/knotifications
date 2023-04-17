@@ -48,9 +48,8 @@ void KNotifyConfig::reparseSingleConfiguration(const QString &app)
     }
 }
 
-KNotifyConfig::KNotifyConfig(const QString &_appname, const ContextList &_contexts, const QString &_eventid)
+KNotifyConfig::KNotifyConfig(const QString &_appname, const QString &_eventid)
     : appname(_appname)
-    , contexts(_contexts)
     , eventid(_eventid)
 {
     eventsfile = retrieve_from_cache(QLatin1String("knotifications5/") + _appname + QLatin1String(".notifyrc"), QStandardPaths::GenericDataLocation);
@@ -63,37 +62,15 @@ KNotifyConfig::~KNotifyConfig()
 
 KNotifyConfig *KNotifyConfig::copy() const
 {
-    KNotifyConfig *config = new KNotifyConfig(appname, contexts, eventid);
+    KNotifyConfig *config = new KNotifyConfig(appname, eventid);
     config->eventsfile = eventsfile;
     config->configfile = configfile;
-    // appname, contexts, eventid already done in constructor
+    // appname, eventid already done in constructor
     return config;
 }
 
 QString KNotifyConfig::readEntry(const QString &entry, bool path) const
 {
-    for (const QPair<QString, QString> &context : std::as_const(contexts)) {
-        const QString group = QLatin1String("Event/") + eventid + QLatin1Char('/') + context.first + QLatin1Char('/') + context.second;
-
-        if (configfile->hasGroup(group)) {
-            KConfigGroup cg(configfile, group);
-            QString p = path ? cg.readPathEntry(entry, QString()) : cg.readEntry(entry, QString());
-
-            if (!p.isNull()) {
-                return p;
-            }
-        }
-
-        if (eventsfile->hasGroup(group)) {
-            KConfigGroup cg(eventsfile, group);
-            QString p = path ? cg.readPathEntry(entry, QString()) : cg.readEntry(entry, QString());
-
-            if (!p.isNull()) {
-                return p;
-            }
-        }
-    }
-    //    kDebug() << entry << " not found in contexts ";
     const QString group = QLatin1String("Event/") + eventid;
 
     if (configfile->hasGroup(group)) {

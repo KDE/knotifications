@@ -217,26 +217,6 @@ QString KNotification::defaultAction() const
     return d->defaultAction;
 }
 
-KNotification::ContextList KNotification::contexts() const
-{
-    return d->contexts;
-}
-
-void KNotification::setContexts(const KNotification::ContextList &contexts)
-{
-    d->contexts = contexts;
-}
-
-void KNotification::addContext(const KNotification::Context &context)
-{
-    d->contexts << context;
-}
-
-void KNotification::addContext(const QString &context_key, const QString &context_value)
-{
-    d->contexts << qMakePair(context_key, context_value);
-}
-
 KNotification::NotificationFlags KNotification::flags() const
 {
     return d->flags;

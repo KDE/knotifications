@@ -99,27 +99,6 @@ class KNOTIFICATIONS_EXPORT KNotification : public QObject
 
 public:
     /**
-     * Sometimes the user may want different notifications for the same event,
-     * depending the source of the event.  Example, you want to be notified for mails
-     * that arrive in your folder "personal inbox" but not for those in "spam" folder
-     *
-     * A notification context is a pair of two strings.
-     * The first string is a key from what the context is.  example "group" or
-     * "filter" (not translated).
-     * The second is the id of the context. In our example, the group id or the
-     * filter id in the applications.
-     * These strings are the ones present in the config file, and are in theory not
-     * shown in the user interface.
-     *
-     * The order of contexts in the list is is important, the most important context
-     * should be placed first. They are processed in that order when the notification occurs.
-     *
-     * @see event
-     */
-    typedef QPair<QString, QString> Context;
-    typedef QList<Context> ContextList;
-
-    /**
      * @see NotificationFlags
      */
     enum NotificationFlag {
@@ -392,28 +371,6 @@ public:
      * @since 5.81
      */
     void setReplyAction(std::unique_ptr<KNotificationReplyAction> replyAction);
-
-    /**
-     * @return the list of contexts, see KNotification::Context
-     */
-    ContextList contexts() const;
-    /**
-     * set the list of contexts, see KNotification::Context
-     *
-     * The list of contexts must be set before calling sendEvent;
-     */
-    void setContexts(const ContextList &contexts);
-    /**
-     * append a context at the list of contexts, see KNotification::Context
-     * @param context the context which is added
-     */
-    void addContext(const Context &context);
-    /**
-     * @overload
-     * @param context_key is the key of the context
-     * @param context_value is the value of the context
-     */
-    void addContext(const QString &context_key, const QString &context_value);
 
     /**
      * @return the notification flags.

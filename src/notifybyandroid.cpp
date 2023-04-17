@@ -157,7 +157,7 @@ QJniObject NotifyByAndroid::createAndroidNotification(KNotification *notificatio
 
 void NotifyByAndroid::notifyDeferred(KNotification *notification)
 {
-    KNotifyConfig config(notification->appName(), notification->contexts(), notification->eventId());
+    KNotifyConfig config(notification->appName(), notification->eventId());
     const auto n = createAndroidNotification(notification, config);
     m_notifications.insert(notification->id(), notification);
 

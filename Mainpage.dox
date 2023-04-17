@@ -23,10 +23,9 @@ You can do this with the following CMake command, if you use ECM's KDEInstallDir
 install(FILES appname.notifyrc  DESTINATION ${KDE_INSTALL_KNOTIFYRCDIR})
 @endcode
 
- This file contains  mainly 3 parts
+ This file contains  mainly 2 parts
   <ol>
   <li>\ref global "Global information"</li>
-  <li>\ref context "Context information"</li>
   <li>\ref events "Definition of individual events"</li>
   </ol>
 
@@ -53,21 +52,6 @@ The global part looks like that
   KAboutData desktopFileName property, and that the desktop file is not marked
   as Hidden.
 
-\subsection context Context information
-
-This part consists of hints for the configuration widget
- <pre>
-    [Context/group]
-    Name=Group name
-    Comment=The name of the group for contacts
-
-    [Context/folder]
-    Name=Group name
- </pre>
- The second part of the groupname is the context identifier.
- It should not contain special characters.
- The Name field is the one the user will see (and which is translated)
-
 \subsection events Definition of Events
 
 The definition of the events forms the most important part of the config file
@@ -75,13 +59,11 @@ The definition of the events forms the most important part of the config file
     [Event/newmail]
     Name=New E-Mail
     Comment=You have got a new email
-    Contexts=folder,group
     Action=Sound|Popup
 
     [Event/contactOnline]
     Name=Contact Goes Online
     Comment=One of your contact has been connected
-    Contexts=group
     Sound=filetoplay.ogg
     Action=None
     Urgency=Low
@@ -92,8 +74,6 @@ KNotification as plugins, by deriving from KNotificationPlugin.
 At the time of writing, the following actions are available: Taskbar,
 Sound, Popup, Logfile, TTS, Execute.
 Actions can be combined by separating them with '|'.
-
-Contexts is a comma separated list of possible context for this event.
 
 Urgency can be any of: Low, Normal, Critical.
 
@@ -106,11 +86,6 @@ This portion of code will fire the event for the "contactOnline" event
     notification->setText(i18n("The contact <i>%1</i> has gone online", contact->name());
     notification->setPixmap(contact->pixmap());
     notification->setActions({i18n("Open chat")});
-
-    const auto groups = contact->groups();
-    for (const QString &group : groups) {
-        notification->addContext("group", group);
-    }
 
     connect(notification, QOverload<unsigned int>::of(&KNotification::activated), contact, &Contact::slotOpenChat);
 

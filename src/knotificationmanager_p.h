@@ -49,7 +49,7 @@ public:
     void update(KNotification *n);
 
     /**
-     * re-emit the notification, eventually with new contexts
+     * re-emit the notification
      */
     void reemit(KNotification *n);
 

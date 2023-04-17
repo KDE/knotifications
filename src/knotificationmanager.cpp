@@ -302,7 +302,7 @@ void KNotificationManager::close(int id, bool force)
         // For example: Action=Popup is a single actions but there is 5 loaded
         // plugins, calling close() on the second would already close-and-delete
         // the notification
-        KNotifyConfig notifyConfig(n->appName(), n->contexts(), n->eventId());
+        KNotifyConfig notifyConfig(n->appName(), n->eventId());
         QString notifyActions = notifyConfig.readEntry(QStringLiteral("Action"));
 
         const auto listActions = notifyActions.split(QLatin1Char('|'));
@@ -319,7 +319,7 @@ void KNotificationManager::close(int id, bool force)
 
 void KNotificationManager::notify(KNotification *n)
 {
-    KNotifyConfig notifyConfig(n->appName(), n->contexts(), n->eventId());
+    KNotifyConfig notifyConfig(n->appName(), n->eventId());
 
     if (d->dirtyConfigCache.contains(n->appName())) {
         notifyConfig.reparseSingleConfiguration(n->appName());
@@ -383,7 +383,7 @@ void KNotificationManager::notify(KNotification *n)
 
 void KNotificationManager::update(KNotification *n)
 {
-    KNotifyConfig notifyConfig(n->appName(), n->contexts(), n->eventId());
+    KNotifyConfig notifyConfig(n->appName(), n->eventId());
 
     for (KNotificationPlugin *p : std::as_const(d->notifyPlugins)) {
         p->update(n, notifyConfig);

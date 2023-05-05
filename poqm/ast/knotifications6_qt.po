@@ -1,0 +1,57 @@
+# Enol P. <enolp@softastur.org>, 2023.
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"PO-Revision-Date: 2023-05-03 23:42+0200\n"
+"Last-Translator: Enol P. <enolp@softastur.org>\n"
+"Language-Team: \n"
+"Language: ast_ES\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Qt-Contexts: true\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: Lokalize 23.04.0\n"
+
+#. Job name, e.g. Copying has failed
+#: knotificationjobuidelegate.cpp:28
+#, qt-format
+msgctxt "KNotificationJobUiDelegate|"
+msgid "%1 (Failed)"
+msgstr ""
+
+#: knotificationrestrictions.cpp:183
+msgctxt "KNotificationRestrictions|"
+msgid "Unknown Application"
+msgstr ""
+
+#: kstatusnotifieritem.cpp:510 kstatusnotifieritem.cpp:1124
+msgctxt "KStatusNotifierItem|@action:inmenu"
+msgid "&Minimize"
+msgstr ""
+
+#: kstatusnotifieritem.cpp:863
+msgctxt "KStatusNotifierItem|@action:inmenu"
+msgid "Quit"
+msgstr ""
+
+#: kstatusnotifieritem.cpp:1121
+msgctxt "KStatusNotifierItem|@action:inmenu"
+msgid "&Restore"
+msgstr ""
+
+#: kstatusnotifieritem.cpp:1137
+msgctxt "KStatusNotifierItem|@title:window"
+msgid "Confirm Quit From System Tray"
+msgstr ""
+
+#: kstatusnotifieritem.cpp:1138
+#, qt-format
+msgctxt "KStatusNotifierItem|"
+msgid "<qt>Are you sure you want to quit <b>%1</b>?</qt>"
+msgstr ""
+
+#: kstatusnotifieritem.cpp:1143
+msgctxt "KStatusNotifierItem|@action:button"
+msgid "Quit"
+msgstr ""

@@ -1,6 +1,7 @@
 [Event/fatalerror]
 Name=Fatal Error
 Name[ar]=خطأ فادح
+Name[ast]=Error fatal
 Name[az]=Ciddi Xəta
 Name[be]=Фатальная памылка
 Name[bg]=Фатална грешка

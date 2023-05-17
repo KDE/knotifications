@@ -23,6 +23,8 @@
 
 // Qt
 #include <QObject>
+// Local
+#include "dbusmenutypes_p.h"
 
 class QAction;
 class QDBusAbstractInterface;
@@ -124,14 +126,12 @@ private Q_SLOTS:
     void processPendingLayoutUpdates();
     void slotLayoutUpdated(uint revision, int parentId);
     void slotGetLayoutFinished(QDBusPendingCallWatcher *);
+    void slotItemsPropertiesUpdated(const DBusMenuItemList &updatedList, const DBusMenuItemKeysList &removedList);
 
 private:
     Q_DISABLE_COPY(DBusMenuImporter)
     DBusMenuImporterPrivate *const d;
     friend class DBusMenuImporterPrivate;
-
-    // Use Q_PRIVATE_SLOT to avoid exposing DBusMenuItemList
-    Q_PRIVATE_SLOT(d, void slotItemsPropertiesUpdated(const DBusMenuItemList &updatedList, const DBusMenuItemKeysList &removedList))
 };
 
 #endif /* DBUSMENUIMPORTER_H */

@@ -71,33 +71,29 @@ elseif (Phonon4Qt6_FOUND)
 endif()
 
 if (TARGET Qt6::DBus)
-  if (NOT ANDROID)
-      set(HAVE_DBUSMENUQT 1)
-      qt_add_dbus_adaptor(dbusmenu_qt_SRCS
-        ${CMAKE_CURRENT_SOURCE_DIR}/libdbusmenu-qt/com.canonical.dbusmenu.xml
-        ${CMAKE_CURRENT_SOURCE_DIR}/libdbusmenu-qt/dbusmenuexporterdbus_p.h DBusMenuExporterDBus
-        )
+   set(HAVE_DBUSMENUQT 1)
+   qt_add_dbus_adaptor(dbusmenu_qt_SRCS
+     ${CMAKE_CURRENT_SOURCE_DIR}/libdbusmenu-qt/com.canonical.dbusmenu.xml
+     ${CMAKE_CURRENT_SOURCE_DIR}/libdbusmenu-qt/dbusmenuexporterdbus_p.h DBusMenuExporterDBus
+   )
 
-      target_sources(KF6Notifications PRIVATE
-	${dbusmenu_qt_SRCS}
-        libdbusmenu-qt/dbusmenuexporter.cpp
-        libdbusmenu-qt/dbusmenuexporterdbus_p.cpp
-        libdbusmenu-qt/dbusmenu_p.cpp
-        libdbusmenu-qt/dbusmenushortcut_p.cpp
-        libdbusmenu-qt/dbusmenutypes_p.cpp
-        libdbusmenu-qt/utils.cpp
-        libdbusmenu-qt/dbusmenuexporterdbus_p.h
-        libdbusmenu-qt/dbusmenuexporter.h
-        libdbusmenu-qt/dbusmenuexporterprivate_p.h
-        libdbusmenu-qt/dbusmenu_p.h
-        libdbusmenu-qt/dbusmenushortcut_p.h
-        libdbusmenu-qt/dbusmenutypes_p.h
-        libdbusmenu-qt/debug_p.h
-        libdbusmenu-qt/utils_p.h
-      )
-  else()
-      set(HAVE_DBUSMENUQT 0)
-  endif()
+   target_sources(KF6Notifications PRIVATE
+     ${dbusmenu_qt_SRCS}
+     libdbusmenu-qt/dbusmenuexporter.cpp
+     libdbusmenu-qt/dbusmenuexporterdbus_p.cpp
+     libdbusmenu-qt/dbusmenu_p.cpp
+     libdbusmenu-qt/dbusmenushortcut_p.cpp
+     libdbusmenu-qt/dbusmenutypes_p.cpp
+     libdbusmenu-qt/utils.cpp
+     libdbusmenu-qt/dbusmenuexporterdbus_p.h
+     libdbusmenu-qt/dbusmenuexporter.h
+     libdbusmenu-qt/dbusmenuexporterprivate_p.h
+     libdbusmenu-qt/dbusmenu_p.h
+     libdbusmenu-qt/dbusmenushortcut_p.h
+     libdbusmenu-qt/dbusmenutypes_p.h
+     libdbusmenu-qt/debug_p.h
+     libdbusmenu-qt/utils_p.h
+  )
 
   set(knotifications_dbus_SRCS)
   qt_add_dbus_adaptor(knotifications_dbus_SRCS     org.kde.StatusNotifierItem.xml

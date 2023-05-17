@@ -170,10 +170,6 @@ if(X11_XTest_FOUND)
   target_link_libraries(KF6Notifications PRIVATE ${X11_XTest_LIB})
 endif()
 
-if(HAVE_DBUSMENUQT)
-  target_link_libraries(KF6Notifications PRIVATE dbusmenu-qt6)
-endif()
-
 ecm_generate_headers(KNotifications_HEADERS
   HEADER_NAMES
   KNotification

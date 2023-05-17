@@ -21,6 +21,7 @@
 #include "dbusmenuexporter.h"
 
 // Qt
+#include <QActionGroup>
 #include <QBuffer>
 #include <QDateTime>
 #include <QMap>
@@ -31,7 +32,6 @@
 #include <QWidgetAction>
 
 // Local
-#include "dbusmenu_config.h"
 #include "dbusmenu_p.h"
 #include "dbusmenuexporterdbus_p.h"
 #include "dbusmenuexporterprivate_p.h"
@@ -61,7 +61,8 @@ void DBusMenuExporterPrivate::addMenu(QMenu *menu, int parentId)
         return;
     }
     new DBusMenu(menu, q, parentId);
-    Q_FOREACH (QAction *action, menu->actions()) {
+    const auto actions = menu->actions();
+    for (QAction *action : actions) {
         addAction(action, parentId);
     }
 }
@@ -70,7 +71,7 @@ QVariantMap DBusMenuExporterPrivate::propertiesForAction(QAction *action) const
 {
     DMRETURN_VALUE_IF_FAIL(action, QVariantMap());
 
-    if (action->objectName() == KMENU_TITLE) {
+    if (action->objectName() == QString::fromLatin1(KMENU_TITLE)) {
         // Hack: Support for KDE menu titles in a Qt-only library...
         return propertiesForKMenuTitleAction(action);
     } else if (action->isSeparator()) {
@@ -84,8 +85,8 @@ QVariantMap DBusMenuExporterPrivate::propertiesForKMenuTitleAction(QAction *acti
 {
     QVariantMap map;
     // In case the other side does not know about x-kde-title, show a disabled item
-    map.insert("enabled", false);
-    map.insert("x-kde-title", true);
+    map.insert(QStringLiteral("enabled"), false);
+    map.insert(QStringLiteral("x-kde-title"), true);
 
     const QWidgetAction *widgetAction = qobject_cast<const QWidgetAction *>(action_);
     DMRETURN_VALUE_IF_FAIL(widgetAction, map);
@@ -94,10 +95,10 @@ QVariantMap DBusMenuExporterPrivate::propertiesForKMenuTitleAction(QAction *acti
     QAction *action = button->defaultAction();
     DMRETURN_VALUE_IF_FAIL(action, map);
 
-    map.insert("label", swapMnemonicChar(action->text(), '&', '_'));
+    map.insert(QStringLiteral("label"), swapMnemonicChar(action->text(), QLatin1Char('&'), QLatin1Char('_')));
     insertIconProperty(&map, action);
     if (!action->isVisible()) {
-        map.insert("visible", false);
+        map.insert(QStringLiteral("visible"), false);
     }
     return map;
 }
@@ -105,9 +106,9 @@ QVariantMap DBusMenuExporterPrivate::propertiesForKMenuTitleAction(QAction *acti
 QVariantMap DBusMenuExporterPrivate::propertiesForSeparatorAction(QAction *action) const
 {
     QVariantMap map;
-    map.insert("type", "separator");
+    map.insert(QStringLiteral("type"), QStringLiteral("separator"));
     if (!action->isVisible()) {
-        map.insert("visible", false);
+        map.insert(QStringLiteral("visible"), false);
     }
     return map;
 }
@@ -115,26 +116,26 @@ QVariantMap DBusMenuExporterPrivate::propertiesForSeparatorAction(QAction *actio
 QVariantMap DBusMenuExporterPrivate::propertiesForStandardAction(QAction *action) const
 {
     QVariantMap map;
-    map.insert("label", swapMnemonicChar(action->text(), '&', '_'));
+    map.insert(QStringLiteral("label"), swapMnemonicChar(action->text(), QLatin1Char('&'), QLatin1Char('_')));
     if (!action->isEnabled()) {
-        map.insert("enabled", false);
+        map.insert(QStringLiteral("enabled"), false);
     }
     if (!action->isVisible()) {
-        map.insert("visible", false);
+        map.insert(QStringLiteral("visible"), false);
     }
     if (action->menu()) {
-        map.insert("children-display", "submenu");
+        map.insert(QStringLiteral("children-display"), QStringLiteral("submenu"));
     }
     if (action->isCheckable()) {
         bool exclusive = action->actionGroup() && action->actionGroup()->isExclusive();
-        map.insert("toggle-type", exclusive ? "radio" : "checkmark");
-        map.insert("toggle-state", action->isChecked() ? 1 : 0);
+        map.insert(QStringLiteral("toggle-type"), exclusive ? QStringLiteral("radio") : QStringLiteral("checkmark"));
+        map.insert(QStringLiteral("toggle-state"), action->isChecked() ? 1 : 0);
     }
     insertIconProperty(&map, action);
     QKeySequence keySequence = action->shortcut();
     if (!keySequence.isEmpty()) {
         DBusMenuShortcut shortcut = DBusMenuShortcut::fromKeySequence(keySequence);
-        map.insert("shortcut", QVariant::fromValue(shortcut));
+        map.insert(QStringLiteral("shortcut"), QVariant::fromValue(shortcut));
     }
     return map;
 }
@@ -148,7 +149,7 @@ QMenu *DBusMenuExporterPrivate::menuForId(int id) const
     // Action may not be in m_actionForId if it has been deleted between the
     // time it was announced by the exporter and the time the importer asks for
     // it.
-    return action ? action->menu() : 0;
+    return action ? action->menu() : nullptr;
 }
 
 void DBusMenuExporterPrivate::fillLayoutItem(DBusMenuLayoutItem *item, QMenu *menu, int id, int depth, const QStringList &propertyNames)
@@ -157,7 +158,8 @@ void DBusMenuExporterPrivate::fillLayoutItem(DBusMenuLayoutItem *item, QMenu *me
     item->properties = m_dbusObject->getProperties(id, propertyNames);
 
     if (depth != 0 && menu) {
-        Q_FOREACH (QAction *action, menu->actions()) {
+        const auto actions = menu->actions();
+        for (QAction *action : actions) {
             int actionId = m_idForAction.value(action, -1);
             if (actionId == -1) {
                 DMWARNING << "No id for action";
@@ -236,7 +238,7 @@ void DBusMenuExporterPrivate::insertIconProperty(QVariantMap *map, QAction *acti
     // provide the icon name for per-theme lookups
     const QString iconName = q->iconNameForAction(action);
     if (!iconName.isEmpty()) {
-        map->insert("icon-name", iconName);
+        map->insert(QStringLiteral("icon-name"), iconName);
     }
 
     // provide the serialized icon data in case the icon
@@ -245,7 +247,7 @@ void DBusMenuExporterPrivate::insertIconProperty(QVariantMap *map, QAction *acti
     if (!icon.isNull()) {
         QBuffer buffer;
         icon.pixmap(16).save(&buffer, "PNG");
-        map->insert("icon-data", buffer.data());
+        map->insert(QStringLiteral("icon-data"), buffer.data());
     }
 }
 
@@ -367,7 +369,7 @@ void DBusMenuExporter::doUpdateActions()
     DBusMenuItemList updatedList;
     DBusMenuItemKeysList removedList;
 
-    Q_FOREACH (int id, d->m_itemUpdatedIds) {
+    for (int id : d->m_itemUpdatedIds) {
         QAction *action = d->m_actionForId.value(id);
         if (!action) {
             // Action does not exist anymore
@@ -442,7 +444,7 @@ void DBusMenuExporter::doUpdateActions()
 void DBusMenuExporter::doEmitLayoutUpdated()
 {
     // Collapse separators for all updated menus
-    Q_FOREACH (int id, d->m_layoutUpdatedIds) {
+    for (int id : d->m_layoutUpdatedIds) {
         QMenu *menu = d->menuForId(id);
         if (menu && menu->separatorsCollapsible()) {
             d->collapseSeparators(menu);
@@ -451,7 +453,7 @@ void DBusMenuExporter::doEmitLayoutUpdated()
 
     // Tell the world about the update
     if (d->m_emittedLayoutUpdatedOnce) {
-        Q_FOREACH (int id, d->m_layoutUpdatedIds) {
+        for (int id : std::as_const(d->m_layoutUpdatedIds)) {
             d->m_dbusObject->LayoutUpdated(d->m_revision, id);
         }
     } else {
@@ -466,23 +468,19 @@ void DBusMenuExporter::doEmitLayoutUpdated()
 QString DBusMenuExporter::iconNameForAction(QAction *action)
 {
     DMRETURN_VALUE_IF_FAIL(action, QString());
-#ifdef HAVE_QICON_NAME
     QIcon icon = action->icon();
     if (action->isIconVisibleInMenu() && !icon.isNull()) {
         return icon.name();
     } else {
         return QString();
     }
-#else
-    return QString();
-#endif
 }
 
 void DBusMenuExporter::activateAction(QAction *action)
 {
     int id = d->idForAction(action);
     DMRETURN_IF_FAIL(id >= 0);
-    uint timeStamp = QDateTime::currentDateTime().toTime_t();
+    const uint timeStamp = QDateTime::currentDateTime().toMSecsSinceEpoch();
     d->m_dbusObject->ItemActivationRequested(id, timeStamp);
 }
 

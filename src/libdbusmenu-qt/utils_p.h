@@ -22,10 +22,11 @@
 #define UTILS_P_H
 
 class QString;
+class QChar;
 
 /**
  * Swap mnemonic char: Qt uses '&', while dbusmenu uses '_'
  */
-QString swapMnemonicChar(const QString &in, const char src, const char dst);
+QString swapMnemonicChar(const QString &in, const QChar &src, const QChar &dst);
 
 #endif /* UTILS_P_H */

@@ -22,13 +22,13 @@
 #define DBUSMENUEXPORTERDBUS_P_H
 
 // Local
-#include <dbusmenutypes_p.h>
+#include "dbusmenutypes_p.h"
 
 // Qt
-#include <QtCore/QObject>
-#include <QtCore/QVariant>
-#include <QtDBus/QDBusAbstractAdaptor>
-#include <QtDBus/QDBusVariant>
+#include <QDBusAbstractAdaptor>
+#include <QDBusVariant>
+#include <QObject>
+#include <QVariant>
 
 class DBusMenuExporter;
 
@@ -67,7 +67,7 @@ Q_SIGNALS:
     void ItemActivationRequested(int id, uint timeStamp);
 
 private:
-    DBusMenuExporter *m_exporter;
+    DBusMenuExporter *m_exporter = nullptr;
     QString m_status;
 
     friend class DBusMenuExporter;

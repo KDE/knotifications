@@ -106,11 +106,6 @@ endif()
 set(HAVE_DBUS FALSE)
 # dbusmenu-qt5 needs to be built with Qt6 first
 if (TARGET Qt6::DBus)
-    find_package(dbusmenu-qt6 CONFIG)
-    set_package_properties(dbusmenu-qt6 PROPERTIES DESCRIPTION "DBusMenuQt"
-                            URL "https://launchpad.net/libdbusmenu-qt" TYPE OPTIONAL
-                            PURPOSE "Support for notification area menus via the DBusMenu protocol")
-
     set(HAVE_DBUS TRUE)
 endif()
 set(HAVE_WIDGETS FALSE)

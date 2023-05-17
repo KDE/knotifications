@@ -22,12 +22,9 @@
 #define DBUSMENUTYPES_P_H
 
 // Qt
-#include <QtCore/QList>
-#include <QtCore/QStringList>
-#include <QtCore/QVariant>
-
-// Local
-#include <dbusmenu_export.h>
+#include <QList>
+#include <QStringList>
+#include <QVariant>
 
 class QDBusArgument;
 
@@ -35,15 +32,15 @@ class QDBusArgument;
 /**
  * Internal struct used to communicate on DBus
  */
-struct DBUSMENU_EXPORT DBusMenuItem {
+struct DBusMenuItem {
     int id;
     QVariantMap properties;
 };
 
 Q_DECLARE_METATYPE(DBusMenuItem)
 
-DBUSMENU_EXPORT QDBusArgument &operator<<(QDBusArgument &argument, const DBusMenuItem &item);
-DBUSMENU_EXPORT const QDBusArgument &operator>>(const QDBusArgument &argument, DBusMenuItem &item);
+QDBusArgument &operator<<(QDBusArgument &argument, const DBusMenuItem &item);
+const QDBusArgument &operator>>(const QDBusArgument &argument, DBusMenuItem &item);
 
 typedef QList<DBusMenuItem> DBusMenuItemList;
 
@@ -53,15 +50,15 @@ Q_DECLARE_METATYPE(DBusMenuItemList)
 /**
  * Represents a list of keys for a menu item
  */
-struct DBUSMENU_EXPORT DBusMenuItemKeys {
+struct DBusMenuItemKeys {
     int id;
     QStringList properties;
 };
 
 Q_DECLARE_METATYPE(DBusMenuItemKeys)
 
-DBUSMENU_EXPORT QDBusArgument &operator<<(QDBusArgument &argument, const DBusMenuItemKeys &);
-DBUSMENU_EXPORT const QDBusArgument &operator>>(const QDBusArgument &argument, DBusMenuItemKeys &);
+QDBusArgument &operator<<(QDBusArgument &argument, const DBusMenuItemKeys &);
+const QDBusArgument &operator>>(const QDBusArgument &argument, DBusMenuItemKeys &);
 
 typedef QList<DBusMenuItemKeys> DBusMenuItemKeysList;
 
@@ -73,7 +70,7 @@ Q_DECLARE_METATYPE(DBusMenuItemKeysList)
  * DBusMenuLayoutItemList.
  */
 struct DBusMenuLayoutItem;
-struct DBUSMENU_EXPORT DBusMenuLayoutItem {
+struct DBusMenuLayoutItem {
     int id;
     QVariantMap properties;
     QList<DBusMenuLayoutItem> children;
@@ -81,8 +78,8 @@ struct DBUSMENU_EXPORT DBusMenuLayoutItem {
 
 Q_DECLARE_METATYPE(DBusMenuLayoutItem)
 
-DBUSMENU_EXPORT QDBusArgument &operator<<(QDBusArgument &argument, const DBusMenuLayoutItem &);
-DBUSMENU_EXPORT const QDBusArgument &operator>>(const QDBusArgument &argument, DBusMenuLayoutItem &);
+QDBusArgument &operator<<(QDBusArgument &argument, const DBusMenuLayoutItem &);
+const QDBusArgument &operator>>(const QDBusArgument &argument, DBusMenuLayoutItem &);
 
 typedef QList<DBusMenuLayoutItem> DBusMenuLayoutItemList;
 

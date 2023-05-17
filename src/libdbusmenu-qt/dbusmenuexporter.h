@@ -22,11 +22,8 @@
 #define DBUSMENUEXPORTER_H
 
 // Qt
-#include <QtCore/QObject>
-#include <QtDBus/QDBusConnection>
-
-// Local
-#include <dbusmenu_export.h>
+#include <QDBusConnection>
+#include <QObject>
 
 class QAction;
 class QMenu;
@@ -36,7 +33,7 @@ class DBusMenuExporterPrivate;
 /**
  * A DBusMenuExporter instance can serialize a menu over DBus
  */
-class DBUSMENU_EXPORT DBusMenuExporter : public QObject
+class DBusMenuExporter : public QObject
 {
     Q_OBJECT
 public:
@@ -47,7 +44,7 @@ public:
      */
     DBusMenuExporter(const QString &dbusObjectPath, QMenu *menu, const QDBusConnection &dbusConnection = QDBusConnection::sessionBus());
 
-    virtual ~DBusMenuExporter();
+    ~DBusMenuExporter() override;
 
     /**
      * Asks the matching DBusMenuImporter to activate @p action. For menus it

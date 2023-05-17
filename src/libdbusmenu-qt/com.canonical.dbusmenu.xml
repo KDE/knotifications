@@ -324,6 +324,7 @@ License version 3 and version 2.1 along with this program.  If not, see
 			the ID of the item with a hashtable of names and values for those
 			properties.
 			</dox:d>
+			<annotation name="org.qtproject.QtDBus.QtTypeName.Out0" value="<type>"/>
 			<arg type="a(ia{sv})" name="updatedProps" direction="out" />
 			<arg type="a(ias)" name="removedProps" direction="out" />
 		</signal>

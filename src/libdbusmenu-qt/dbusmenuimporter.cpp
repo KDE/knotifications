@@ -21,6 +21,7 @@
 #include "dbusmenuimporter.h"
 
 // Qt
+#include <QActionGroup>
 #include <QCoreApplication>
 #include <QDBusConnection>
 #include <QDBusInterface>
@@ -58,7 +59,7 @@ static const char *DBUSMENU_PROPERTY_ICON_DATA_HASH = "_dbusmenu_icon_data_hash"
 
 static QAction *createKdeTitle(QAction *action, QWidget *parent)
 {
-    QToolButton *titleWidget = new QToolButton(0);
+    QToolButton *titleWidget = new QToolButton(nullptr);
     QFont font = titleWidget->font();
     font.setBold(true);
     titleWidget->setFont(font);
@@ -97,7 +98,7 @@ public:
         DMDEBUG << "Starting refresh chrono for id" << id;
         sChrono.start();
 #endif
-        QDBusPendingCall call = m_interface->asyncCall("GetLayout", id, 1, QStringList());
+        QDBusPendingCall call = m_interface->asyncCall(QStringLiteral("GetLayout"), id, 1, QStringList());
         QDBusPendingCallWatcher *watcher = new QDBusPendingCallWatcher(call, q);
         watcher->setProperty(DBUSMENU_PROPERTY_ID, id);
         QObject::connect(watcher, SIGNAL(finished(QDBusPendingCallWatcher *)), q, SLOT(slotGetLayoutFinished(QDBusPendingCallWatcher *)));
@@ -127,26 +128,26 @@ public:
         QAction *action = new QAction(parent);
         action->setProperty(DBUSMENU_PROPERTY_ID, id);
 
-        QString type = map.take("type").toString();
-        if (type == "separator") {
+        QString type = map.take(QStringLiteral("type")).toString();
+        if (type == QStringLiteral("separator")) {
             action->setSeparator(true);
         }
 
-        if (map.take("children-display").toString() == "submenu") {
+        if (map.take(QStringLiteral("children-display")).toString() == QStringLiteral("submenu")) {
             QMenu *menu = createMenu(parent);
             action->setMenu(menu);
         }
 
-        QString toggleType = map.take("toggle-type").toString();
+        QString toggleType = map.take(QStringLiteral("toggle-type")).toString();
         if (!toggleType.isEmpty()) {
             action->setCheckable(true);
-            if (toggleType == "radio") {
+            if (toggleType == QStringLiteral("radio")) {
                 QActionGroup *group = new QActionGroup(action);
                 group->addAction(action);
             }
         }
 
-        bool isKdeTitle = map.take("x-kde-title").toBool();
+        bool isKdeTitle = map.take(QStringLiteral("x-kde-title")).toBool();
         updateAction(action, map, map.keys());
 
         if (isKdeTitle) {
@@ -167,28 +168,28 @@ public:
      */
     void updateAction(QAction *action, const QVariantMap &map, const QStringList &requestedProperties)
     {
-        Q_FOREACH (const QString &key, requestedProperties) {
+        for (const QString &key : requestedProperties) {
             updateActionProperty(action, key, map.value(key));
         }
     }
 
     void updateActionProperty(QAction *action, const QString &key, const QVariant &value)
     {
-        if (key == "label") {
+        if (key == QStringLiteral("label")) {
             updateActionLabel(action, value);
-        } else if (key == "enabled") {
+        } else if (key == QStringLiteral("enabled")) {
             updateActionEnabled(action, value);
-        } else if (key == "toggle-state") {
+        } else if (key == QStringLiteral("toggle-state")) {
             updateActionChecked(action, value);
-        } else if (key == "icon-name") {
+        } else if (key == QStringLiteral("icon-name")) {
             updateActionIconByName(action, value);
-        } else if (key == "icon-data") {
+        } else if (key == QStringLiteral("icon-data")) {
             updateActionIconByData(action, value);
-        } else if (key == "visible") {
+        } else if (key == QStringLiteral("visible")) {
             updateActionVisible(action, value);
-        } else if (key == "shortcut") {
+        } else if (key == QStringLiteral("shortcut")) {
             updateActionShortcut(action, value);
-        } else if (key == "children-display") {
+        } else if (key == QStringLiteral("children-display")) {
         } else {
             DMWARNING << "Unhandled property update" << key;
         }
@@ -196,7 +197,7 @@ public:
 
     void updateActionLabel(QAction *action, const QVariant &value)
     {
-        QString text = swapMnemonicChar(value.toString(), '_', '&');
+        const QString text = swapMnemonicChar(value.toString(), QLatin1Char('_'), QLatin1Char('&'));
         action->setText(text);
     }
 
@@ -266,7 +267,7 @@ public:
         }
         QAction *action = m_actionForId.value(id);
         if (!action) {
-            return 0;
+            return nullptr;
         }
         return action->menu();
     }
@@ -276,7 +277,7 @@ public:
     void sendEvent(int id, const QString &eventId)
     {
         QVariant empty = QVariant::fromValue(QDBusVariant(QString()));
-        m_interface->asyncCall("Event", id, eventId, empty, 0u);
+        m_interface->asyncCall(QStringLiteral("Event"), id, eventId, empty, 0u);
     }
 
     bool waitForWatcher(QDBusPendingCallWatcher *_watcher, int maxWait)
@@ -329,8 +330,8 @@ DBusMenuImporter::DBusMenuImporter(const QString &service, const QString &path, 
     DBusMenuTypes_register();
 
     d->q = this;
-    d->m_interface = new QDBusInterface(service, path, DBUSMENU_INTERFACE, QDBusConnection::sessionBus(), this);
-    d->m_menu = 0;
+    d->m_interface = new QDBusInterface(service, path, QString::fromLatin1(DBUSMENU_INTERFACE), QDBusConnection::sessionBus(), this);
+    d->m_menu = nullptr;
     d->m_mustEmitMenuUpdated = false;
 
     d->m_type = type;
@@ -343,16 +344,27 @@ DBusMenuImporter::DBusMenuImporter(const QString &service, const QString &path, 
 
     // For some reason, using QObject::connect() does not work but
     // QDBusConnect::connect() does
-    QDBusConnection::sessionBus().connect(service, path, DBUSMENU_INTERFACE, "LayoutUpdated", "ui", this, SLOT(slotLayoutUpdated(uint, int)));
     QDBusConnection::sessionBus().connect(service,
                                           path,
-                                          DBUSMENU_INTERFACE,
-                                          "ItemsPropertiesUpdated",
-                                          "a(ia{sv})a(ias)",
+                                          QString::fromLatin1(DBUSMENU_INTERFACE),
+                                          QStringLiteral("LayoutUpdated"),
+                                          QStringLiteral("ui"),
+                                          this,
+                                          SLOT(slotLayoutUpdated(uint, int)));
+    QDBusConnection::sessionBus().connect(service,
+                                          path,
+                                          QString::fromLatin1(DBUSMENU_INTERFACE),
+                                          QStringLiteral("ItemsPropertiesUpdated"),
+                                          QStringLiteral("a(ia{sv})a(ias)"),
                                           this,
                                           SLOT(slotItemsPropertiesUpdated(DBusMenuItemList, DBusMenuItemKeysList)));
-    QDBusConnection::sessionBus()
-        .connect(service, path, DBUSMENU_INTERFACE, "ItemActivationRequested", "iu", this, SLOT(slotItemActivationRequested(int, uint)));
+    QDBusConnection::sessionBus().connect(service,
+                                          path,
+                                          QString::fromLatin1(DBUSMENU_INTERFACE),
+                                          QStringLiteral("ItemActivationRequested"),
+                                          QStringLiteral("iu"),
+                                          this,
+                                          SLOT(slotItemActivationRequested(int, uint)));
 
     d->refresh(0);
 }
@@ -368,6 +380,7 @@ DBusMenuImporter::~DBusMenuImporter()
 
 void DBusMenuImporter::slotLayoutUpdated(uint revision, int parentId)
 {
+    Q_UNUSED(revision)
     if (d->m_idsRefreshedByAboutToShow.remove(parentId)) {
         return;
     }
@@ -381,7 +394,7 @@ void DBusMenuImporter::processPendingLayoutUpdates()
 {
     QSet<int> ids = d->m_pendingLayoutUpdates;
     d->m_pendingLayoutUpdates.clear();
-    Q_FOREACH (int id, ids) {
+    for (int id : ids) {
         d->refresh(id);
     }
 }
@@ -389,14 +402,14 @@ void DBusMenuImporter::processPendingLayoutUpdates()
 QMenu *DBusMenuImporter::menu() const
 {
     if (!d->m_menu) {
-        d->m_menu = d->createMenu(0);
+        d->m_menu = d->createMenu(nullptr);
     }
     return d->m_menu;
 }
 
 void DBusMenuImporterPrivate::slotItemsPropertiesUpdated(const DBusMenuItemList &updatedList, const DBusMenuItemKeysList &removedList)
 {
-    Q_FOREACH (const DBusMenuItem &item, updatedList) {
+    for (const DBusMenuItem &item : updatedList) {
         QAction *action = m_actionForId.value(item.id);
         if (!action) {
             // We don't know this action. It probably is in a menu we haven't fetched yet.
@@ -409,14 +422,14 @@ void DBusMenuImporterPrivate::slotItemsPropertiesUpdated(const DBusMenuItemList 
         }
     }
 
-    Q_FOREACH (const DBusMenuItemKeys &item, removedList) {
+    for (const DBusMenuItemKeys &item : removedList) {
         QAction *action = m_actionForId.value(item.id);
         if (!action) {
             // We don't know this action. It probably is in a menu we haven't fetched yet.
             continue;
         }
-
-        Q_FOREACH (const QString &key, item.properties) {
+        const auto properties = item.properties;
+        for (const QString &key : properties) {
             updateActionProperty(action, key, QVariant());
         }
     }
@@ -453,7 +466,8 @@ void DBusMenuImporter::slotGetLayoutFinished(QDBusPendingCallWatcher *watcher)
 
     menu->clear();
 
-    Q_FOREACH (const DBusMenuLayoutItem &dbusMenuItem, rootItem.children) {
+    const auto childrens = rootItem.children;
+    for (const DBusMenuLayoutItem &dbusMenuItem : childrens) {
         QAction *action = d->createAction(dbusMenuItem.id, dbusMenuItem.properties, menu);
         DBusMenuImporterPrivate::ActionForId::Iterator it = d->m_actionForId.find(dbusMenuItem.id);
         if (it == d->m_actionForId.end()) {
@@ -478,7 +492,7 @@ void DBusMenuImporter::slotGetLayoutFinished(QDBusPendingCallWatcher *watcher)
 
 void DBusMenuImporter::sendClickedEvent(int id)
 {
-    d->sendEvent(id, QString("clicked"));
+    d->sendEvent(id, QStringLiteral("clicked"));
 }
 
 void DBusMenuImporter::updateMenu()
@@ -502,7 +516,7 @@ void DBusMenuImporter::slotMenuAboutToShow()
     time.start();
 #endif
 
-    QDBusPendingCall call = d->m_interface->asyncCall("AboutToShow", id);
+    QDBusPendingCall call = d->m_interface->asyncCall(QStringLiteral("AboutToShow"), id);
     QDBusPendingCallWatcher *watcher = new QDBusPendingCallWatcher(call, this);
     watcher->setProperty(DBUSMENU_PROPERTY_ID, id);
     connect(watcher, SIGNAL(finished(QDBusPendingCallWatcher *)), SLOT(slotAboutToShowDBusCallFinished(QDBusPendingCallWatcher *)));
@@ -529,7 +543,7 @@ void DBusMenuImporter::slotMenuAboutToShow()
         menuReadyToBeShown();
     }
 
-    d->sendEvent(id, QString("opened"));
+    d->sendEvent(id, QStringLiteral("opened"));
 }
 
 void DBusMenuImporter::slotAboutToShowDBusCallFinished(QDBusPendingCallWatcher *watcher)
@@ -565,7 +579,7 @@ void DBusMenuImporter::slotMenuAboutToHide()
     Q_ASSERT(action);
 
     int id = action->property(DBUSMENU_PROPERTY_ID).toInt();
-    d->sendEvent(id, QString("closed"));
+    d->sendEvent(id, QStringLiteral("closed"));
 }
 
 QMenu *DBusMenuImporter::createMenu(QWidget *parent)

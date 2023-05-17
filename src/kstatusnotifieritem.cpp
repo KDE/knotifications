@@ -30,7 +30,7 @@
 #include <QDBusConnection>
 
 #if HAVE_DBUSMENUQT
-#include <dbusmenuexporter.h>
+#include "libdbusmenu-qt/dbusmenuexporter.h"
 #endif // HAVE_DBUSMENUQT
 #endif
 

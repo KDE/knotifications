@@ -37,7 +37,7 @@ static const char *FDO_PROPERTIES_INTERFACE = "org.freedesktop.DBus.Properties";
 DBusMenuExporterDBus::DBusMenuExporterDBus(DBusMenuExporter *exporter)
     : QObject(exporter)
     , m_exporter(exporter)
-    , m_status("normal")
+    , m_status(QStringLiteral("normal"))
 {
     DBusMenuTypes_register();
     new DbusmenuAdaptor(this);
@@ -57,7 +57,7 @@ uint DBusMenuExporterDBus::GetLayout(int parentId, int recursionDepth, const QSt
 
 void DBusMenuExporterDBus::Event(int id, const QString &eventType, const QDBusVariant & /*data*/, uint /*timestamp*/)
 {
-    if (eventType == "clicked") {
+    if (eventType == QStringLiteral("clicked")) {
         QAction *action = m_exporter->d->m_actionForId.value(id);
         if (!action) {
             return;
@@ -65,7 +65,7 @@ void DBusMenuExporterDBus::Event(int id, const QString &eventType, const QDBusVa
         // dbusmenu-glib seems to ignore the Q_NOREPLY and blocks when calling
         // Event(), so trigger the action asynchronously
         QMetaObject::invokeMethod(action, "trigger", Qt::QueuedConnection);
-    } else if (eventType == "hovered") {
+    } else if (eventType == QStringLiteral("hovered")) {
         QMenu *menu = m_exporter->d->menuForId(id);
         if (menu) {
             QMetaObject::invokeMethod(menu, "aboutToShow");
@@ -84,7 +84,7 @@ QVariantMap DBusMenuExporterDBus::getProperties(int id, const QStringList &names
 {
     if (id == 0) {
         QVariantMap map;
-        map.insert("children-display", "submenu");
+        map.insert(QStringLiteral("children-display"), QStringLiteral("submenu"));
         return map;
     }
     QAction *action = m_exporter->d->m_actionForId.value(id);
@@ -94,7 +94,7 @@ QVariantMap DBusMenuExporterDBus::getProperties(int id, const QStringList &names
         return all;
     } else {
         QVariantMap map;
-        Q_FOREACH (const QString &name, names) {
+        for (const QString &name : names) {
             QVariant value = all.value(name);
             if (value.isValid()) {
                 map.insert(name, value);
@@ -107,7 +107,7 @@ QVariantMap DBusMenuExporterDBus::getProperties(int id, const QStringList &names
 DBusMenuItemList DBusMenuExporterDBus::GetGroupProperties(const QList<int> &ids, const QStringList &names)
 {
     DBusMenuItemList list;
-    Q_FOREACH (int id, ids) {
+    for (int id : ids) {
         DBusMenuItem item;
         item.id = id;
         item.properties = getProperties(item.id, names);
@@ -124,14 +124,13 @@ class ActionEventFilter : public QObject
 {
 public:
     ActionEventFilter()
-        : mChanged(false)
     {
     }
 
-    bool mChanged;
+    bool mChanged = false;
 
 protected:
-    bool eventFilter(QObject *object, QEvent *event)
+    bool eventFilter(QObject *object, QEvent *event) override
     {
         switch (event->type()) {
         case QEvent::ActionAdded:
@@ -167,10 +166,11 @@ void DBusMenuExporterDBus::setStatus(const QString &status)
     m_status = status;
 
     QVariantMap map;
-    map.insert("Status", QVariant(status));
+    map.insert(QStringLiteral("Status"), QVariant(status));
 
-    QDBusMessage msg = QDBusMessage::createSignal(m_exporter->d->m_objectPath, FDO_PROPERTIES_INTERFACE, "PropertiesChanged");
-    QVariantList args = QVariantList() << DBUSMENU_INTERFACE << map << QStringList() // New properties: none
+    QDBusMessage msg =
+        QDBusMessage::createSignal(m_exporter->d->m_objectPath, QString::fromLatin1(FDO_PROPERTIES_INTERFACE), QStringLiteral("PropertiesChanged"));
+    QVariantList args = QVariantList() << QString::fromLatin1(DBUSMENU_INTERFACE) << map << QStringList() // New properties: none
         ;
     msg.setArguments(args);
     QDBusConnection::sessionBus().send(msg);

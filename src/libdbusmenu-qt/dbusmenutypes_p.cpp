@@ -21,8 +21,8 @@
 #include "dbusmenutypes_p.h"
 
 // Local
-#include <dbusmenushortcut_p.h>
-#include <debug_p.h>
+#include "dbusmenushortcut_p.h"
+#include "debug_p.h"
 
 // Qt
 #include <QDBusArgument>
@@ -68,7 +68,8 @@ QDBusArgument &operator<<(QDBusArgument &argument, const DBusMenuLayoutItem &obj
     argument.beginStructure();
     argument << obj.id << obj.properties;
     argument.beginArray(qMetaTypeId<QDBusVariant>());
-    Q_FOREACH (const DBusMenuLayoutItem &child, obj.children) {
+    const auto childrens = obj.children;
+    for (const DBusMenuLayoutItem &child : childrens) {
         argument << QDBusVariant(QVariant::fromValue<DBusMenuLayoutItem>(child));
     }
     argument.endArray();

@@ -82,7 +82,6 @@ if (TARGET Qt6::DBus)
 	${dbusmenu_qt_SRCS}
         libdbusmenu-qt/dbusmenuexporter.cpp
         libdbusmenu-qt/dbusmenuexporterdbus_p.cpp
-        libdbusmenu-qt/dbusmenuimporter.cpp
         libdbusmenu-qt/dbusmenu_p.cpp
         libdbusmenu-qt/dbusmenushortcut_p.cpp
         libdbusmenu-qt/dbusmenutypes_p.cpp
@@ -90,7 +89,6 @@ if (TARGET Qt6::DBus)
         libdbusmenu-qt/dbusmenuexporterdbus_p.h
         libdbusmenu-qt/dbusmenuexporter.h
         libdbusmenu-qt/dbusmenuexporterprivate_p.h
-        libdbusmenu-qt/dbusmenuimporter.h
         libdbusmenu-qt/dbusmenu_p.h
         libdbusmenu-qt/dbusmenushortcut_p.h
         libdbusmenu-qt/dbusmenutypes_p.h

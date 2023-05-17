@@ -52,8 +52,8 @@ private:
     void updateAction(QAction *action);
     void removeAction(QAction *action);
 
-    DBusMenuExporter *m_exporter = nullptr;
-    int m_parentId;
+    DBusMenuExporter *const m_exporter;
+    const int m_parentId;
 };
 
 #endif /* DBUSMENU_H */

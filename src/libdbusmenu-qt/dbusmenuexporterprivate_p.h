@@ -43,9 +43,9 @@ public:
 
     QString m_objectPath;
 
-    DBusMenuExporterDBus *m_dbusObject;
+    DBusMenuExporterDBus *m_dbusObject = nullptr;
 
-    QMenu *m_rootMenu;
+    QMenu *m_rootMenu = nullptr;
     QHash<QAction *, QVariantMap> m_actionProperties;
     QMap<int, QAction *> m_actionForId;
     QMap<QAction *, int> m_idForAction;

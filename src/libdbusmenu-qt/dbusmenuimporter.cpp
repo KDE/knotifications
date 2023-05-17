@@ -59,7 +59,7 @@ static const char *DBUSMENU_PROPERTY_ICON_DATA_HASH = "_dbusmenu_icon_data_hash"
 
 static QAction *createKdeTitle(QAction *action, QWidget *parent)
 {
-    QToolButton *titleWidget = new QToolButton(nullptr);
+    auto titleWidget = new QToolButton(nullptr);
     QFont font = titleWidget->font();
     font.setBold(true);
     titleWidget->setFont(font);
@@ -68,7 +68,7 @@ static QAction *createKdeTitle(QAction *action, QWidget *parent)
     titleWidget->setDown(true);
     titleWidget->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
 
-    QWidgetAction *titleAction = new QWidgetAction(parent);
+    auto titleAction = new QWidgetAction(parent);
     titleAction->setDefaultWidget(titleWidget);
     return titleAction;
 }
@@ -125,7 +125,7 @@ public:
     QAction *createAction(int id, const QVariantMap &_map, QWidget *parent)
     {
         QVariantMap map = _map;
-        QAction *action = new QAction(parent);
+        auto action = new QAction(parent);
         action->setProperty(DBUSMENU_PROPERTY_ID, id);
 
         QString type = map.take(QStringLiteral("type")).toString();
@@ -142,7 +142,7 @@ public:
         if (!toggleType.isEmpty()) {
             action->setCheckable(true);
             if (toggleType == QStringLiteral("radio")) {
-                QActionGroup *group = new QActionGroup(action);
+                auto group = new QActionGroup(action);
                 group->addAction(action);
             }
         }
@@ -215,8 +215,8 @@ public:
 
     void updateActionIconByName(QAction *action, const QVariant &value)
     {
-        QString iconName = value.toString();
-        QString previous = action->property(DBUSMENU_PROPERTY_ICON_NAME).toString();
+        const QString iconName = value.toString();
+        const QString previous = action->property(DBUSMENU_PROPERTY_ICON_NAME).toString();
         if (previous == iconName) {
             return;
         }
@@ -230,7 +230,7 @@ public:
 
     void updateActionIconByData(QAction *action, const QVariant &value)
     {
-        QByteArray data = value.toByteArray();
+        const QByteArray data = value.toByteArray();
         uint dataHash = qHash(data);
         uint previousDataHash = action->property(DBUSMENU_PROPERTY_ICON_DATA_HASH).toUInt();
         if (previousDataHash == dataHash) {
@@ -276,7 +276,7 @@ public:
 
     void sendEvent(int id, const QString &eventId)
     {
-        QVariant empty = QVariant::fromValue(QDBusVariant(QString()));
+        const QVariant empty = QVariant::fromValue(QDBusVariant(QString()));
         m_interface->asyncCall(QStringLiteral("Event"), id, eventId, empty, 0u);
     }
 
@@ -392,7 +392,7 @@ void DBusMenuImporter::slotLayoutUpdated(uint revision, int parentId)
 
 void DBusMenuImporter::processPendingLayoutUpdates()
 {
-    QSet<int> ids = d->m_pendingLayoutUpdates;
+    const QSet<int> ids = d->m_pendingLayoutUpdates;
     d->m_pendingLayoutUpdates.clear();
     for (int id : ids) {
         d->refresh(id);
@@ -517,7 +517,7 @@ void DBusMenuImporter::slotMenuAboutToShow()
 #endif
 
     QDBusPendingCall call = d->m_interface->asyncCall(QStringLiteral("AboutToShow"), id);
-    QDBusPendingCallWatcher *watcher = new QDBusPendingCallWatcher(call, this);
+    auto watcher = new QDBusPendingCallWatcher(call, this);
     watcher->setProperty(DBUSMENU_PROPERTY_ID, id);
     connect(watcher, SIGNAL(finished(QDBusPendingCallWatcher *)), SLOT(slotAboutToShowDBusCallFinished(QDBusPendingCallWatcher *)));
 
@@ -578,7 +578,7 @@ void DBusMenuImporter::slotMenuAboutToHide()
     QAction *action = menu->menuAction();
     Q_ASSERT(action);
 
-    int id = action->property(DBUSMENU_PROPERTY_ID).toInt();
+    const int id = action->property(DBUSMENU_PROPERTY_ID).toInt();
     d->sendEvent(id, QStringLiteral("closed"));
 }
 
@@ -591,5 +591,3 @@ QIcon DBusMenuImporter::iconForName(const QString & /*name*/)
 {
     return QIcon();
 }
-
-#include "dbusmenuimporter.moc"

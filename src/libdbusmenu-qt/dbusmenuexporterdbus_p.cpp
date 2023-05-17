@@ -89,7 +89,7 @@ QVariantMap DBusMenuExporterDBus::getProperties(int id, const QStringList &names
     }
     QAction *action = m_exporter->d->m_actionForId.value(id);
     DMRETURN_VALUE_IF_FAIL(action, QVariantMap());
-    QVariantMap all = m_exporter->d->m_actionProperties.value(action);
+    const QVariantMap all = m_exporter->d->m_actionProperties.value(action);
     if (names.isEmpty()) {
         return all;
     } else {
@@ -180,5 +180,3 @@ QString DBusMenuExporterDBus::status() const
 {
     return m_status;
 }
-
-#include "dbusmenuexporterdbus_p.moc"

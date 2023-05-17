@@ -23,7 +23,7 @@
 // Qt
 #include <QString>
 
-QString swapMnemonicChar(const QString &in, const char src, const char dst)
+QString swapMnemonicChar(const QString &in, const QChar &src, const QChar &dst)
 {
     QString out;
     bool mnemonicFound = false;

@@ -26,19 +26,20 @@
 #include "dbusmenutypes_p.h"
 
 // Qt
-#include <QtCore/QHash>
-#include <QtCore/QMap>
-#include <QtCore/QSet>
-#include <QtCore/QVariant>
+#include <QHash>
+#include <QMap>
+#include <QSet>
+#include <QVariant>
 
 class QMenu;
+class QTimer;
 
 class DBusMenuExporterDBus;
 
 class DBusMenuExporterPrivate
 {
 public:
-    DBusMenuExporter *q;
+    DBusMenuExporter *q = nullptr;
 
     QString m_objectPath;
 
@@ -53,10 +54,10 @@ public:
     bool m_emittedLayoutUpdatedOnce;
 
     QSet<int> m_itemUpdatedIds;
-    QTimer *m_itemUpdatedTimer;
+    QTimer *m_itemUpdatedTimer = nullptr;
 
     QSet<int> m_layoutUpdatedIds;
-    QTimer *m_layoutUpdatedTimer;
+    QTimer *m_layoutUpdatedTimer = nullptr;
 
     int idForAction(QAction *action) const;
     void addMenu(QMenu *menu, int parentId);

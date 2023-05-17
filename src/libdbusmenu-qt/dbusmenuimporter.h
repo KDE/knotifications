@@ -22,10 +22,7 @@
 #define DBUSMENUIMPORTER_H
 
 // Qt
-#include <QtCore/QObject>
-
-// Local
-#include <dbusmenu_export.h>
+#include <QObject>
 
 class QAction;
 class QDBusAbstractInterface;
@@ -46,20 +43,20 @@ enum DBusMenuImporterType { ASYNCHRONOUS, SYNCHRONOUS };
  * A DBusMenuImporter instance can recreate a menu serialized over DBus by
  * DBusMenuExporter
  */
-class DBUSMENU_EXPORT DBusMenuImporter : public QObject
+class DBusMenuImporter : public QObject
 {
     Q_OBJECT
 public:
     /**
      * Creates a DBusMenuImporter listening over DBus on service, path
      */
-    DBusMenuImporter(const QString &service, const QString &path, QObject *parent = 0);
+    DBusMenuImporter(const QString &service, const QString &path, QObject *parent = nullptr);
 
     /**
      * Creates a DBusMenuImporter listening over DBus on service, path, with either async
      * or sync DBus calls
      */
-    DBusMenuImporter(const QString &service, const QString &path, DBusMenuImporterType type, QObject *parent = 0);
+    DBusMenuImporter(const QString &service, const QString &path, DBusMenuImporterType type, QObject *parent = nullptr);
 
     virtual ~DBusMenuImporter();
 

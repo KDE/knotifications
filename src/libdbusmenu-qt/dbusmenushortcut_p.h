@@ -22,15 +22,12 @@
 #define DBUSMENUSHORTCUT_H
 
 // Qt
-#include <QtCore/QMetaType>
-#include <QtCore/QStringList>
-
-// Local
-#include <dbusmenu_export.h>
+#include <QMetaType>
+#include <QStringList>
 
 class QKeySequence;
 
-class DBUSMENU_EXPORT DBusMenuShortcut : public QList<QStringList>
+class DBusMenuShortcut : public QList<QStringList>
 {
 public:
     QKeySequence toKeySequence() const;

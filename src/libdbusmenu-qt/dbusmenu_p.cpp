@@ -45,7 +45,7 @@ DBusMenu::~DBusMenu()
 
 bool DBusMenu::eventFilter(QObject *, QEvent *event)
 {
-    QActionEvent *actionEvent = 0;
+    QActionEvent *actionEvent = nullptr;
     switch (event->type()) {
     case QEvent::ActionAdded:
     case QEvent::ActionChanged:

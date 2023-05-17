@@ -52,7 +52,7 @@ KNotifyConfig::KNotifyConfig(const QString &_appname, const QString &_eventid)
     : appname(_appname)
     , eventid(_eventid)
 {
-    eventsfile = retrieve_from_cache(QLatin1String("knotifications5/") + _appname + QLatin1String(".notifyrc"), QStandardPaths::GenericDataLocation);
+    eventsfile = retrieve_from_cache(QLatin1String("knotifications6/") + _appname + QLatin1String(".notifyrc"), QStandardPaths::GenericDataLocation);
     configfile = retrieve_from_cache(_appname + QStringLiteral(".notifyrc"));
 }
 

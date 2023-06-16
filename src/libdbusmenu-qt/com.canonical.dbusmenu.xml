@@ -184,7 +184,7 @@ License version 3 and version 2.1 along with this program.  If not, see
 <!-- Functions -->
 
 		<method name="GetLayout">
-			<annotation name="com.trolltech.QtDBus.QtTypeName.Out1" value="DBusMenuLayoutItem"/>
+			<annotation name="org.qtproject.QtDBus.QtTypeName.Out1" value="DBusMenuLayoutItem"/>
 			<dox:d>
 			  Provides the layout and propertiers that are attached to the entries
 			  that are in the layout.  It only gives the items that are children
@@ -225,8 +225,8 @@ License version 3 and version 2.1 along with this program.  If not, see
 		</method>
 
 		<method name="GetGroupProperties">
-			<annotation name="com.trolltech.QtDBus.QtTypeName.In0" value="QList&lt;int&gt;"/>
-			<annotation name="com.trolltech.QtDBus.QtTypeName.Out0" value="DBusMenuItemList"/>
+			<annotation name="org.qtproject.QtDBus.QtTypeName.In0" value="QList&lt;int&gt;"/>
+			<annotation name="org.qtproject.QtDBus.QtTypeName.Out0" value="DBusMenuItemList"/>
 			<dox:d>
 			Returns the list of items which are children of @a parentId.
 			</dox:d>
@@ -316,8 +316,8 @@ License version 3 and version 2.1 along with this program.  If not, see
 
 <!-- Signals -->
 		<signal name="ItemsPropertiesUpdated">
-			<annotation name="com.trolltech.QtDBus.QtTypeName.In0" value="DBusMenuItemList"/>
-			<annotation name="com.trolltech.QtDBus.QtTypeName.In1" value="DBusMenuItemKeysList"/>
+			<annotation name="org.qtproject.QtDBus.QtTypeName.In0" value="DBusMenuItemList"/>
+			<annotation name="org.qtproject.QtDBus.QtTypeName.In1" value="DBusMenuItemKeysList"/>
 			<dox:d>
 			Triggered when there are lots of property updates across many items
 			so they all get grouped into a single dbus message.  The format is

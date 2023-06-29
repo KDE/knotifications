@@ -188,3 +188,5 @@ void NotifyByAudio::finishNotification(KNotification *notification, quint32 id)
     m_loopSoundUrls.remove(id);
     finish(notification);
 }
+
+#include "moc_notifybyaudio_canberra.cpp"

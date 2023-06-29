@@ -357,3 +357,5 @@ void NotifyByPopup::queryPopupServerCapabilities()
         m_notificationQueue.clear();
     });
 }
+
+#include "moc_notifybypopup.cpp"

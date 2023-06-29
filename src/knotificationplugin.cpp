@@ -36,3 +36,5 @@ void KNotificationPlugin::finish(KNotification *notification)
 {
     Q_EMIT finished(notification);
 }
+
+#include "moc_knotificationplugin.cpp"

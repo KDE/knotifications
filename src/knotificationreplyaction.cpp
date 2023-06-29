@@ -92,3 +92,5 @@ void KNotificationReplyAction::setFallbackBehavior(FallbackBehavior fallbackBeha
         Q_EMIT fallbackBehaviorChanged();
     }
 }
+
+#include "moc_knotificationreplyaction.cpp"

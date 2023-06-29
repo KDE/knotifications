@@ -297,3 +297,5 @@ void KStatusNotifierItemDBus::ProvideXdgActivationToken(const QString &token)
     m_xdgActivationToken = token;
     KWindowSystem::setCurrentXdgActivationToken(token);
 }
+
+#include "moc_kstatusnotifieritemdbus_p.cpp"

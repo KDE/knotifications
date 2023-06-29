@@ -243,3 +243,5 @@ void NotifyBySnore::update(KNotification *notification, const KNotifyConfig &not
     Q_UNUSED(notifyConfig);
     qCWarning(LOG_KNOTIFICATIONS) << "updating a notification is not supported yet.";
 }
+
+#include "moc_notifybysnore.cpp"

@@ -212,3 +212,5 @@ void NotifyByAndroid::notificationInlineReply(int id, const QString &text)
     qCDebug(LOG_KNOTIFICATIONS) << id << text;
     Q_EMIT replied(id, text);
 }
+
+#include "moc_notifybyandroid.cpp"

@@ -614,6 +614,8 @@ KPassivePopup *KPassivePopup::message(int popupStyle, const QString &caption, co
     return message(popupStyle, caption, text, QPixmap(), parent);
 }
 
+#include "moc_kpassivepopup.cpp"
+
 #endif
 
 // Local Variables:

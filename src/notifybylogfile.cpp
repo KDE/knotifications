@@ -55,3 +55,5 @@ void NotifyByLogfile::notify(KNotification *notification, KNotifyConfig *config)
 
     finish(notification);
 }
+
+#include "moc_notifybylogfile.cpp"

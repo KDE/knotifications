@@ -65,3 +65,5 @@ QString NotificationsServer::GetServerInformation(QString &vendor, QString &vers
     specVersion = QStringLiteral("1.1");
     return QStringLiteral("TestServer");
 }
+
+#include "moc_fake_notifications_server.cpp"

@@ -57,3 +57,5 @@ void NotifyByTTS::notify(KNotification *notification, KNotifyConfig *config)
         qCDebug(LOG_KNOTIFICATIONS) << "Speech backend has an error, not speaking";
     }
 }
+
+#include "moc_notifybytts.cpp"

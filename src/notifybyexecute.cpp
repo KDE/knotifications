@@ -58,3 +58,5 @@ void NotifyByExecute::notify(KNotification *notification, KNotifyConfig *config)
 
     finish(notification);
 }
+
+#include "moc_notifybyexecute.cpp"

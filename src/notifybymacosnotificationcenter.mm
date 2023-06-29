@@ -232,3 +232,5 @@ void NotifyByMacOSNotificationCenter::update(KNotification *notification, KNotif
     close(notification);
     notify(notification, config);
 }
+
+#include "moc_notifybymacosnotificationcenter.cpp"

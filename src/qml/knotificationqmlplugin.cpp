@@ -37,3 +37,4 @@ void KNotificationQmlPlugin::registerTypes(const char *uri)
 }
 
 #include "knotificationqmlplugin.moc"
+#include "moc_knotificationqmlplugin.cpp"

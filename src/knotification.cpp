@@ -648,3 +648,5 @@ QString KNotification::xdgActivationToken() const
 {
     return d->xdgActivationToken;
 }
+
+#include "moc_knotification.cpp"

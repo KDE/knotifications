@@ -351,3 +351,5 @@ void NotifyByPortalPrivate::closePortalNotification(KNotification *notification)
         qCWarning(LOG_KNOTIFICATIONS) << "Failed to queue dbus message for closing a notification";
     }
 }
+
+#include "moc_notifybyportal.cpp"

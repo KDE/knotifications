@@ -13,6 +13,8 @@
 #include <QHash>
 #include <QUrl>
 
+#include <KConfigWatcher>
+
 class KNotification;
 
 struct ca_context;
@@ -40,13 +42,16 @@ private:
 
     void finishNotification(KNotification *notification, quint32 id);
 
-    bool playSound(quint32 id, const QUrl &url);
+    bool playSound(quint32 id, const QString &eventName, const QUrl &fallbackUrl);
 
     ca_context *m_context = nullptr;
     quint32 m_currentId = 0;
     QHash<quint32, KNotification *> m_notifications;
     // in case we loop we store the URL for the notification to be able to replay it
-    QHash<quint32, QUrl> m_loopSoundUrls;
+    QHash<quint32, std::pair<QString, QUrl>> m_loopSoundUrls;
+
+    QString m_soundTheme;
+    KConfigWatcher::Ptr m_soundThemeWatcher;
 };
 
 #endif

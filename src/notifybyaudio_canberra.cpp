@@ -2,6 +2,7 @@
     This file is part of the KDE libraries
     SPDX-FileCopyrightText: 2014-2015 Martin Klapetek <mklapetek@kde.org>
     SPDX-FileCopyrightText: 2018 Kai Uwe Broulik <kde@privat.broulik.de>
+    SPDX-FileCopyrightText: 2023 Ismael Asensio <isma.af@gmail.com>
 
     SPDX-License-Identifier: LGPL-2.1-only OR LGPL-3.0-only OR LicenseRef-KDE-Accepted-LGPL
 */
@@ -20,8 +21,11 @@
 
 #include <canberra.h>
 
+const QString DEFAULT_SOUND_THEME = QStringLiteral("oxygen");
+
 NotifyByAudio::NotifyByAudio(QObject *parent)
     : KNotificationPlugin(parent)
+    , m_soundTheme(DEFAULT_SOUND_THEME)
 {
     qRegisterMetaType<uint32_t>("uint32_t");
 
@@ -49,6 +53,16 @@ NotifyByAudio::NotifyByAudio(QObject *parent)
     if (ret != CA_SUCCESS) {
         qCWarning(LOG_KNOTIFICATIONS) << "Failed to set application properties on canberra context for audio notification:" << ca_strerror(ret);
     }
+
+    m_soundThemeWatcher = KConfigWatcher::create(KSharedConfig::openConfig(QStringLiteral("kdeglobals")));
+    connect(m_soundThemeWatcher.get(), &KConfigWatcher::configChanged, this, [this](const KConfigGroup &group, const QByteArrayList &names) {
+        if (group.name() == QLatin1String("Sounds") && names.contains(QByteArrayLiteral("Theme"))) {
+            m_soundTheme = group.readEntry("Theme", DEFAULT_SOUND_THEME);
+        }
+    });
+
+    const KConfigGroup group = m_soundThemeWatcher->config()->group("Sounds");
+    m_soundTheme = group.readEntry("Theme", DEFAULT_SOUND_THEME);
 }
 
 NotifyByAudio::~NotifyByAudio()
@@ -61,39 +75,35 @@ NotifyByAudio::~NotifyByAudio()
 
 void NotifyByAudio::notify(KNotification *notification, const KNotifyConfig &notifyConfig)
 {
-    const QString soundFilename = notifyConfig.readEntry(QStringLiteral("Sound"));
-    if (soundFilename.isEmpty()) {
-        qCWarning(LOG_KNOTIFICATIONS) << "Audio notification requested, but no sound file provided in notifyrc file, aborting audio notification";
+    const QString soundName = notifyConfig.readEntry(QStringLiteral("Sound"));
+    if (soundName.isEmpty()) {
+        qCWarning(LOG_KNOTIFICATIONS) << "Audio notification requested, but no sound name provided in notifyrc file, aborting audio notification";
 
         finish(notification);
         return;
     }
 
-    QUrl soundURL;
+    // Legacy implementation. Fallback lookup for a full path within the `$XDG_DATA_LOCATION/sounds` dirs
+    QUrl fallbackUrl;
     const auto dataLocations = QStandardPaths::standardLocations(QStandardPaths::GenericDataLocation);
     for (const QString &dataLocation : dataLocations) {
-        soundURL = QUrl::fromUserInput(soundFilename, dataLocation + QStringLiteral("/sounds"), QUrl::AssumeLocalFile);
-        if (soundURL.isLocalFile() && QFileInfo::exists(soundURL.toLocalFile())) {
+        fallbackUrl = QUrl::fromUserInput(soundName, dataLocation + QStringLiteral("/sounds"), QUrl::AssumeLocalFile);
+        if (fallbackUrl.isLocalFile() && QFileInfo::exists(fallbackUrl.toLocalFile())) {
             break;
-        } else if (!soundURL.isLocalFile() && soundURL.isValid()) {
+        } else if (!fallbackUrl.isLocalFile() && fallbackUrl.isValid()) {
             break;
         }
-        soundURL.clear();
-    }
-    if (soundURL.isEmpty()) {
-        qCWarning(LOG_KNOTIFICATIONS) << "Audio notification requested, but sound file from notifyrc file was not found, aborting audio notification";
-        finish(notification);
-        return;
+        fallbackUrl.clear();
     }
 
     // Looping happens in the finishCallback
-    if (!playSound(m_currentId, soundURL)) {
+    if (!playSound(m_currentId, soundName, fallbackUrl)) {
         finish(notification);
         return;
     }
 
     if (notification->flags() & KNotification::LoopSound) {
-        m_loopSoundUrls.insert(m_currentId, soundURL);
+        m_loopSoundUrls.insert(m_currentId, {soundName, fallbackUrl});
     }
 
     Q_ASSERT(!m_notifications.value(m_currentId));
@@ -102,7 +112,7 @@ void NotifyByAudio::notify(KNotification *notification, const KNotifyConfig &not
     ++m_currentId;
 }
 
-bool NotifyByAudio::playSound(quint32 id, const QUrl &url)
+bool NotifyByAudio::playSound(quint32 id, const QString &soundName, const QUrl &fallbackUrl)
 {
     if (!m_context) {
         qCWarning(LOG_KNOTIFICATIONS) << "Cannot play notification sound without canberra context";
@@ -112,9 +122,14 @@ bool NotifyByAudio::playSound(quint32 id, const QUrl &url)
     ca_proplist *props = nullptr;
     ca_proplist_create(&props);
 
+    ca_proplist_sets(props, CA_PROP_EVENT_ID, soundName.toLatin1().constData());
+    ca_proplist_sets(props, CA_PROP_CANBERRA_XDG_THEME_NAME, m_soundTheme.toLatin1().constData());
+    // Fallback to filename
+    if (!fallbackUrl.isEmpty()) {
+        ca_proplist_sets(props, CA_PROP_MEDIA_FILENAME, QFile::encodeName(fallbackUrl.toLocalFile()).constData());
+    }
     // We'll also want this cached for a time. volatile makes sure the cache is
     // dropped after some time or when the cache is under pressure.
-    ca_proplist_sets(props, CA_PROP_MEDIA_FILENAME, QFile::encodeName(url.toLocalFile()).constData());
     ca_proplist_sets(props, CA_PROP_CANBERRA_CACHE_CONTROL, "volatile");
 
     int ret = ca_context_play_full(m_context, id, props, &ca_finish_callback, this);
@@ -145,12 +160,9 @@ void NotifyByAudio::finishCallback(uint32_t id, int error_code)
 
     if (error_code == CA_SUCCESS) {
         // Loop the sound now if we have one
-        const QUrl soundUrl = m_loopSoundUrls.value(id);
-        if (soundUrl.isValid()) {
-            if (!playSound(id, soundUrl)) {
-                finishNotification(notification, id);
-            }
-            return;
+        const auto soundInfo = m_loopSoundUrls.value(id);
+        if (!playSound(id, soundInfo.first, soundInfo.second)) {
+            finishNotification(notification, id);
         }
     } else if (error_code != CA_ERROR_CANCELED) {
         qCWarning(LOG_KNOTIFICATIONS) << "Playing audio notification failed:" << ca_strerror(error_code);

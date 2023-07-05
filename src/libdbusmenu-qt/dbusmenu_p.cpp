@@ -90,3 +90,5 @@ void DBusMenu::deleteMe()
 {
     delete this;
 }
+
+#include "moc_dbusmenu_p.cpp"

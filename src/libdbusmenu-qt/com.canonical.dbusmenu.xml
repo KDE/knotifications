@@ -316,15 +316,14 @@ License version 3 and version 2.1 along with this program.  If not, see
 
 <!-- Signals -->
 		<signal name="ItemsPropertiesUpdated">
-			<annotation name="org.qtproject.QtDBus.QtTypeName.In0" value="DBusMenuItemList"/>
-			<annotation name="org.qtproject.QtDBus.QtTypeName.In1" value="DBusMenuItemKeysList"/>
+			<annotation name="org.qtproject.QtDBus.QtTypeName.Out0" value="DBusMenuItemList"/>
+			<annotation name="org.qtproject.QtDBus.QtTypeName.Out1" value="DBusMenuItemKeysList"/>
 			<dox:d>
 			Triggered when there are lots of property updates across many items
 			so they all get grouped into a single dbus message.  The format is
 			the ID of the item with a hashtable of names and values for those
 			properties.
 			</dox:d>
-			<annotation name="org.qtproject.QtDBus.QtTypeName.Out0" value="<type>"/>
 			<arg type="a(ia{sv})" name="updatedProps" direction="out" />
 			<arg type="a(ias)" name="removedProps" direction="out" />
 		</signal>

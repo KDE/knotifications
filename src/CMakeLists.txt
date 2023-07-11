@@ -222,12 +222,12 @@ if (TARGET Qt6::DBus)
     install(FILES
         org.kde.StatusNotifierItem.xml
         DESTINATION ${KDE_INSTALL_DBUSINTERFACEDIR}
-        RENAME kf5_org.kde.StatusNotifierItem.xml)
+        RENAME kf6_org.kde.StatusNotifierItem.xml)
 
     install(FILES
         org.kde.StatusNotifierWatcher.xml
         DESTINATION ${KDE_INSTALL_DBUSINTERFACEDIR}
-        RENAME kf5_org.kde.StatusNotifierWatcher.xml)
+        RENAME kf6_org.kde.StatusNotifierWatcher.xml)
 endif()
 
 include(ECMGeneratePriFile)

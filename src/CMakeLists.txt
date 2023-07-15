@@ -24,6 +24,11 @@ if (NOT ANDROID)
         kstatusnotifieritem.cpp)
 endif()
 
+if(APPLE)
+    target_sources(KF6Notifications PRIVATE
+            macutils.mm)
+endif()
+
 if (TARGET Qt6::DBus)
   target_sources(KF6Notifications PRIVATE
     kstatusnotifieritemdbus_p.cpp

@@ -21,7 +21,6 @@
 #include <QStandardPaths>
 #ifdef Q_OS_MACOS
 #include <QFontDatabase>
-#include <QtMac>
 #endif
 
 #ifdef QT_DBUS_LIB
@@ -42,6 +41,11 @@
 #include <KX11Extras>
 #endif
 
+#ifdef Q_OS_MACOS
+namespace MacUtils {
+void setBadgeLabelText(const QString &s);
+}
+#endif
 #include <cstdlib>
 
 static const char s_statusNotifierWatcherServiceName[] = "org.kde.StatusNotifierWatcher";
@@ -622,7 +626,7 @@ void KStatusNotifierItem::activate(const QPoint &pos)
     if (d->status == NeedsAttention) {
         d->status = Active;
 #ifdef Q_OS_MACOS
-        QtMac::setBadgeLabelText(QString());
+        MacUtils::setBadgeLabelText(QString());
 #endif
 #ifdef QT_DBUS_LIB
         Q_EMIT d->statusNotifierItemDBus->NewStatus(
@@ -1022,7 +1026,7 @@ void KStatusNotifierItemPrivate::syncLegacySystemTrayIcon()
 {
     if (status == KStatusNotifierItem::NeedsAttention) {
 #ifdef Q_OS_MACOS
-        QtMac::setBadgeLabelText(QString(QChar(0x26a0)) /*QStringLiteral("!")*/);
+        MacUtils::setBadgeLabelText(QString(QChar(0x26a0)) /*QStringLiteral("!")*/);
         if (attentionIconName.isNull() && attentionIcon.isNull()) {
             // code adapted from kmail's KMSystemTray::updateCount()
             int overlaySize = 22;
@@ -1079,7 +1083,7 @@ void KStatusNotifierItemPrivate::syncLegacySystemTrayIcon()
         } else {
             systemTrayIcon->setIconWithMask(icon, status == KStatusNotifierItem::Passive);
         }
-        QtMac::setBadgeLabelText(QString());
+        MacUtils::setBadgeLabelText(QString());
 #else
         if (!iconName.isNull()) {
             systemTrayIcon->setIcon(QIcon::fromTheme(iconName));

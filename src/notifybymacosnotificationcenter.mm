@@ -11,7 +11,6 @@
 
 #include <QIcon>
 #include <QDebug>
-#include <QtMac>
 
 #import <AppKit/AppKit.h>
 #import <Foundation/Foundation.h>

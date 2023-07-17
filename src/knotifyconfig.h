@@ -10,42 +10,8 @@
 #include <KSharedConfig>
 
 #include "knotifications_export.h"
-#include <QImage>
 #include <QObject> //for Wid
 #include <QPair>
-
-/**
- * @class KNotifyImage knotifyconfig.h KNotifyConfig
- *
- * An image with lazy loading from the byte array
- */
-class KNOTIFICATIONS_EXPORT KNotifyImage
-{
-public:
-    KNotifyImage()
-        : dirty(false)
-    {
-    }
-    KNotifyImage(const QByteArray &data)
-        : source(data)
-        , dirty(true)
-    {
-    }
-    QImage toImage();
-    bool isNull()
-    {
-        return dirty ? source.isEmpty() : image.isNull();
-    }
-    QByteArray data() const
-    {
-        return source;
-    }
-
-private:
-    QByteArray source;
-    QImage image;
-    bool dirty;
-};
 
 /**
  * @class KNotifyConfig knotifyconfig.h KNotifyConfig
@@ -70,11 +36,6 @@ public:
      * return a null string if the entry doesn't exist
      */
     QString readEntry(const QString &entry, bool path = false) const;
-
-    /**
-     * the pixmap to put on the notification
-     */
-    KNotifyImage image;
 
     /**
      * the name of the application that triggered the notification

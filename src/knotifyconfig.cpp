@@ -94,14 +94,3 @@ QString KNotifyConfig::readEntry(const QString &entry, bool path) const
 
     return QString();
 }
-
-QImage KNotifyImage::toImage()
-{
-    if (dirty) {
-        if (source.size() > 4) { // no way an image can fit in less than 4 bytes
-            image.loadFromData(source);
-        }
-        dirty = false;
-    }
-    return image;
-}

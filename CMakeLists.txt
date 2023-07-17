@@ -51,7 +51,7 @@ else()
     find_package(Qt6 ${REQUIRED_QT_VERSION} CONFIG REQUIRED Widgets)
 endif()
 
-if (NOT ANDROID AND NOT WIN32)
+if (NOT ANDROID AND NOT WIN32 AND NOT APPLE)
     find_package(Qt6 ${REQUIRED_QT_VERSION} CONFIG REQUIRED DBus)
 endif()
 
@@ -85,7 +85,7 @@ endif()
 find_package(KF6Config ${KF_DEP_VERSION} REQUIRED)
 find_package(KF6CoreAddons ${KF_DEP_VERSION} REQUIRED)
 
-if (NOT ANDROID AND NOT WIN32 OR (WIN32 AND NOT WITH_SNORETOAST))
+if (NOT APPLE AND NOT ANDROID AND NOT WIN32 OR (WIN32 AND NOT WITH_SNORETOAST))
     find_package(Qt6 ${REQUIRED_QT_VERSION} CONFIG REQUIRED DBus)
     find_package(Canberra)
     set_package_properties(Canberra PROPERTIES

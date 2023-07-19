@@ -34,42 +34,42 @@ msgctxt "KNotificationRestrictions|"
 msgid "Unknown Application"
 msgstr "অজ্ঞাত অনুপ্ৰয়োগ"
 
-#: kstatusnotifieritem.cpp:510 kstatusnotifieritem.cpp:1124
+#: kstatusnotifieritem.cpp:514 kstatusnotifieritem.cpp:1128
 #, fuzzy
 #| msgid "&Minimize"
 msgctxt "KStatusNotifierItem|@action:inmenu"
 msgid "&Minimize"
 msgstr "সৰ্বনিম্ন মাপ (&M)"
 
-#: kstatusnotifieritem.cpp:863
+#: kstatusnotifieritem.cpp:867
 #, fuzzy
 #| msgid "Quit"
 msgctxt "KStatusNotifierItem|@action:inmenu"
 msgid "Quit"
 msgstr "বাহিৰ হওক"
 
-#: kstatusnotifieritem.cpp:1121
+#: kstatusnotifieritem.cpp:1125
 #, fuzzy
 #| msgid "&Restore"
 msgctxt "KStatusNotifierItem|@action:inmenu"
 msgid "&Restore"
 msgstr "পুনৰুদ্ধাৰ (&R)"
 
-#: kstatusnotifieritem.cpp:1137
+#: kstatusnotifieritem.cpp:1141
 #, fuzzy
 #| msgid "Confirm Quit From System Tray"
 msgctxt "KStatusNotifierItem|@title:window"
 msgid "Confirm Quit From System Tray"
 msgstr "ব্যৱস্থাপ্ৰণালী ট্ৰে'ৰ পৰা প্ৰস্থান কৰা দৃঢ় কৰক"
 
-#: kstatusnotifieritem.cpp:1138
+#: kstatusnotifieritem.cpp:1142
 #, fuzzy, qt-format
 #| msgid "<qt>Are you sure you want to quit <b>%1</b>?</qt>"
 msgctxt "KStatusNotifierItem|"
 msgid "<qt>Are you sure you want to quit <b>%1</b>?</qt>"
 msgstr "<qt>আপুনি নিশ্চিতৰূপে <b>%1</b> ৰ পৰা প্ৰস্থান কৰিবলৈ ইচ্ছুক ?</qt>"
 
-#: kstatusnotifieritem.cpp:1143
+#: kstatusnotifieritem.cpp:1147
 #, fuzzy
 #| msgid "Quit"
 msgctxt "KStatusNotifierItem|@action:button"

@@ -44,33 +44,33 @@ msgctxt "KNotificationRestrictions|"
 msgid "Unknown Application"
 msgstr "Άγνωστη εφαρμογή"
 
-#: kstatusnotifieritem.cpp:510 kstatusnotifieritem.cpp:1124
+#: kstatusnotifieritem.cpp:514 kstatusnotifieritem.cpp:1128
 msgctxt "KStatusNotifierItem|@action:inmenu"
 msgid "&Minimize"
 msgstr "&Ελαχιστοποίηση"
 
-#: kstatusnotifieritem.cpp:863
+#: kstatusnotifieritem.cpp:867
 msgctxt "KStatusNotifierItem|@action:inmenu"
 msgid "Quit"
 msgstr "Έξοδος"
 
-#: kstatusnotifieritem.cpp:1121
+#: kstatusnotifieritem.cpp:1125
 msgctxt "KStatusNotifierItem|@action:inmenu"
 msgid "&Restore"
 msgstr "Επαναφο&ρά"
 
-#: kstatusnotifieritem.cpp:1137
+#: kstatusnotifieritem.cpp:1141
 msgctxt "KStatusNotifierItem|@title:window"
 msgid "Confirm Quit From System Tray"
 msgstr "Επιβεβαίωση εξόδου από το πλαίσιο συστήματος"
 
-#: kstatusnotifieritem.cpp:1138
+#: kstatusnotifieritem.cpp:1142
 #, qt-format
 msgctxt "KStatusNotifierItem|"
 msgid "<qt>Are you sure you want to quit <b>%1</b>?</qt>"
 msgstr "<qt>Είστε σίγουροι ότι επιθυμείτε τον τερματισμό του <b>%1</b>;</qt>"
 
-#: kstatusnotifieritem.cpp:1143
+#: kstatusnotifieritem.cpp:1147
 msgctxt "KStatusNotifierItem|@action:button"
 msgid "Quit"
 msgstr "Έξοδος"

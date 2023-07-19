@@ -25,7 +25,7 @@ msgctxt "KNotificationRestrictions|"
 msgid "Unknown Application"
 msgstr "Nepoznat program"
 
-#: kstatusnotifieritem.cpp:510 kstatusnotifieritem.cpp:1124
+#: kstatusnotifieritem.cpp:514 kstatusnotifieritem.cpp:1128
 #, fuzzy
 #| msgctxt "KStatusNotifierItem|"
 #| msgid "&Minimize"
@@ -33,7 +33,7 @@ msgctxt "KStatusNotifierItem|@action:inmenu"
 msgid "&Minimize"
 msgstr "&Minimizuj"
 
-#: kstatusnotifieritem.cpp:863
+#: kstatusnotifieritem.cpp:867
 #, fuzzy
 #| msgctxt "KStatusNotifierItem|"
 #| msgid "Quit"
@@ -41,7 +41,7 @@ msgctxt "KStatusNotifierItem|@action:inmenu"
 msgid "Quit"
 msgstr "Izlaz"
 
-#: kstatusnotifieritem.cpp:1121
+#: kstatusnotifieritem.cpp:1125
 #, fuzzy
 #| msgctxt "KStatusNotifierItem|"
 #| msgid "&Restore"
@@ -49,7 +49,7 @@ msgctxt "KStatusNotifierItem|@action:inmenu"
 msgid "&Restore"
 msgstr "&Obnovi"
 
-#: kstatusnotifieritem.cpp:1137
+#: kstatusnotifieritem.cpp:1141
 #, fuzzy
 #| msgctxt "KStatusNotifierItem|"
 #| msgid "Confirm Quit From System Tray"
@@ -57,13 +57,13 @@ msgctxt "KStatusNotifierItem|@title:window"
 msgid "Confirm Quit From System Tray"
 msgstr "Potvrdi napuštanje preko sistemske kasete"
 
-#: kstatusnotifieritem.cpp:1138
+#: kstatusnotifieritem.cpp:1142
 #, qt-format
 msgctxt "KStatusNotifierItem|"
 msgid "<qt>Are you sure you want to quit <b>%1</b>?</qt>"
 msgstr "<qt>Želite li zaista da napustite <b>%1</b>?</qt>"
 
-#: kstatusnotifieritem.cpp:1143
+#: kstatusnotifieritem.cpp:1147
 #, fuzzy
 #| msgctxt "KStatusNotifierItem|"
 #| msgid "Quit"

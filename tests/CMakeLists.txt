@@ -10,7 +10,6 @@ endmacro()
 
 if (TARGET Qt6::DBus)
     knotifications_executable_tests(
-        knotificationrestrictionstest
         unitylaunchertest
         knotificationdbustest
     )

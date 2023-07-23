@@ -21,8 +21,6 @@ target_sources(KF6Notifications PRIVATE
 
 if (TARGET Qt6::DBus)
   target_sources(KF6Notifications PRIVATE
-    knotificationrestrictions.cpp
-
     imageconverter.cpp #needed to marshal images for sending over dbus by NotifyByPopup
     notifybypopup.cpp
     notifybyportal.cpp
@@ -118,7 +116,6 @@ ecm_generate_headers(KNotifications_HEADERS
   KNotification
   KNotificationJobUiDelegate
   KNotificationReplyAction
-  KNotificationRestrictions
   KNotifyConfig
 
   REQUIRED_HEADERS KNotifications_HEADERS

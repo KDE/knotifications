@@ -113,11 +113,6 @@ MacOSNotificationCenterPrivate::~MacOSNotificationCenterPrivate()
     [[NSUserNotificationCenter defaultUserNotificationCenter] setDelegate: nil];
     [m_delegate release];
 
-    // Try to finish all KNotification
-    for (auto it = m_notifications.constBegin(); it != m_notifications.constEnd(); it++) {
-        it.value()->deref();
-    }
-
     // Try to finish all NSNotification
     NSArray<NSUserNotification *> *deliveredNotifications = [NSUserNotificationCenter defaultUserNotificationCenter].deliveredNotifications;
     for (NSUserNotification *deliveredNotification in deliveredNotifications) {

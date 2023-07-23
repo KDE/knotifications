@@ -41,7 +41,7 @@ public:
      * @param id the id of the notification
      * @param force if false, only close registered notification
      */
-    void close(int id, bool force = false);
+    void close(int id);
 
     /**
      * update one notification text and pixmap and actions

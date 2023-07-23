@@ -201,9 +201,9 @@ void KNotificationManager::notificationClosed()
     }
 }
 
-void KNotificationManager::close(int id, bool force)
+void KNotificationManager::close(int id)
 {
-    if (force || d->notifications.contains(id)) {
+    if (d->notifications.contains(id)) {
         KNotification *n = d->notifications.value(id);
         qCDebug(LOG_KNOTIFICATIONS) << "Closing notification" << id;
 

@@ -176,7 +176,6 @@ ecm_generate_headers(KNotifications_HEADERS
   KNotificationJobUiDelegate
   KNotificationReplyAction
   KNotificationRestrictions
-  KNotificationPlugin
   KNotifyConfig
 
   REQUIRED_HEADERS KNotifications_HEADERS

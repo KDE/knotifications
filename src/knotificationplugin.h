@@ -10,10 +10,6 @@
 #include <QObject>
 #include <QTextDocumentFragment>
 
-#include <KPluginFactory>
-
-#include "knotifications_export.h"
-
 #include <memory>
 
 class KNotification;
@@ -44,7 +40,7 @@ class KNotifyConfig;
  *
  * @author Olivier Goffart <ogoffart at kde.org>
  */
-class KNOTIFICATIONS_EXPORT KNotificationPlugin : public QObject
+class KNotificationPlugin : public QObject
 {
     Q_OBJECT
 

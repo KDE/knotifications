@@ -29,7 +29,7 @@ msgstr "%1(실패)"
 #: knotificationrestrictions.cpp:183
 msgctxt "KNotificationRestrictions|"
 msgid "Unknown Application"
-msgstr "알 수 없는 프로그램"
+msgstr "알 수 없는 앱"
 
 #: kstatusnotifieritem.cpp:514 kstatusnotifieritem.cpp:1128
 msgctxt "KStatusNotifierItem|@action:inmenu"

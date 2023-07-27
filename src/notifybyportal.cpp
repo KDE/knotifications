@@ -20,7 +20,9 @@
 #include <QDBusMessage>
 #include <QDBusMetaType>
 #include <QDBusServiceWatcher>
+#include <QGuiApplication>
 #include <QHash>
+#include <QIcon>
 #include <QMap>
 #include <QPointer>
 
@@ -208,14 +210,20 @@ void NotifyByPortal::onPortalNotificationActionInvoked(const QString &id, const 
 
 void NotifyByPortalPrivate::getAppCaptionAndIconName(const KNotifyConfig &notifyConfig, QString *appCaption, QString *iconName)
 {
-    KConfigGroup globalgroup(&(*notifyConfig.eventsfile), QStringLiteral("Global"));
-    *appCaption = globalgroup.readEntry("Name", globalgroup.readEntry("Comment", notifyConfig.appname));
+    *appCaption = notifyConfig.readGlobalEntry(QStringLiteral("Name"));
+    if (appCaption->isEmpty()) {
+        *appCaption = notifyConfig.readGlobalEntry(QStringLiteral("Comment"));
+    }
+    if (appCaption->isEmpty()) {
+        *appCaption = notifyConfig.applicationName();
+    }
 
-    KConfigGroup eventGroup(&(*notifyConfig.eventsfile), QStringLiteral("Event/%1").arg(notifyConfig.eventid));
-    if (eventGroup.hasKey("IconName")) {
-        *iconName = eventGroup.readEntry("IconName", notifyConfig.appname);
-    } else {
-        *iconName = globalgroup.readEntry("IconName", notifyConfig.appname);
+    *iconName = notifyConfig.readEntry(QStringLiteral("IconName"));
+    if (iconName->isEmpty()) {
+        *iconName = qGuiApp->windowIcon().name();
+    }
+    if (iconName->isEmpty()) {
+        *iconName = notifyConfig.applicationName();
     }
 }
 

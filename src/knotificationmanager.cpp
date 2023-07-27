@@ -236,6 +236,10 @@ void KNotificationManager::notify(KNotification *n)
         d->dirtyConfigCache.removeOne(n->appName());
     }
 
+    if (!notifyConfig.isValid()) {
+        qCWarning(LOG_KNOTIFICATIONS) << "No event config could be found for event id" << n->eventId() << "under notifyrc file for app" << n->appName();
+    }
+
     const QString notifyActions = notifyConfig.readEntry(QStringLiteral("Action"));
 
     if (notifyActions.isEmpty() || notifyActions == QLatin1String("None")) {

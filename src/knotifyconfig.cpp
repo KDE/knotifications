@@ -117,6 +117,12 @@ QString KNotifyConfig::eventId() const
     return d->eventId;
 }
 
+bool KNotifyConfig::isValid() const
+{
+    const QString group = QLatin1String("Event/") + d->eventId;
+    return d->configFile->hasGroup(group) || d->eventsFile->hasGroup(group);
+}
+
 QString KNotifyConfig::readGlobalEntry(const QString &key) const
 {
     return d->readEntry(QStringLiteral("Global"), key, false);

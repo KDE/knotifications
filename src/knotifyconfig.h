@@ -46,6 +46,11 @@ public:
     QString eventId() const;
 
     /**
+     * Whether there exists an event with the given id under the given application name.
+     */
+    bool isValid() const;
+
+    /**
      * @return entry from the relevant Global notifyrc config group
      *
      * This will return the configuration from the user for the given key.

@@ -160,9 +160,12 @@ void NotifyByAudio::finishCallback(uint32_t id, int error_code)
 
     if (error_code == CA_SUCCESS) {
         // Loop the sound now if we have one
-        const auto soundInfo = m_loopSoundUrls.value(id);
-        if (!playSound(id, soundInfo.first, soundInfo.second)) {
-            finishNotification(notification, id);
+        auto soundInfoIt = m_loopSoundUrls.constFind(id);
+        if (soundInfoIt != m_loopSoundUrls.constEnd()) {
+            if (!playSound(id, soundInfoIt->first, soundInfoIt->second)) {
+                finishNotification(notification, id);
+            }
+            return;
         }
     } else if (error_code != CA_ERROR_CANCELED) {
         qCWarning(LOG_KNOTIFICATIONS) << "Playing audio notification failed:" << ca_strerror(error_code);

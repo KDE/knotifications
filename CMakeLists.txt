@@ -87,19 +87,11 @@ find_package(KF6CoreAddons ${KF_DEP_VERSION} REQUIRED)
 
 if (NOT APPLE AND NOT ANDROID AND NOT WIN32 OR (WIN32 AND NOT WITH_SNORETOAST))
     find_package(Qt6 ${REQUIRED_QT_VERSION} CONFIG REQUIRED DBus)
-    find_package(Canberra)
+    find_package(Canberra REQUIRED)
     set_package_properties(Canberra PROPERTIES
-        PURPOSE "Needed to build audio notification support"
-        TYPE OPTIONAL)
-    if (Canberra_FOUND)
+        PURPOSE "Needed to build audio notification support")
+    if (TARGET Canberra::Canberra)
         add_definitions(-DHAVE_CANBERRA)
-    else()
-        # This is REQUIRED since you cannot tell CMake "either one of those two optional ones are required"
-        find_package(Phonon4Qt6 4.6.60 NO_MODULE REQUIRED)
-        set_package_properties(Phonon4Qt6 PROPERTIES
-            DESCRIPTION "Qt-based audio library"
-            PURPOSE "Needed to build audio notification support when Canberra isn't available")
-        add_definitions(-DHAVE_PHONON4QT6)
     endif()
 endif()
 

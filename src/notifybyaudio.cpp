@@ -7,7 +7,7 @@
     SPDX-License-Identifier: LGPL-2.1-only OR LGPL-3.0-only OR LicenseRef-KDE-Accepted-LGPL
 */
 
-#include "notifybyaudio_canberra.h"
+#include "notifybyaudio.h"
 #include "debug_p.h"
 
 #include <QFile>
@@ -204,4 +204,4 @@ void NotifyByAudio::finishNotification(KNotification *notification, quint32 id)
     finish(notification);
 }
 
-#include "moc_notifybyaudio_canberra.cpp"
+#include "moc_notifybyaudio.cpp"

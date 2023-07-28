@@ -65,13 +65,9 @@ ecm_qt_declare_logging_category(KF6Notifications
     EXPORT KNOTIFICATIONS
 )
 
-if (Canberra_FOUND)
+if (TARGET Canberra::Canberra)
     target_sources(KF6Notifications PRIVATE
-        notifybyaudio_canberra.cpp
-    )
-elseif (Phonon4Qt6_FOUND)
-    target_sources(KF6Notifications PRIVATE
-        notifybyaudio_phonon.cpp
+        notifybyaudio.cpp
     )
 endif()
 
@@ -147,14 +143,8 @@ if (TARGET SnoreToast::SnoreToastActions)
   target_link_libraries(KF6Notifications PRIVATE Qt6::Network SnoreToast::SnoreToastActions)
 endif ()
 
-if (Phonon4Qt6_FOUND)
-    target_link_libraries(KF6Notifications PRIVATE
-        Phonon::phonon4qt6)
-endif()
-
-if (Canberra_FOUND)
-    target_link_libraries(KF6Notifications PRIVATE
-        Canberra::Canberra)
+if (TARGET Canberra::Canberra)
+    target_link_libraries(KF6Notifications PRIVATE Canberra::Canberra)
 endif()
 
 if(HAVE_X11)

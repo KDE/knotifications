@@ -24,10 +24,6 @@ if (NOT @BUILD_SHARED_LIBS@)
         find_dependency(Qt6Network @REQUIRED_QT_VERSION@)
     endif()
 
-    if (@HAVE_PHONON4QT6@)
-        find_dependency(Phonon4Qt6)
-    endif()
-
     if (@Canberra_FOUND@)
         find_dependency(Canberra)
     endif()

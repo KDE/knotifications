@@ -220,6 +220,9 @@ void NotifyByPortalPrivate::getAppCaptionAndIconName(const KNotifyConfig &notify
 
     *iconName = notifyConfig.readEntry(QStringLiteral("IconName"));
     if (iconName->isEmpty()) {
+        *iconName = notifyConfig.readGlobalEntry(QStringLiteral("IconName"));
+    }
+    if (iconName->isEmpty()) {
         *iconName = qGuiApp->windowIcon().name();
     }
     if (iconName->isEmpty()) {

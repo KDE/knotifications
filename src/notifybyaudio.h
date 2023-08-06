@@ -51,8 +51,9 @@ private:
     // in case we loop we store the URL for the notification to be able to replay it
     QHash<quint32, std::pair<QString, QUrl>> m_loopSoundUrls;
 
+    KConfigWatcher::Ptr m_settingsWatcher;
     QString m_soundTheme;
-    KConfigWatcher::Ptr m_soundThemeWatcher;
+    bool m_enabled = true;
 };
 
 #endif

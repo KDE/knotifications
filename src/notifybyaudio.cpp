@@ -26,18 +26,26 @@ const QString DEFAULT_SOUND_THEME = QStringLiteral("ocean");
 NotifyByAudio::NotifyByAudio(QObject *parent)
     : KNotificationPlugin(parent)
     , m_soundTheme(DEFAULT_SOUND_THEME)
+    , m_enabled(true)
 {
     qRegisterMetaType<uint32_t>("uint32_t");
 
-    m_soundThemeWatcher = KConfigWatcher::create(KSharedConfig::openConfig(QStringLiteral("kdeglobals")));
-    connect(m_soundThemeWatcher.get(), &KConfigWatcher::configChanged, this, [this](const KConfigGroup &group, const QByteArrayList &names) {
-        if (group.name() == QLatin1String("Sounds") && names.contains(QByteArrayLiteral("Theme"))) {
+    m_settingsWatcher = KConfigWatcher::create(KSharedConfig::openConfig(QStringLiteral("kdeglobals")));
+    connect(m_settingsWatcher.get(), &KConfigWatcher::configChanged, this, [this](const KConfigGroup &group, const QByteArrayList &names) {
+        if (group.name() != QLatin1String("Sounds")) {
+            return;
+        }
+        if (names.contains(QByteArrayLiteral("Theme"))) {
             m_soundTheme = group.readEntry("Theme", DEFAULT_SOUND_THEME);
+        }
+        if (names.contains(QByteArrayLiteral("Enable"))) {
+            m_enabled = group.readEntry("Enable", true);
         }
     });
 
-    const KConfigGroup group = m_soundThemeWatcher->config()->group(QStringLiteral("Sounds"));
+    const KConfigGroup group = m_settingsWatcher->config()->group(QStringLiteral("Sounds"));
     m_soundTheme = group.readEntry("Theme", DEFAULT_SOUND_THEME);
+    m_enabled = group.readEntry("Enable", true);
 }
 
 NotifyByAudio::~NotifyByAudio()
@@ -84,6 +92,11 @@ ca_context *NotifyByAudio::context()
 
 void NotifyByAudio::notify(KNotification *notification, const KNotifyConfig &notifyConfig)
 {
+    if (!m_enabled) {
+        qCDebug(LOG_KNOTIFICATIONS) << "Notification sounds are globally disabled";
+        return;
+    }
+
     const QString soundName = notifyConfig.readEntry(QStringLiteral("Sound"));
     if (soundName.isEmpty()) {
         qCWarning(LOG_KNOTIFICATIONS) << "Audio notification requested, but no sound name provided in notifyrc file, aborting audio notification";

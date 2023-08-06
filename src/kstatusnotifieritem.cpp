@@ -672,21 +672,6 @@ QString KStatusNotifierItem::providedToken() const
 
 bool KStatusNotifierItemPrivate::checkVisibility(QPoint pos, bool perform)
 {
-#ifdef Q_OS_WIN
-#if 0
-    // the problem is that we lose focus when the systray icon is activated
-    // and we don't know the former active window
-    // therefore we watch for activation event and use our stopwatch :)
-    if (GetTickCount() - dwTickCount < 300) {
-        // we were active in the last 300ms -> hide it
-        minimizeRestore(false);
-        Q_EMIT activateRequested(false, pos);
-    } else {
-        minimizeRestore(true);
-        Q_EMIT activateRequested(true, pos);
-    }
-#endif
-#else
     // mapped = visible (but possibly obscured)
     const bool mapped = associatedWidget->isVisible() && !associatedWidget->isMinimized();
 
@@ -776,7 +761,6 @@ bool KStatusNotifierItemPrivate::checkVisibility(QPoint pos, bool perform)
         }
         return false;
     }
-#endif
 
     return true;
 }

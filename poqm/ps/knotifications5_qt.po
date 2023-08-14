@@ -35,42 +35,42 @@ msgctxt "KNotificationRestrictions|"
 msgid "Unknown Application"
 msgstr "کاريال بندول"
 
-#: kstatusnotifieritem.cpp:515 kstatusnotifieritem.cpp:1124
+#: kstatusnotifieritem.cpp:515 kstatusnotifieritem.cpp:1108
 #, fuzzy
 #| msgid "&Minimize"
 msgctxt "KStatusNotifierItem|@action:inmenu"
 msgid "&Minimize"
 msgstr "ووړول"
 
-#: kstatusnotifieritem.cpp:864
+#: kstatusnotifieritem.cpp:848
 #, fuzzy
 #| msgid "Quit"
 msgctxt "KStatusNotifierItem|@action:inmenu"
 msgid "Quit"
 msgstr "وتل"
 
-#: kstatusnotifieritem.cpp:1122
+#: kstatusnotifieritem.cpp:1106
 #, fuzzy
 #| msgid "&Restore"
 msgctxt "KStatusNotifierItem|@action:inmenu"
 msgid "&Restore"
 msgstr "بيازېرمل"
 
-#: kstatusnotifieritem.cpp:1136
+#: kstatusnotifieritem.cpp:1120
 #, fuzzy
 #| msgid "Confirm Quit From System Tray"
 msgctxt "KStatusNotifierItem|@title:window"
 msgid "Confirm Quit From System Tray"
 msgstr "د غونډال مجمې نه بندول باوري کړﺉ"
 
-#: kstatusnotifieritem.cpp:1137
+#: kstatusnotifieritem.cpp:1121
 #, fuzzy, qt-format
 #| msgid "<qt>Are you sure you want to quit <b>%1</b>?</qt>"
 msgctxt "KStatusNotifierItem|"
 msgid "<qt>Are you sure you want to quit <b>%1</b>?</qt>"
 msgstr "<qt>بند کړﺉ؟ <b>%1</b> تاسو په ډاډمنه توګه غواړﺉ چې</qt>"
 
-#: kstatusnotifieritem.cpp:1141
+#: kstatusnotifieritem.cpp:1125
 #, fuzzy
 #| msgid "Quit"
 msgctxt "KStatusNotifierItem|@action:button"

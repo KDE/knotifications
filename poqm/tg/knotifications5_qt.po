@@ -35,7 +35,7 @@ msgctxt "KNotificationRestrictions|"
 msgid "Unknown Application"
 msgstr "Барномаи номаълум"
 
-#: kstatusnotifieritem.cpp:515 kstatusnotifieritem.cpp:1124
+#: kstatusnotifieritem.cpp:515 kstatusnotifieritem.cpp:1108
 #, fuzzy
 #| msgctxt "KStatusNotifierItem|"
 #| msgid "&Minimize"
@@ -43,7 +43,7 @@ msgctxt "KStatusNotifierItem|@action:inmenu"
 msgid "&Minimize"
 msgstr "&Ҳадди ақал сохтан"
 
-#: kstatusnotifieritem.cpp:864
+#: kstatusnotifieritem.cpp:848
 #, fuzzy
 #| msgctxt "KStatusNotifierItem|"
 #| msgid "Quit"
@@ -51,7 +51,7 @@ msgctxt "KStatusNotifierItem|@action:inmenu"
 msgid "Quit"
 msgstr "Баромадан"
 
-#: kstatusnotifieritem.cpp:1122
+#: kstatusnotifieritem.cpp:1106
 #, fuzzy
 #| msgctxt "KStatusNotifierItem|"
 #| msgid "&Restore"
@@ -59,7 +59,7 @@ msgctxt "KStatusNotifierItem|@action:inmenu"
 msgid "&Restore"
 msgstr "&Бозсозӣ"
 
-#: kstatusnotifieritem.cpp:1136
+#: kstatusnotifieritem.cpp:1120
 #, fuzzy
 #| msgctxt "KStatusNotifierItem|"
 #| msgid "Confirm Quit From System Tray"
@@ -67,13 +67,13 @@ msgctxt "KStatusNotifierItem|@title:window"
 msgid "Confirm Quit From System Tray"
 msgstr "Тасдиқ кардани баромад аз лавҳаи низомӣ"
 
-#: kstatusnotifieritem.cpp:1137
+#: kstatusnotifieritem.cpp:1121
 #, qt-format
 msgctxt "KStatusNotifierItem|"
 msgid "<qt>Are you sure you want to quit <b>%1</b>?</qt>"
 msgstr "<qt>Шумо дар ҳақиқат мехоҳед, ки аз <b>%1</b> бароед?</qt>"
 
-#: kstatusnotifieritem.cpp:1141
+#: kstatusnotifieritem.cpp:1125
 #, fuzzy
 #| msgctxt "KStatusNotifierItem|"
 #| msgid "Quit"

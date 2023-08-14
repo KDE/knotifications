@@ -39,33 +39,33 @@ msgctxt "KNotificationRestrictions|"
 msgid "Unknown Application"
 msgstr "Aplicación desconocida"
 
-#: kstatusnotifieritem.cpp:515 kstatusnotifieritem.cpp:1124
+#: kstatusnotifieritem.cpp:515 kstatusnotifieritem.cpp:1108
 msgctxt "KStatusNotifierItem|@action:inmenu"
 msgid "&Minimize"
 msgstr "&Minimizar"
 
-#: kstatusnotifieritem.cpp:864
+#: kstatusnotifieritem.cpp:848
 msgctxt "KStatusNotifierItem|@action:inmenu"
 msgid "Quit"
 msgstr "Salir"
 
-#: kstatusnotifieritem.cpp:1122
+#: kstatusnotifieritem.cpp:1106
 msgctxt "KStatusNotifierItem|@action:inmenu"
 msgid "&Restore"
 msgstr "&Restaurar"
 
-#: kstatusnotifieritem.cpp:1136
+#: kstatusnotifieritem.cpp:1120
 msgctxt "KStatusNotifierItem|@title:window"
 msgid "Confirm Quit From System Tray"
 msgstr "Confirmar salida desde la bandeja del sistema"
 
-#: kstatusnotifieritem.cpp:1137
+#: kstatusnotifieritem.cpp:1121
 #, qt-format
 msgctxt "KStatusNotifierItem|"
 msgid "<qt>Are you sure you want to quit <b>%1</b>?</qt>"
 msgstr "<qt>¿Está seguro de que desea salir de <b>%1</b>?</qt>"
 
-#: kstatusnotifieritem.cpp:1141
+#: kstatusnotifieritem.cpp:1125
 msgctxt "KStatusNotifierItem|@action:button"
 msgid "Quit"
 msgstr "Salir"

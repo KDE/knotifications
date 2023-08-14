@@ -31,33 +31,33 @@ msgctxt "KNotificationRestrictions|"
 msgid "Unknown Application"
 msgstr "알 수 없는 앱"
 
-#: kstatusnotifieritem.cpp:514 kstatusnotifieritem.cpp:1128
+#: kstatusnotifieritem.cpp:514 kstatusnotifieritem.cpp:1112
 msgctxt "KStatusNotifierItem|@action:inmenu"
 msgid "&Minimize"
 msgstr "최소화(&M)"
 
-#: kstatusnotifieritem.cpp:867
+#: kstatusnotifieritem.cpp:851
 msgctxt "KStatusNotifierItem|@action:inmenu"
 msgid "Quit"
 msgstr "끝내기"
 
-#: kstatusnotifieritem.cpp:1125
+#: kstatusnotifieritem.cpp:1109
 msgctxt "KStatusNotifierItem|@action:inmenu"
 msgid "&Restore"
 msgstr "복원(&R)"
 
-#: kstatusnotifieritem.cpp:1141
+#: kstatusnotifieritem.cpp:1125
 msgctxt "KStatusNotifierItem|@title:window"
 msgid "Confirm Quit From System Tray"
 msgstr "시스템 트레이에서 종료 확인"
 
-#: kstatusnotifieritem.cpp:1142
+#: kstatusnotifieritem.cpp:1126
 #, qt-format
 msgctxt "KStatusNotifierItem|"
 msgid "<qt>Are you sure you want to quit <b>%1</b>?</qt>"
 msgstr "<qt><b>%1</b>을(를) 종료하시겠습니까?</qt>"
 
-#: kstatusnotifieritem.cpp:1147
+#: kstatusnotifieritem.cpp:1131
 msgctxt "KStatusNotifierItem|@action:button"
 msgid "Quit"
 msgstr "끝내기"

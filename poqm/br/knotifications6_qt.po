@@ -34,40 +34,40 @@ msgctxt "KNotificationRestrictions|"
 msgid "Unknown Application"
 msgstr "Kuitaat ar meziant"
 
-#: kstatusnotifieritem.cpp:514 kstatusnotifieritem.cpp:1128
+#: kstatusnotifieritem.cpp:514 kstatusnotifieritem.cpp:1112
 #, fuzzy
 #| msgid "&Minimize"
 msgctxt "KStatusNotifierItem|@action:inmenu"
 msgid "&Minimize"
 msgstr "&Izelaat"
 
-#: kstatusnotifieritem.cpp:867
+#: kstatusnotifieritem.cpp:851
 #, fuzzy
 #| msgid "Quit"
 msgctxt "KStatusNotifierItem|@action:inmenu"
 msgid "Quit"
 msgstr "Kuitaat"
 
-#: kstatusnotifieritem.cpp:1125
+#: kstatusnotifieritem.cpp:1109
 #, fuzzy
 #| msgid "&Restore"
 msgctxt "KStatusNotifierItem|@action:inmenu"
 msgid "&Restore"
 msgstr "&Assav"
 
-#: kstatusnotifieritem.cpp:1141
+#: kstatusnotifieritem.cpp:1125
 msgctxt "KStatusNotifierItem|@title:window"
 msgid "Confirm Quit From System Tray"
 msgstr ""
 
-#: kstatusnotifieritem.cpp:1142
+#: kstatusnotifieritem.cpp:1126
 #, fuzzy, qt-format
 #| msgid "<qt>Are you sure you want to quit <b>%1</b>?</qt>"
 msgctxt "KStatusNotifierItem|"
 msgid "<qt>Are you sure you want to quit <b>%1</b>?</qt>"
 msgstr "<qt>Ha sur oc'h e fell deoc'h kuitaat <b>%1</b> ?</qt>"
 
-#: kstatusnotifieritem.cpp:1147
+#: kstatusnotifieritem.cpp:1131
 #, fuzzy
 #| msgid "Quit"
 msgctxt "KStatusNotifierItem|@action:button"

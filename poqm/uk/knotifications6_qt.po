@@ -37,33 +37,33 @@ msgctxt "KNotificationRestrictions|"
 msgid "Unknown Application"
 msgstr "Невідома програма"
 
-#: kstatusnotifieritem.cpp:514 kstatusnotifieritem.cpp:1128
+#: kstatusnotifieritem.cpp:514 kstatusnotifieritem.cpp:1112
 msgctxt "KStatusNotifierItem|@action:inmenu"
 msgid "&Minimize"
 msgstr "&Мінімізувати"
 
-#: kstatusnotifieritem.cpp:867
+#: kstatusnotifieritem.cpp:851
 msgctxt "KStatusNotifierItem|@action:inmenu"
 msgid "Quit"
 msgstr "Вихід"
 
-#: kstatusnotifieritem.cpp:1125
+#: kstatusnotifieritem.cpp:1109
 msgctxt "KStatusNotifierItem|@action:inmenu"
 msgid "&Restore"
 msgstr "&Відновити"
 
-#: kstatusnotifieritem.cpp:1141
+#: kstatusnotifieritem.cpp:1125
 msgctxt "KStatusNotifierItem|@title:window"
 msgid "Confirm Quit From System Tray"
 msgstr "Підтвердження закриття з системного лотка"
 
-#: kstatusnotifieritem.cpp:1142
+#: kstatusnotifieritem.cpp:1126
 #, qt-format
 msgctxt "KStatusNotifierItem|"
 msgid "<qt>Are you sure you want to quit <b>%1</b>?</qt>"
 msgstr "<qt>Ви певні, що хочете закрити <b>%1</b>?</qt>"
 
-#: kstatusnotifieritem.cpp:1147
+#: kstatusnotifieritem.cpp:1131
 msgctxt "KStatusNotifierItem|@action:button"
 msgid "Quit"
 msgstr "Вийти"

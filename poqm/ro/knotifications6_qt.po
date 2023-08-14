@@ -31,33 +31,33 @@ msgctxt "KNotificationRestrictions|"
 msgid "Unknown Application"
 msgstr "Aplicație necunoscută"
 
-#: kstatusnotifieritem.cpp:514 kstatusnotifieritem.cpp:1128
+#: kstatusnotifieritem.cpp:514 kstatusnotifieritem.cpp:1112
 msgctxt "KStatusNotifierItem|@action:inmenu"
 msgid "&Minimize"
 msgstr "&Minimizează"
 
-#: kstatusnotifieritem.cpp:867
+#: kstatusnotifieritem.cpp:851
 msgctxt "KStatusNotifierItem|@action:inmenu"
 msgid "Quit"
 msgstr "Termină"
 
-#: kstatusnotifieritem.cpp:1125
+#: kstatusnotifieritem.cpp:1109
 msgctxt "KStatusNotifierItem|@action:inmenu"
 msgid "&Restore"
 msgstr "&Restabilește"
 
-#: kstatusnotifieritem.cpp:1141
+#: kstatusnotifieritem.cpp:1125
 msgctxt "KStatusNotifierItem|@title:window"
 msgid "Confirm Quit From System Tray"
 msgstr "Confirmă închiderea din tava de sistem"
 
-#: kstatusnotifieritem.cpp:1142
+#: kstatusnotifieritem.cpp:1126
 #, qt-format
 msgctxt "KStatusNotifierItem|"
 msgid "<qt>Are you sure you want to quit <b>%1</b>?</qt>"
 msgstr "<qt>Sigur doriți să închideți <b>%1</b>?</qt>"
 
-#: kstatusnotifieritem.cpp:1147
+#: kstatusnotifieritem.cpp:1131
 msgctxt "KStatusNotifierItem|@action:button"
 msgid "Quit"
 msgstr "Termină"

@@ -34,42 +34,42 @@ msgctxt "KNotificationRestrictions|"
 msgid "Unknown Application"
 msgstr "Quitar l'aplicacion"
 
-#: kstatusnotifieritem.cpp:514 kstatusnotifieritem.cpp:1128
+#: kstatusnotifieritem.cpp:514 kstatusnotifieritem.cpp:1112
 #, fuzzy
 #| msgid "&Minimize"
 msgctxt "KStatusNotifierItem|@action:inmenu"
 msgid "&Minimize"
 msgstr "&Redusir"
 
-#: kstatusnotifieritem.cpp:867
+#: kstatusnotifieritem.cpp:851
 #, fuzzy
 #| msgid "Quit"
 msgctxt "KStatusNotifierItem|@action:inmenu"
 msgid "Quit"
 msgstr "Quitar"
 
-#: kstatusnotifieritem.cpp:1125
+#: kstatusnotifieritem.cpp:1109
 #, fuzzy
 #| msgid "Store"
 msgctxt "KStatusNotifierItem|@action:inmenu"
 msgid "&Restore"
 msgstr "Store"
 
-#: kstatusnotifieritem.cpp:1141
+#: kstatusnotifieritem.cpp:1125
 #, fuzzy
 #| msgid "Confirm Quit From System Tray"
 msgctxt "KStatusNotifierItem|@title:window"
 msgid "Confirm Quit From System Tray"
 msgstr "Confirmar la tampadura dempuèi la bóstia de miniaturas"
 
-#: kstatusnotifieritem.cpp:1142
+#: kstatusnotifieritem.cpp:1126
 #, fuzzy, qt-format
 #| msgid "<qt>Are you sure you want to quit <b>%1</b>?</qt>"
 msgctxt "KStatusNotifierItem|"
 msgid "<qt>Are you sure you want to quit <b>%1</b>?</qt>"
 msgstr "<qt>Volètz vertadièrament quitar <b>%1</b> ?</qt>"
 
-#: kstatusnotifieritem.cpp:1147
+#: kstatusnotifieritem.cpp:1131
 #, fuzzy
 #| msgid "Quit"
 msgctxt "KStatusNotifierItem|@action:button"

@@ -19,19 +19,8 @@ target_sources(KF6Notifications PRIVATE
   knotificationjobuidelegate.cpp
 )
 
-if (NOT ANDROID)
-    target_sources(KF6Notifications PRIVATE
-        kstatusnotifieritem.cpp)
-endif()
-
-if(APPLE)
-    target_sources(KF6Notifications PRIVATE
-            macutils.mm)
-endif()
-
 if (TARGET Qt6::DBus)
   target_sources(KF6Notifications PRIVATE
-    kstatusnotifieritemdbus_p.cpp
     knotificationrestrictions.cpp
 
     imageconverter.cpp #needed to marshal images for sending over dbus by NotifyByPopup
@@ -72,37 +61,6 @@ if (TARGET Canberra::Canberra)
 endif()
 
 if (TARGET Qt6::DBus)
-   set(HAVE_DBUSMENUQT 1)
-   qt_add_dbus_adaptor(dbusmenu_qt_SRCS
-     ${CMAKE_CURRENT_SOURCE_DIR}/libdbusmenu-qt/com.canonical.dbusmenu.xml
-     ${CMAKE_CURRENT_SOURCE_DIR}/libdbusmenu-qt/dbusmenuexporterdbus_p.h DBusMenuExporterDBus
-   )
-
-   target_sources(KF6Notifications PRIVATE
-     ${dbusmenu_qt_SRCS}
-     libdbusmenu-qt/dbusmenuexporter.cpp
-     libdbusmenu-qt/dbusmenuexporterdbus_p.cpp
-     libdbusmenu-qt/dbusmenu_p.cpp
-     libdbusmenu-qt/dbusmenushortcut_p.cpp
-     libdbusmenu-qt/dbusmenutypes_p.cpp
-     libdbusmenu-qt/utils.cpp
-     libdbusmenu-qt/dbusmenuexporterdbus_p.h
-     libdbusmenu-qt/dbusmenuexporter.h
-     libdbusmenu-qt/dbusmenuexporterprivate_p.h
-     libdbusmenu-qt/dbusmenu_p.h
-     libdbusmenu-qt/dbusmenushortcut_p.h
-     libdbusmenu-qt/dbusmenutypes_p.h
-     libdbusmenu-qt/debug_p.h
-     libdbusmenu-qt/utils_p.h
-  )
-
-  set(knotifications_dbus_SRCS)
-  qt_add_dbus_adaptor(knotifications_dbus_SRCS     org.kde.StatusNotifierItem.xml
-                    kstatusnotifieritemdbus_p.h KStatusNotifierItemDBus)
-
-
-  set(statusnotifierwatcher_xml org.kde.StatusNotifierWatcher.xml)
-  qt_add_dbus_interface(knotifications_dbus_SRCS ${statusnotifierwatcher_xml} statusnotifierwatcher_interface)
   set(notifications_xml org.freedesktop.Notifications.xml)
   qt_add_dbus_interface(knotifications_dbus_SRCS ${notifications_xml} notifications_interface)
   target_sources(KF6Notifications PRIVATE ${knotifications_dbus_SRCS})
@@ -162,7 +120,6 @@ endif()
 ecm_generate_headers(KNotifications_HEADERS
   HEADER_NAMES
   KNotification
-  KStatusNotifierItem
   KNotificationJobUiDelegate
   KNotificationReplyAction
   KNotificationRestrictions
@@ -210,18 +167,6 @@ if(BUILD_QCH)
         QCH_INSTALL_DESTINATION ${KDE_INSTALL_QTQCHDIR}
         COMPONENT Devel
     )
-endif()
-
-if (TARGET Qt6::DBus)
-    install(FILES
-        org.kde.StatusNotifierItem.xml
-        DESTINATION ${KDE_INSTALL_DBUSINTERFACEDIR}
-        RENAME kf6_org.kde.StatusNotifierItem.xml)
-
-    install(FILES
-        org.kde.StatusNotifierWatcher.xml
-        DESTINATION ${KDE_INSTALL_DBUSINTERFACEDIR}
-        RENAME kf6_org.kde.StatusNotifierWatcher.xml)
 endif()
 
 include(ECMGeneratePriFile)

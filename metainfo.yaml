@@ -8,7 +8,6 @@ platforms:
     - name: Windows
     - name: macOS
     - name: Android
-      note: KStatusNotifierItem and KNotificationRestrictions are not supported.
 portingAid: false
 deprecated: false
 release: true

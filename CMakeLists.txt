@@ -96,7 +96,6 @@ if (NOT APPLE AND NOT ANDROID AND NOT WIN32 OR (WIN32 AND NOT WITH_SNORETOAST))
 endif()
 
 set(HAVE_DBUS FALSE)
-# dbusmenu-qt5 needs to be built with Qt6 first
 if (TARGET Qt6::DBus)
     set(HAVE_DBUS TRUE)
 endif()

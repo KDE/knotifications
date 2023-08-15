@@ -25,7 +25,6 @@ struct Q_DECL_HIDDEN KNotification::Private {
     int id = -1;
     int ref = 0;
 
-    QWidget *widget = nullptr;
     QString title;
     QString text;
     QString iconName;

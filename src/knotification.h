@@ -21,8 +21,6 @@
 
 #include <memory>
 
-class QWidget;
-
 class KNotificationReplyAction;
 
 /**
@@ -104,14 +102,6 @@ public:
      */
     enum NotificationFlag {
         /**
-         * When the notification is activated, raise the notification's widget.
-         *
-         * This will change the desktop, raise the window, and switch to the tab.
-         * @todo  doesn't work yet
-         */
-        RaiseWidgetOnActivation = 0x01,
-
-        /**
          * The notification will be automatically closed after a timeout. (this is the default)
          */
         CloseOnTimeout = 0x00,
@@ -122,18 +112,6 @@ public:
          * close function manually when the event is done, otherwise there will be a memory leak
          */
         Persistent = 0x02,
-
-        /**
-         * The notification will be automatically closed if the widget() becomes
-         * activated.
-         *
-         * If the widget is already activated when the notification occurs, the
-         * notification will be closed after a small timeout.
-         *
-         * This only works if the widget is the toplevel widget
-         * @todo make it work with tabulated widget
-         */
-        CloseWhenWidgetActivated = 0x04,
 
         /**
          * The audio plugin will loop the sound until the notification is closed
@@ -203,10 +181,6 @@ public:
      *
      * The pointer is automatically deleted when the event is closed.
      *
-     * Make sure you use one of the NotificationFlags CloseOnTimeOut or
-     * CloseWhenWidgetActivated, if not,
-     * you have to close the notification yourself.
-     *
      * @since 4.4
      *
      * @param eventId is the name of the event
@@ -216,25 +190,6 @@ public:
     explicit KNotification(const QString &eventId, NotificationFlags flags = CloseOnTimeout, QObject *parent = nullptr);
 
     ~KNotification() override;
-
-    /**
-     * @brief the widget associated to the notification
-     *
-     * If the widget is destroyed, the notification will be automatically canceled.
-     * If the widget is activated, the notification will be automatically closed if the NotificationFlags specify that
-     *
-     * When the notification is activated, the widget might be raised.
-     * Depending on the configuration, the taskbar entry of the window containing the widget may blink.
-     */
-    QWidget *widget() const;
-
-    /**
-     * Set the widget associated to the notification.
-     * The notification is reparented to the new widget.
-     * \see widget()
-     * @param widget the new widget
-     */
-    void setWidget(QWidget *widget);
 
     /**
      * @return the name of the event
@@ -692,10 +647,6 @@ private:
     std::unique_ptr<Private> const d;
 
 protected:
-    /**
-     * reimplemented for internal reasons
-     */
-    bool eventFilter(QObject *watched, QEvent *event) override;
     static QString standardEventToEventId(StandardEvent event);
     static QString standardEventToIconName(StandardEvent event);
 
@@ -711,14 +662,10 @@ public:
      * @return a KNotification .  You may use that pointer to connect some signals or slot.
      * the pointer is automatically deleted when the event is closed.
      *
-     * Make sure you use one of the CloseOnTimeOut or CloseWhenWidgetActivated, if not,
-     * you have to close yourself the notification.
-     *
      * @param eventId is the name of the event
      * @param title is title of the notification to show in the popup.
      * @param text is the text of the notification to show in the popup.
      * @param pixmap is a picture which may be shown in the popup.
-     * @param widget is a widget where the notification reports to
      * @param flags is a bitmask of NotificationFlag
      * @param componentName used to determine the location of the config file.  by default, appname is used
      * @since 4.4
@@ -727,7 +674,6 @@ public:
                                 const QString &title,
                                 const QString &text,
                                 const QPixmap &pixmap = QPixmap(),
-                                QWidget *widget = nullptr,
                                 const NotificationFlags &flags = CloseOnTimeout,
                                 const QString &componentName = QString());
 
@@ -741,14 +687,12 @@ public:
      * @param eventId is the name of the event
      * @param text is the text of the notification to show in the popup.
      * @param pixmap is a picture which may be shown in the popup.
-     * @param widget is a widget where the notification reports to
      * @param flags is a bitmask of NotificationFlag
      * @param componentName used to determine the location of the config file.  by default, plasma_workspace is used
      */
     static KNotification *event(const QString &eventId,
                                 const QString &text = QString(),
                                 const QPixmap &pixmap = QPixmap(),
-                                QWidget *widget = nullptr,
                                 const NotificationFlags &flags = CloseOnTimeout,
                                 const QString &componentName = QString());
 
@@ -762,14 +706,10 @@ public:
      * @param eventId is the name of the event
      * @param text is the text of the notification to show in the popup
      * @param pixmap is a picture which may be shown in the popup
-     * @param widget is a widget where the notification reports to
      * @param flags is a bitmask of NotificationFlag
      */
-    static KNotification *event(StandardEvent eventId,
-                                const QString &text = QString(),
-                                const QPixmap &pixmap = QPixmap(),
-                                QWidget *widget = nullptr,
-                                const NotificationFlags &flags = CloseOnTimeout);
+    static KNotification *
+    event(StandardEvent eventId, const QString &text = QString(), const QPixmap &pixmap = QPixmap(), const NotificationFlags &flags = CloseOnTimeout);
 
     /**
      * @brief emit a standard event
@@ -782,16 +722,11 @@ public:
      * @param title is title of the notification to show in the popup.
      * @param text is the text of the notification to show in the popup
      * @param pixmap is a picture which may be shown in the popup
-     * @param widget is a widget where the notification reports to
      * @param flags is a bitmask of NotificationFlag
      * @since 4.4
      */
-    static KNotification *event(StandardEvent eventId,
-                                const QString &title,
-                                const QString &text,
-                                const QPixmap &pixmap,
-                                QWidget *widget = nullptr,
-                                const NotificationFlags &flags = CloseOnTimeout);
+    static KNotification *
+    event(StandardEvent eventId, const QString &title, const QString &text, const QPixmap &pixmap, const NotificationFlags &flags = CloseOnTimeout);
 
     /**
      * @brief emit a standard event with the possibility of setting an icon by icon name
@@ -804,7 +739,6 @@ public:
      * @param title is title of the notification to show in the popup.
      * @param text is the text of the notification to show in the popup
      * @param iconName a Freedesktop compatible icon name to be shown in the popup
-     * @param widget is a widget where the notification reports to
      * @param flags is a bitmask of NotificationFlag
      * @param componentName used to determine the location of the config file.  by default, plasma_workspace is used
      * @since 5.4
@@ -813,7 +747,6 @@ public:
                                 const QString &title,
                                 const QString &text,
                                 const QString &iconName,
-                                QWidget *widget = nullptr,
                                 const NotificationFlags &flags = CloseOnTimeout,
                                 const QString &componentName = QString());
 
@@ -828,16 +761,11 @@ public:
      * @param title is title of the notification to show in the popup.
      * @param text is the text of the notification to show in the popup
      * @param iconName a Freedesktop compatible icon name to be shown in the popup
-     * @param widget is a widget where the notification reports to
      * @param flags is a bitmask of NotificationFlag
      * @since 5.9
      */
-    static KNotification *event(StandardEvent eventId,
-                                const QString &title,
-                                const QString &text,
-                                const QString &iconName,
-                                QWidget *widget = nullptr,
-                                const NotificationFlags &flags = CloseOnTimeout);
+    static KNotification *
+    event(StandardEvent eventId, const QString &title, const QString &text, const QString &iconName, const NotificationFlags &flags = CloseOnTimeout);
 
     /**
      * @brief emit a standard event
@@ -849,20 +777,17 @@ public:
      * @param eventId the type of the standard (not app-defined) event
      * @param title is title of the notification to show in the popup.
      * @param text is the text of the notification to show in the popup
-     * @param widget is a widget where the notification reports to
      * @param flags is a bitmask of NotificationFlag
      * @since 5.9
      */
-    static KNotification *
-    event(StandardEvent eventId, const QString &title, const QString &text, QWidget *widget = nullptr, const NotificationFlags &flags = CloseOnTimeout);
+    static KNotification *event(StandardEvent eventId, const QString &title, const QString &text, const NotificationFlags &flags = CloseOnTimeout);
 
     /**
      * This is a simple substitution for QApplication::beep()
      *
      * @param reason a short text explaining what has happened (may be empty)
-     * @param widget the widget the notification refers to
      */
-    static void beep(const QString &reason = QString(), QWidget *widget = nullptr);
+    static void beep(const QString &reason = QString());
 
     // prevent warning
     using QObject::event;

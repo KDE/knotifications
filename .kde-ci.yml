@@ -3,7 +3,6 @@ Dependencies:
   'require':
     'frameworks/extra-cmake-modules': '@same'
     'frameworks/kconfig' : '@same'
-    'frameworks/kcoreaddons' : '@same'
 
 Options:
   test-before-installing: True

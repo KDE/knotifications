@@ -16,7 +16,6 @@ target_sources(KF6Notifications PRIVATE
 
   knotifyconfig.cpp
   knotificationplugin.cpp
-  knotificationjobuidelegate.cpp
 )
 
 if (TARGET Qt6::DBus)
@@ -84,7 +83,6 @@ if (TARGET Qt6::DBus)
    target_link_libraries(KF6Notifications PUBLIC Qt6::DBus)
 endif()
 target_link_libraries(KF6Notifications PRIVATE
-   KF6::CoreAddons
    KF6::ConfigCore
 )
 
@@ -103,7 +101,6 @@ endif()
 ecm_generate_headers(KNotifications_HEADERS
   HEADER_NAMES
   KNotification
-  KNotificationJobUiDelegate
   KNotificationReplyAction
   KNotifyConfig
 

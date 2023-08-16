@@ -7,7 +7,6 @@ if (@HAVE_DBUS@)
 endif()
 
 if (NOT @BUILD_SHARED_LIBS@) 
-    find_dependency(KF6CoreAddons "@KF_DEP_VERSION@")
     find_dependency(KF6Config "@KF_DEP_VERSION@")
 
     if (@WITH_SNORETOAST@)

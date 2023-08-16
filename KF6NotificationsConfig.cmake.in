@@ -15,10 +15,6 @@ if (NOT @BUILD_SHARED_LIBS@)
     find_dependency(KF6CoreAddons "@KF_DEP_VERSION@")
     find_dependency(KF6Config "@KF_DEP_VERSION@")
 
-    if (@HAVE_KWINDOWSYSTEM@)
-        find_dependency(KF6WindowSystem "@KF_DEP_VERSION@")
-    endif()
-
     if (@WITH_SNORETOAST@)
         find_dependency(LibSnoreToast)
         find_dependency(Qt6Network @REQUIRED_QT_VERSION@)

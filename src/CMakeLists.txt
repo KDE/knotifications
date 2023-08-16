@@ -93,10 +93,6 @@ target_link_libraries(KF6Notifications PRIVATE
    KF6::ConfigCore
 )
 
-if (TARGET KF6::WindowSystem)
-    target_link_libraries(KF6Notifications PRIVATE KF6::WindowSystem)
-endif()
-
 if (TARGET SnoreToast::SnoreToastActions)
   target_link_libraries(KF6Notifications PRIVATE Qt6::Network SnoreToast::SnoreToastActions)
 endif ()

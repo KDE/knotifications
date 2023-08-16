@@ -23,9 +23,6 @@
 
 #include <config-knotifications.h>
 
-#if HAVE_KWINDOWSYSTEM
-#include <KWindowSystem>
-#endif
 #include <QGuiApplication>
 
 #include <QStringList>
@@ -48,11 +45,9 @@ KNotification::KNotification(const QString &eventId, NotificationFlags flags, QO
     d->updateTimer.setInterval(100);
     d->id = ++notificationIdCounter;
 
-#if HAVE_KWINDOWSYSTEM
-    if (KWindowSystem::isPlatformWayland()) {
+    if (QGuiApplication::platformName().startsWith(QLatin1String("wayland"))) {
         setHint(QStringLiteral("x-kde-xdgTokenAppId"), QGuiApplication::desktopFileName());
     }
-#endif
 }
 
 KNotification::~KNotification()

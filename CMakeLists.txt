@@ -76,12 +76,6 @@ if (WIN32)
     )    
 endif()
 
-set(HAVE_KWINDOWSYSTEM FALSE)
-if(NOT ANDROID)
-    find_package(KF6WindowSystem ${KF_DEP_VERSION} REQUIRED)
-    set(HAVE_KWINDOWSYSTEM TRUE)
-endif()
-
 find_package(KF6Config ${KF_DEP_VERSION} REQUIRED)
 find_package(KF6CoreAddons ${KF_DEP_VERSION} REQUIRED)
 

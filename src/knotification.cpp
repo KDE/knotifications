@@ -295,13 +295,15 @@ void KNotification::activate(const QString &action)
     bool ok;
     int actionIndex = action.toInt(&ok);
 
-    if (!ok || actionIndex < 1 || actionIndex > actions().size()) {
-        qCWarning(LOG_KNOTIFICATIONS) << "Ignored invalid action key" << action;
-    } else {
-        // emitting activated() makes the Manager close all the active plugins
-        // which will deref() the KNotification object, which will result
-        // in closing the notification
-        Q_EMIT activated(actionIndex);
+    if (action != QLatin1String("default")) {
+        if (!ok || actionIndex < 1 || actionIndex > actions().size()) {
+            qCWarning(LOG_KNOTIFICATIONS) << "Ignored invalid action key" << action;
+        } else {
+            // emitting activated() makes the Manager close all the active plugins
+            // which will deref() the KNotification object, which will result
+            // in closing the notification
+            Q_EMIT activated(actionIndex);
+        }
     }
 }
 

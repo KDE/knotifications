@@ -41,33 +41,26 @@ msgctxt "KNotificationRestrictions|"
 msgid "Unknown Application"
 msgstr "未知的應用程式"
 
-#: kstatusnotifieritem.cpp:514 kstatusnotifieritem.cpp:1112
-msgctxt "KStatusNotifierItem|@action:inmenu"
-msgid "&Minimize"
-msgstr "縮到最小(&M)"
+#~ msgctxt "KStatusNotifierItem|@action:inmenu"
+#~ msgid "&Minimize"
+#~ msgstr "縮到最小(&M)"
 
-#: kstatusnotifieritem.cpp:851
-msgctxt "KStatusNotifierItem|@action:inmenu"
-msgid "Quit"
-msgstr "離開"
+#~ msgctxt "KStatusNotifierItem|@action:inmenu"
+#~ msgid "Quit"
+#~ msgstr "離開"
 
-#: kstatusnotifieritem.cpp:1109
-msgctxt "KStatusNotifierItem|@action:inmenu"
-msgid "&Restore"
-msgstr "回復(&R)"
+#~ msgctxt "KStatusNotifierItem|@action:inmenu"
+#~ msgid "&Restore"
+#~ msgstr "回復(&R)"
 
-#: kstatusnotifieritem.cpp:1125
-msgctxt "KStatusNotifierItem|@title:window"
-msgid "Confirm Quit From System Tray"
-msgstr "確定要離開系統列"
+#~ msgctxt "KStatusNotifierItem|@title:window"
+#~ msgid "Confirm Quit From System Tray"
+#~ msgstr "確定要離開系統列"
 
-#: kstatusnotifieritem.cpp:1126
-#, qt-format
-msgctxt "KStatusNotifierItem|"
-msgid "<qt>Are you sure you want to quit <b>%1</b>?</qt>"
-msgstr "<qt>您確定要離開 '<b>%1</b>' 嗎?</qt>"
+#~ msgctxt "KStatusNotifierItem|"
+#~ msgid "<qt>Are you sure you want to quit <b>%1</b>?</qt>"
+#~ msgstr "<qt>您確定要離開 '<b>%1</b>' 嗎?</qt>"
 
-#: kstatusnotifieritem.cpp:1131
-msgctxt "KStatusNotifierItem|@action:button"
-msgid "Quit"
-msgstr "離開"
+#~ msgctxt "KStatusNotifierItem|@action:button"
+#~ msgid "Quit"
+#~ msgstr "離開"

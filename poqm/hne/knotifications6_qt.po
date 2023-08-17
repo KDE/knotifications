@@ -35,47 +35,41 @@ msgctxt "KNotificationRestrictions|"
 msgid "Unknown Application"
 msgstr "अग्यात अनुपरयोग"
 
-#: kstatusnotifieritem.cpp:514 kstatusnotifieritem.cpp:1112
 #, fuzzy
-#| msgid "&Minimize"
-msgctxt "KStatusNotifierItem|@action:inmenu"
-msgid "&Minimize"
-msgstr "सबसे छोटे करव (&M)"
+#~| msgid "&Minimize"
+#~ msgctxt "KStatusNotifierItem|@action:inmenu"
+#~ msgid "&Minimize"
+#~ msgstr "सबसे छोटे करव (&M)"
 
-#: kstatusnotifieritem.cpp:851
 #, fuzzy
-#| msgid "Quit"
-msgctxt "KStatusNotifierItem|@action:inmenu"
-msgid "Quit"
-msgstr "बाहिर जाव"
+#~| msgid "Quit"
+#~ msgctxt "KStatusNotifierItem|@action:inmenu"
+#~ msgid "Quit"
+#~ msgstr "बाहिर जाव"
 
-#: kstatusnotifieritem.cpp:1109
 #, fuzzy
-#| msgid "&Restore"
-msgctxt "KStatusNotifierItem|@action:inmenu"
-msgid "&Restore"
-msgstr "बहाल करव (&R)"
+#~| msgid "&Restore"
+#~ msgctxt "KStatusNotifierItem|@action:inmenu"
+#~ msgid "&Restore"
+#~ msgstr "बहाल करव (&R)"
 
-#: kstatusnotifieritem.cpp:1125
 #, fuzzy
-#| msgid "Confirm Quit From System Tray"
-msgctxt "KStatusNotifierItem|@title:window"
-msgid "Confirm Quit From System Tray"
-msgstr "तंत्र तस्तरी से बाहिर जाय के पुस्टि करव"
+#~| msgid "Confirm Quit From System Tray"
+#~ msgctxt "KStatusNotifierItem|@title:window"
+#~ msgid "Confirm Quit From System Tray"
+#~ msgstr "तंत्र तस्तरी से बाहिर जाय के पुस्टि करव"
 
-#: kstatusnotifieritem.cpp:1126
-#, fuzzy, qt-format
-#| msgid "<qt>Are you sure you want to quit <b>%1</b>?</qt>"
-msgctxt "KStatusNotifierItem|"
-msgid "<qt>Are you sure you want to quit <b>%1</b>?</qt>"
-msgstr "<qt>का आप मन सही मं <b>%1</b> से बाहिर जाना चाहथो ?</qt>"
-
-#: kstatusnotifieritem.cpp:1131
 #, fuzzy
-#| msgid "Quit"
-msgctxt "KStatusNotifierItem|@action:button"
-msgid "Quit"
-msgstr "बाहिर जाव"
+#~| msgid "<qt>Are you sure you want to quit <b>%1</b>?</qt>"
+#~ msgctxt "KStatusNotifierItem|"
+#~ msgid "<qt>Are you sure you want to quit <b>%1</b>?</qt>"
+#~ msgstr "<qt>का आप मन सही मं <b>%1</b> से बाहिर जाना चाहथो ?</qt>"
+
+#, fuzzy
+#~| msgid "Quit"
+#~ msgctxt "KStatusNotifierItem|@action:button"
+#~ msgid "Quit"
+#~ msgstr "बाहिर जाव"
 
 #~ msgctxt "NAME OF TRANSLATORS"
 #~ msgid "Your names"

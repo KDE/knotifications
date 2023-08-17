@@ -35,49 +35,42 @@ msgctxt "KNotificationRestrictions|"
 msgid "Unknown Application"
 msgstr "nepoznat program"
 
-#: kstatusnotifieritem.cpp:514 kstatusnotifieritem.cpp:1112
 #, fuzzy
-#| msgctxt "KStatusNotifierItem|"
-#| msgid "&Minimize"
-msgctxt "KStatusNotifierItem|@action:inmenu"
-msgid "&Minimize"
-msgstr "&Minimizuj"
+#~| msgctxt "KStatusNotifierItem|"
+#~| msgid "&Minimize"
+#~ msgctxt "KStatusNotifierItem|@action:inmenu"
+#~ msgid "&Minimize"
+#~ msgstr "&Minimizuj"
 
-#: kstatusnotifieritem.cpp:851
 #, fuzzy
-#| msgctxt "KStatusNotifierItem|"
-#| msgid "Quit"
-msgctxt "KStatusNotifierItem|@action:inmenu"
-msgid "Quit"
-msgstr "Napusti"
+#~| msgctxt "KStatusNotifierItem|"
+#~| msgid "Quit"
+#~ msgctxt "KStatusNotifierItem|@action:inmenu"
+#~ msgid "Quit"
+#~ msgstr "Napusti"
 
-#: kstatusnotifieritem.cpp:1109
 #, fuzzy
-#| msgctxt "KStatusNotifierItem|"
-#| msgid "&Restore"
-msgctxt "KStatusNotifierItem|@action:inmenu"
-msgid "&Restore"
-msgstr "&Obnovi"
+#~| msgctxt "KStatusNotifierItem|"
+#~| msgid "&Restore"
+#~ msgctxt "KStatusNotifierItem|@action:inmenu"
+#~ msgid "&Restore"
+#~ msgstr "&Obnovi"
 
 # >> @title:window
-#: kstatusnotifieritem.cpp:1125
 #, fuzzy
-#| msgctxt "KStatusNotifierItem|"
-#| msgid "Confirm Quit From System Tray"
-msgctxt "KStatusNotifierItem|@title:window"
-msgid "Confirm Quit From System Tray"
-msgstr "Potvrda napuštanja preko sistemske kasete"
+#~| msgctxt "KStatusNotifierItem|"
+#~| msgid "Confirm Quit From System Tray"
+#~ msgctxt "KStatusNotifierItem|@title:window"
+#~ msgid "Confirm Quit From System Tray"
+#~ msgstr "Potvrda napuštanja preko sistemske kasete"
 
-#: kstatusnotifieritem.cpp:1126
-#, qt-format
-msgctxt "KStatusNotifierItem|"
-msgid "<qt>Are you sure you want to quit <b>%1</b>?</qt>"
-msgstr "<qt>Želite li zaista da napustite program <b>%1</b>?</qt>"
+#~ msgctxt "KStatusNotifierItem|"
+#~ msgid "<qt>Are you sure you want to quit <b>%1</b>?</qt>"
+#~ msgstr "<qt>Želite li zaista da napustite program <b>%1</b>?</qt>"
 
-#: kstatusnotifieritem.cpp:1131
 #, fuzzy
-#| msgctxt "KStatusNotifierItem|"
-#| msgid "Quit"
-msgctxt "KStatusNotifierItem|@action:button"
-msgid "Quit"
-msgstr "Napusti"
+#~| msgctxt "KStatusNotifierItem|"
+#~| msgid "Quit"
+#~ msgctxt "KStatusNotifierItem|@action:button"
+#~ msgid "Quit"
+#~ msgstr "Napusti"

@@ -25,33 +25,26 @@ msgctxt "KNotificationRestrictions|"
 msgid "Unknown Application"
 msgstr "Okänt program"
 
-#: kstatusnotifieritem.cpp:514 kstatusnotifieritem.cpp:1112
-msgctxt "KStatusNotifierItem|@action:inmenu"
-msgid "&Minimize"
-msgstr "&Minimera"
+#~ msgctxt "KStatusNotifierItem|@action:inmenu"
+#~ msgid "&Minimize"
+#~ msgstr "&Minimera"
 
-#: kstatusnotifieritem.cpp:851
-msgctxt "KStatusNotifierItem|@action:inmenu"
-msgid "Quit"
-msgstr "Avsluta"
+#~ msgctxt "KStatusNotifierItem|@action:inmenu"
+#~ msgid "Quit"
+#~ msgstr "Avsluta"
 
-#: kstatusnotifieritem.cpp:1109
-msgctxt "KStatusNotifierItem|@action:inmenu"
-msgid "&Restore"
-msgstr "Åte&rställ"
+#~ msgctxt "KStatusNotifierItem|@action:inmenu"
+#~ msgid "&Restore"
+#~ msgstr "Åte&rställ"
 
-#: kstatusnotifieritem.cpp:1125
-msgctxt "KStatusNotifierItem|@title:window"
-msgid "Confirm Quit From System Tray"
-msgstr "Bekräfta avslutning från systembrickan"
+#~ msgctxt "KStatusNotifierItem|@title:window"
+#~ msgid "Confirm Quit From System Tray"
+#~ msgstr "Bekräfta avslutning från systembrickan"
 
-#: kstatusnotifieritem.cpp:1126
-#, qt-format
-msgctxt "KStatusNotifierItem|"
-msgid "<qt>Are you sure you want to quit <b>%1</b>?</qt>"
-msgstr "<qt>Är du säker på att du vill avsluta <b>%1</b>?</qt>"
+#~ msgctxt "KStatusNotifierItem|"
+#~ msgid "<qt>Are you sure you want to quit <b>%1</b>?</qt>"
+#~ msgstr "<qt>Är du säker på att du vill avsluta <b>%1</b>?</qt>"
 
-#: kstatusnotifieritem.cpp:1131
-msgctxt "KStatusNotifierItem|@action:button"
-msgid "Quit"
-msgstr "Avsluta"
+#~ msgctxt "KStatusNotifierItem|@action:button"
+#~ msgid "Quit"
+#~ msgstr "Avsluta"

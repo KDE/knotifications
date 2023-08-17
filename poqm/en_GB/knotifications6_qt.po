@@ -31,36 +31,29 @@ msgctxt "KNotificationRestrictions|"
 msgid "Unknown Application"
 msgstr "Unknown Application"
 
-#: kstatusnotifieritem.cpp:514 kstatusnotifieritem.cpp:1112
-msgctxt "KStatusNotifierItem|@action:inmenu"
-msgid "&Minimize"
-msgstr "&Minimise"
+#~ msgctxt "KStatusNotifierItem|@action:inmenu"
+#~ msgid "&Minimize"
+#~ msgstr "&Minimise"
 
-#: kstatusnotifieritem.cpp:851
-msgctxt "KStatusNotifierItem|@action:inmenu"
-msgid "Quit"
-msgstr "Quit"
+#~ msgctxt "KStatusNotifierItem|@action:inmenu"
+#~ msgid "Quit"
+#~ msgstr "Quit"
 
-#: kstatusnotifieritem.cpp:1109
-msgctxt "KStatusNotifierItem|@action:inmenu"
-msgid "&Restore"
-msgstr "&Restore"
+#~ msgctxt "KStatusNotifierItem|@action:inmenu"
+#~ msgid "&Restore"
+#~ msgstr "&Restore"
 
-#: kstatusnotifieritem.cpp:1125
-msgctxt "KStatusNotifierItem|@title:window"
-msgid "Confirm Quit From System Tray"
-msgstr "Confirm Quit From System Tray"
+#~ msgctxt "KStatusNotifierItem|@title:window"
+#~ msgid "Confirm Quit From System Tray"
+#~ msgstr "Confirm Quit From System Tray"
 
-#: kstatusnotifieritem.cpp:1126
-#, qt-format
-msgctxt "KStatusNotifierItem|"
-msgid "<qt>Are you sure you want to quit <b>%1</b>?</qt>"
-msgstr "<qt>Are you sure you want to quit <b>%1</b>?</qt>"
+#~ msgctxt "KStatusNotifierItem|"
+#~ msgid "<qt>Are you sure you want to quit <b>%1</b>?</qt>"
+#~ msgstr "<qt>Are you sure you want to quit <b>%1</b>?</qt>"
 
-#: kstatusnotifieritem.cpp:1131
-msgctxt "KStatusNotifierItem|@action:button"
-msgid "Quit"
-msgstr "Quit"
+#~ msgctxt "KStatusNotifierItem|@action:button"
+#~ msgid "Quit"
+#~ msgstr "Quit"
 
 #~ msgctxt "NAME OF TRANSLATORS"
 #~ msgid "Your names"

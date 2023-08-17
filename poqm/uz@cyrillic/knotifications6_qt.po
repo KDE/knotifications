@@ -33,45 +33,35 @@ msgctxt "KNotificationRestrictions|"
 msgid "Unknown Application"
 msgstr "Номаьлум дастур"
 
-#: kstatusnotifieritem.cpp:514 kstatusnotifieritem.cpp:1112
 #, fuzzy
-#| msgid "&Minimize"
-msgctxt "KStatusNotifierItem|@action:inmenu"
-msgid "&Minimize"
-msgstr "Й&иғиш"
+#~| msgid "&Minimize"
+#~ msgctxt "KStatusNotifierItem|@action:inmenu"
+#~ msgid "&Minimize"
+#~ msgstr "Й&иғиш"
 
-#: kstatusnotifieritem.cpp:851
 #, fuzzy
-#| msgid "Quit"
-msgctxt "KStatusNotifierItem|@action:inmenu"
-msgid "Quit"
-msgstr "Чиқиш"
+#~| msgid "Quit"
+#~ msgctxt "KStatusNotifierItem|@action:inmenu"
+#~ msgid "Quit"
+#~ msgstr "Чиқиш"
 
-#: kstatusnotifieritem.cpp:1109
 #, fuzzy
-#| msgid "&Restore"
-msgctxt "KStatusNotifierItem|@action:inmenu"
-msgid "&Restore"
-msgstr "Қ&айта тиклаш"
+#~| msgid "&Restore"
+#~ msgctxt "KStatusNotifierItem|@action:inmenu"
+#~ msgid "&Restore"
+#~ msgstr "Қ&айта тиклаш"
 
-#: kstatusnotifieritem.cpp:1125
-msgctxt "KStatusNotifierItem|@title:window"
-msgid "Confirm Quit From System Tray"
-msgstr ""
-
-#: kstatusnotifieritem.cpp:1126
-#, fuzzy, qt-format
-#| msgid "<qt>Are you sure you want to quit <b>%1</b>?</qt>"
-msgctxt "KStatusNotifierItem|"
-msgid "<qt>Are you sure you want to quit <b>%1</b>?</qt>"
-msgstr "<qt><b>%1</b>'дан чиқишга ишончингиз комилми?</qt>"
-
-#: kstatusnotifieritem.cpp:1131
 #, fuzzy
-#| msgid "Quit"
-msgctxt "KStatusNotifierItem|@action:button"
-msgid "Quit"
-msgstr "Чиқиш"
+#~| msgid "<qt>Are you sure you want to quit <b>%1</b>?</qt>"
+#~ msgctxt "KStatusNotifierItem|"
+#~ msgid "<qt>Are you sure you want to quit <b>%1</b>?</qt>"
+#~ msgstr "<qt><b>%1</b>'дан чиқишга ишончингиз комилми?</qt>"
+
+#, fuzzy
+#~| msgid "Quit"
+#~ msgctxt "KStatusNotifierItem|@action:button"
+#~ msgid "Quit"
+#~ msgstr "Чиқиш"
 
 #~ msgctxt "NAME OF TRANSLATORS"
 #~ msgid "Your names"

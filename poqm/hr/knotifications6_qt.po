@@ -45,49 +45,43 @@ msgctxt "KNotificationRestrictions|"
 msgid "Unknown Application"
 msgstr "Nepoznata aplikacija"
 
-#: kstatusnotifieritem.cpp:514 kstatusnotifieritem.cpp:1112
 #, fuzzy
-#| msgid "&Minimize"
-msgctxt "KStatusNotifierItem|@action:inmenu"
-msgid "&Minimize"
-msgstr "&Minimiziraj"
+#~| msgid "&Minimize"
+#~ msgctxt "KStatusNotifierItem|@action:inmenu"
+#~ msgid "&Minimize"
+#~ msgstr "&Minimiziraj"
 
-#: kstatusnotifieritem.cpp:851
 #, fuzzy
-#| msgid "Quit"
-msgctxt "KStatusNotifierItem|@action:inmenu"
-msgid "Quit"
-msgstr "Izlaz"
+#~| msgid "Quit"
+#~ msgctxt "KStatusNotifierItem|@action:inmenu"
+#~ msgid "Quit"
+#~ msgstr "Izlaz"
 
-#: kstatusnotifieritem.cpp:1109
 #, fuzzy
-#| msgid "&Restore"
-msgctxt "KStatusNotifierItem|@action:inmenu"
-msgid "&Restore"
-msgstr "&Vrati"
+#~| msgid "&Restore"
+#~ msgctxt "KStatusNotifierItem|@action:inmenu"
+#~ msgid "&Restore"
+#~ msgstr "&Vrati"
 
-#: kstatusnotifieritem.cpp:1125
 #, fuzzy
-#| msgid "Confirm Quit From System Tray"
-msgctxt "KStatusNotifierItem|@title:window"
-msgid "Confirm Quit From System Tray"
-msgstr "Prihvati izlazak iz sistemske trake"
+#~| msgid "Confirm Quit From System Tray"
+#~ msgctxt "KStatusNotifierItem|@title:window"
+#~ msgid "Confirm Quit From System Tray"
+#~ msgstr "Prihvati izlazak iz sistemske trake"
 
-#: kstatusnotifieritem.cpp:1126
-#, fuzzy, qt-format
-#| msgid "<qt>Are you sure you want to quit <b>%1</b>?</qt>"
-msgctxt "KStatusNotifierItem|"
-msgid "<qt>Are you sure you want to quit <b>%1</b>?</qt>"
-msgstr ""
-"<qt>Sigurno želite izaći iz <b>%1</b>?</qt>|/|<qt>Sigurno želite izaći iz <b>"
-"$[gen %1]</b>?</qt>"
-
-#: kstatusnotifieritem.cpp:1131
 #, fuzzy
-#| msgid "Quit"
-msgctxt "KStatusNotifierItem|@action:button"
-msgid "Quit"
-msgstr "Izlaz"
+#~| msgid "<qt>Are you sure you want to quit <b>%1</b>?</qt>"
+#~ msgctxt "KStatusNotifierItem|"
+#~ msgid "<qt>Are you sure you want to quit <b>%1</b>?</qt>"
+#~ msgstr ""
+#~ "<qt>Sigurno želite izaći iz <b>%1</b>?</qt>|/|<qt>Sigurno želite izaći iz "
+#~ "<b>$[gen %1]</b>?</qt>"
+
+#, fuzzy
+#~| msgid "Quit"
+#~ msgctxt "KStatusNotifierItem|@action:button"
+#~ msgid "Quit"
+#~ msgstr "Izlaz"
 
 #~ msgctxt "NAME OF TRANSLATORS"
 #~ msgid "Your names"

@@ -33,47 +33,41 @@ msgctxt "KNotificationRestrictions|"
 msgid "Unknown Application"
 msgstr "Билгесез кушымта"
 
-#: kstatusnotifieritem.cpp:514 kstatusnotifieritem.cpp:1112
 #, fuzzy
-#| msgid "&Minimize"
-msgctxt "KStatusNotifierItem|@action:inmenu"
-msgid "&Minimize"
-msgstr "&Төрү"
+#~| msgid "&Minimize"
+#~ msgctxt "KStatusNotifierItem|@action:inmenu"
+#~ msgid "&Minimize"
+#~ msgstr "&Төрү"
 
-#: kstatusnotifieritem.cpp:851
 #, fuzzy
-#| msgid "Quit"
-msgctxt "KStatusNotifierItem|@action:inmenu"
-msgid "Quit"
-msgstr "Чыгу"
+#~| msgid "Quit"
+#~ msgctxt "KStatusNotifierItem|@action:inmenu"
+#~ msgid "Quit"
+#~ msgstr "Чыгу"
 
-#: kstatusnotifieritem.cpp:1109
 #, fuzzy
-#| msgid "&Restore"
-msgctxt "KStatusNotifierItem|@action:inmenu"
-msgid "&Restore"
-msgstr "Тор&гызу"
+#~| msgid "&Restore"
+#~ msgctxt "KStatusNotifierItem|@action:inmenu"
+#~ msgid "&Restore"
+#~ msgstr "Тор&гызу"
 
-#: kstatusnotifieritem.cpp:1125
 #, fuzzy
-#| msgid "Confirm Quit From System Tray"
-msgctxt "KStatusNotifierItem|@title:window"
-msgid "Confirm Quit From System Tray"
-msgstr "Хәбәр итү өлкәсеннән чыгуны раслагыз"
+#~| msgid "Confirm Quit From System Tray"
+#~ msgctxt "KStatusNotifierItem|@title:window"
+#~ msgid "Confirm Quit From System Tray"
+#~ msgstr "Хәбәр итү өлкәсеннән чыгуны раслагыз"
 
-#: kstatusnotifieritem.cpp:1126
-#, fuzzy, qt-format
-#| msgid "<qt>Are you sure you want to quit <b>%1</b>?</qt>"
-msgctxt "KStatusNotifierItem|"
-msgid "<qt>Are you sure you want to quit <b>%1</b>?</qt>"
-msgstr "<qt>Сез чыннан да <b>%1</b>' чыгасыгыз киләме?</qt>"
-
-#: kstatusnotifieritem.cpp:1131
 #, fuzzy
-#| msgid "Quit"
-msgctxt "KStatusNotifierItem|@action:button"
-msgid "Quit"
-msgstr "Чыгу"
+#~| msgid "<qt>Are you sure you want to quit <b>%1</b>?</qt>"
+#~ msgctxt "KStatusNotifierItem|"
+#~ msgid "<qt>Are you sure you want to quit <b>%1</b>?</qt>"
+#~ msgstr "<qt>Сез чыннан да <b>%1</b>' чыгасыгыз киләме?</qt>"
+
+#, fuzzy
+#~| msgid "Quit"
+#~ msgctxt "KStatusNotifierItem|@action:button"
+#~ msgid "Quit"
+#~ msgstr "Чыгу"
 
 #~ msgctxt "NAME OF TRANSLATORS"
 #~ msgid "Your names"

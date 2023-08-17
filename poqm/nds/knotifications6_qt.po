@@ -33,51 +33,44 @@ msgctxt "KNotificationRestrictions|"
 msgid "Unknown Application"
 msgstr "Nich begäng Programm"
 
-#: kstatusnotifieritem.cpp:514 kstatusnotifieritem.cpp:1112
 #, fuzzy
-#| msgctxt "KStatusNotifierItem|"
-#| msgid "&Minimize"
-msgctxt "KStatusNotifierItem|@action:inmenu"
-msgid "&Minimize"
-msgstr "&Minimeren"
+#~| msgctxt "KStatusNotifierItem|"
+#~| msgid "&Minimize"
+#~ msgctxt "KStatusNotifierItem|@action:inmenu"
+#~ msgid "&Minimize"
+#~ msgstr "&Minimeren"
 
-#: kstatusnotifieritem.cpp:851
 #, fuzzy
-#| msgctxt "KStatusNotifierItem|"
-#| msgid "Quit"
-msgctxt "KStatusNotifierItem|@action:inmenu"
-msgid "Quit"
-msgstr "Utmaken"
+#~| msgctxt "KStatusNotifierItem|"
+#~| msgid "Quit"
+#~ msgctxt "KStatusNotifierItem|@action:inmenu"
+#~ msgid "Quit"
+#~ msgstr "Utmaken"
 
-#: kstatusnotifieritem.cpp:1109
 #, fuzzy
-#| msgctxt "KStatusNotifierItem|"
-#| msgid "&Restore"
-msgctxt "KStatusNotifierItem|@action:inmenu"
-msgid "&Restore"
-msgstr "&Wedder herstellen"
+#~| msgctxt "KStatusNotifierItem|"
+#~| msgid "&Restore"
+#~ msgctxt "KStatusNotifierItem|@action:inmenu"
+#~ msgid "&Restore"
+#~ msgstr "&Wedder herstellen"
 
-#: kstatusnotifieritem.cpp:1125
 #, fuzzy
-#| msgctxt "KStatusNotifierItem|"
-#| msgid "Confirm Quit From System Tray"
-msgctxt "KStatusNotifierItem|@title:window"
-msgid "Confirm Quit From System Tray"
-msgstr "Wegdoon ut Systeemafsnitt beglöven"
+#~| msgctxt "KStatusNotifierItem|"
+#~| msgid "Confirm Quit From System Tray"
+#~ msgctxt "KStatusNotifierItem|@title:window"
+#~ msgid "Confirm Quit From System Tray"
+#~ msgstr "Wegdoon ut Systeemafsnitt beglöven"
 
-#: kstatusnotifieritem.cpp:1126
-#, qt-format
-msgctxt "KStatusNotifierItem|"
-msgid "<qt>Are you sure you want to quit <b>%1</b>?</qt>"
-msgstr "<qt>Wullt Du <b>%1</b> redig utmaken?</qt>"
+#~ msgctxt "KStatusNotifierItem|"
+#~ msgid "<qt>Are you sure you want to quit <b>%1</b>?</qt>"
+#~ msgstr "<qt>Wullt Du <b>%1</b> redig utmaken?</qt>"
 
-#: kstatusnotifieritem.cpp:1131
 #, fuzzy
-#| msgctxt "KStatusNotifierItem|"
-#| msgid "Quit"
-msgctxt "KStatusNotifierItem|@action:button"
-msgid "Quit"
-msgstr "Utmaken"
+#~| msgctxt "KStatusNotifierItem|"
+#~| msgid "Quit"
+#~ msgctxt "KStatusNotifierItem|@action:button"
+#~ msgid "Quit"
+#~ msgstr "Utmaken"
 
 #~ msgctxt "NAME OF TRANSLATORS"
 #~ msgid "Your names"

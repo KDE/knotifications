@@ -40,47 +40,41 @@ msgctxt "KNotificationRestrictions|"
 msgid "Unknown Application"
 msgstr "తెలియని అనువర్తనము"
 
-#: kstatusnotifieritem.cpp:514 kstatusnotifieritem.cpp:1112
 #, fuzzy
-#| msgid "&Minimize"
-msgctxt "KStatusNotifierItem|@action:inmenu"
-msgid "&Minimize"
-msgstr "(&M) చిన్నది చెయండి"
+#~| msgid "&Minimize"
+#~ msgctxt "KStatusNotifierItem|@action:inmenu"
+#~ msgid "&Minimize"
+#~ msgstr "(&M) చిన్నది చెయండి"
 
-#: kstatusnotifieritem.cpp:851
 #, fuzzy
-#| msgid "Quit"
-msgctxt "KStatusNotifierItem|@action:inmenu"
-msgid "Quit"
-msgstr "విరమించు"
+#~| msgid "Quit"
+#~ msgctxt "KStatusNotifierItem|@action:inmenu"
+#~ msgid "Quit"
+#~ msgstr "విరమించు"
 
-#: kstatusnotifieritem.cpp:1109
 #, fuzzy
-#| msgid "&Restore"
-msgctxt "KStatusNotifierItem|@action:inmenu"
-msgid "&Restore"
-msgstr "(&R) పునరుద్ధరణ"
+#~| msgid "&Restore"
+#~ msgctxt "KStatusNotifierItem|@action:inmenu"
+#~ msgid "&Restore"
+#~ msgstr "(&R) పునరుద్ధరణ"
 
-#: kstatusnotifieritem.cpp:1125
 #, fuzzy
-#| msgid "Confirm Quit From System Tray"
-msgctxt "KStatusNotifierItem|@title:window"
-msgid "Confirm Quit From System Tray"
-msgstr "సిస్టమ్ ట్రే నుండి విరమింపును నిర్ధారించండి"
+#~| msgid "Confirm Quit From System Tray"
+#~ msgctxt "KStatusNotifierItem|@title:window"
+#~ msgid "Confirm Quit From System Tray"
+#~ msgstr "సిస్టమ్ ట్రే నుండి విరమింపును నిర్ధారించండి"
 
-#: kstatusnotifieritem.cpp:1126
-#, fuzzy, qt-format
-#| msgid "<qt>Are you sure you want to quit <b>%1</b>?</qt>"
-msgctxt "KStatusNotifierItem|"
-msgid "<qt>Are you sure you want to quit <b>%1</b>?</qt>"
-msgstr "<qt>మీరు ఖచ్చితంగా విరమించాలని అనుకుంటున్నారా <b>%1</b>?</qt>"
-
-#: kstatusnotifieritem.cpp:1131
 #, fuzzy
-#| msgid "Quit"
-msgctxt "KStatusNotifierItem|@action:button"
-msgid "Quit"
-msgstr "విరమించు"
+#~| msgid "<qt>Are you sure you want to quit <b>%1</b>?</qt>"
+#~ msgctxt "KStatusNotifierItem|"
+#~ msgid "<qt>Are you sure you want to quit <b>%1</b>?</qt>"
+#~ msgstr "<qt>మీరు ఖచ్చితంగా విరమించాలని అనుకుంటున్నారా <b>%1</b>?</qt>"
+
+#, fuzzy
+#~| msgid "Quit"
+#~ msgctxt "KStatusNotifierItem|@action:button"
+#~ msgid "Quit"
+#~ msgstr "విరమించు"
 
 #~ msgctxt "NAME OF TRANSLATORS"
 #~ msgid "Your names"

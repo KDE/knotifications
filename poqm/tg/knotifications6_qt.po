@@ -35,51 +35,44 @@ msgctxt "KNotificationRestrictions|"
 msgid "Unknown Application"
 msgstr "Барномаи номаълум"
 
-#: kstatusnotifieritem.cpp:514 kstatusnotifieritem.cpp:1112
 #, fuzzy
-#| msgctxt "KStatusNotifierItem|"
-#| msgid "&Minimize"
-msgctxt "KStatusNotifierItem|@action:inmenu"
-msgid "&Minimize"
-msgstr "&Ҳадди ақал сохтан"
+#~| msgctxt "KStatusNotifierItem|"
+#~| msgid "&Minimize"
+#~ msgctxt "KStatusNotifierItem|@action:inmenu"
+#~ msgid "&Minimize"
+#~ msgstr "&Ҳадди ақал сохтан"
 
-#: kstatusnotifieritem.cpp:851
 #, fuzzy
-#| msgctxt "KStatusNotifierItem|"
-#| msgid "Quit"
-msgctxt "KStatusNotifierItem|@action:inmenu"
-msgid "Quit"
-msgstr "Баромадан"
+#~| msgctxt "KStatusNotifierItem|"
+#~| msgid "Quit"
+#~ msgctxt "KStatusNotifierItem|@action:inmenu"
+#~ msgid "Quit"
+#~ msgstr "Баромадан"
 
-#: kstatusnotifieritem.cpp:1109
 #, fuzzy
-#| msgctxt "KStatusNotifierItem|"
-#| msgid "&Restore"
-msgctxt "KStatusNotifierItem|@action:inmenu"
-msgid "&Restore"
-msgstr "&Бозсозӣ"
+#~| msgctxt "KStatusNotifierItem|"
+#~| msgid "&Restore"
+#~ msgctxt "KStatusNotifierItem|@action:inmenu"
+#~ msgid "&Restore"
+#~ msgstr "&Бозсозӣ"
 
-#: kstatusnotifieritem.cpp:1125
 #, fuzzy
-#| msgctxt "KStatusNotifierItem|"
-#| msgid "Confirm Quit From System Tray"
-msgctxt "KStatusNotifierItem|@title:window"
-msgid "Confirm Quit From System Tray"
-msgstr "Тасдиқ кардани баромад аз лавҳаи низомӣ"
+#~| msgctxt "KStatusNotifierItem|"
+#~| msgid "Confirm Quit From System Tray"
+#~ msgctxt "KStatusNotifierItem|@title:window"
+#~ msgid "Confirm Quit From System Tray"
+#~ msgstr "Тасдиқ кардани баромад аз лавҳаи низомӣ"
 
-#: kstatusnotifieritem.cpp:1126
-#, qt-format
-msgctxt "KStatusNotifierItem|"
-msgid "<qt>Are you sure you want to quit <b>%1</b>?</qt>"
-msgstr "<qt>Шумо дар ҳақиқат мехоҳед, ки аз <b>%1</b> бароед?</qt>"
+#~ msgctxt "KStatusNotifierItem|"
+#~ msgid "<qt>Are you sure you want to quit <b>%1</b>?</qt>"
+#~ msgstr "<qt>Шумо дар ҳақиқат мехоҳед, ки аз <b>%1</b> бароед?</qt>"
 
-#: kstatusnotifieritem.cpp:1131
 #, fuzzy
-#| msgctxt "KStatusNotifierItem|"
-#| msgid "Quit"
-msgctxt "KStatusNotifierItem|@action:button"
-msgid "Quit"
-msgstr "Баромадан"
+#~| msgctxt "KStatusNotifierItem|"
+#~| msgid "Quit"
+#~ msgctxt "KStatusNotifierItem|@action:button"
+#~ msgid "Quit"
+#~ msgstr "Баромадан"
 
 #~ msgctxt "NAME OF TRANSLATORS"
 #~ msgid "Your names"

@@ -39,48 +39,41 @@ msgctxt "KNotificationRestrictions|"
 msgid "Unknown Application"
 msgstr "不明なアプリケーション"
 
-#: kstatusnotifieritem.cpp:514 kstatusnotifieritem.cpp:1112
 #, fuzzy
-#| msgctxt "KStatusNotifierItem|"
-#| msgid "&Minimize"
-msgctxt "KStatusNotifierItem|@action:inmenu"
-msgid "&Minimize"
-msgstr "最小化(&M)"
+#~| msgctxt "KStatusNotifierItem|"
+#~| msgid "&Minimize"
+#~ msgctxt "KStatusNotifierItem|@action:inmenu"
+#~ msgid "&Minimize"
+#~ msgstr "最小化(&M)"
 
-#: kstatusnotifieritem.cpp:851
 #, fuzzy
-#| msgctxt "KStatusNotifierItem|"
-#| msgid "Quit"
-msgctxt "KStatusNotifierItem|@action:inmenu"
-msgid "Quit"
-msgstr "終了"
+#~| msgctxt "KStatusNotifierItem|"
+#~| msgid "Quit"
+#~ msgctxt "KStatusNotifierItem|@action:inmenu"
+#~ msgid "Quit"
+#~ msgstr "終了"
 
-#: kstatusnotifieritem.cpp:1109
 #, fuzzy
-#| msgctxt "KStatusNotifierItem|"
-#| msgid "&Restore"
-msgctxt "KStatusNotifierItem|@action:inmenu"
-msgid "&Restore"
-msgstr "復元(&R)"
+#~| msgctxt "KStatusNotifierItem|"
+#~| msgid "&Restore"
+#~ msgctxt "KStatusNotifierItem|@action:inmenu"
+#~ msgid "&Restore"
+#~ msgstr "復元(&R)"
 
-#: kstatusnotifieritem.cpp:1125
 #, fuzzy
-#| msgctxt "KStatusNotifierItem|"
-#| msgid "Confirm Quit From System Tray"
-msgctxt "KStatusNotifierItem|@title:window"
-msgid "Confirm Quit From System Tray"
-msgstr "システムトレイからの終了の確認"
+#~| msgctxt "KStatusNotifierItem|"
+#~| msgid "Confirm Quit From System Tray"
+#~ msgctxt "KStatusNotifierItem|@title:window"
+#~ msgid "Confirm Quit From System Tray"
+#~ msgstr "システムトレイからの終了の確認"
 
-#: kstatusnotifieritem.cpp:1126
-#, qt-format
-msgctxt "KStatusNotifierItem|"
-msgid "<qt>Are you sure you want to quit <b>%1</b>?</qt>"
-msgstr "<qt>本当に <b>%1</b> を終了しますか？</qt>"
+#~ msgctxt "KStatusNotifierItem|"
+#~ msgid "<qt>Are you sure you want to quit <b>%1</b>?</qt>"
+#~ msgstr "<qt>本当に <b>%1</b> を終了しますか？</qt>"
 
-#: kstatusnotifieritem.cpp:1131
 #, fuzzy
-#| msgctxt "KStatusNotifierItem|"
-#| msgid "Quit"
-msgctxt "KStatusNotifierItem|@action:button"
-msgid "Quit"
-msgstr "終了"
+#~| msgctxt "KStatusNotifierItem|"
+#~| msgid "Quit"
+#~ msgctxt "KStatusNotifierItem|@action:button"
+#~ msgid "Quit"
+#~ msgstr "終了"

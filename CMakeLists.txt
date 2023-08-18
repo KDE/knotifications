@@ -55,15 +55,6 @@ endif()
 
 find_package(Qt6 ${REQUIRED_QT_VERSION} QUIET OPTIONAL_COMPONENTS Qml)
 
-if (NOT APPLE AND NOT WIN32)
-    option(WITHOUT_X11 "Build without X11 support (skips finding X11)." OFF)
-    if(NOT WITHOUT_X11)
-        find_package(X11)
-        set(HAVE_X11 ${X11_FOUND})
-        set(HAVE_XTEST ${X11_XTest_FOUND})
-    endif()
-endif()
-
 if (WIN32)
     find_package(LibSnoreToast)
     find_package(Qt6Network REQUIRED)

@@ -96,16 +96,8 @@ if (TARGET Canberra::Canberra)
     target_link_libraries(KF6Notifications PRIVATE Canberra::Canberra)
 endif()
 
-if(HAVE_X11)
-   target_link_libraries(KF6Notifications PRIVATE ${X11_X11_LIB})
-endif()
-
 if(APPLE)
   target_link_libraries(KF6Notifications PRIVATE "-framework Foundation" "-framework AppKit")
-endif()
-
-if(X11_XTest_FOUND)
-  target_link_libraries(KF6Notifications PRIVATE ${X11_XTest_LIB})
 endif()
 
 ecm_generate_headers(KNotifications_HEADERS

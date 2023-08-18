@@ -21,7 +21,7 @@
 
 #include <canberra.h>
 
-const QString DEFAULT_SOUND_THEME = QStringLiteral("oxygen");
+const QString DEFAULT_SOUND_THEME = QStringLiteral("ocean");
 
 NotifyByAudio::NotifyByAudio(QObject *parent)
     : KNotificationPlugin(parent)

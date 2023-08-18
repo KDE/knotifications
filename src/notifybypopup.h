@@ -60,7 +60,6 @@ private:
     void getAppCaptionAndIconName(const KNotifyConfig &config, QString *appCaption, QString *iconName);
     /*
      * Query the dbus server for notification capabilities
-     * If no DBus server is present, use fallback capabilities for KPassivePopup
      */
     void queryPopupServerCapabilities();
 

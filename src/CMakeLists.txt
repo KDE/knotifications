@@ -80,9 +80,6 @@ ecm_generate_export_header(KF6Notifications
 target_include_directories(KF6Notifications INTERFACE "$<INSTALL_INTERFACE:${KDE_INSTALL_INCLUDEDIR_KF}/KNotifications>")
 
 target_link_libraries(KF6Notifications PUBLIC Qt6::Gui)
-if (TARGET Qt6::Widgets)
-    target_link_libraries(KF6Notifications PUBLIC Qt6::Widgets)
-endif()
 if (TARGET Qt6::DBus)
    target_link_libraries(KF6Notifications PUBLIC Qt6::DBus)
 endif()
@@ -147,7 +144,7 @@ if(BUILD_QCH)
             "${CMAKE_SOURCE_DIR}/Mainpage.dox"
         IMAGE_DIRS "${CMAKE_SOURCE_DIR}/docs/pics"
         LINK_QCHS
-            Qt6Widgets_QCH
+            Qt6Gui_QCH
         INCLUDE_DIRS
             ${CMAKE_CURRENT_BINARY_DIR}
         BLANK_MACROS
@@ -163,7 +160,7 @@ if(BUILD_QCH)
 endif()
 
 include(ECMGeneratePriFile)
-ecm_generate_pri_file(BASE_NAME KNotifications LIB_NAME KF6Notifications DEPS "widgets" FILENAME_VAR PRI_FILENAME INCLUDE_INSTALL_DIR ${KDE_INSTALL_INCLUDEDIR_KF}/KNotifications)
+ecm_generate_pri_file(BASE_NAME KNotifications LIB_NAME KF6Notifications DEPS "gui" FILENAME_VAR PRI_FILENAME INCLUDE_INSTALL_DIR ${KDE_INSTALL_INCLUDEDIR_KF}/KNotifications)
 install(FILES ${PRI_FILENAME} DESTINATION ${ECM_MKSPECS_INSTALL_DIR})
 
 if (ANDROID)

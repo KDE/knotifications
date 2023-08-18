@@ -43,12 +43,10 @@ ecm_setup_version(PROJECT
 set(REQUIRED_QT_VERSION 6.4.0)
 set(CMAKE_AUTORCC TRUE)
 
+find_package(Qt6 ${REQUIRED_QT_VERSION} CONFIG REQUIRED Gui)
+
 if (ANDROID)
-    find_package(Qt6 ${REQUIRED_QT_VERSION} CONFIG REQUIRED Gui)
     find_package(Gradle REQUIRED)
-    find_package(Qt6 ${REQUIRED_QT_VERSION} QUIET OPTIONAL_COMPONENTS Widgets)
-else()
-    find_package(Qt6 ${REQUIRED_QT_VERSION} CONFIG REQUIRED Widgets)
 endif()
 
 if (NOT ANDROID AND NOT WIN32 AND NOT APPLE)
@@ -92,10 +90,6 @@ endif()
 set(HAVE_DBUS FALSE)
 if (TARGET Qt6::DBus)
     set(HAVE_DBUS TRUE)
-endif()
-set(HAVE_WIDGETS FALSE)
-if (TARGET Qt6::Widgets)
-    set(HAVE_WIDGETS TRUE)
 endif()
 
 remove_definitions(-DQT_NO_CAST_FROM_BYTEARRAY)

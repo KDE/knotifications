@@ -7,10 +7,10 @@
 #include <QTimer>
 #include <knotification.h>
 
-#include <QApplication>
 #include <QDBusConnection>
 #include <QDBusMessage>
 #include <QDebug>
+#include <QGuiApplication>
 
 void notificationDBusCall(const QString &iconName, const QString &title, const QString &body, const QStringList &actions, bool persistent = false)
 {
@@ -55,7 +55,7 @@ void notificationDBusCall(const QString &iconName, const QString &title, const Q
 
 int main(int argc, char *argv[])
 {
-    QApplication app(argc, argv);
+    QGuiApplication app(argc, argv);
 
     notificationDBusCall(QStringLiteral("amarok"),
                          QStringLiteral("Testing notification #1"),

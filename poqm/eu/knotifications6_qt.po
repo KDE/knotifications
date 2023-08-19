@@ -32,10 +32,9 @@ msgctxt "KNotificationJobUiDelegate|"
 msgid "%1 (Failed)"
 msgstr "%1 (Huts egin du)"
 
-#: knotificationrestrictions.cpp:183
-msgctxt "KNotificationRestrictions|"
-msgid "Unknown Application"
-msgstr "Aplikazio ezezaguna"
+#~ msgctxt "KNotificationRestrictions|"
+#~ msgid "Unknown Application"
+#~ msgstr "Aplikazio ezezaguna"
 
 #~ msgctxt "KStatusNotifierItem|@action:inmenu"
 #~ msgid "&Minimize"

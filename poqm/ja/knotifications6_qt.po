@@ -34,10 +34,9 @@ msgctxt "KNotificationJobUiDelegate|"
 msgid "%1 (Failed)"
 msgstr ""
 
-#: knotificationrestrictions.cpp:183
-msgctxt "KNotificationRestrictions|"
-msgid "Unknown Application"
-msgstr "不明なアプリケーション"
+#~ msgctxt "KNotificationRestrictions|"
+#~ msgid "Unknown Application"
+#~ msgstr "不明なアプリケーション"
 
 #, fuzzy
 #~| msgctxt "KStatusNotifierItem|"

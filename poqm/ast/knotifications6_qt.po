@@ -19,8 +19,3 @@ msgstr ""
 msgctxt "KNotificationJobUiDelegate|"
 msgid "%1 (Failed)"
 msgstr ""
-
-#: knotificationrestrictions.cpp:183
-msgctxt "KNotificationRestrictions|"
-msgid "Unknown Application"
-msgstr ""

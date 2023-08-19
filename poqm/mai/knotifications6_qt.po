@@ -29,12 +29,11 @@ msgctxt "KNotificationJobUiDelegate|"
 msgid "%1 (Failed)"
 msgstr "%1 (लिंक )"
 
-#: knotificationrestrictions.cpp:183
 #, fuzzy
-#| msgid "KDE Application"
-msgctxt "KNotificationRestrictions|"
-msgid "Unknown Application"
-msgstr "केडीइ अनुप्रयोग"
+#~| msgid "KDE Application"
+#~ msgctxt "KNotificationRestrictions|"
+#~ msgid "Unknown Application"
+#~ msgstr "केडीइ अनुप्रयोग"
 
 #, fuzzy
 #~| msgid "&Minimize"

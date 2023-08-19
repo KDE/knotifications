@@ -30,10 +30,9 @@ msgid "%1 (Failed)"
 msgstr ""
 
 # >> @item in message source specification
-#: knotificationrestrictions.cpp:183
-msgctxt "KNotificationRestrictions|"
-msgid "Unknown Application"
-msgstr "nepoznat program"
+#~ msgctxt "KNotificationRestrictions|"
+#~ msgid "Unknown Application"
+#~ msgstr "nepoznat program"
 
 #, fuzzy
 #~| msgctxt "KStatusNotifierItem|"

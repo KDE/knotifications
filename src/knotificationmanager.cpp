@@ -14,7 +14,6 @@
 
 #include <config-knotifications.h>
 
-#include <KSandbox>
 #include <QFileInfo>
 #include <QHash>
 
@@ -73,7 +72,7 @@ KNotificationManager::KNotificationManager()
     d->notifyPlugins.clear();
 
 #ifdef QT_DBUS_LIB
-    if (KSandbox::isInside()) {
+    if (isInsideSandbox()) {
         QDBusConnectionInterface *interface = QDBusConnection::sessionBus().interface();
         d->portalDBusServiceExists = interface->isServiceRegistered(QStringLiteral("org.freedesktop.portal.Desktop"));
     }
@@ -314,6 +313,15 @@ void KNotificationManager::reparseConfiguration(const QString &app)
     if (!d->dirtyConfigCache.contains(app)) {
         d->dirtyConfigCache << app;
     }
+}
+
+bool KNotificationManager::isInsideSandbox()
+{
+    // logic is taken from KSandbox::isInside()
+    static const bool isFlatpak = QFileInfo::exists(QStringLiteral("/.flatpak-info"));
+    static const bool isSnap = qEnvironmentVariableIsSet("SNAP");
+
+    return isFlatpak || isSnap;
 }
 
 #include "moc_knotificationmanager_p.cpp"

@@ -62,6 +62,8 @@ private Q_SLOTS:
     void reparseConfiguration(const QString &app);
 
 private:
+    bool isInsideSandbox();
+
     struct Private;
     std::unique_ptr<Private> const d;
     KNotificationManager();

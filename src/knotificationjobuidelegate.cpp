@@ -60,13 +60,12 @@ void KNotificationJobUiDelegate::showErrorMessage()
     d->showNotification(KNotification::Error, job()->errorString());
 }
 
-void KNotificationJobUiDelegate::slotWarning(KJob *job, const QString &plain, const QString &rich)
+void KNotificationJobUiDelegate::slotWarning(KJob *job, const QString &message)
 {
     Q_UNUSED(job);
-    Q_UNUSED(rich);
 
     if (isAutoErrorHandlingEnabled()) {
-        d->showNotification(KNotification::Notification, plain);
+        d->showNotification(KNotification::Notification, message);
     }
 }
 

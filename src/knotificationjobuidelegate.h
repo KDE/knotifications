@@ -49,7 +49,7 @@ public:
 
 protected Q_SLOTS:
     bool setJob(KJob *job) override;
-    void slotWarning(KJob *job, const QString &plain, const QString &rich) override;
+    void slotWarning(KJob *job, const QString &message) override;
 
 private:
     QScopedPointer<KNotificationJobUiDelegatePrivate> d;

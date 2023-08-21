@@ -32,11 +32,3 @@ msgstr ""
 msgctxt "KNotificationJobUiDelegate|"
 msgid "%1 (Failed)"
 msgstr ""
-
-#~ msgctxt "KNotificationRestrictions|"
-#~ msgid "Unknown Application"
-#~ msgstr "Ukjent program"
-
-#~ msgctxt "KStatusNotifierItem|"
-#~ msgid "<qt>Are you sure you want to quit <b>%1</b>?</qt>"
-#~ msgstr "<qt>Vil du avslutte <b>%1</b>?</qt>"

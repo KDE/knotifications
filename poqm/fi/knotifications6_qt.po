@@ -38,12 +38,9 @@ msgstr ""
 "X-POT-Import-Date: 2013-01-13 20:43:21+0000\n"
 "X-Qt-Contexts: true\n"
 
-#. Job name, e.g. Copying has failed
-#: knotificationjobuidelegate.cpp:28
-#, qt-format
-msgctxt "KNotificationJobUiDelegate|"
-msgid "%1 (Failed)"
-msgstr "%1 (epäonnistui)"
+#~ msgctxt "KNotificationJobUiDelegate|"
+#~ msgid "%1 (Failed)"
+#~ msgstr "%1 (epäonnistui)"
 
 #~ msgctxt "KNotificationRestrictions|"
 #~ msgid "Unknown Application"

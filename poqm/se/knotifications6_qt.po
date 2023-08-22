@@ -20,13 +20,6 @@ msgstr ""
 "X-Text-Markup: qtrich\n"
 "X-Qt-Contexts: true\n"
 
-#. Job name, e.g. Copying has failed
-#: knotificationjobuidelegate.cpp:28
-#, qt-format
-msgctxt "KNotificationJobUiDelegate|"
-msgid "%1 (Failed)"
-msgstr ""
-
 #, fuzzy
 #~ msgctxt "KNotificationRestrictions|"
 #~ msgid "Unknown Application"

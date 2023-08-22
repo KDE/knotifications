@@ -27,12 +27,9 @@ msgstr ""
 "X-Accelerator-Marker: &\n"
 "X-Qt-Contexts: true\n"
 
-#. Job name, e.g. Copying has failed
-#: knotificationjobuidelegate.cpp:28
-#, qt-format
-msgctxt "KNotificationJobUiDelegate|"
-msgid "%1 (Failed)"
-msgstr "%1 (ha fallat)"
+#~ msgctxt "KNotificationJobUiDelegate|"
+#~ msgid "%1 (Failed)"
+#~ msgstr "%1 (ha fallat)"
 
 #~ msgctxt "KNotificationRestrictions|"
 #~ msgid "Unknown Application"

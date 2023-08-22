@@ -30,12 +30,9 @@ msgstr ""
 "X-Crowdin-File: /main/be/knotifications/knotifications5_qt.po\n"
 "X-Crowdin-File-ID: 8137\n"
 
-#. Job name, e.g. Copying has failed
-#: knotificationjobuidelegate.cpp:28
-#, qt-format
-msgctxt "KNotificationJobUiDelegate|"
-msgid "%1 (Failed)"
-msgstr "%1 (Памылка)"
+#~ msgctxt "KNotificationJobUiDelegate|"
+#~ msgid "%1 (Failed)"
+#~ msgstr "%1 (Памылка)"
 
 #~ msgctxt "KNotificationRestrictions|"
 #~ msgid "Unknown Application"

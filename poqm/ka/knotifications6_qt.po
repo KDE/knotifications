@@ -17,12 +17,9 @@ msgstr ""
 "X-Generator: Poedit 3.0.1\n"
 "X-Qt-Contexts: true\n"
 
-#. Job name, e.g. Copying has failed
-#: knotificationjobuidelegate.cpp:28
-#, qt-format
-msgctxt "KNotificationJobUiDelegate|"
-msgid "%1 (Failed)"
-msgstr "%1 (შეცდომა)"
+#~ msgctxt "KNotificationJobUiDelegate|"
+#~ msgid "%1 (Failed)"
+#~ msgstr "%1 (შეცდომა)"
 
 #~ msgctxt "KNotificationRestrictions|"
 #~ msgid "Unknown Application"

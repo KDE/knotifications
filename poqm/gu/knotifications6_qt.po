@@ -19,13 +19,11 @@ msgstr ""
 "X-Generator: KBabel 1.11.4\n"
 "X-Qt-Contexts: true\n"
 
-#. Job name, e.g. Copying has failed
-#: knotificationjobuidelegate.cpp:28
-#, fuzzy, qt-format
-#| msgid "%1 (Link)"
-msgctxt "KNotificationJobUiDelegate|"
-msgid "%1 (Failed)"
-msgstr "%1 (કડી)"
+#, fuzzy
+#~| msgid "%1 (Link)"
+#~ msgctxt "KNotificationJobUiDelegate|"
+#~ msgid "%1 (Failed)"
+#~ msgstr "%1 (કડી)"
 
 #, fuzzy
 #~| msgid "Unknown Application"

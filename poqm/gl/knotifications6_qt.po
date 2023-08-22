@@ -26,12 +26,9 @@ msgstr ""
 "X-Generator: Lokalize 22.12.3\n"
 "X-Qt-Contexts: true\n"
 
-#. Job name, e.g. Copying has failed
-#: knotificationjobuidelegate.cpp:28
-#, qt-format
-msgctxt "KNotificationJobUiDelegate|"
-msgid "%1 (Failed)"
-msgstr "%1 (fallou)"
+#~ msgctxt "KNotificationJobUiDelegate|"
+#~ msgid "%1 (Failed)"
+#~ msgstr "%1 (fallou)"
 
 #~ msgctxt "KNotificationRestrictions|"
 #~ msgid "Unknown Application"

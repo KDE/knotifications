@@ -19,13 +19,3 @@ msgstr ""
 "X-Accelerator-Marker: &\n"
 "X-Text-Markup: qtrich\n"
 "X-Qt-Contexts: true\n"
-
-#, fuzzy
-#~ msgctxt "KNotificationRestrictions|"
-#~ msgid "Unknown Application"
-#~ msgstr "Amas prográmma"
-
-#, fuzzy
-#~ msgctxt "KStatusNotifierItem|"
-#~ msgid "<qt>Are you sure you want to quit <b>%1</b>?</qt>"
-#~ msgstr "<qt>Háliidatgo duođaid heaittihit <b>%1</b>?</qt>"

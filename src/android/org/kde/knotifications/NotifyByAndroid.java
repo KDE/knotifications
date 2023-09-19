@@ -165,10 +165,20 @@ public class NotifyByAndroid extends BroadcastReceiver
             }
         }
 
+        // pending intent flags backward compatibility
+        int PENDING_INTENT_FLAG_IMMUTABLE = 0;
+        int PENDING_INTENT_FLAG_MUTABLE = 0;
+        if (Build.VERSION.SDK_INT >= 23) {
+            PENDING_INTENT_FLAG_IMMUTABLE = PendingIntent.FLAG_IMMUTABLE;
+        }
+        if (Build.VERSION.SDK_INT >= 31) {
+            PENDING_INTENT_FLAG_MUTABLE = PendingIntent.FLAG_MUTABLE;
+        }
+
         // taping the notification shows the app
         Intent intent = new Intent(m_ctx.getPackageName() + NOTIFICATION_OPENED);
         intent.putExtra(NOTIFICATION_ID_EXTRA, notification.id);
-        PendingIntent contentIntent = PendingIntent.getBroadcast(m_ctx, m_uniquePendingIntentId++, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+        PendingIntent contentIntent = PendingIntent.getBroadcast(m_ctx, m_uniquePendingIntentId++, intent, PendingIntent.FLAG_UPDATE_CURRENT | PENDING_INTENT_FLAG_IMMUTABLE);
         builder.setContentIntent(contentIntent);
 
         // actions
@@ -177,7 +187,7 @@ public class NotifyByAndroid extends BroadcastReceiver
             Intent actionIntent = new Intent(m_ctx.getPackageName() + NOTIFICATION_ACTION);
             actionIntent.putExtra(NOTIFICATION_ID_EXTRA, notification.id);
             actionIntent.putExtra(NOTIFICATION_ACTION_ID_EXTRA, actionId);
-            PendingIntent pendingIntent = PendingIntent.getBroadcast(m_ctx, m_uniquePendingIntentId++, actionIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+            PendingIntent pendingIntent = PendingIntent.getBroadcast(m_ctx, m_uniquePendingIntentId++, actionIntent, PendingIntent.FLAG_UPDATE_CURRENT | PENDING_INTENT_FLAG_IMMUTABLE);
             Notification.Action action = new Notification.Action.Builder(0, actionName, pendingIntent).build();
             builder.addAction(action);
             ++actionId;
@@ -187,7 +197,7 @@ public class NotifyByAndroid extends BroadcastReceiver
         if (notification.inlineReplyLabel != null) {
             Intent replyIntent = new Intent(m_ctx.getPackageName() + NOTIFICATION_REPLIED);
             replyIntent.putExtra(NOTIFICATION_ID_EXTRA, notification.id);
-            PendingIntent pendingReplyIntent = PendingIntent.getBroadcast(m_ctx, m_uniquePendingIntentId++, replyIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+            PendingIntent pendingReplyIntent = PendingIntent.getBroadcast(m_ctx, m_uniquePendingIntentId++, replyIntent, PendingIntent.FLAG_UPDATE_CURRENT | PENDING_INTENT_FLAG_MUTABLE);
 
             RemoteInput input = new RemoteInput.Builder(REMOTE_INPUT_KEY)
                 .setAllowFreeFormInput(true)
@@ -206,7 +216,7 @@ public class NotifyByAndroid extends BroadcastReceiver
             deleteIntent.putExtra(NOTIFICATION_GROUP_EXTRA, notification.group);
         }
         Log.i(TAG, deleteIntent.getExtras() + " " + notification.id);
-        builder.setDeleteIntent(PendingIntent.getBroadcast(m_ctx, m_uniquePendingIntentId++, deleteIntent, PendingIntent.FLAG_UPDATE_CURRENT));
+        builder.setDeleteIntent(PendingIntent.getBroadcast(m_ctx, m_uniquePendingIntentId++, deleteIntent, PendingIntent.FLAG_UPDATE_CURRENT | PENDING_INTENT_FLAG_IMMUTABLE));
 
         m_notificationManager.notify(notification.id, builder.build());
     }
@@ -311,10 +321,15 @@ public class NotifyByAndroid extends BroadcastReceiver
         builder.setGroupSummary(true);
 
         // monitor for deletion (which happens when the last child notification is closed)
+        int PENDING_INTENT_FLAG_IMMUTABLE = 0;
+        if (Build.VERSION.SDK_INT >= 23) {
+            PENDING_INTENT_FLAG_IMMUTABLE = PendingIntent.FLAG_IMMUTABLE;
+        }
+
         Intent deleteIntent = new Intent(m_ctx.getPackageName() + NOTIFICATION_DELETED);
         deleteIntent.putExtra(NOTIFICATION_GROUP_EXTRA, notification.group);
         deleteIntent.putExtra(NOTIFICATION_ID_EXTRA, group.groupId);
-        builder.setDeleteIntent(PendingIntent.getBroadcast(m_ctx, m_uniquePendingIntentId++, deleteIntent, PendingIntent.FLAG_UPDATE_CURRENT));
+        builder.setDeleteIntent(PendingIntent.getBroadcast(m_ctx, m_uniquePendingIntentId++, deleteIntent, PendingIntent.FLAG_UPDATE_CURRENT | PENDING_INTENT_FLAG_IMMUTABLE));
 
         // try to stay out of the normal id space for regular notifications
         m_notificationManager.notify(group.groupId, builder.build());

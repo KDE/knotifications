@@ -7,6 +7,7 @@
 #include "knotificationqmlplugin.h"
 
 #include <KNotification>
+#include <KNotificationPermission>
 #include <KNotificationReplyAction>
 
 class NotificationWrapper : public KNotification
@@ -29,11 +30,33 @@ public:
     }
 };
 
+class NotificationPermissionWrapper
+{
+    Q_GADGET
+public:
+    Q_INVOKABLE bool checkPermission()
+    {
+        return KNotificationPermission::checkPermission() == Qt::PermissionStatus::Granted;
+    }
+
+    Q_INVOKABLE void requestPermission(const QJSValue &callback)
+    {
+        KNotificationPermission::requestPermission(m_engine, [&callback](Qt::PermissionStatus status) {
+            callback.call({status == Qt::PermissionStatus::Granted});
+        });
+    }
+
+    QQmlEngine *m_engine = nullptr;
+};
+
 void KNotificationQmlPlugin::registerTypes(const char *uri)
 {
     Q_ASSERT(QLatin1String(uri) == QLatin1String("org.kde.notification"));
     qmlRegisterType<NotificationWrapper>(uri, 1, 0, "Notification");
     qmlRegisterUncreatableType<KNotificationReplyAction>(uri, 1, 0, "NotificationReplyAction", {});
+    qmlRegisterSingletonType("org.kde.notification", 1, 0, "NotificationPermission", [](QQmlEngine *engine, QJSEngine *) -> QJSValue {
+        return engine->toScriptValue(NotificationPermissionWrapper{engine});
+    });
 }
 
 #include "knotificationqmlplugin.moc"

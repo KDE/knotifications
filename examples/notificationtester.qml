@@ -141,10 +141,17 @@ ApplicationWindow {
             }
         }
 
+        Button {
+            text: "Request Permission"
+            onClicked: NotificationPermission.requestPermission(success => { log.append("Permission request succeeded: " + success); })
+        }
+
         TextArea {
             Layout.fillWidth: true
             Layout.fillHeight: true
             id: log
         }
+
+        Component.onCompleted: log.append("Has notification permission: " + NotificationPermission.checkPermission())
     }
 }

@@ -13,6 +13,7 @@ target_sources(KF6Notifications PRIVATE
   knotification.cpp
   knotificationreplyaction.cpp
   knotificationmanager.cpp
+  knotificationpermission.cpp
 
   knotifyconfig.cpp
   knotificationplugin.cpp
@@ -85,6 +86,9 @@ endif()
 target_link_libraries(KF6Notifications PRIVATE
    KF6::ConfigCore
 )
+if (ANDROID)
+    target_link_libraries(KF6Notifications PRIVATE Qt::CorePrivate)
+endif()
 
 if (TARGET SnoreToast::SnoreToastActions)
   target_link_libraries(KF6Notifications PRIVATE Qt6::Network SnoreToast::SnoreToastActions)
@@ -101,6 +105,7 @@ endif()
 ecm_generate_headers(KNotifications_HEADERS
   HEADER_NAMES
   KNotification
+  KNotificationPermission
   KNotificationReplyAction
   KNotifyConfig
 

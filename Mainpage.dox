@@ -90,6 +90,7 @@ This portion of code will fire the event for the "contactOnline" event
     connect(notification, QOverload<unsigned int>::of(&KNotification::activated), contact, &Contact::slotOpenChat);
 
     notification->sendEvent();
+    // Note: notification autodeletes itself with deleteLater() when no longer needed
 @endcode
 */
 

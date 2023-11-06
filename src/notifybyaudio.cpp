@@ -61,7 +61,7 @@ NotifyByAudio::NotifyByAudio(QObject *parent)
         }
     });
 
-    const KConfigGroup group = m_soundThemeWatcher->config()->group("Sounds");
+    const KConfigGroup group = m_soundThemeWatcher->config()->group(QStringLiteral("Sounds"));
     m_soundTheme = group.readEntry("Theme", DEFAULT_SOUND_THEME);
 }
 

@@ -40,6 +40,7 @@ private Q_SLOTS:
 private:
     static void ca_finish_callback(ca_context *c, uint32_t id, int error_code, void *userdata);
 
+    ca_context *context();
     void finishNotification(KNotification *notification, quint32 id);
 
     bool playSound(quint32 id, const QString &eventName, const QUrl &fallbackUrl);

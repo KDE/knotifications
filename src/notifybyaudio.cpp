@@ -29,11 +29,36 @@ NotifyByAudio::NotifyByAudio(QObject *parent)
 {
     qRegisterMetaType<uint32_t>("uint32_t");
 
+    m_soundThemeWatcher = KConfigWatcher::create(KSharedConfig::openConfig(QStringLiteral("kdeglobals")));
+    connect(m_soundThemeWatcher.get(), &KConfigWatcher::configChanged, this, [this](const KConfigGroup &group, const QByteArrayList &names) {
+        if (group.name() == QLatin1String("Sounds") && names.contains(QByteArrayLiteral("Theme"))) {
+            m_soundTheme = group.readEntry("Theme", DEFAULT_SOUND_THEME);
+        }
+    });
+
+    const KConfigGroup group = m_soundThemeWatcher->config()->group(QStringLiteral("Sounds"));
+    m_soundTheme = group.readEntry("Theme", DEFAULT_SOUND_THEME);
+}
+
+NotifyByAudio::~NotifyByAudio()
+{
+    if (m_context) {
+        ca_context_destroy(m_context);
+    }
+    m_context = nullptr;
+}
+
+ca_context *NotifyByAudio::context()
+{
+    if (m_context) {
+        return m_context;
+    }
+
     int ret = ca_context_create(&m_context);
     if (ret != CA_SUCCESS) {
         qCWarning(LOG_KNOTIFICATIONS) << "Failed to initialize canberra context for audio notification:" << ca_strerror(ret);
         m_context = nullptr;
-        return;
+        return nullptr;
     }
 
     QString desktopFileName = QGuiApplication::desktopFileName();
@@ -54,23 +79,7 @@ NotifyByAudio::NotifyByAudio(QObject *parent)
         qCWarning(LOG_KNOTIFICATIONS) << "Failed to set application properties on canberra context for audio notification:" << ca_strerror(ret);
     }
 
-    m_soundThemeWatcher = KConfigWatcher::create(KSharedConfig::openConfig(QStringLiteral("kdeglobals")));
-    connect(m_soundThemeWatcher.get(), &KConfigWatcher::configChanged, this, [this](const KConfigGroup &group, const QByteArrayList &names) {
-        if (group.name() == QLatin1String("Sounds") && names.contains(QByteArrayLiteral("Theme"))) {
-            m_soundTheme = group.readEntry("Theme", DEFAULT_SOUND_THEME);
-        }
-    });
-
-    const KConfigGroup group = m_soundThemeWatcher->config()->group(QStringLiteral("Sounds"));
-    m_soundTheme = group.readEntry("Theme", DEFAULT_SOUND_THEME);
-}
-
-NotifyByAudio::~NotifyByAudio()
-{
-    if (m_context) {
-        ca_context_destroy(m_context);
-    }
-    m_context = nullptr;
+    return m_context;
 }
 
 void NotifyByAudio::notify(KNotification *notification, const KNotifyConfig &notifyConfig)
@@ -114,7 +123,7 @@ void NotifyByAudio::notify(KNotification *notification, const KNotifyConfig &not
 
 bool NotifyByAudio::playSound(quint32 id, const QString &soundName, const QUrl &fallbackUrl)
 {
-    if (!m_context) {
+    if (!context()) {
         qCWarning(LOG_KNOTIFICATIONS) << "Cannot play notification sound without canberra context";
         return false;
     }
@@ -132,7 +141,7 @@ bool NotifyByAudio::playSound(quint32 id, const QString &soundName, const QUrl &
     // dropped after some time or when the cache is under pressure.
     ca_proplist_sets(props, CA_PROP_CANBERRA_CACHE_CONTROL, "volatile");
 
-    int ret = ca_context_play_full(m_context, id, props, &ca_finish_callback, this);
+    int ret = ca_context_play_full(context(), id, props, &ca_finish_callback, this);
 
     ca_proplist_destroy(props);
 

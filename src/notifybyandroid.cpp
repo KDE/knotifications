@@ -50,7 +50,7 @@ static void notificationInlineReply(JNIEnv *env, jobject that, jint id, jstring 
 
 static const JNINativeMethod methods[] = {
     {"notificationFinished", "(I)V", (void *)notificationFinished},
-    {"notificationActionInvoked", "(II)V", (void *)notificationActionInvoked},
+    {"notificationActionInvoked", "(ILjava/lang/String;)V", (void *)notificationActionInvoked},
     {"notificationInlineReply", "(ILjava/lang/String;)V", (void *)notificationInlineReply},
 };
 

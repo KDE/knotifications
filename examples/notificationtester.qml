@@ -160,10 +160,14 @@ ApplicationWindow {
             onClicked: NotificationPermission.requestPermission(success => { log.append("Permission request succeeded: " + success); })
         }
 
-        TextArea {
+        ScrollView {
             Layout.fillWidth: true
             Layout.fillHeight: true
-            id: log
+
+            TextArea {
+                id: log
+                wrapMode: TextEdit.Wrap
+            }
         }
 
         Component.onCompleted: log.append("Has notification permission: " + NotificationPermission.checkPermission())

@@ -228,7 +228,7 @@ KNotificationAction *KNotification::addAction(const QString &label)
     return action;
 }
 
-void KNotification::setActionsQml(QList<KNotificationAction *> actions)
+void KNotification::setActions(const QList<KNotificationAction *> &actions)
 {
     if (actions == d->actions) {
         return;
@@ -291,7 +291,7 @@ KNotificationAction *KNotification::addDefaultAction(const QString &label)
     return d->defaultAction;
 }
 
-void KNotification::setDefaultActionQml(KNotificationAction *defaultAction)
+void KNotification::setDefaultAction(KNotificationAction *defaultAction)
 {
     if (defaultAction == d->defaultAction) {
         return;

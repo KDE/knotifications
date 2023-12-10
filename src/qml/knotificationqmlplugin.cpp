@@ -15,7 +15,7 @@ class NotificationWrapper : public KNotification
     Q_OBJECT
     Q_PROPERTY(KNotificationReplyAction *replyAction READ replyActionFactory CONSTANT)
     Q_PROPERTY(QQmlListProperty<KNotificationAction> actions READ actionsProperty NOTIFY actionsChanged)
-    Q_PROPERTY(KNotificationAction *defaultAction READ defaultAction WRITE setDefaultActionQml NOTIFY defaultActionChanged)
+    Q_PROPERTY(KNotificationAction *defaultAction READ defaultAction WRITE setDefaultAction NOTIFY defaultActionChanged)
 public:
     explicit NotificationWrapper(QObject *parent = nullptr)
         : KNotification(QString(), KNotification::CloseOnTimeout, parent)
@@ -63,7 +63,7 @@ public:
         auto notification = static_cast<NotificationWrapper *>(list->object);
         auto actions = notification->actions();
         actions << value;
-        notification->setActionsQml(actions);
+        notification->setActions(actions);
     }
 
     static KNotificationAction *actionAt(QQmlListProperty<KNotificationAction> *list, qsizetype index)

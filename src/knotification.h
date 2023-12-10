@@ -669,9 +669,29 @@ private:
      */
     KNOTIFICATIONS_NO_EXPORT void deref();
 
-    // Like setActions, but doesn't take ownership
-    void setActionsQml(QList<KNotificationAction *> actions);
-    void setDefaultActionQml(KNotificationAction *action);
+    /**
+     * Sets the @p actions in the notification.
+     *
+     * Note the @p actions will not get reparented.
+     *
+     * @see addAction
+     *
+     * @since 6.0
+     */
+    void setActions(const QList<KNotificationAction *> &actions);
+
+    /**
+     * Sets the default action in the notification
+     *
+     * @since 6.0
+     */
+    void setDefaultAction(KNotificationAction *action);
+
+    /**
+     * @returns a list with all the actions
+     *
+     * @since 6.0
+     */
     QList<KNotificationAction *> actions() const;
 
     static QString standardEventToEventId(StandardEvent event);

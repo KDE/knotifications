@@ -3,20 +3,22 @@
 # This file is distributed under the same license as the kdelibs4 package.
 # Andhika Padmawan <andhika.padmawan@gmail.com>, 2010-2014.
 # Wantoyo <wantoyek@gmail.com>, 2018, 2019, 2020, 2021.
+# SPDX-FileCopyrightText: 2023 Linerly <linerly@linerly.xyz>
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: kdelibs4\n"
 "Report-Msgid-Bugs-To: http://bugs.kde.org\n"
 "POT-Creation-Date: 2014-03-23 01:50+0000\n"
-"PO-Revision-Date: 2021-02-10 10:52+0700\n"
-"Last-Translator: Wantoyo <wantoyek@gmail.com>\n"
+"PO-Revision-Date: 2023-11-12 09:36+0700\n"
+"Last-Translator: Linerly <linerly@linerly.xyz>\n"
 "Language-Team: Indonesian <kde-i18n-doc@kde.org>\n"
 "Language: id\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Lokalize 23.08.2\n"
 "X-Qt-Contexts: true\n"
 
 #. Job name, e.g. Copying has failed
@@ -55,15 +57,12 @@ msgstr "Konfirmasi Berhenti Dari System Tray"
 #, qt-format
 msgctxt "KStatusNotifierItem|"
 msgid "<qt>Are you sure you want to quit <b>%1</b>?</qt>"
-msgstr "<qt>Apakah kamu yakin ingin memberhentikan <b>%1</b>?</qt>"
+msgstr "<qt>Apakah Anda yakin ingin memberhentikan <b>%1</b>?</qt>"
 
 #: kstatusnotifieritem.cpp:1125
-#, fuzzy
-#| msgctxt "KStatusNotifierItem|@action:inmenu"
-#| msgid "Quit"
 msgctxt "KStatusNotifierItem|@action:button"
 msgid "Quit"
-msgstr "Berhenti"
+msgstr "Hentikan"
 
 #~ msgctxt "NAME OF TRANSLATORS"
 #~ msgid "Your names"

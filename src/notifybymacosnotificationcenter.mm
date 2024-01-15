@@ -52,50 +52,7 @@ private:
     qCDebug(LOG_KNOTIFICATIONS) << "Send notification " << [notification.userInfo[@"id"] intValue];
 }
 
-- (void) userNotificationCenter:(NSUserNotificationCenter *)center didActivateNotification:(NSUserNotification *)notification
-{
-    Q_UNUSED(center);
-    qCDebug(LOG_KNOTIFICATIONS) << "User clicked on notification "
-        << [notification.userInfo[@"id"] intValue]
-        << ", internal Id: "
-        << [notification.userInfo[@"internalId"] intValue];
 
-    switch (notification.activationType) {
-    case NSUserNotificationActivationTypeReplied:
-        qCDebug(LOG_KNOTIFICATIONS) << "Replied clicked";
-        break;
-    case NSUserNotificationActivationTypeContentsClicked: {
-            qCDebug(LOG_KNOTIFICATIONS) << "Content clicked";
-            KNotification *originNotification = MacOSNotificationCenterPrivate::instance()->m_notifications.value([notification.userInfo[@"internalId"] intValue]);
-            if (!originNotification || originNotification->defaultAction().isNull()) {
-                break;
-            }
-            Q_EMIT originNotification->activate();
-        }
-        break;
-    case NSUserNotificationActivationTypeActionButtonClicked: {
-            qCDebug(LOG_KNOTIFICATIONS) << "Main action clicked";
-            KNotification *originNotification = MacOSNotificationCenterPrivate::instance()->m_notifications.value([notification.userInfo[@"internalId"] intValue]);
-            if (!originNotification) {
-                break;
-            }
-            Q_EMIT originNotification->activate(1);
-        }
-        break;
-    case NSUserNotificationActivationTypeAdditionalActionClicked: {
-            qCDebug(LOG_KNOTIFICATIONS) << "Additional action clicked";
-            KNotification *originNotification = MacOSNotificationCenterPrivate::instance()->m_notifications.value([notification.userInfo[@"internalId"] intValue]);
-            if (!originNotification) {
-                break;
-            }
-            Q_EMIT originNotification->activate([notification.additionalActivationAction.identifier intValue] + 1);
-        }
-        break;
-    default:
-        qCDebug(LOG_KNOTIFICATIONS) << "Other clicked";
-        break;
-    }
-}
 @end
 
 MacOSNotificationCenterPrivate *MacOSNotificationCenterPrivate::m_instance = nullptr;
@@ -179,8 +136,8 @@ void NotifyByMacOSNotificationCenter::notify(KNotification *notification, const 
         // [osxNotification setValue:[NSNumber numberWithBool:YES] forKey: @"_alwaysShowAlternateActionMenu"];
 
         // Assign first action to action button
-        if (notification->actions().length() > 0) {
-            osxNotification.actionButtonTitle = notification->actions().at(0).toNSString();
+        if (!notification->actions().empty()) {
+            osxNotification.actionButtonTitle = notification->actions().at(0)->label().toNSString();
         }
 
         // Construct a list for all actions left for additional buttons
@@ -188,7 +145,7 @@ void NotifyByMacOSNotificationCenter::notify(KNotification *notification, const 
         for (int index = 1; index < notification->actions().length(); index++) {
             NSUserNotificationAction *action =
                 [NSUserNotificationAction actionWithIdentifier: [NSString stringWithFormat:@"%d", index]
-                                          title: notification->actions().at(index).toNSString()];
+                                          title: notification->actions().at(index)->label().toNSString()];
             [actions addObject: action];
         }
         osxNotification.additionalActions = actions;

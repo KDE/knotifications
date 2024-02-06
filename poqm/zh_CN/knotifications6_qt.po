@@ -12,5 +12,5 @@ msgstr ""
 "Project-Id-Version: kdeorg\n"
 "Language-Team: Chinese Simplified\n"
 "Language: zh_CN\n"
-"PO-Revision-Date: 2024-01-21 14:11\n"
+"PO-Revision-Date: 2024-02-05 11:37\n"
 

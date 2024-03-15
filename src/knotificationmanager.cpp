@@ -35,6 +35,7 @@
 #else
 #include "notifybypopup.h"
 #include "notifybyportal.h"
+#include "notifybyexecute.h"
 #endif
 #include "debug_p.h"
 
@@ -126,6 +127,11 @@ KNotificationPlugin *KNotificationManager::pluginForAction(const QString &action
     } else if (action == QLatin1String("Sound")) {
 #if defined(HAVE_CANBERRA)
         plugin = new NotifyByAudio(this);
+        addPlugin(plugin);
+#endif
+    } else if (action == QLatin1String("Execute")) {
+#if !defined(Q_OS_ANDROID)
+        plugin = new NotifyByExecute(this);
         addPlugin(plugin);
 #endif
     }

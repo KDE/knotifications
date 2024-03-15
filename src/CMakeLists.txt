@@ -33,6 +33,8 @@ if (ANDROID)
         notifybyandroid.cpp
         knotifications.qrc
     )
+else()
+    target_sources(KF6Notifications PRIVATE notifybyexecute.cpp)
 endif()
 
 if (WITH_SNORETOAST)
@@ -82,6 +84,9 @@ target_include_directories(KF6Notifications INTERFACE "$<INSTALL_INTERFACE:${KDE
 target_link_libraries(KF6Notifications PUBLIC Qt6::Gui)
 if (TARGET Qt6::DBus)
    target_link_libraries(KF6Notifications PUBLIC Qt6::DBus)
+endif()
+if (TARGET KF6::CoreAddons)
+    target_link_libraries(KF6Notifications PRIVATE KF6::CoreAddons)
 endif()
 target_link_libraries(KF6Notifications PRIVATE
    KF6::ConfigCore

@@ -48,6 +48,8 @@ find_package(Qt6 ${REQUIRED_QT_VERSION} CONFIG REQUIRED Gui)
 
 if (ANDROID)
     find_package(Gradle REQUIRED)
+else()
+    find_package(KF6CoreAddons ${KF_DEP_VERSION} REQUIRED)
 endif()
 
 if (NOT ANDROID AND NOT WIN32 AND NOT APPLE)

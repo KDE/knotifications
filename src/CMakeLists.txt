@@ -1,6 +1,8 @@
 add_library(KF6Notifications)
 add_library(KF6::Notifications ALIAS KF6Notifications)
 
+qt_extract_metatypes(KF6Notifications)
+
 set_target_properties(KF6Notifications PROPERTIES
     VERSION     ${KNOTIFICATIONS_VERSION}
     SOVERSION   ${KNOTIFICATIONS_SOVERSION}

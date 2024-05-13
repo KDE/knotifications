@@ -188,14 +188,14 @@ void NotifyBySnore::notifyDeferred(KNotification *notification)
         // add actions if any
 
         const auto actions = notification->actions();
-        QString actionsString;
+        QStringList actionLabels;
 
         for (KNotificationAction *action : actions) {
             action->setId(action->label());
-            actionsString += QLatin1Char(';') + action->label();
+            actionLabels << action->label();
         }
 
-        snoretoastArgsList << QStringLiteral("-b") << actionsString;
+        snoretoastArgsList << QStringLiteral("-b") << actionLabels.join(QLatin1Char(';'));
     }
 
     QProcess *snoretoastProcess = new QProcess();

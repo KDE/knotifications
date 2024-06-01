@@ -50,8 +50,17 @@ if (ANDROID)
     find_package(Gradle REQUIRED)
 endif()
 
-if (NOT ANDROID AND NOT WIN32 AND NOT APPLE)
+# shall we use DBus?
+# enabled per default on Linux & BSD systems
+set(USE_DBUS_DEFAULT OFF)
+if(UNIX AND NOT APPLE AND NOT ANDROID AND NOT HAIKU)
+    set(USE_DBUS_DEFAULT ON)
+endif()
+option(USE_DBUS "Build components using DBus" ${USE_DBUS_DEFAULT})
+if(USE_DBUS)
     find_package(Qt6 ${REQUIRED_QT_VERSION} CONFIG REQUIRED DBus)
+    set(HAVE_DBUS TRUE)
+    add_definitions(-DHAVE_DBUS)
 endif()
 
 find_package(Qt6 ${REQUIRED_QT_VERSION} QUIET OPTIONAL_COMPONENTS Qml)
@@ -76,11 +85,6 @@ if (NOT APPLE AND NOT ANDROID AND NOT WIN32 OR (WIN32 AND NOT WITH_SNORETOAST))
     if (TARGET Canberra::Canberra)
         add_definitions(-DHAVE_CANBERRA)
     endif()
-endif()
-
-set(HAVE_DBUS FALSE)
-if (TARGET Qt6::DBus)
-    set(HAVE_DBUS TRUE)
 endif()
 
 remove_definitions(-DQT_NO_CAST_FROM_BYTEARRAY)

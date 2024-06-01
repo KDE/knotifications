@@ -17,7 +17,7 @@
 #include <QFileInfo>
 #include <QHash>
 
-#ifdef QT_DBUS_LIB
+#ifdef HAVE_DBUS
 #include <QDBusConnection>
 #include <QDBusConnectionInterface>
 #endif
@@ -71,7 +71,7 @@ KNotificationManager::KNotificationManager()
     qDeleteAll(d->notifyPlugins);
     d->notifyPlugins.clear();
 
-#ifdef QT_DBUS_LIB
+#ifdef HAVE_DBUS
     if (isInsideSandbox()) {
         QDBusConnectionInterface *interface = QDBusConnection::sessionBus().interface();
         d->portalDBusServiceExists = interface->isServiceRegistered(QStringLiteral("org.freedesktop.portal.Desktop"));

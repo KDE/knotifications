@@ -39,12 +39,12 @@ void KNotificationTest::initTestCase()
     qDebug() << dataDir;
 
     QDir dir;
-    bool pathOk = dir.mkpath(dataDir + QStringLiteral("/knotifications5/"));
+    bool pathOk = dir.mkpath(dataDir + QStringLiteral("/knotifications6/"));
 
     QVERIFY(pathOk);
 
-    QFile testFile(QFINDTESTDATA(QStringLiteral("knotifications5/qttest.notifyrc")));
-    bool fileOk = testFile.copy(dataDir + QStringLiteral("/knotifications5/qttest.notifyrc"));
+    QFile testFile(QFINDTESTDATA(QStringLiteral("knotifications6/qttest.notifyrc")));
+    bool fileOk = testFile.copy(dataDir + QStringLiteral("/knotifications6/qttest.notifyrc"));
 
     QVERIFY(fileOk);
 
@@ -61,12 +61,12 @@ void KNotificationTest::cleanupTestCase()
 {
     // Cleanup
     const QString dataDir = QStandardPaths::writableLocation(QStandardPaths::GenericDataLocation);
-    QFile testFile(dataDir + QStringLiteral("/knotifications5/qttest.notifyrc"));
+    QFile testFile(dataDir + QStringLiteral("/knotifications6/qttest.notifyrc"));
     bool fileRemoveOk = testFile.remove();
 
     QVERIFY(fileRemoveOk);
 
-    QDir dir(dataDir + QStringLiteral("/knotifications5"));
+    QDir dir(dataDir + QStringLiteral("/knotifications6"));
     bool dirRemoveOk = dir.removeRecursively();
 
     QVERIFY(dirRemoveOk);

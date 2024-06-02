@@ -10,9 +10,9 @@ KNotification is the main entry point for using KNotifications.
 
 \section file The global config file
 In order to perform a notification, you need to create a description file, which contains
-default parameters of the notification. It needs to be installed to <em>knotifications5/appname.notifyrc</em>
+default parameters of the notification. It needs to be installed to <em>knotifications6/appname.notifyrc</em>
 in a QStandardPaths::GenericDataLocation directory.
-On Android, this path is <em>qrc:/knotifications5/</em>.
+On Android, this path is <em>qrc:/knotifications6/</em>.
 
 The filename must either match QCoreApplication::applicationName or be specified as the
 component name to the KNotification object.

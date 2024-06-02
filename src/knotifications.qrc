@@ -1,5 +1,5 @@
 <RCC>
-    <qresource prefix="/knotifications5">
+    <qresource prefix="/knotifications6">
         <file>android_defaults.notifyrc</file>
     </qresource>
 </RCC>

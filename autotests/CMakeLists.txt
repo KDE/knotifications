@@ -7,7 +7,7 @@ if(NOT TARGET Qt6::Test)
     return()
 endif()
 
-#if (TARGET Qt6::DBus)
+#if (HAVE_DBUS)
 #    set(KNotificationTest_SRCS knotification_test.cpp fake_notifications_server.cpp)
 #    ecm_add_test(${KNotificationTest_SRCS} TEST_NAME "KNotificationTest" LINK_LIBRARIES Qt6::Test Qt6::DBus KF6::Notifications)
 #endif()

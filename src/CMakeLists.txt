@@ -21,7 +21,7 @@ target_sources(KF6Notifications PRIVATE
   knotificationplugin.cpp
 )
 
-if (TARGET Qt6::DBus)
+if (HAVE_DBUS)
   target_sources(KF6Notifications PRIVATE
     imageconverter.cpp #needed to marshal images for sending over dbus by NotifyByPopup
     notifybypopup.cpp
@@ -60,7 +60,7 @@ if (TARGET Canberra::Canberra)
     )
 endif()
 
-if (TARGET Qt6::DBus)
+if (HAVE_DBUS)
   set(notifications_xml org.freedesktop.Notifications.xml)
   qt_add_dbus_interface(knotifications_dbus_SRCS ${notifications_xml} notifications_interface)
   target_sources(KF6Notifications PRIVATE ${knotifications_dbus_SRCS})
@@ -82,7 +82,7 @@ ecm_generate_export_header(KF6Notifications
 target_include_directories(KF6Notifications INTERFACE "$<INSTALL_INTERFACE:${KDE_INSTALL_INCLUDEDIR_KF}/KNotifications>")
 
 target_link_libraries(KF6Notifications PUBLIC Qt6::Gui)
-if (TARGET Qt6::DBus)
+if (HAVE_DBUS)
    target_link_libraries(KF6Notifications PUBLIC Qt6::DBus)
 endif()
 target_link_libraries(KF6Notifications PRIVATE

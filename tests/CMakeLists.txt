@@ -8,7 +8,7 @@ macro(knotifications_executable_tests)
   endforeach(_testname)
 endmacro()
 
-if (TARGET Qt6::DBus)
+if (HAVE_DBUS)
     knotifications_executable_tests(
         unitylaunchertest
         knotificationdbustest

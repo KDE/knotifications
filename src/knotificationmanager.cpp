@@ -32,7 +32,7 @@
 #include "notifybymacosnotificationcenter.h"
 #elif defined(WITH_SNORETOAST)
 #include "notifybysnore.h"
-#else
+#elif defined(HAVE_DBUS)
 #include "notifybypopup.h"
 #include "notifybyportal.h"
 #endif
@@ -115,7 +115,7 @@ KNotificationPlugin *KNotificationManager::pluginForAction(const QString &action
         plugin = new NotifyBySnore(this);
 #elif defined(Q_OS_MACOS)
         plugin = new NotifyByMacOSNotificationCenter(this);
-#else
+#elif defined(HAVE_DBUS)
         if (d->portalDBusServiceExists) {
             plugin = new NotifyByPortal(this);
         } else {

@@ -88,10 +88,6 @@ KNotification::KNotification(const QString &eventId, NotificationFlags flags, QO
     d->updateTimer.setSingleShot(true);
     d->updateTimer.setInterval(100);
     d->id = ++notificationIdCounter;
-
-    if (QGuiApplication::platformName().startsWith(QLatin1String("wayland"))) {
-        setHint(QStringLiteral("x-kde-xdgTokenAppId"), QGuiApplication::desktopFileName());
-    }
 }
 
 KNotification::~KNotification()

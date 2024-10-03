@@ -15,8 +15,9 @@ Qt::PermissionStatus KNotificationPermission::checkPermission()
         return Qt::PermissionStatus::Granted;
     }
 
-    return QtAndroidPrivate::checkPermission(QStringLiteral("")).result() == QtAndroidPrivate::PermissionResult::Authorized ? Qt::PermissionStatus::Granted
-                                                                                                                            : Qt::PermissionStatus::Denied;
+    return QtAndroidPrivate::checkPermission(QStringLiteral("android.permission.POST_NOTIFICATIONS")).result() == QtAndroidPrivate::PermissionResult::Authorized
+        ? Qt::PermissionStatus::Granted
+        : Qt::PermissionStatus::Denied;
 }
 
 void KNotificationPermission::requestPermission(QObject *context, const std::function<void(Qt::PermissionStatus)> &callback)

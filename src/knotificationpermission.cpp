@@ -26,8 +26,13 @@ void KNotificationPermission::requestPermission(QObject *context, const std::fun
     }
 
     QtAndroidPrivate::requestPermission(QStringLiteral("android.permission.POST_NOTIFICATIONS"))
-        .then(context, [&callback](QtAndroidPrivate::PermissionResult res) {
-            callback(res == QtAndroidPrivate::PermissionResult::Authorized ? Qt::PermissionStatus::Granted : Qt::PermissionStatus::Denied);
+        .then(context, [callback, context](QtAndroidPrivate::PermissionResult res) {
+            QMetaObject::invokeMethod(
+                context,
+                [res, callback]() {
+                    callback(res == QtAndroidPrivate::PermissionResult::Authorized ? Qt::PermissionStatus::Granted : Qt::PermissionStatus::Denied);
+                },
+                Qt::QueuedConnection);
         });
 }
 

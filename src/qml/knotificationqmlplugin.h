@@ -69,7 +69,7 @@ public:
 
     Q_INVOKABLE void requestPermission(const QJSValue &callback)
     {
-        KNotificationPermission::requestPermission(this, [&callback](Qt::PermissionStatus status) {
+        KNotificationPermission::requestPermission(this, [callback](Qt::PermissionStatus status) {
             callback.call({status == Qt::PermissionStatus::Granted});
         });
     }

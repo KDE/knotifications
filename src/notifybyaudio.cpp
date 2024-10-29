@@ -212,7 +212,7 @@ void NotifyByAudio::close(KNotification *notification)
     }
 
     // Consider the notification finished. ca_context_cancel schedules a cancel
-    // but we need to stop using the noficiation immediately or we could access
+    // but we need to stop using the notification immediately or we could access
     // a notification past its lifetime (close() may, or indeed must,
     // schedule deletion of the notification).
     // https://bugs.kde.org/show_bug.cgi?id=398695

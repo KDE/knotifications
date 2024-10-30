@@ -3,6 +3,7 @@
     SPDX-FileCopyrightText: 2008 Dmitry Suzdalev <dimsuz@gmail.com>
     SPDX-FileCopyrightText: 2014 Martin Klapetek <mklapetek@kde.org>
     SPDX-FileCopyrightText: 2016 Jan Grulich <jgrulich@redhat.com>
+    SPDX-FileCopyrightText: 2024 Harald Sitter <sitter@kde.org>
 
     SPDX-License-Identifier: LGPL-2.1-only OR LGPL-3.0-only OR LicenseRef-KDE-Accepted-LGPL
 */
@@ -25,11 +26,30 @@
 #include <QIcon>
 #include <QMap>
 #include <QPointer>
+#include <QVersionNumber>
 
 #include <KConfigGroup>
+
+using namespace std::chrono_literals;
+using namespace Qt::StringLiterals;
+
 static const char portalDbusServiceName[] = "org.freedesktop.portal.Desktop";
 static const char portalDbusInterfaceName[] = "org.freedesktop.portal.Notification";
 static const char portalDbusPath[] = "/org/freedesktop/portal/desktop";
+
+namespace
+{
+template<typename Output, typename Input>
+constexpr Output narrow(Input i)
+{
+    Output o = static_cast<Input>(i);
+    if (i != Input(o)) {
+        std::abort();
+    }
+    return o;
+}
+
+} // namespace
 
 class NotifyByPortalPrivate
 {
@@ -72,6 +92,7 @@ public:
      * Specifies if DBus Notifications interface exists on session bus
      */
     bool dbusServiceExists;
+    QVersionNumber portalVersion;
 
     /*
      * As we communicate with the notification server over dbus
@@ -120,8 +141,8 @@ NotifyByPortal::NotifyByPortal(QObject *parent)
         onServiceOwnerChanged(QString::fromLatin1(portalDbusServiceName), QString(), QStringLiteral("_")); // connect signals
     }
 
-    // to catch register/unregister events from service in runtime
-    QDBusServiceWatcher *watcher = new QDBusServiceWatcher(this);
+    // to catch register/unregister events from service at runtime
+    auto watcher = new QDBusServiceWatcher(this);
     watcher->setConnection(QDBusConnection::sessionBus());
     watcher->setWatchMode(QDBusServiceWatcher::WatchForOwnerChange);
     watcher->addWatchedService(QString::fromLatin1(portalDbusServiceName));
@@ -176,6 +197,19 @@ void NotifyByPortal::onServiceOwnerChanged(const QString &serviceName, const QSt
         d->dbusServiceExists = false;
     } else if (oldOwner.isEmpty()) {
         d->dbusServiceExists = true;
+
+        QDBusMessage message = QDBusMessage::createMethodCall(QString::fromLatin1(portalDbusServiceName),
+                                                              QString::fromLatin1(portalDbusPath),
+                                                              "org.freedesktop.DBus.Properties"_L1,
+                                                              "Get"_L1);
+        message << QString::fromLatin1(portalDbusInterfaceName) << "version"_L1;
+
+        QDBusReply<QDBusVariant> reply = QDBusConnection::sessionBus().call(message, QDBus::Block, std::chrono::milliseconds(1s).count());
+        if (!reply.isValid()) {
+            qCWarning(LOG_KNOTIFICATIONS) << "Failed to get portal version" << reply.error().message();
+        }
+        d->portalVersion = QVersionNumber(narrow<int>(reply.value().variant().toUInt()));
+
         d->nextId = 1;
 
         // connect to action invocation signals

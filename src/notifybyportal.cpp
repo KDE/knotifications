@@ -12,6 +12,7 @@
 
 #include "debug_p.h"
 #include "knotification.h"
+#include "knotificationreplyaction.h"
 #include "knotifyconfig.h"
 
 #include <QBuffer>
@@ -51,6 +52,10 @@ constexpr Output narrow(Input i)
     }
     return o;
 }
+
+// NOTE: Reply actions are never exported because we don't prefix them with `app.`.
+// This is a fake id for the reply action so we can identify callbacks for it.
+constexpr auto ACTION_ID_REPLY = "__k_reply_action"_L1;
 
 } // namespace
 
@@ -238,11 +243,21 @@ void NotifyByPortal::onPortalNotificationActionInvoked(const QString &id, const 
     }
 
     KNotification *n = *iter;
-    if (n) {
-        Q_EMIT actionInvoked(n->id(), action);
-    } else {
+    if (!n) { // has already been deleted
         d->portalNotifications.erase(iter);
+        return;
     }
+
+    if (action == ACTION_ID_REPLY) {
+        if (auto replyAction = n->replyAction(); replyAction) {
+            // ACTION_ID_REPLY is never prefixed with `.app` so it is always not-exported meaning the reply is located in the second parameter.
+            // Also note the upstream documentation on this topic. The parameter packs are slightly convoluted.
+            Q_EMIT replyAction->replied(parameter.at(1).toString());
+            return;
+        }
+    }
+
+    Q_EMIT actionInvoked(n->id(), action);
 }
 
 void NotifyByPortalPrivate::getAppCaptionAndIconName(const KNotifyConfig &notifyConfig, QString *appCaption, QString *iconName)
@@ -330,6 +345,15 @@ bool NotifyByPortalPrivate::sendNotificationToPortal(KNotification *notification
     for (KNotificationAction *action : listActions) {
         QVariantMap button = {{QStringLiteral("action"), action->id()}, //
                               {QStringLiteral("label"), action->label()}};
+        buttons << button;
+    }
+
+    if (auto action = notification->replyAction(); action) {
+        QVariantMap button = {
+            {u"purpose"_s, u"im.reply-with-text"_s},
+            {u"action"_s, ACTION_ID_REPLY},
+            {u"label"_s, action->label()},
+        };
         buttons << button;
     }
 

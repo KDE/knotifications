@@ -21,6 +21,7 @@
 #include <QDBusMessage>
 #include <QDBusMetaType>
 #include <QDBusServiceWatcher>
+#include <QDBusUnixFileDescriptor>
 #include <QGuiApplication>
 #include <QHash>
 #include <QIcon>
@@ -29,6 +30,8 @@
 #include <QVersionNumber>
 
 #include <KConfigGroup>
+
+#include "notifybyportal_sealfd.h"
 
 using namespace std::chrono_literals;
 using namespace Qt::StringLiterals;
@@ -54,7 +57,7 @@ constexpr Output narrow(Input i)
 class NotifyByPortalPrivate
 {
 public:
-    struct PortalIcon {
+    struct PortalPair {
         QString str;
         QDBusVariant data;
     };
@@ -74,7 +77,7 @@ public:
      *               Otherwise will put new notification on screen
      * @return true for success or false if there was an error.
      */
-    bool sendNotificationToPortal(KNotification *notification, const KNotifyConfig &config);
+    bool sendNotificationToPortal(KNotification *notification, const KNotifyConfig &config, unsigned int id);
 
     /**
      * Sends request to close Notification with id to DBus "org.freedesktop.notifications" interface
@@ -109,7 +112,7 @@ public:
     NotifyByPortal *const q;
 };
 
-QDBusArgument &operator<<(QDBusArgument &argument, const NotifyByPortalPrivate::PortalIcon &icon)
+QDBusArgument &operator<<(QDBusArgument &argument, const NotifyByPortalPrivate::PortalPair &icon)
 {
     argument.beginStructure();
     argument << icon.str << icon.data;
@@ -117,7 +120,7 @@ QDBusArgument &operator<<(QDBusArgument &argument, const NotifyByPortalPrivate::
     return argument;
 }
 
-const QDBusArgument &operator>>(const QDBusArgument &argument, NotifyByPortalPrivate::PortalIcon &icon)
+const QDBusArgument &operator>>(const QDBusArgument &argument, NotifyByPortalPrivate::PortalPair &icon)
 {
     argument.beginStructure();
     argument >> icon.str >> icon.data;
@@ -125,7 +128,7 @@ const QDBusArgument &operator>>(const QDBusArgument &argument, NotifyByPortalPri
     return argument;
 }
 
-Q_DECLARE_METATYPE(NotifyByPortalPrivate::PortalIcon)
+Q_DECLARE_METATYPE(NotifyByPortalPrivate::PortalPair)
 
 //---------------------------------------------------------------------------------------
 
@@ -331,7 +334,7 @@ bool NotifyByPortalPrivate::sendNotificationToPortal(KNotification *notification
     }
 
     qDBusRegisterMetaType<QList<QVariantMap>>();
-    qDBusRegisterMetaType<PortalIcon>();
+    qDBusRegisterMetaType<PortalPair>();
 
     if (!notification->pixmap().isNull()) {
         QByteArray pixmapData;
@@ -340,10 +343,26 @@ bool NotifyByPortalPrivate::sendNotificationToPortal(KNotification *notification
         notification->pixmap().save(&buffer, "PNG");
         buffer.close();
 
-        PortalIcon icon;
-        icon.str = QStringLiteral("bytes");
-        icon.data.setVariant(pixmapData);
-        portalArgs.insert(QStringLiteral("icon"), QVariant::fromValue<PortalIcon>(icon));
+        if (portalVersion >= QVersionNumber(2)) {
+            qCDebug(LOG_KNOTIFICATIONS) << "Using new portal version, sending pixmap as file descriptor";
+            SealableHandle handle(pixmapData);
+            if (handle.isValid()) {
+                PortalPair icon;
+                icon.str = u"file-descriptor"_s;
+                icon.data.setVariant(QVariant::fromValue(QDBusUnixFileDescriptor(handle.fd())));
+
+                portalArgs.insert(QStringLiteral("icon"), QVariant::fromValue<PortalPair>(icon));
+                portalArgs.insert(u"file-descriptor"_s, handle.fd());
+            } else {
+                qCWarning(LOG_KNOTIFICATIONS) << "Failed to create sealable handle for pixmap";
+            }
+        } else {
+            qCDebug(LOG_KNOTIFICATIONS) << "Using old portal version, sending pixmap as bytes";
+            PortalPair icon;
+            icon.str = QStringLiteral("bytes");
+            icon.data.setVariant(pixmapData);
+            portalArgs.insert(QStringLiteral("icon"), QVariant::fromValue<PortalPair>(icon));
+        }
     } else {
         // Use this for now for backwards compatibility, we can as well set the variant to be (sv) where the
         // string is keyword "themed" and the variant is an array of strings with icon names

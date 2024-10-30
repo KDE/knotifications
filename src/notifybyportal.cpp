@@ -315,6 +315,7 @@ void NotifyByPortalPrivate::getAppCaptionAndIconName(const KNotifyConfig &notify
 
 bool NotifyByPortalPrivate::sendNotificationToPortal(KNotification *notification, const KNotifyConfig &notifyConfig_nocheck, unsigned int id)
 {
+    qCDebug(LOG_KNOTIFICATIONS) << "Sending notification to portal";
     QDBusMessage dbusNotificationMessage;
     dbusNotificationMessage = QDBusMessage::createMethodCall(QString::fromLatin1(portalDbusServiceName),
                                                              QString::fromLatin1(portalDbusPath),
@@ -442,6 +443,13 @@ bool NotifyByPortalPrivate::sendNotificationToPortal(KNotification *notification
     dbusNotificationMessage.setArguments(args);
 
     QDBusPendingCall notificationCall = QDBusConnection::sessionBus().asyncCall(dbusNotificationMessage, -1);
+    auto watcher = new QDBusPendingCallWatcher(notificationCall);
+    QObject::connect(watcher, &QDBusPendingCallWatcher::finished, q, [watcher] {
+        watcher->deleteLater();
+        if (watcher->isError()) {
+            qCWarning(LOG_KNOTIFICATIONS) << "Failed to send notification to portal:" << watcher->error().message();
+        }
+    });
 
     // NOTE: inserting into our hash is done by the caller!
 

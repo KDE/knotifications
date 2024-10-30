@@ -14,6 +14,7 @@
 
 #include <config-knotifications.h>
 
+#include <QCoreApplication>
 #include <QFileInfo>
 #include <QHash>
 
@@ -41,6 +42,8 @@
 #if defined(HAVE_CANBERRA)
 #include "notifybyaudio.h"
 #endif
+
+using namespace Qt::StringLiterals;
 
 typedef QHash<QString, QString> Dict;
 
@@ -317,6 +320,10 @@ void KNotificationManager::reparseConfiguration(const QString &app)
 
 bool KNotificationManager::isInsideSandbox()
 {
+    static bool isPortalItself = qApp ? qApp->applicationName() == "xdg-desktop-portal-kde"_L1 : false;
+    if (!isPortalItself && qEnvironmentVariableIntValue("_KNOTIFICATIONS_FORCE_SANDBOX") == 1) {
+        return true;
+    }
     // logic is taken from KSandbox::isInside()
     static const bool isFlatpak = QFileInfo::exists(QStringLiteral("/.flatpak-info"));
     static const bool isSnap = qEnvironmentVariableIsSet("SNAP");

@@ -161,17 +161,28 @@ NotifyByPortal::~NotifyByPortal() = default;
 
 void NotifyByPortal::notify(KNotification *notification, const KNotifyConfig &notifyConfig)
 {
-    if (d->portalNotifications.contains(notification->id())) {
+    auto existingNotificationIt = std::ranges::find_if(d->portalNotifications, [notification](const auto &value) {
+        return value.get() == notification;
+    });
+    if (existingNotificationIt != d->portalNotifications.end()) {
         // notification is already on the screen, do nothing
-        finish(notification);
+        qCDebug(LOG_KNOTIFICATIONS) << "Notification with id" << notification->id() << "already exists";
         return;
     }
 
     // check if Notifications DBus service exists on bus, use it if it does
     if (d->dbusServiceExists) {
-        if (!d->sendNotificationToPortal(notification, notifyConfig)) {
+        const auto id = d->nextId;
+        d->nextId++;
+        if (d->sendNotificationToPortal(notification, notifyConfig, id)) {
+            // If we are in sandbox we don't need to wait for returned notification id
+            d->portalNotifications.insert(id, notification);
+        } else {
+            qCDebug(LOG_KNOTIFICATIONS) << "Failed to send notification to portal";
             finish(notification); // an error occurred.
         }
+    } else {
+        qCDebug(LOG_KNOTIFICATIONS) << "No portal service found, not doing anything";
     }
 }
 
@@ -184,9 +195,29 @@ void NotifyByPortal::close(KNotification *notification)
 
 void NotifyByPortal::update(KNotification *notification, const KNotifyConfig &notifyConfig)
 {
-    // TODO not supported by portals
-    Q_UNUSED(notification);
-    Q_UNUSED(notifyConfig);
+    if (d->portalVersion < QVersionNumber(2)) {
+        // prior to v2 there was no mention of updating an existing notification
+        return;
+    }
+
+    auto existingNotificationIt = std::ranges::find_if(d->portalNotifications, [notification](const auto &value) {
+        return value.get() == notification;
+    });
+    if (existingNotificationIt == d->portalNotifications.end()) {
+        // notification is not on the screen, do nothing
+        qCDebug(LOG_KNOTIFICATIONS) << "Notification with id" << notification->id() << "does not exist";
+        return;
+    }
+
+    // check if Notifications DBus service exists on bus, use it if it does
+    if (d->dbusServiceExists) {
+        if (!d->sendNotificationToPortal(notification, notifyConfig, existingNotificationIt.key())) {
+            qCDebug(LOG_KNOTIFICATIONS) << "Failed to send notification to portal";
+            finish(notification); // an error occurred.
+        }
+    } else {
+        qCDebug(LOG_KNOTIFICATIONS) << "No portal service found, not doing anything";
+    }
 }
 
 void NotifyByPortal::onServiceOwnerChanged(const QString &serviceName, const QString &oldOwner, const QString &newOwner)
@@ -282,7 +313,7 @@ void NotifyByPortalPrivate::getAppCaptionAndIconName(const KNotifyConfig &notify
     }
 }
 
-bool NotifyByPortalPrivate::sendNotificationToPortal(KNotification *notification, const KNotifyConfig &notifyConfig_nocheck)
+bool NotifyByPortalPrivate::sendNotificationToPortal(KNotification *notification, const KNotifyConfig &notifyConfig_nocheck, unsigned int id)
 {
     QDBusMessage dbusNotificationMessage;
     dbusNotificationMessage = QDBusMessage::createMethodCall(QString::fromLatin1(portalDbusServiceName),
@@ -405,15 +436,14 @@ bool NotifyByPortalPrivate::sendNotificationToPortal(KNotification *notification
     portalArgs.insert(QStringLiteral("buttons"), QVariant::fromValue<QList<QVariantMap>>(buttons));
     portalArgs.insert(u"display-hint"_s, hints);
 
-    args.append(QString::number(nextId));
+    args.append(QString::number(id));
     args.append(portalArgs);
 
     dbusNotificationMessage.setArguments(args);
 
     QDBusPendingCall notificationCall = QDBusConnection::sessionBus().asyncCall(dbusNotificationMessage, -1);
 
-    // If we are in sandbox we don't need to wait for returned notification id
-    portalNotifications.insert(nextId++, notification);
+    // NOTE: inserting into our hash is done by the caller!
 
     return true;
 }

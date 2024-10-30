@@ -357,6 +357,13 @@ bool NotifyByPortalPrivate::sendNotificationToPortal(KNotification *notification
         buttons << button;
     }
 
+    QStringList hints;
+    if (notification->flags() & KNotification::Persistent) {
+        hints << u"persistent"_s;
+    } else {
+        hints << u"transient"_s;
+    }
+
     qDBusRegisterMetaType<QList<QVariantMap>>();
     qDBusRegisterMetaType<PortalPair>();
 
@@ -396,6 +403,7 @@ bool NotifyByPortalPrivate::sendNotificationToPortal(KNotification *notification
     portalArgs.insert(QStringLiteral("title"), title);
     portalArgs.insert(QStringLiteral("body"), text);
     portalArgs.insert(QStringLiteral("buttons"), QVariant::fromValue<QList<QVariantMap>>(buttons));
+    portalArgs.insert(u"display-hint"_s, hints);
 
     args.append(QString::number(nextId));
     args.append(portalArgs);

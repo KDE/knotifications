@@ -320,15 +320,19 @@ void KNotificationManager::reparseConfiguration(const QString &app)
 
 bool KNotificationManager::isInsideSandbox()
 {
-    static bool isPortalItself = qApp ? qApp->applicationName() == "xdg-desktop-portal-kde"_L1 : false;
-    if (!isPortalItself && qEnvironmentVariableIntValue("_KNOTIFICATIONS_FORCE_SANDBOX") == 1) {
-        return true;
-    }
-    // logic is taken from KSandbox::isInside()
-    static const bool isFlatpak = QFileInfo::exists(QStringLiteral("/.flatpak-info"));
-    static const bool isSnap = qEnvironmentVariableIsSet("SNAP");
+    static bool isInside = [] {
+        bool isPortalItself = qApp ? qApp->applicationName() == "xdg-desktop-portal-kde"_L1 : false;
+        // _KNOTIFICATIONS_FORCE_SANDBOX is useful for testing sandbox behavior even outside a sandbox.
+        if (!isPortalItself && qEnvironmentVariableIntValue("_KNOTIFICATIONS_FORCE_SANDBOX") == 1) {
+            return true;
+        }
+        // logic is taken from KSandbox::isInside()
+        const bool isFlatpak = QFileInfo::exists(QStringLiteral("/.flatpak-info"));
+        const bool isSnap = qEnvironmentVariableIsSet("SNAP");
 
-    return isFlatpak || isSnap;
+        return isFlatpak || isSnap;
+    }();
+    return isInside;
 }
 
 #include "moc_knotificationmanager_p.cpp"

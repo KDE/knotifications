@@ -69,7 +69,12 @@ public class NotifyByAndroid extends BroadcastReceiver
         filter.addAction(m_ctx.getPackageName() + NOTIFICATION_DELETED);
         filter.addAction(m_ctx.getPackageName() + NOTIFICATION_OPENED);
         filter.addAction(m_ctx.getPackageName() + NOTIFICATION_REPLIED);
-        m_ctx.registerReceiver(this, filter);
+
+        if (Build.VERSION.SDK_INT >= 33) {
+            m_ctx.registerReceiver(this, filter, Context.RECEIVER_NOT_EXPORTED);
+        } else {
+            m_ctx.registerReceiver(this, filter);
+        }
     }
 
     public void notify(KNotification notification)

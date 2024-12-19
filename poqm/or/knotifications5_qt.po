@@ -35,7 +35,7 @@ msgctxt "KNotificationRestrictions|"
 msgid "Unknown Application"
 msgstr "ଅଜଣା ପ୍ରୟୋଗ"
 
-#: kstatusnotifieritem.cpp:515 kstatusnotifieritem.cpp:1108
+#: kstatusnotifieritem.cpp:515 kstatusnotifieritem.cpp:1109
 #, fuzzy
 #| msgid "&Minimize"
 msgctxt "KStatusNotifierItem|@action:inmenu"
@@ -49,28 +49,28 @@ msgctxt "KStatusNotifierItem|@action:inmenu"
 msgid "Quit"
 msgstr "ବିଦାୟ ନିଅନ୍ତୁ"
 
-#: kstatusnotifieritem.cpp:1106
+#: kstatusnotifieritem.cpp:1107
 #, fuzzy
 #| msgid "&Restore"
 msgctxt "KStatusNotifierItem|@action:inmenu"
 msgid "&Restore"
 msgstr "ପୁନଃସ୍ଥାପନ କରନ୍ତୁ (&R)"
 
-#: kstatusnotifieritem.cpp:1120
+#: kstatusnotifieritem.cpp:1121
 #, fuzzy
 #| msgid "Confirm Quit From System Tray"
 msgctxt "KStatusNotifierItem|@title:window"
 msgid "Confirm Quit From System Tray"
 msgstr "ତନ୍ତ୍ର ଧାରକରୁ ବିଦାୟନେବାକୁ ନିଶ୍ଚିତ କରନ୍ତୁ"
 
-#: kstatusnotifieritem.cpp:1121
+#: kstatusnotifieritem.cpp:1122
 #, fuzzy, qt-format
 #| msgid "<qt>Are you sure you want to quit <b>%1</b>?</qt>"
 msgctxt "KStatusNotifierItem|"
 msgid "<qt>Are you sure you want to quit <b>%1</b>?</qt>"
 msgstr "<qt>ଆପଣ ନିଶ୍ଚିତକି ଆପଣ ବିଦାୟ ନେବାକୁ ଚାହୁଁଛନ୍ତି <b>%1</b>?</qt>"
 
-#: kstatusnotifieritem.cpp:1125
+#: kstatusnotifieritem.cpp:1126
 #, fuzzy
 #| msgid "Quit"
 msgctxt "KStatusNotifierItem|@action:button"

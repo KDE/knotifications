@@ -37,7 +37,7 @@ msgctxt "KNotificationRestrictions|"
 msgid "Unknown Application"
 msgstr "ਅਣਜਾਣ ਐਪਲੀਕੇਸ਼ਨ"
 
-#: kstatusnotifieritem.cpp:515 kstatusnotifieritem.cpp:1108
+#: kstatusnotifieritem.cpp:515 kstatusnotifieritem.cpp:1109
 msgctxt "KStatusNotifierItem|@action:inmenu"
 msgid "&Minimize"
 msgstr "ਘੱਟੋ-ਘੱਟ(&M)"
@@ -47,23 +47,23 @@ msgctxt "KStatusNotifierItem|@action:inmenu"
 msgid "Quit"
 msgstr "ਬਾਹਰ"
 
-#: kstatusnotifieritem.cpp:1106
+#: kstatusnotifieritem.cpp:1107
 msgctxt "KStatusNotifierItem|@action:inmenu"
 msgid "&Restore"
 msgstr "ਬਹਾਲ ਕਰੋ(&R)"
 
-#: kstatusnotifieritem.cpp:1120
+#: kstatusnotifieritem.cpp:1121
 msgctxt "KStatusNotifierItem|@title:window"
 msgid "Confirm Quit From System Tray"
 msgstr "ਸਿਟਟਮ ਟਰੇ ਵਿੱਚੋਂ ਬੰਦ ਕਰਨ ਦੀ ਪੁਸ਼ਟੀ"
 
-#: kstatusnotifieritem.cpp:1121
+#: kstatusnotifieritem.cpp:1122
 #, qt-format
 msgctxt "KStatusNotifierItem|"
 msgid "<qt>Are you sure you want to quit <b>%1</b>?</qt>"
 msgstr "<qt>ਕੀ ਤੁਸੀਂ <b>%1</b> ਨੂੰ ਬੰਦ ਕਰਨਾ ਚਾਹੁੰਦੇ ਹੋ?</qt>"
 
-#: kstatusnotifieritem.cpp:1125
+#: kstatusnotifieritem.cpp:1126
 #, fuzzy
 #| msgctxt "KStatusNotifierItem|@action:inmenu"
 #| msgid "Quit"

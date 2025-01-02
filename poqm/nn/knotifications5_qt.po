@@ -37,7 +37,7 @@ msgctxt "KNotificationRestrictions|"
 msgid "Unknown Application"
 msgstr "Ukjent program"
 
-#: kstatusnotifieritem.cpp:515 kstatusnotifieritem.cpp:1108
+#: kstatusnotifieritem.cpp:515 kstatusnotifieritem.cpp:1109
 msgctxt "KStatusNotifierItem|@action:inmenu"
 msgid "&Minimize"
 msgstr "&Minimer"
@@ -47,23 +47,23 @@ msgctxt "KStatusNotifierItem|@action:inmenu"
 msgid "Quit"
 msgstr "Avslutt"
 
-#: kstatusnotifieritem.cpp:1106
+#: kstatusnotifieritem.cpp:1107
 msgctxt "KStatusNotifierItem|@action:inmenu"
 msgid "&Restore"
 msgstr "Gj&enopprett"
 
-#: kstatusnotifieritem.cpp:1120
+#: kstatusnotifieritem.cpp:1121
 msgctxt "KStatusNotifierItem|@title:window"
 msgid "Confirm Quit From System Tray"
 msgstr "Stadfest «Avslutt» frå systemfeltet"
 
-#: kstatusnotifieritem.cpp:1121
+#: kstatusnotifieritem.cpp:1122
 #, qt-format
 msgctxt "KStatusNotifierItem|"
 msgid "<qt>Are you sure you want to quit <b>%1</b>?</qt>"
 msgstr "<qt>Vil du avslutta <b>%1</b>?</qt>"
 
-#: kstatusnotifieritem.cpp:1125
+#: kstatusnotifieritem.cpp:1126
 msgctxt "KStatusNotifierItem|@action:button"
 msgid "Quit"
 msgstr "Avslutt"

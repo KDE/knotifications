@@ -89,7 +89,7 @@ if (NOT APPLE AND NOT ANDROID AND NOT WIN32 AND NOT HAIKU OR (WIN32 AND NOT WITH
 endif()
 
 # For the Python bindings
-find_package(Python3 3.10 COMPONENTS Interpreter Development)
+find_package(Python3 3.9 COMPONENTS Interpreter Development)
 find_package(Shiboken6)
 find_package(PySide6)
 

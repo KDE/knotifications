@@ -97,11 +97,6 @@ find_package(PySide6)
 cmake_dependent_option(BUILD_PYTHON_BINDINGS "Generate Python Bindings" ON "TARGET Shiboken6::libshiboken AND TARGET PySide6::pyside6" OFF)
 add_feature_info(PYTHON_BINDINGS ${BUILD_PYTHON_BINDINGS} "Python bindings")
 
-# FreeBSD CI is missing required packages
-if (CMAKE_SYSTEM_NAME MATCHES FreeBSD)
-    set(BUILD_PYTHON_BINDINGS OFF)
-endif()
-
 remove_definitions(-DQT_NO_CAST_FROM_BYTEARRAY)
 
 ecm_install_po_files_as_qm(poqm)

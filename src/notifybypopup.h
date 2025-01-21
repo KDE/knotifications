@@ -43,18 +43,18 @@ private Q_SLOTS:
     void onNotificationReplied(uint notificationId, const QString &text);
 
 private:
-    /**
+    /*
      * Sends notification to DBus "org.freedesktop.notifications" interface.
-     * @param id knotify-sid identifier of notification
-     * @param config notification data
-     * @param update If true, will request the DBus service to update
+     * id knotify-sid identifier of notification
+     * config notification data
+     * update If true, will request the DBus service to update
                      the notification with new data from \c notification
      *               Otherwise will put new notification on screen
-     * @return true for success or false if there was an error.
+     * Returns true for success or false if there was an error.
      */
     bool sendNotificationToServer(KNotification *notification, const KNotifyConfig &config, bool update = false);
 
-    /**
+    /*
      * Find the caption and the icon name of the application
      */
     void getAppCaptionAndIconName(const KNotifyConfig &config, QString *appCaption, QString *iconName);
@@ -63,21 +63,19 @@ private:
      */
     void queryPopupServerCapabilities();
 
-    /**
+    /*
      * DBus notification daemon capabilities cache.
-     * Do not use this variable. Use #popupServerCapabilities() instead.
-     * @see popupServerCapabilities
      */
     QStringList m_popupServerCapabilities;
 
-    /**
+    /*!
      * In case we still don't know notification server capabilities,
      * we need to query those first. That's done in an async way
      * so we queue all notifications while waiting for the capabilities
      * to return, then process them from this queue
      */
     QList<QPair<KNotification *, KNotifyConfig>> m_notificationQueue;
-    /**
+    /*
      * Whether the DBus notification daemon capability cache is up-to-date.
      */
     bool m_dbusServiceCapCacheDirty;

@@ -13,3 +13,5 @@ target_link_libraries(knotificationqmlplugin PRIVATE
 )
 
 ecm_finalize_qml_module(knotificationqmlplugin)
+
+ecm_generate_qdoc(knotificationqmlplugin knotificationsqml.qdocconf)

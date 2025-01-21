@@ -14,20 +14,20 @@
 class KNotifyConfigPrivate;
 
 /*!
- * @class KNotifyConfig knotifyconfig.h KNotifyConfig
+ * \class KNotifyConfig
+ * \inmodule KNotifications
  *
- * Represent the configuration for an event
- *
- * @author Olivier Goffart <ogoffart@kde.org>
- * @author Kai Uwe Broulik <kde@broulik.de>
+ * \brief Represent the configuration for an event.
  */
 class KNOTIFICATIONS_EXPORT KNotifyConfig
 {
 public:
     /*!
      * Creates a notify config for the given application name and event id
-     * @param applicationName The application name, typically the name of the notifyrc file without its extension.
-     * @param eventId The notification event ID, i.e. the part after Event/ in its notifyrc file.
+     *
+     * \a applicationName The application name, typically the name of the notifyrc file without its extension.
+     *
+     * \a eventId The notification event ID, i.e. the part after Event/ in its notifyrc file.
      */
     KNotifyConfig(const QString &applicationName, const QString &eventId);
     ~KNotifyConfig();
@@ -51,37 +51,41 @@ public:
     bool isValid() const;
 
     /*!
-     * @return entry from the relevant Global notifyrc config group
+     * Returns entry from the relevant Global notifyrc config group
      *
      * This will return the configuration from the user for the given key.
      * It first look into the user config file, and then in the global config file.
      *
-     * return a null string if the entry doesn't exist
+     * Returns a null string if the entry doesn't exist
      */
     QString readGlobalEntry(const QString &key) const;
 
     /*!
-     * @return entry from the relevant Event/ notifyrc config group
+     * Returns entry from the relevant Event/ notifyrc config group
      *
      * This will return the configuration from the user for the given key.
      * It first look into the user config file, and then in the global config file.
      *
-     * return a null string if the entry doesn't exist
+     * Returns a null string if the entry doesn't exist
      */
     QString readEntry(const QString &key) const;
 
     /*!
-     * @return path entry from the relevant Event/ notifyrc config group
+     * Returns path entry from the relevant Event/ notifyrc config group
      *
      * This will return the configuration from the user for the given key
      * and interpret it as a path.
      */
     QString readPathEntry(const QString &key) const;
+
     /*!
      * reparse the cached configs.  to be used when the config may have changed
      */
     static void reparseConfiguration();
 
+    /*!
+     *
+     */
     static void reparseSingleConfiguration(const QString &app);
 
 private:

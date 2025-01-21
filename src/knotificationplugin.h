@@ -17,28 +17,15 @@ class KNotificationPluginPrivate;
 class KNotifyConfig;
 
 /*!
- * @class KNotificationPlugin knotificationplugin.h KNotificationPlugin
+ * \internal
  *
- * @brief abstract class for KNotification actions
+ * Abstract class for KNotification actions
  *
  * A KNotificationPlugin is responsible of notification presentation.
  * You can subclass it to have your own presentation of a notification.
  *
  * You should reimplement the KNotificationPlugin::notify method to display the notification.
  *
- * Porting from KF5 to KF6:
- *
- * The signature of the virtual method
- * KNotificationPlugin::notify(KNotification *notification, KNotifyConfig *)
- * was changed to
- * KNotificationPlugin::notify(KNotification *notification, const KNotifyConfig &).
- *
- * The signature of the virtual method
- * KNotificationPlugin::update(KNotification *notification, KNotifyConfig *)
- * was changed to
- * KNotificationPlugin::update(KNotification *notification, const KNotifyConfig &).
- *
- * @author Olivier Goffart <ogoffart at kde.org>
  */
 class KNotificationPlugin : public QObject
 {
@@ -49,7 +36,7 @@ public:
     ~KNotificationPlugin() override;
 
     /*!
-     * @brief return the name of this plugin.
+     * return the name of this plugin.
      *
      * this is the name that should appear in the .notifyrc file,
      * in the field Action=... if a notification is set to use this plugin
@@ -63,8 +50,9 @@ public:
      *
      * for each call to this function (even for re-notification), you MUST call finish(KNotification*)
      *
-     * @param notification is the KNotification object
-     * @param notifyConfig is the configuration of the notification
+     * \a notification is the KNotification object
+     *
+     * \a notifyConfig is the configuration of the notification
      */
     virtual void notify(KNotification *notification, const KNotifyConfig &notifyConfig) = 0;
 
@@ -101,8 +89,10 @@ Q_SIGNALS:
     void finished(KNotification *notification);
     /*!
      * emit this signal if one action was invoked
-     * @param id is the id of the notification
-     * @param action is the action number.  zero for the default action
+     *
+     * \a id is the id of the notification
+     *
+     * \a action is the action number.  zero for the default action
      */
     void actionInvoked(int id, const QString &action);
 

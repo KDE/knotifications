@@ -8,10 +8,14 @@ documentationinheaders = true
 headerdirs = .
 sourcedirs = .
 
+excludedirs = qml
+
 outputformats = HTML
 
 depends += \
     qtcore \
+    qtgui \
+    knotificationsqml
 
 qhp.projects            = KNotifications
 

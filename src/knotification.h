@@ -282,7 +282,7 @@ public:
 
     /*!
      * Returns the icon shown in the popup
-     * \see setIconName
+     * \sa setIconName
      * \since 5.4
      */
     QString iconName() const;
@@ -298,7 +298,7 @@ public:
 
     /*!
      * Returns the pixmap shown in the popup
-     * \see setPixmap
+     * \sa setPixmap
      */
     QPixmap pixmap() const;
     /*!
@@ -630,24 +630,26 @@ private:
     KNOTIFICATIONS_NO_EXPORT void slotWindowActiveChanged();
 
     /*!
-     * @brief Activate the action specified action
+     * \internal
+     * Activate the action specified action
      * If the action is zero, then the default action is activated
      */
     KNOTIFICATIONS_NO_EXPORT void activate(const QString &action);
 
     /*!
-     * @internal
+     * \internal
      * the id given by the notification manager
      */
     KNOTIFICATIONS_NO_EXPORT int id();
 
     /*!
-     * @internal
+     * \internal
      * update the texts, the icon, and the actions of one existing notification
      */
     KNOTIFICATIONS_NO_EXPORT void update();
 
     /*!
+     * \internal
      * The notification will automatically be closed if all presentations are finished.
      * if you want to show your own presentation in your application, you should use this
      * function, so it will not be automatically closed when there is nothing to show.
@@ -659,6 +661,7 @@ private:
     KNOTIFICATIONS_NO_EXPORT void ref();
 
     /*!
+     * \internal
      * Remove a reference made with ref(). If the ref counter hits zero,
      * the notification will be closed and deleted.
      *
@@ -678,7 +681,7 @@ private:
 
 public:
     /*!
-     * @brief emit an event
+     * Emit an event
      *
      * This method creates the KNotification, setting every parameter, and fire the event.
      * You don't need to call sendEvent
@@ -689,10 +692,15 @@ public:
      * the pointer is automatically deleted when the event is closed.
      *
      * \a eventId is the name of the event
+     *
      * \a title is title of the notification to show in the popup.
+     *
      * \a text is the text of the notification to show in the popup.
+     *
      * \a pixmap is a picture which may be shown in the popup.
+     *
      * \a flags is a bitmask of NotificationFlag
+     *
      * \a componentName used to determine the location of the config file.  by default, appname is used
      * \since 4.4
      */
@@ -704,16 +712,20 @@ public:
                                 const QString &componentName = QString());
 
     /*!
-     * @brief emit a standard event
+     * Emit a standard event
      *
-     * @overload
+     * \overload
      *
      * This will emit a standard event
      *
      * \a eventId is the name of the event
+     *
      * \a text is the text of the notification to show in the popup.
+     *
      * \a pixmap is a picture which may be shown in the popup.
+     *
      * \a flags is a bitmask of NotificationFlag
+     *
      * \a componentName used to determine the location of the config file.  by default, plasma_workspace is used
      */
     static KNotification *event(const QString &eventId,
@@ -723,50 +735,64 @@ public:
                                 const QString &componentName = QString());
 
     /*!
-     * @brief emit a standard event
+     * Emit a standard event
      *
-     * @overload
+     * \overload
      *
      * This will emit a standard event
      *
      * \a eventId is the name of the event
+     *
      * \a text is the text of the notification to show in the popup
+     *
      * \a pixmap is a picture which may be shown in the popup
+     *
      * \a flags is a bitmask of NotificationFlag
      */
     static KNotification *
     event(StandardEvent eventId, const QString &text = QString(), const QPixmap &pixmap = QPixmap(), const NotificationFlags &flags = CloseOnTimeout);
 
     /*!
-     * @brief emit a standard event
+     * Emit a standard event
      *
-     * @overload
+     * \overload
      *
      * This will emit a standard event
      *
      * \a eventId is the name of the event
+     *
      * \a title is title of the notification to show in the popup.
+     *
      * \a text is the text of the notification to show in the popup
+     *
      * \a pixmap is a picture which may be shown in the popup
+     *
      * \a flags is a bitmask of NotificationFlag
+     *
      * \since 4.4
      */
     static KNotification *
     event(StandardEvent eventId, const QString &title, const QString &text, const QPixmap &pixmap, const NotificationFlags &flags = CloseOnTimeout);
 
     /*!
-     * @brief emit a standard event with the possibility of setting an icon by icon name
+     * Emit a standard event with the possibility of setting an icon by icon name
      *
-     * @overload
+     * \overload
      *
      * This will emit a standard event
      *
      * \a eventId is the name of the event
+     *
      * \a title is title of the notification to show in the popup.
+     *
      * \a text is the text of the notification to show in the popup
+     *
      * \a iconName a Freedesktop compatible icon name to be shown in the popup
+     *
      * \a flags is a bitmask of NotificationFlag
+     *
      * \a componentName used to determine the location of the config file.  by default, plasma_workspace is used
+     *
      * \since 5.4
      */
     static KNotification *event(const QString &eventId,
@@ -777,33 +803,42 @@ public:
                                 const QString &componentName = QString());
 
     /*!
-     * @brief emit a standard event with the possibility of setting an icon by icon name
+     * Emit a standard event with the possibility of setting an icon by icon name
      *
-     * @overload
+     * \overload
      *
      * This will emit a standard event with a custom icon
      *
      * \a eventId the type of the standard (not app-defined) event
+     *
      * \a title is title of the notification to show in the popup.
+     *
      * \a text is the text of the notification to show in the popup
+     *
      * \a iconName a Freedesktop compatible icon name to be shown in the popup
+     *
      * \a flags is a bitmask of NotificationFlag
+     *
      * \since 5.9
      */
     static KNotification *
     event(StandardEvent eventId, const QString &title, const QString &text, const QString &iconName, const NotificationFlags &flags = CloseOnTimeout);
 
     /*!
-     * @brief emit a standard event
+     * Emit a standard event
      *
-     * @overload
+     * \overload
      *
      * This will emit a standard event with its standard icon
      *
      * \a eventId the type of the standard (not app-defined) event
+     *
      * \a title is title of the notification to show in the popup.
+     *
      * \a text is the text of the notification to show in the popup
+     *
      * \a flags is a bitmask of NotificationFlag
+     *
      * \since 5.9
      */
     static KNotification *event(StandardEvent eventId, const QString &title, const QString &text, const NotificationFlags &flags = CloseOnTimeout);

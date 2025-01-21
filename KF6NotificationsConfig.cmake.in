@@ -21,4 +21,3 @@ if (NOT @BUILD_SHARED_LIBS@)
 endif()
 
 include("${CMAKE_CURRENT_LIST_DIR}/KF6NotificationsTargets.cmake")
-@PACKAGE_INCLUDE_QCHTARGETS@

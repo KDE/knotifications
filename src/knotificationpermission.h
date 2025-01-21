@@ -12,10 +12,14 @@
 
 #include <functional>
 
-/*! Check or request permissions to show notifications on platforms where
- *  that is necessary.
+/*!
+ * \namespace KNotificationPermission
+ * \inmodule KNotifications
  *
- *  @since 6.0
+ * \brief Check or request permissions to show notifications on platforms where
+ * that is necessary.
+ *
+ * \since 6.0
  */
 namespace KNotificationPermission
 {

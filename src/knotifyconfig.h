@@ -13,7 +13,7 @@
 
 class KNotifyConfigPrivate;
 
-/**
+/*!
  * @class KNotifyConfig knotifyconfig.h KNotifyConfig
  *
  * Represent the configuration for an event
@@ -24,7 +24,7 @@ class KNotifyConfigPrivate;
 class KNOTIFICATIONS_EXPORT KNotifyConfig
 {
 public:
-    /**
+    /*!
      * Creates a notify config for the given application name and event id
      * @param applicationName The application name, typically the name of the notifyrc file without its extension.
      * @param eventId The notification event ID, i.e. the part after Event/ in its notifyrc file.
@@ -35,22 +35,22 @@ public:
     KNotifyConfig(const KNotifyConfig &other);
     KNotifyConfig &operator=(const KNotifyConfig &other);
 
-    /**
+    /*!
      * the name of the application that triggered the notification
      */
     QString applicationName() const;
 
-    /**
+    /*!
      * the name of the notification
      */
     QString eventId() const;
 
-    /**
+    /*!
      * Whether there exists an event with the given id under the given application name.
      */
     bool isValid() const;
 
-    /**
+    /*!
      * @return entry from the relevant Global notifyrc config group
      *
      * This will return the configuration from the user for the given key.
@@ -60,7 +60,7 @@ public:
      */
     QString readGlobalEntry(const QString &key) const;
 
-    /**
+    /*!
      * @return entry from the relevant Event/ notifyrc config group
      *
      * This will return the configuration from the user for the given key.
@@ -70,14 +70,14 @@ public:
      */
     QString readEntry(const QString &key) const;
 
-    /**
+    /*!
      * @return path entry from the relevant Event/ notifyrc config group
      *
      * This will return the configuration from the user for the given key
      * and interpret it as a path.
      */
     QString readPathEntry(const QString &key) const;
-    /**
+    /*!
      * reparse the cached configs.  to be used when the config may have changed
      */
     static void reparseConfiguration();

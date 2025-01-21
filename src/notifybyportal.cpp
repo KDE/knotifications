@@ -45,7 +45,7 @@ public:
     {
     }
 
-    /**
+    /*!
      * Sends notification to DBus "org.freedesktop.notifications" interface.
      * @param id knotify-sid identifier of notification
      * @param config notification data
@@ -56,19 +56,19 @@ public:
      */
     bool sendNotificationToPortal(KNotification *notification, const KNotifyConfig &config);
 
-    /**
+    /*!
      * Sends request to close Notification with id to DBus "org.freedesktop.notifications" interface
      *  @param id knotify-side notification ID to close
      */
 
     void closePortalNotification(KNotification *notification);
-    /**
+    /*!
      * Find the caption and the icon name of the application
      */
 
     void getAppCaptionAndIconName(const KNotifyConfig &config, QString *appCaption, QString *iconName);
 
-    /**
+    /*!
      * Specifies if DBus Notifications interface exists on session bus
      */
     bool dbusServiceExists;

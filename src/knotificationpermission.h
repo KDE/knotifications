@@ -12,7 +12,7 @@
 
 #include <functional>
 
-/** Check or request permissions to show notifications on platforms where
+/*! Check or request permissions to show notifications on platforms where
  *  that is necessary.
  *
  *  @since 6.0
@@ -20,10 +20,10 @@
 namespace KNotificationPermission
 {
 
-/** Check if the current application has permissions to show notifications. */
+/*! Check if the current application has permissions to show notifications. */
 KNOTIFICATIONS_EXPORT Qt::PermissionStatus checkPermission();
 
-/** Request notification permissions. */
+/*! Request notification permissions. */
 KNOTIFICATIONS_EXPORT void requestPermission(QObject *context, const std::function<void(Qt::PermissionStatus)> &callback);
 
 }

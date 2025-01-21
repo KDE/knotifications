@@ -17,7 +17,7 @@ class KNotification;
 class QPixmap;
 class KNotificationPlugin;
 
-/**
+/*!
  * @internal
  * @author Olivier Goffart
  */
@@ -30,12 +30,12 @@ public:
 
     KNotificationPlugin *pluginForAction(const QString &action);
 
-    /**
+    /*!
      * send the dbus call to the knotify server
      */
     void notify(KNotification *n);
 
-    /**
+    /*!
      * send the close dcop call to the knotify server for the notification with the identifier @p id .
      * And remove the notification from the internal map
      * @param id the id of the notification
@@ -43,12 +43,12 @@ public:
      */
     void close(int id);
 
-    /**
+    /*!
      * update one notification text and pixmap and actions
      */
     void update(KNotification *n);
 
-    /**
+    /*!
      * re-emit the notification
      */
     void reemit(KNotification *n);

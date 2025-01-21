@@ -16,7 +16,7 @@ class KNotification;
 class KNotificationPluginPrivate;
 class KNotifyConfig;
 
-/**
+/*!
  * @class KNotificationPlugin knotificationplugin.h KNotificationPlugin
  *
  * @brief abstract class for KNotification actions
@@ -48,7 +48,7 @@ public:
     KNotificationPlugin(QObject *parent = nullptr, const QVariantList &args = QVariantList());
     ~KNotificationPlugin() override;
 
-    /**
+    /*!
      * @brief return the name of this plugin.
      *
      * this is the name that should appear in the .notifyrc file,
@@ -56,7 +56,7 @@ public:
      */
     virtual QString optionName() = 0;
 
-    /**
+    /*!
      * This function is called when the notification is sent.
      * (or re-sent)
      * You should implement this function to display a notification
@@ -68,18 +68,18 @@ public:
      */
     virtual void notify(KNotification *notification, const KNotifyConfig &notifyConfig) = 0;
 
-    /**
+    /*!
      * This function is called when the notification has changed (such as the text or the icon)
      */
     virtual void update(KNotification *notification, const KNotifyConfig &notifyConfig);
 
-    /**
+    /*!
      * This function is called when the notification has been closed
      */
     virtual void close(KNotification *notification);
 
 protected:
-    /**
+    /*!
      * emit the finished signal
      * you MUST call this function for each call to notify(), even if you do nothing there
      *
@@ -95,11 +95,11 @@ protected:
     }
 
 Q_SIGNALS:
-    /**
+    /*!
      * the presentation is finished.
      */
     void finished(KNotification *notification);
-    /**
+    /*!
      * emit this signal if one action was invoked
      * @param id is the id of the notification
      * @param action is the action number.  zero for the default action

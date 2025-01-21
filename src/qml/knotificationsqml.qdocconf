@@ -1,0 +1,32 @@
+include($KDE_DOCS/global/qt-module-defaults.qdocconf)
+
+project = KNotificationsQml
+description = Additions to Qt Core
+
+documentationinheaders = true
+
+headerdirs += .
+sourcedirs += .
+
+outputformats = HTML
+
+depends += \
+    kde \
+    qtcore \
+    qtgui \
+    qtqml \
+    knotifications
+
+qhp.projects            = KNotificationsQml
+
+qhp.KNotificationsQml.file                = knotificationsqml.qhp
+qhp.KNotificationsQml.namespace           = org.kde.knotificationsqml.$QT_VERSION_TAG
+qhp.KNotificationsQml.virtualFolder       = knotificationsqml
+qhp.KNotificationsQml.indexTitle          = KNotificationsQml
+qhp.KNotificationsQml.indexRoot           =
+
+qhp.KNotificationsQml.subprojects         = classes
+qhp.KNotificationsQml.subprojects.classes.title = C++ Classes
+qhp.KNotificationsQml.subprojects.classes.indexTitle = KNotifications QML Types
+qhp.KNotificationsQml.subprojects.classes.selectors = class fake:headerfile
+qhp.KNotificationsQml.subprojects.classes.sortPages = true

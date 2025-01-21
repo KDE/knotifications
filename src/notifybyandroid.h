@@ -12,7 +12,7 @@
 #include <QJniObject>
 #include <QPointer>
 
-/** Android notification backend. */
+/* Android notification backend. */
 class NotifyByAndroid : public KNotificationPlugin
 {
     Q_OBJECT

@@ -13,7 +13,7 @@
 
 namespace ImageConverter
 {
-/**
+/*
  * A structure representing an image which can be marshalled to fit the
  * notification spec.
  */

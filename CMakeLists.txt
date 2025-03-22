@@ -103,7 +103,7 @@ ecm_install_po_files_as_qm(poqm)
 
 ecm_set_disabled_deprecation_versions(
     QT 6.8
-    KF 6.11
+    KF 6.12
 )
 
 add_subdirectory(src)

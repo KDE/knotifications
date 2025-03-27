@@ -210,6 +210,12 @@ KNotificationAction *KNotification::addAction(const QString &label)
     d->needUpdate = true;
 
     KNotificationAction *action = new KNotificationAction(label);
+    connect(action, &KNotificationAction::labelChanged, this, [this] {
+        d->needUpdate = true;
+        if (d->id >= 0) {
+            d->updateTimer.start();
+        }
+    });
     action->setId(QString::number(d->actionIdCounter));
     d->actionIdCounter++;
 
@@ -276,6 +282,12 @@ KNotificationAction *KNotification::addDefaultAction(const QString &label)
     d->needUpdate = true;
     d->ownsActions = true;
     d->defaultAction = new KNotificationAction(label);
+    connect(d->defaultAction, &KNotificationAction::labelChanged, this, [this] {
+        d->needUpdate = true;
+        if (d->id >= 0) {
+            d->updateTimer.start();
+        }
+    });
 
     d->defaultAction->setId(QStringLiteral("default"));
 

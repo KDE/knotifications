@@ -42,7 +42,7 @@ ecm_setup_version(PROJECT
                         SOVERSION 6)
 
 # Dependencies
-set(REQUIRED_QT_VERSION 6.6.0)
+set(REQUIRED_QT_VERSION 6.7.0)
 set(CMAKE_AUTORCC TRUE)
 
 find_package(Qt6 ${REQUIRED_QT_VERSION} CONFIG REQUIRED Gui)

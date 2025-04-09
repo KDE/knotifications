@@ -13,7 +13,6 @@
 #include "knotification.h"
 #include "knotificationreplyaction.h"
 
-#include <QBuffer>
 #include <QDBusConnection>
 #include <QGuiApplication>
 #include <QHash>
@@ -303,15 +302,9 @@ bool NotifyByPopup::sendNotificationToServer(KNotification *notification, const 
         hintsMap[it.key()] = it.value();
     }
 
-    // FIXME - re-enable/fix
     // let's see if we've got an image, and store the image in the hints map
     if (!notification->pixmap().isNull()) {
-        QByteArray pixmapData;
-        QBuffer buffer(&pixmapData);
-        buffer.open(QIODevice::WriteOnly);
-        notification->pixmap().save(&buffer, "PNG");
-        buffer.close();
-        hintsMap[QStringLiteral("image_data")] = ImageConverter::variantForImage(QImage::fromData(pixmapData));
+        hintsMap[QStringLiteral("image_data")] = ImageConverter::variantForImage(notification->pixmap().toImage());
     }
 
     // Persistent     => 0  == infinite timeout

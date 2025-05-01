@@ -88,7 +88,7 @@ KNotificationManager::KNotificationManager()
 
 KNotificationManager::~KNotificationManager() = default;
 
-KNotificationPlugin *KNotificationManager::pluginForAction(const QString &action)
+KNotificationPlugin *KNotificationManager::pluginForAction(QStringView action)
 {
     KNotificationPlugin *plugin = d->notifyPlugins.value(action);
 
@@ -214,8 +214,8 @@ void KNotificationManager::close(int id)
         KNotifyConfig notifyConfig(n->appName(), n->eventId());
         QString notifyActions = notifyConfig.readEntry(QStringLiteral("Action"));
 
-        const auto listActions = notifyActions.split(QLatin1Char('|'));
-        for (const QString &action : listActions) {
+        const auto listActions = QStringView(notifyActions).split(QLatin1Char('|'));
+        for (auto action : listActions) {
             if (!d->notifyPlugins.contains(action)) {
                 qCDebug(LOG_KNOTIFICATIONS) << "No plugin for action" << action;
                 continue;
@@ -264,11 +264,11 @@ void KNotificationManager::notify(KNotification *n)
         }
     }
 
-    const auto actionsList = notifyActions.split(QLatin1Char('|'));
+    const auto actionsList = QStringView(notifyActions).split(QLatin1Char('|'));
 
     // Make sure all plugins can ref the notification
     // otherwise a plugin may finish and deref before everyone got a chance to ref
-    for (const QString &action : actionsList) {
+    for (const auto &action : actionsList) {
         KNotificationPlugin *notifyPlugin = pluginForAction(action);
 
         if (!notifyPlugin) {
@@ -279,7 +279,7 @@ void KNotificationManager::notify(KNotification *n)
         n->ref();
     }
 
-    for (const QString &action : actionsList) {
+    for (const auto &action : actionsList) {
         KNotificationPlugin *notifyPlugin = pluginForAction(action);
 
         if (!notifyPlugin) {

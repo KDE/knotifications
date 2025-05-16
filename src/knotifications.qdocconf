@@ -12,6 +12,8 @@ excludedirs = qml
 
 outputformats = HTML
 
+navigation.landingpage = "KNotifications"
+
 depends += \
     qtcore \
     qtgui \

@@ -10,6 +10,8 @@ sourcedirs += .
 
 outputformats = HTML
 
+navigation.landingpage = "KNotifications"
+
 depends += \
     kde \
     qtcore \

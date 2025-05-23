@@ -27,8 +27,8 @@ qhp.KNotificationsQml.virtualFolder       = knotificationsqml
 qhp.KNotificationsQml.indexTitle          = KNotificationsQml
 qhp.KNotificationsQml.indexRoot           =
 
-qhp.KNotificationsQml.subprojects         = classes
-qhp.KNotificationsQml.subprojects.classes.title = C++ Classes
-qhp.KNotificationsQml.subprojects.classes.indexTitle = KNotifications QML Types
-qhp.KNotificationsQml.subprojects.classes.selectors = class fake:headerfile
-qhp.KNotificationsQml.subprojects.classes.sortPages = true
+qhp.KNotificationsQml.subprojects         = qmltypes
+qhp.KNotificationsQml.subprojects.qmltypes.title = QML Types
+qhp.KNotificationsQml.subprojects.qmltypes.indexTitle = KNotifications QML Types
+qhp.KNotificationsQml.subprojects.qmltypes.selectors = qmltype
+qhp.KNotificationsQml.subprojects.qmltypes.sortPages = true

@@ -32,3 +32,5 @@ qhp.KNotificationsQml.subprojects.qmltypes.title = QML Types
 qhp.KNotificationsQml.subprojects.qmltypes.indexTitle = KNotifications QML Types
 qhp.KNotificationsQml.subprojects.qmltypes.selectors = qmltype
 qhp.KNotificationsQml.subprojects.qmltypes.sortPages = true
+
+tagfile = knotificationsqml.tags

@@ -32,3 +32,5 @@ qhp.KNotifications.subprojects.classes.title = C++ Classes
 qhp.KNotifications.subprojects.classes.indexTitle = KNotifications C++ Classes
 qhp.KNotifications.subprojects.classes.selectors = class fake:headerfile
 qhp.KNotifications.subprojects.classes.sortPages = true
+
+tagfile = knotifications.tags

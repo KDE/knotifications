@@ -88,7 +88,7 @@ endif()
 option(BUILD_PYTHON_BINDINGS "Build Python bindings" ON)
 
 # Only Linux and FreeBSD CI has the relevant packages
-if (ANDROID OR APPLE OR WIN32 OR NOT BUILD_SHARED_LIBS)
+if (ANDROID OR APPLE OR WIN32 OR HAIKU OR NOT BUILD_SHARED_LIBS)
     set(BUILD_PYTHON_BINDINGS OFF)
 endif()
 

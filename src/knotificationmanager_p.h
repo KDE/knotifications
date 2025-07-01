@@ -24,7 +24,7 @@ public:
     static KNotificationManager *self();
     ~KNotificationManager() override;
 
-    KNotificationPlugin *pluginForAction(QStringView action);
+    KNotificationPlugin *pluginForAction(const QString &action);
 
     /*
      * send the dbus call to the knotify server

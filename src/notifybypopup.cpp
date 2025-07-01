@@ -220,8 +220,10 @@ bool NotifyByPopup::sendNotificationToServer(KNotification *notification, const 
             actionList.append(QStringLiteral("default"));
             actionList.append(notification->defaultAction()->label());
         }
+        int actId = 0;
         const auto listActions = notification->actions();
         for (const KNotificationAction *action : listActions) {
+            actId++;
             actionList.append(action->id());
             actionList.append(action->label());
         }

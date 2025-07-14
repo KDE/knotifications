@@ -65,7 +65,7 @@ msgstr ""
 
 #, fuzzy
 #~ msgid "System Default (currently: %1)"
-#~ msgstr "სისტემის ნაგულისხმები (%1)"
+#~ msgstr "სისტემის ნაგულისხმევი (%1)"
 
 #~ msgid "Editor Chooser"
 #~ msgstr "რედაქტორის არჩევა"
@@ -78,7 +78,7 @@ msgstr ""
 #~ "override that setting."
 #~ msgstr ""
 #~ "შეარჩიეთ ტექსტის რედაქტირების ძირითადი კომპონენტი, რომლის გამოყენებაც "
-#~ "გსურთ ამ პროგრამაში. თუ აირჩევთ <B>სისტემის ნაგულისხმები</B>, პროგრამა "
+#~ "გსურთ ამ პროგრამაში. თუ აირჩევთ <B>სისტემის ნაგულისხმევი</B>, პროგრამა "
 #~ "გაითვალისწინებს თქვენს მითითებას.  ყველა სხვა არჩევანი საკონტროლო ცენტრში "
 #~ "მითითებულ პარამეტრზე უფრო პრიორიტეტული იქნება."
 
@@ -438,12 +438,12 @@ msgstr ""
 #, fuzzy
 #~ msgctxt "@item Spelling dictionary: %1 dictionary name, %2 file name"
 #~ msgid "Default - %1 [%2]"
-#~ msgstr "ნაგულისხმები - %1 [%2]"
+#~ msgstr "ნაგულისხმევი - %1 [%2]"
 
 #, fuzzy
 #~ msgctxt "@item Spelling dictionary: %1 dictionary name"
 #~ msgid "Default - %1"
-#~ msgstr "ნაგულისხმები - %1"
+#~ msgstr "ნაგულისხმევი - %1"
 
 #~ msgid "You have to restart the dialog for changes to take effect"
 #~ msgstr "ცვლილებების გასააქტივებლად საჭიროა დიალოგის ხელახლა გახსნა"
@@ -992,15 +992,15 @@ msgstr ""
 #~ "application palette (light and dark shades are\n"
 #~ "calculated)"
 #~ msgstr ""
-#~ "მიუთითებს ფონის ნაგულისხმებ ფერსა და\n"
+#~ "მიუთითებს ფონის ნაგულისხმევ ფერსა და\n"
 #~ "პროგრამის პალიტრას (გამოითვლება ღია \n"
 #~ "და მუქი ჩრდილები)."
 
 #~ msgid "sets the default foreground color"
-#~ msgstr "მიუთითებს ტექსტის ნაგულისხმებ ფერს"
+#~ msgstr "მიუთითებს ტექსტის ნაგულისხმევ ფერს"
 
 #~ msgid "sets the default button color"
-#~ msgstr "მიუთითებს ღილაკის ნაგულისხმებ ფერს"
+#~ msgstr "მიუთითებს ღილაკის ნაგულისხმევ ფერს"
 
 #~ msgid "sets the application name"
 #~ msgstr "მიუთითებს პროგრამის სახელს"
@@ -2188,7 +2188,7 @@ msgstr ""
 
 #~ msgctxt "Encodings menu"
 #~ msgid "Default"
-#~ msgstr "ნაგულისხმები"
+#~ msgstr "ნაგულისხმევი"
 
 #, fuzzy
 #~ msgctxt "Encodings menu"
@@ -2554,11 +2554,11 @@ msgstr ""
 
 #, fuzzy
 #~ msgid "Default color"
-#~ msgstr "ნაგულისხმები"
+#~ msgstr "ნაგულისხმევი"
 
 #, fuzzy
 #~ msgid "-default-"
-#~ msgstr "ნაგულისხმები"
+#~ msgstr "ნაგულისხმევი"
 
 #, fuzzy
 #~ msgid ""
@@ -3258,7 +3258,7 @@ msgstr ""
 #~ msgstr "დაწკაპეთ და გადააადგილეთ ნახატი ინტერესის რეგიონის შესარჩევად:"
 
 #~ msgid "Default:"
-#~ msgstr "ნაგულისხმები:"
+#~ msgstr "ნაგულისხმევი:"
 
 #, fuzzy
 #~ msgctxt "No shortcut defined"
@@ -3289,7 +3289,7 @@ msgstr ""
 
 #, fuzzy
 #~ msgid "Save as Scheme Defaults"
-#~ msgstr "&ნაგულისხმები"
+#~ msgstr "&ნაგულისხმევი"
 
 #, fuzzy
 #~ msgid "Name for new scheme:"
@@ -3311,7 +3311,7 @@ msgstr ""
 
 #, fuzzy
 #~ msgid "Reset to Defaults"
-#~ msgstr "&ნაგულისხმები"
+#~ msgstr "&ნაგულისხმევი"
 
 #~ msgid ""
 #~ "Search interactively for shortcut names (e.g. Copy) or combination of "
@@ -3403,7 +3403,7 @@ msgstr ""
 
 #, fuzzy
 #~ msgid "Add Fallback Language"
-#~ msgstr "ნაგულისხმები ენა:"
+#~ msgstr "ნაგულისხმევი ენა:"
 
 #, fuzzy
 #~ msgid "Application Language Changed"
@@ -3414,7 +3414,7 @@ msgstr ""
 
 #, fuzzy
 #~ msgid "Fallback language:"
-#~ msgstr "ნაგულისხმები ენა:"
+#~ msgstr "ნაგულისხმევი ენა:"
 
 #~ msgid "Remove"
 #~ msgstr "ამოშლა"
@@ -4368,7 +4368,7 @@ msgstr ""
 #~ msgstr "შერ&წყმული სიტყვების გამოტოვება"
 
 #~ msgid "Default language:"
-#~ msgstr "ნაგულისხმები ენა:"
+#~ msgstr "ნაგულისხმევი ენა:"
 
 #, fuzzy
 #~ msgid "Ignored Words"
@@ -4572,10 +4572,10 @@ msgstr ""
 #~ msgstr "მიმდინარე ფანჯრის ან დოკუმენტის დახურვა"
 
 #~ msgid "&Defaults"
-#~ msgstr "&ნაგულისხმები"
+#~ msgstr "&ნაგულისხმევი"
 
 #~ msgid "Reset all items to their default values"
-#~ msgstr "ყველა ელემენტის ნაგულისხმები მნიშვნელობის აღდგენა"
+#~ msgstr "ყველა ელემენტის ნაგულისხმევი მნიშვნელობის აღდგენა"
 
 #~ msgid "Go back one step"
 #~ msgstr "ერთი ნაბიჯით უკან"
@@ -5128,7 +5128,7 @@ msgstr ""
 
 #~ msgctxt "@item:inmenu Text Completion"
 #~ msgid "Default"
-#~ msgstr "ნაგულისხმები"
+#~ msgstr "ნაგულისხმევი"
 
 #~ msgid "Image Operations"
 #~ msgstr "ოპერაციები ნახატზე"
@@ -5330,7 +5330,7 @@ msgstr ""
 #, fuzzy
 #~ msgctxt "@item:inmenu Icon size"
 #~ msgid "Default"
-#~ msgstr "ნაგულისხმები"
+#~ msgstr "ნაგულისხმევი"
 
 #~ msgid "Small (%1x%2)"
 #~ msgstr "პატარა (%1x%2)"
@@ -5422,7 +5422,7 @@ msgstr ""
 #~ msgstr "მოდულის შესაქმნელი კლასის სახელი"
 
 #~ msgid "Default widget group name to display in designer"
-#~ msgstr "მართვის ელემენტის ნაგულისხმები სახელი დიზანერში სამუშაოდ"
+#~ msgstr "მართვის ელემენტის ნაგულისხმევი სახელი დიზანერში სამუშაოდ"
 
 #~ msgid "makekdewidgets"
 #~ msgstr "მართვის ელემენტების შექმნა"
@@ -5855,7 +5855,7 @@ msgstr ""
 #~ "ინტეგრაცია Konqueror-თან ამოირთვება!"
 
 #~ msgid "Default Font Size (100%)"
-#~ msgstr "შრიფტის ნაგულისხმები ზომა (100%)"
+#~ msgstr "შრიფტის ნაგულისხმევი ზომა (100%)"
 
 #~ msgid "KHTML"
 #~ msgstr "KHTML"
@@ -10039,10 +10039,10 @@ msgstr ""
 #~ msgstr "უცნობია"
 
 #~ msgid "ISpell Default"
-#~ msgstr "ISpell ნაგულისხმები"
+#~ msgstr "ISpell ნაგულისხმევი"
 
 #~ msgid "ASpell Default"
-#~ msgstr "ASpell ნაგულისხმები"
+#~ msgstr "ASpell ნაგულისხმევი"
 
 #~ msgid "&Certificate"
 #~ msgstr "&სერთიფიკატი"

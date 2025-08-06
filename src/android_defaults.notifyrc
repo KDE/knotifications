@@ -117,7 +117,7 @@ Action=Popup
 
 [Event/notification]
 Name=Notification
-Name[ar]=إخطار
+Name[ar]=إشعار
 Name[az]=Bildiriş
 Name[be]=Апавяшчэнне
 Name[bg]=Известия

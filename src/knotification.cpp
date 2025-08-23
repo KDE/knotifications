@@ -245,7 +245,7 @@ void KNotification::setActionsQml(QList<KNotificationAction *> actions)
 
     int idCounter = 1;
 
-    for (KNotificationAction *action : d->actions) {
+    for (KNotificationAction *action : std::as_const(d->actions)) {
         action->setId(QString::number(idCounter));
         ++idCounter;
     }
@@ -390,7 +390,7 @@ void KNotification::activate(const QString &actionId)
         Q_EMIT d->defaultAction->activated();
     }
 
-    for (KNotificationAction *action : d->actions) {
+    for (KNotificationAction *action : std::as_const(d->actions)) {
         if (action->id() == actionId) {
             Q_EMIT action->activated();
         }

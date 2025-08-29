@@ -316,8 +316,12 @@ bool NotifyByPopup::sendNotificationToServer(KNotification *notification, const 
 
     QObject::connect(watcher, &QDBusPendingCallWatcher::finished, this, [this, notification](QDBusPendingCallWatcher *watcher) {
         watcher->deleteLater();
-        QDBusPendingReply<uint> reply = *watcher;
-        m_notifications.insert(reply.argumentAt<0>(), notification);
+        if (!watcher->isError()) {
+            QDBusPendingReply<uint> reply = *watcher;
+            m_notifications.insert(reply.argumentAt<0>(), notification);
+        } else {
+            qCWarning(LOG_KNOTIFICATIONS) << "Failed to notify" << watcher->error().message();
+        }
     });
 
     return true;

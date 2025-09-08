@@ -322,10 +322,9 @@ public class NotifyByAndroid extends BroadcastReceiver
         }
 
         if (Build.VERSION.SDK_INT >= 23) {
-            builder.setSmallIcon((Icon)notification.icon);
-        } else {
-            builder.setSmallIcon(m_ctx.getApplicationInfo().icon);
+            builder.setLargeIcon((Icon)notification.icon);
         }
+        builder.setSmallIcon(m_ctx.getApplicationInfo().icon);
         builder.setContentTitle(notification.channelName);
         builder.setContentText(notification.channelDescription);
         builder.setGroup(notification.group);

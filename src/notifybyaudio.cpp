@@ -189,7 +189,7 @@ void NotifyByAudio::finishCallback(uint32_t id, int error_code)
             }
             return;
         }
-    } else if (error_code != CA_ERROR_CANCELED) {
+    } else if (error_code != CA_ERROR_CANCELED && error_code != CA_ERROR_DESTROYED) {
         qCWarning(LOG_KNOTIFICATIONS) << "Playing audio notification failed:" << ca_strerror(error_code);
     }
 

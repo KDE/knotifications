@@ -46,6 +46,7 @@ find_package(Qt6 ${REQUIRED_QT_VERSION} CONFIG REQUIRED Gui)
 
 if (ANDROID)
     find_package(Gradle REQUIRED)
+    find_package(Qt6 ${REQUIRED_QT_VERSION} CONFIG REQUIRED CorePrivate)
 endif()
 
 # shall we use DBus?

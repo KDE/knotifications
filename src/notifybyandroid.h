@@ -32,7 +32,6 @@ public:
     void notificationInlineReply(int id, const QString &text);
 
 private:
-    void notifyDeferred(KNotification *notification);
     QJniObject createAndroidNotification(KNotification *notification, const KNotifyConfig &notifyConfig) const;
 
     QJniObject m_backend;

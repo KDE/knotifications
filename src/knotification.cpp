@@ -134,7 +134,7 @@ void KNotification::setTitle(const QString &title)
     d->needUpdate = true;
     d->title = title;
     Q_EMIT titleChanged();
-    if (d->id >= 0) {
+    if (d->id >= 0 && !d->isNew) {
         d->updateTimer.start();
     }
 }
@@ -148,7 +148,7 @@ void KNotification::setText(const QString &text)
     d->needUpdate = true;
     d->text = text;
     Q_EMIT textChanged();
-    if (d->id >= 0) {
+    if (d->id >= 0 && !d->isNew) {
         d->updateTimer.start();
     }
 }
@@ -162,7 +162,7 @@ void KNotification::setIconName(const QString &icon)
     d->needUpdate = true;
     d->iconName = icon;
     Q_EMIT iconNameChanged();
-    if (d->id >= 0) {
+    if (d->id >= 0 && !d->isNew) {
         d->updateTimer.start();
     }
 }
@@ -181,7 +181,7 @@ void KNotification::setPixmap(const QPixmap &pix)
 {
     d->needUpdate = true;
     d->pixmap = pix;
-    if (d->id >= 0) {
+    if (d->id >= 0 && !d->isNew) {
         d->updateTimer.start();
     }
 }
@@ -200,7 +200,7 @@ void KNotification::clearActions()
     d->actionIdCounter = 1;
 
     d->needUpdate = true;
-    if (d->id >= 0) {
+    if (d->id >= 0 && !d->isNew) {
         d->updateTimer.start();
     }
 }
@@ -212,7 +212,7 @@ KNotificationAction *KNotification::addAction(const QString &label)
     KNotificationAction *action = new KNotificationAction(label);
     connect(action, &KNotificationAction::labelChanged, this, [this] {
         d->needUpdate = true;
-        if (d->id >= 0) {
+        if (d->id >= 0 && !d->isNew) {
             d->updateTimer.start();
         }
     });
@@ -223,7 +223,7 @@ KNotificationAction *KNotification::addAction(const QString &label)
     d->ownsActions = true;
     Q_EMIT actionsChanged();
 
-    if (d->id >= 0) {
+    if (d->id >= 0 && !d->isNew) {
         d->updateTimer.start();
     }
 
@@ -250,7 +250,7 @@ void KNotification::setActionsQml(QList<KNotificationAction *> actions)
         ++idCounter;
     }
 
-    if (d->id >= 0) {
+    if (d->id >= 0 && !d->isNew) {
         d->updateTimer.start();
     }
 }
@@ -268,7 +268,7 @@ void KNotification::setReplyAction(std::unique_ptr<KNotificationReplyAction> rep
 
     d->needUpdate = true;
     d->replyAction = std::move(replyAction);
-    if (d->id >= 0) {
+    if (d->id >= 0 && !d->isNew) {
         d->updateTimer.start();
     }
 }
@@ -284,7 +284,7 @@ KNotificationAction *KNotification::addDefaultAction(const QString &label)
     d->defaultAction = new KNotificationAction(label);
     connect(d->defaultAction, &KNotificationAction::labelChanged, this, [this] {
         d->needUpdate = true;
-        if (d->id >= 0) {
+        if (d->id >= 0 && !d->isNew) {
             d->updateTimer.start();
         }
     });
@@ -292,7 +292,7 @@ KNotificationAction *KNotification::addDefaultAction(const QString &label)
     d->defaultAction->setId(QStringLiteral("default"));
 
     Q_EMIT defaultActionChanged();
-    if (d->id >= 0) {
+    if (d->id >= 0 && !d->isNew) {
         d->updateTimer.start();
     }
 
@@ -312,7 +312,7 @@ void KNotification::setDefaultActionQml(KNotificationAction *defaultAction)
     d->defaultAction->setId(QStringLiteral("default"));
 
     Q_EMIT defaultActionChanged();
-    if (d->id >= 0) {
+    if (d->id >= 0 && !d->isNew) {
         d->updateTimer.start();
     }
 }
@@ -336,7 +336,7 @@ void KNotification::setFlags(const NotificationFlags &flags)
     d->needUpdate = true;
     d->flags = flags;
     Q_EMIT flagsChanged();
-    if (d->id >= 0) {
+    if (d->id >= 0 && !d->isNew) {
         d->updateTimer.start();
     }
 }
@@ -379,7 +379,7 @@ void KNotification::setUrgency(Urgency urgency)
     d->needUpdate = true;
     d->urgency = urgency;
     Q_EMIT urgencyChanged();
-    if (d->id >= 0) {
+    if (d->id >= 0 && !d->isNew) {
         d->updateTimer.start();
     }
 }
@@ -610,7 +610,7 @@ void KNotification::setHint(const QString &hint, const QVariant &value)
 
     d->needUpdate = true;
     d->hints[hint] = value;
-    if (d->id >= 0) {
+    if (d->id >= 0 && !d->isNew) {
         d->updateTimer.start();
     }
     Q_EMIT hintsChanged();
@@ -629,7 +629,7 @@ void KNotification::setHints(const QVariantMap &hints)
 
     d->needUpdate = true;
     d->hints = hints;
-    if (d->id >= 0) {
+    if (d->id >= 0 && !d->isNew) {
         d->updateTimer.start();
     }
     Q_EMIT hintsChanged();

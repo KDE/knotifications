@@ -264,6 +264,7 @@ void KNotificationManager::notify(KNotification *n)
         } else if (urgency == QLatin1String("Critical")) {
             n->setUrgency(KNotification::CriticalUrgency);
         }
+        n->d->needUpdate = false;
     }
 
     const auto actionsList = notifyActions.split(QLatin1Char('|'));

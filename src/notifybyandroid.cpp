@@ -94,19 +94,6 @@ QString NotifyByAndroid::optionName()
     return QStringLiteral("Popup");
 }
 
-void NotifyByAndroid::notify(KNotification *notification, const KNotifyConfig &notifyConfig)
-{
-    Q_UNUSED(notifyConfig);
-    // HACK work around that notification->id() is only populated after returning from here
-    // note that config will be invalid at that point, so we can't pass that along
-    QMetaObject::invokeMethod(
-        this,
-        [this, notification]() {
-            notifyDeferred(notification);
-        },
-        Qt::QueuedConnection);
-}
-
 QJniObject NotifyByAndroid::createAndroidNotification(KNotification *notification, const KNotifyConfig &notifyConfig) const
 {
     QJniEnvironment env;
@@ -160,10 +147,9 @@ QJniObject NotifyByAndroid::createAndroidNotification(KNotification *notificatio
     return n;
 }
 
-void NotifyByAndroid::notifyDeferred(KNotification *notification)
+void NotifyByAndroid::notify(KNotification *notification, const KNotifyConfig &notifyConfig)
 {
-    KNotifyConfig config(notification->appName(), notification->eventId());
-    const auto n = createAndroidNotification(notification, config);
+    const auto n = createAndroidNotification(notification, notifyConfig);
     m_notifications.insert(notification->id(), notification);
 
     m_backend.callMethod<void>("notify", "(Lorg/kde/knotifications/KNotification;)V", n.object<jobject>());

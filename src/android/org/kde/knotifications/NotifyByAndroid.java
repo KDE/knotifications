@@ -184,7 +184,7 @@ public class NotifyByAndroid extends BroadcastReceiver
         // taping the notification shows the app
         Intent intent = new Intent(m_ctx.getPackageName() + NOTIFICATION_OPENED);
         intent.putExtra(NOTIFICATION_ID_EXTRA, notification.id);
-        intent.setComponent(new ComponentName(m_ctx.getPackageName(), "Notifications"));
+        intent.setPackage(m_ctx.getPackageName());
         PendingIntent contentIntent = PendingIntent.getBroadcast(m_ctx, m_uniquePendingIntentId++, intent, PendingIntent.FLAG_UPDATE_CURRENT | PENDING_INTENT_FLAG_IMMUTABLE);
         builder.setContentIntent(contentIntent);
 
@@ -196,7 +196,7 @@ public class NotifyByAndroid extends BroadcastReceiver
             Intent actionIntent = new Intent(m_ctx.getPackageName() + NOTIFICATION_ACTION);
             actionIntent.putExtra(NOTIFICATION_ID_EXTRA, notification.id);
             actionIntent.putExtra(NOTIFICATION_ACTION_ID_EXTRA, id);
-            actionIntent.setComponent(new ComponentName(m_ctx.getPackageName(), "Notifications"));
+            actionIntent.setPackage(m_ctx.getPackageName());
             PendingIntent pendingIntent = PendingIntent.getBroadcast(m_ctx, m_uniquePendingIntentId++, actionIntent, PendingIntent.FLAG_UPDATE_CURRENT | PENDING_INTENT_FLAG_IMMUTABLE);
             Notification.Action action = new Notification.Action.Builder(0, label, pendingIntent).build();
             builder.addAction(action);
@@ -206,7 +206,7 @@ public class NotifyByAndroid extends BroadcastReceiver
         if (notification.inlineReplyLabel != null) {
             Intent replyIntent = new Intent(m_ctx.getPackageName() + NOTIFICATION_REPLIED);
             replyIntent.putExtra(NOTIFICATION_ID_EXTRA, notification.id);
-            replyIntent.setComponent(new ComponentName(m_ctx.getPackageName(), "Notifications"));
+            replyIntent.setPackage(m_ctx.getPackageName());
             PendingIntent pendingReplyIntent = PendingIntent.getBroadcast(m_ctx, m_uniquePendingIntentId++, replyIntent, PendingIntent.FLAG_UPDATE_CURRENT | PENDING_INTENT_FLAG_MUTABLE);
 
             RemoteInput input = new RemoteInput.Builder(REMOTE_INPUT_KEY)
@@ -222,7 +222,7 @@ public class NotifyByAndroid extends BroadcastReceiver
         // notification about user closing the notification
         Intent deleteIntent = new Intent(m_ctx.getPackageName() + NOTIFICATION_DELETED);
         deleteIntent.putExtra(NOTIFICATION_ID_EXTRA, notification.id);
-        deleteIntent.setComponent(new ComponentName(m_ctx.getPackageName(), "Notifications"));
+        deleteIntent.setPackage(m_ctx.getPackageName());
         if (notification.group != null) {
             deleteIntent.putExtra(NOTIFICATION_GROUP_EXTRA, notification.group);
         }
@@ -340,6 +340,7 @@ public class NotifyByAndroid extends BroadcastReceiver
         Intent deleteIntent = new Intent(m_ctx.getPackageName() + NOTIFICATION_DELETED);
         deleteIntent.putExtra(NOTIFICATION_GROUP_EXTRA, notification.group);
         deleteIntent.putExtra(NOTIFICATION_ID_EXTRA, group.groupId);
+        deleteIntent.setPackage(m_ctx.getPackageName());
         builder.setDeleteIntent(PendingIntent.getBroadcast(m_ctx, m_uniquePendingIntentId++, deleteIntent, PendingIntent.FLAG_UPDATE_CURRENT | PENDING_INTENT_FLAG_IMMUTABLE));
 
         // try to stay out of the normal id space for regular notifications

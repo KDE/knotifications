@@ -174,9 +174,10 @@ void NotifyByAndroid::notificationFinished(int id)
     if (it == m_notifications.end()) {
         return;
     }
+    const auto n = it.value();
     m_notifications.erase(it);
-    if (it.value()) {
-        finish(it.value());
+    if (n) {
+        finish(n);
     }
 }
 

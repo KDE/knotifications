@@ -191,6 +191,13 @@ void NotifyByAndroid::notificationInlineReply(int id, const QString &text)
 {
     qCDebug(LOG_KNOTIFICATIONS) << id << text;
     Q_EMIT replied(id, text);
+
+    // confirm we got the reply, and thus stop the spinner animation
+    const auto it = m_notifications.constFind(id);
+    if (it != m_notifications.end() && it.value()) {
+        KNotifyConfig config(it.value()->appName(), it.value()->eventId());
+        notify(it.value(), config);
+    }
 }
 
 #include "moc_notifybyandroid.cpp"

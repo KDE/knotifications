@@ -16,6 +16,8 @@
 #include <QBuffer>
 #include <QIcon>
 
+using namespace Qt::Literals;
+
 static NotifyByAndroid *s_instance = nullptr;
 
 static void notificationFinished(JNIEnv *env, jobject that, jint notificationId)
@@ -114,21 +116,42 @@ QJniObject NotifyByAndroid::createAndroidNotification(KNotification *notificatio
     }
 
     // icon
-    QPixmap pixmap;
-    if (!notification->iconName().isEmpty()) {
-        const auto icon = QIcon::fromTheme(notification->iconName());
-        pixmap = icon.pixmap(32, 32);
-    } else {
-        pixmap = notification->pixmap();
+    {
+        QPixmap pixmap;
+        if (!notification->iconName().isEmpty()) {
+            const auto icon = QIcon::fromTheme(notification->iconName());
+            pixmap = icon.pixmap(32, 32);
+        } else {
+            pixmap = notification->pixmap();
+        }
+        QByteArray iconData;
+        QBuffer buffer(&iconData);
+        buffer.open(QIODevice::WriteOnly);
+        pixmap.save(&buffer, "PNG");
+        n.callMethod<void>("setIconFromData", iconData);
     }
-    QByteArray iconData;
-    QBuffer buffer(&iconData);
-    buffer.open(QIODevice::WriteOnly);
-    pixmap.save(&buffer, "PNG");
-    auto jIconData = env->NewByteArray(iconData.length());
-    env->SetByteArrayRegion(jIconData, 0, iconData.length(), reinterpret_cast<const jbyte *>(iconData.constData()));
-    n.callMethod<void>("setIconFromData", "([BI)V", jIconData, iconData.length());
-    env->DeleteLocalRef(jIconData);
+
+    // (symbolic) application icon
+    {
+        QPixmap pixmap;
+        const auto appIconHint = notification->hints().value("x-kde-symbolic-app-icon"_L1);
+        if (appIconHint.typeId() == QMetaType::QString) {
+            const auto icon = QIcon::fromTheme(appIconHint.toString());
+            pixmap = icon.pixmap(32, 32);
+        } else if (appIconHint.typeId() == QMetaType::QIcon) {
+            pixmap = appIconHint.value<QIcon>().pixmap(32, 32);
+        } else if (appIconHint.typeId() == QMetaType::QPixmap) {
+            pixmap = appIconHint.value<QPixmap>();
+        }
+
+        if (!pixmap.isNull()) {
+            QByteArray iconData;
+            QBuffer buffer(&iconData);
+            buffer.open(QIODevice::WriteOnly);
+            pixmap.save(&buffer, "PNG");
+            n.callMethod<void>("setAppIconFromData", iconData);
+        }
+    }
 
     // actions
     const auto actions = notification->actions();

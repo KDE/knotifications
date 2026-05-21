@@ -117,8 +117,11 @@ public class NotifyByAndroid extends BroadcastReceiver
             builder = new Notification.Builder(m_ctx);
         }
 
-        if (Build.VERSION.SDK_INT >= 23) {
-            builder.setSmallIcon((Icon)notification.icon);
+        if (Build.VERSION.SDK_INT >= 23 && notification.icon != null) {
+            builder.setLargeIcon((Icon)notification.icon);
+        }
+        if (notification.appIcon != null) {
+            builder.setSmallIcon((Icon)notification.appIcon);
         } else {
             builder.setSmallIcon(m_ctx.getApplicationInfo().icon);
         }
@@ -321,11 +324,12 @@ public class NotifyByAndroid extends BroadcastReceiver
             builder = new Notification.Builder(m_ctx);
         }
 
-        if (Build.VERSION.SDK_INT >= 23) {
-            builder.setSmallIcon((Icon)notification.icon);
+        if (notification.appIcon != null) {
+            builder.setSmallIcon((Icon)notification.appIcon);
         } else {
             builder.setSmallIcon(m_ctx.getApplicationInfo().icon);
         }
+
         builder.setContentTitle(notification.channelName);
         builder.setContentText(notification.channelDescription);
         builder.setGroup(notification.group);

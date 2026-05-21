@@ -23,6 +23,7 @@ public class KNotification
     public String richText;
     public String title;
     public Object icon;
+    public Object appIcon;
     public HashMap<String, String> actions = new HashMap<>();
     public String channelId;
     public String channelName;
@@ -40,10 +41,17 @@ public class KNotification
     public static final int HighUrgency = 70;
     public static final int CriticalUrgency = 90;
 
-    public void setIconFromData(byte[] data, int length)
+    public void setIconFromData(byte[] data)
     {
         if (Build.VERSION.SDK_INT >= 23) {
-            icon = Icon.createWithData(data, 0, length);
+            icon = Icon.createWithData(data, 0, data.length);
+        }
+    }
+
+    public void setAppIconFromData(byte[] data)
+    {
+        if (Build.VERSION.SDK_INT >= 23) {
+            appIcon = Icon.createWithData(data, 0, data.length);
         }
     }
 

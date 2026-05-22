@@ -8,60 +8,52 @@ msgstr ""
 "Project-Id-Version: kdelibs4\n"
 "Report-Msgid-Bugs-To: http://bugs.kde.org\n"
 "POT-Creation-Date: 2014-03-23 01:50+0000\n"
-"PO-Revision-Date: 2013-09-08 07:05+0900\n"
-"Last-Translator: Gheyret Kenji <gheyret@gmail.com>\n"
+"PO-Revision-Date: 2026-05-11 20:22-0400\n"
+"Last-Translator: Abduqadir Abliz <sahranbay@gmail.com>\n"
 "Language-Team: Uyghur Computer Science Association <UKIJ@yahoogroups.com>\n"
 "Language: ug\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Poedit 1.5.5\n"
+"X-Generator: Poedit 3.9\n"
 "X-Qt-Contexts: true\n"
 
-#, fuzzy
 #~| msgid "%1 (Link)"
 #~ msgctxt "KNotificationJobUiDelegate|"
 #~ msgid "%1 (Failed)"
 #~ msgstr "%1 (ئۇلانما)"
 
-#, fuzzy
 #~| msgid "Unknown Application"
 #~ msgctxt "KNotificationRestrictions|"
 #~ msgid "Unknown Application"
 #~ msgstr "نامەلۇم پروگرامما"
 
-#, fuzzy
 #~| msgid "&Minimize"
 #~ msgctxt "KStatusNotifierItem|@action:inmenu"
 #~ msgid "&Minimize"
 #~ msgstr "كىچىكلەت(&M)"
 
-#, fuzzy
 #~| msgid "Quit"
 #~ msgctxt "KStatusNotifierItem|@action:inmenu"
 #~ msgid "Quit"
 #~ msgstr "ئاخىرلاشتۇر"
 
-#, fuzzy
 #~| msgid "&Restore"
 #~ msgctxt "KStatusNotifierItem|@action:inmenu"
 #~ msgid "&Restore"
 #~ msgstr "ئەسلىگە كەلتۈر(&R)"
 
-#, fuzzy
 #~| msgid "Confirm Quit From System Tray"
 #~ msgctxt "KStatusNotifierItem|@title:window"
 #~ msgid "Confirm Quit From System Tray"
 #~ msgstr "سىستېما قونداقتىن ئاخىرلىشىشنى جەزملەش"
 
-#, fuzzy
 #~| msgid "<qt>Are you sure you want to quit <b>%1</b>?</qt>"
 #~ msgctxt "KStatusNotifierItem|"
 #~ msgid "<qt>Are you sure you want to quit <b>%1</b>?</qt>"
 #~ msgstr "<qt>راستلا <b>%1</b> نى ئاخىرلاشتۇرامسىز؟</qt>"
 
-#, fuzzy
 #~| msgid "Quit"
 #~ msgctxt "KStatusNotifierItem|@action:button"
 #~ msgid "Quit"
@@ -3743,7 +3735,6 @@ msgstr ""
 #~ msgid "Supply a username and password below."
 #~ msgstr "تۆۋەندە ئىشلەتكۈچى ئاتى ۋە ئىم تەمىنلەيدۇ."
 
-#, fuzzy
 #~ msgid "Use this password:"
 #~ msgstr "ئىمنى ساقلا(&K)"
 

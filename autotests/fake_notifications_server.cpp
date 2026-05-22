@@ -7,9 +7,9 @@
 #include "fake_notifications_server.h"
 
 NotificationsServer::NotificationsServer(QObject *parent)
+    : QObject(parent)
+    , counter(1)
 {
-    Q_UNUSED(parent);
-    counter = 1;
 }
 
 uint NotificationsServer::Notify(const QString &app_name,

@@ -14,7 +14,6 @@
 #include "../src/knotification.h"
 #include "../src/knotification_p.h"
 #include "fake_notifications_server.h"
-#include "qtest_dbus.h"
 
 using namespace Qt::StringLiterals;
 
@@ -38,6 +37,8 @@ private:
 
 void KNotificationTest::initTestCase()
 {
+    QCoreApplication::setApplicationName(u"qttest"_s);
+
     QStandardPaths::setTestModeEnabled(true);
     const QString dataDir = QStandardPaths::writableLocation(QStandardPaths::GenericDataLocation);
     qDebug() << dataDir;
@@ -229,5 +230,5 @@ void KNotificationTest::noActionsTest()
 }
 
 // Mind that we want KNotification to work as QCoreApplication. Do not promote this to gui!
-QTEST_GUILESS_MAIN_SYSTEM_DBUS(KNotificationTest)
+QTEST_GUILESS_MAIN(KNotificationTest)
 #include "knotification_test.moc"

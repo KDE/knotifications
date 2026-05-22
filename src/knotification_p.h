@@ -20,10 +20,24 @@
 
 #include <QTimer>
 
+#include <KNotificationReplyAction>
+
 struct Q_DECL_HIDDEN KNotification::Private {
+    Private(KNotification *q, const QString &eventId, int id, NotificationFlags flags)
+        : q(q)
+        , eventId(eventId)
+        , id(id)
+        , flags(flags)
+    {
+    }
+
+    KNotification *q;
+
     QString eventId;
-    int id = -1;
-    int ref = 0;
+    int id;
+    NotificationFlags flags;
+
+    int m_ref = 0;
 
     QString title;
     QString text;
@@ -34,7 +48,6 @@ struct Q_DECL_HIDDEN KNotification::Private {
     QString xdgActivationToken;
     std::unique_ptr<KNotificationReplyAction> replyAction;
     QPixmap pixmap;
-    NotificationFlags flags = KNotification::CloseOnTimeout;
     QString componentName;
     KNotification::Urgency urgency = KNotification::DefaultUrgency;
     QVariantMap hints;
@@ -45,6 +58,21 @@ struct Q_DECL_HIDDEN KNotification::Private {
     bool autoDelete = true;
     QWindow *window = nullptr;
     int actionIdCounter = 1;
+
+    void ref()
+    {
+        m_ref++;
+    }
+
+    void deref()
+    {
+        Q_ASSERT(m_ref > 0);
+        m_ref--;
+        if (m_ref == 0) {
+            id = -1;
+            q->close();
+        }
+    }
 };
 
 #endif

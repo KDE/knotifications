@@ -24,10 +24,10 @@
             qFatal("Couldn't execute new dbus session"); \
         } \
         int pos = session.indexOf('='); \
-        qputenv("DBUS_SESSION_BUS_ADDRESS", session.right(session.count() - pos - 1).trimmed().constData()); \
+        qputenv("DBUS_SESSION_BUS_ADDRESS", session.right(session.size() - pos - 1).trimmed().constData()); \
         session = dbus.readLine(); \
         pos = session.indexOf('='); \
-        QByteArray pid = session.right(session.count() - pos - 1).trimmed(); \
+        QByteArray pid = session.right(session.size() - pos - 1).trimmed(); \
         QCoreApplication app(argc, argv); \
         app.setApplicationName(QLatin1String("qttest")); \
         TestObject tc; \

@@ -852,6 +852,8 @@ public:
 
     // prevent warning
     using QObject::event;
+
+    friend class KNotificationTest;
 };
 
 Q_DECLARE_OPERATORS_FOR_FLAGS(KNotification::NotificationFlags)

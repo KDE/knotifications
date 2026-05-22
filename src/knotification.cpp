@@ -80,14 +80,11 @@ void KNotificationAction::setId(const QString &id)
 
 KNotification::KNotification(const QString &eventId, NotificationFlags flags, QObject *parent)
     : QObject(parent)
-    , d(new Private)
+    , d(new Private(this, eventId, ++notificationIdCounter, flags))
 {
-    d->eventId = eventId;
-    d->flags = flags;
     connect(&d->updateTimer, &QTimer::timeout, this, &KNotification::update);
     d->updateTimer.setSingleShot(true);
     d->updateTimer.setInterval(100);
-    d->id = ++notificationIdCounter;
 }
 
 KNotification::~KNotification()
@@ -403,7 +400,7 @@ void KNotification::close()
         KNotificationManager::self()->close(d->id);
     }
 
-    if (d->id == -1) {
+    if (d->id == -1) { // has been dispatched (i.e. ref() and deref() were called causing deref to set id to -1)
         d->id = -2;
         Q_EMIT closed();
         if (d->autoDelete) {
@@ -489,16 +486,12 @@ KNotification *KNotification::event(StandardEvent eventid, const QString &title,
 
 void KNotification::ref()
 {
-    d->ref++;
+    d->ref();
 }
+
 void KNotification::deref()
 {
-    Q_ASSERT(d->ref > 0);
-    d->ref--;
-    if (d->ref == 0) {
-        d->id = -1;
-        close();
-    }
+    d->deref();
 }
 
 void KNotification::beep(const QString &reason)

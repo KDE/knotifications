@@ -159,6 +159,11 @@ ApplicationWindow {
             text: "Request Permission"
             onClicked: NotificationPermission.requestPermission(success => { log.append("Permission request succeeded: " + success); })
         }
+        Button {
+            text: "Show Configuration"
+            enabled: NotificationConfiguration.isAvailable
+            onClicked: NotificationConfiguration.show()
+        }
 
         ScrollView {
             Layout.fillWidth: true

@@ -6,6 +6,11 @@
 
 #include "knotificationqmlplugin.h"
 
+#include <KNotificationConfiguration>
+
+#include <QQmlEngine>
+#include <QQmlExtensionPlugin>
+
 NotificationWrapper::NotificationWrapper(QObject *parent)
     : KNotification(QString(), KNotification::CloseOnTimeout, parent)
 {
@@ -66,4 +71,22 @@ void NotificationWrapper::clearActions(QQmlListProperty<KNotificationAction> *li
     notification->clearActions();
 }
 
+
+class KNotificationsQmlPlugin : public QQmlExtensionPlugin
+{
+    Q_OBJECT
+    Q_PLUGIN_METADATA(IID QQmlExtensionInterface_iid)
+
+public:
+    void registerTypes(const char *uri) override;
+};
+
+void KNotificationsQmlPlugin::registerTypes(const char *uri)
+{
+    qmlRegisterSingletonType(uri, 1, 0, "NotificationConfiguration", [](QQmlEngine *, QJSEngine *jsEngine) -> QJSValue {
+        return jsEngine->toScriptValue(KNotificationConfiguration());
+    });
+}
+
+#include "knotificationqmlplugin.moc"
 #include "moc_knotificationqmlplugin.cpp"

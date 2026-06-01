@@ -119,4 +119,10 @@ public:
     }
 };
 
+/*!
+ * \qmltype NotificationConfiguration
+ * \inqmlmodule org.kde.notifications
+ * \nativetype KNotificationConfiguration
+ */
+
 #endif // KNOTIFICATIONQMLPLUGIN_H

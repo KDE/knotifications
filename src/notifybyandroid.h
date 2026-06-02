@@ -10,7 +10,11 @@
 #include "knotificationplugin.h"
 
 #include <QJniObject>
+#include <QtJniTypes>
 #include <QPointer>
+
+Q_DECLARE_JNI_CLASS(NotifyByAndroidBackend, "org/kde/knotifications/NotifyByAndroid")
+Q_DECLARE_JNI_CLASS(KNotificationData, "org/kde/knotifications/KNotification")
 
 /* Android notification backend. */
 class NotifyByAndroid : public KNotificationPlugin
@@ -32,9 +36,9 @@ public:
     void notificationInlineReply(int id, const QString &text);
 
 private:
-    QJniObject createAndroidNotification(KNotification *notification, const KNotifyConfig &notifyConfig) const;
+    QtJniTypes::KNotificationData createAndroidNotification(KNotification *notification, const KNotifyConfig &notifyConfig) const;
 
-    QJniObject m_backend;
+    QtJniTypes::NotifyByAndroidBackend m_backend;
     QHash<int, QPointer<KNotification>> m_notifications;
 };
 

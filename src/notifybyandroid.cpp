@@ -17,6 +17,7 @@
 #include <QIcon>
 
 using namespace Qt::Literals;
+using namespace QtJniTypes;
 
 static NotifyByAndroid *s_instance = nullptr;
 
@@ -29,61 +30,43 @@ static void notificationFinished(JNIEnv *env, jobject that, jint notificationId)
     }
 }
 
-static void notificationActionInvoked(JNIEnv *env, jobject that, jint id, jstring action)
+Q_DECLARE_JNI_NATIVE_METHOD(notificationFinished);
+
+static void notificationActionInvoked(JNIEnv *env, jobject that, jint id, const QString &action)
 {
     Q_UNUSED(env);
     Q_UNUSED(that);
     if (s_instance) {
-        const char *str = env->GetStringUTFChars(action, nullptr);
-        s_instance->notificationActionInvoked(id, QString::fromUtf8(str));
-        env->ReleaseStringUTFChars(action, str);
+        s_instance->notificationActionInvoked(id, action);
     }
 }
 
-static void notificationInlineReply(JNIEnv *env, jobject that, jint id, jstring text)
+Q_DECLARE_JNI_NATIVE_METHOD(notificationActionInvoked)
+
+static void notificationInlineReply(JNIEnv *env, jobject that, jint id, const QString &text)
 {
+    Q_UNUSED(env);
     Q_UNUSED(that);
     if (s_instance) {
-        const char *str = env->GetStringUTFChars(text, nullptr);
-        s_instance->notificationInlineReply(id, QString::fromUtf8(str));
-        env->ReleaseStringUTFChars(text, str);
+        s_instance->notificationInlineReply(id, text);
     }
 }
 
-static const JNINativeMethod methods[] = {
-    {"notificationFinished", "(I)V", (void *)notificationFinished},
-    {"notificationActionInvoked", "(ILjava/lang/String;)V", (void *)notificationActionInvoked},
-    {"notificationInlineReply", "(ILjava/lang/String;)V", (void *)notificationInlineReply},
-};
-
-KNOTIFICATIONS_EXPORT jint JNICALL JNI_OnLoad(JavaVM *vm, void *)
-{
-    static bool initialized = false;
-    if (initialized) {
-        return JNI_VERSION_1_4;
-    }
-    initialized = true;
-
-    JNIEnv *env = nullptr;
-    if (vm->GetEnv((void **)&env, JNI_VERSION_1_4) != JNI_OK) {
-        qCWarning(LOG_KNOTIFICATIONS) << "Failed to get JNI environment.";
-        return -1;
-    }
-    jclass cls = env->FindClass("org/kde/knotifications/NotifyByAndroid");
-    if (env->RegisterNatives(cls, methods, sizeof(methods) / sizeof(JNINativeMethod)) < 0) {
-        qCWarning(LOG_KNOTIFICATIONS) << "Failed to register native functions.";
-        return -1;
-    }
-
-    return JNI_VERSION_1_4;
-}
+Q_DECLARE_JNI_NATIVE_METHOD(notificationInlineReply)
 
 NotifyByAndroid::NotifyByAndroid(QObject *parent)
     : KNotificationPlugin(parent)
 {
+    static bool nativeCallBacksInitialized = []() {
+        return NotifyByAndroidBackend::registerNativeMethods({
+            Q_JNI_NATIVE_METHOD(notificationFinished),
+            Q_JNI_NATIVE_METHOD(notificationActionInvoked),
+            Q_JNI_NATIVE_METHOD(notificationInlineReply)
+        });
+    }();
+
     s_instance = this;
-    QJniObject context = QNativeInterface::QAndroidApplication::context();
-    m_backend = QJniObject("org/kde/knotifications/NotifyByAndroid", "(Landroid/content/Context;)V", context.object<jobject>());
+    m_backend = NotifyByAndroidBackend(QNativeInterface::QAndroidApplication::context());
 }
 
 NotifyByAndroid::~NotifyByAndroid()
@@ -96,23 +79,23 @@ QString NotifyByAndroid::optionName()
     return QStringLiteral("Popup");
 }
 
-QJniObject NotifyByAndroid::createAndroidNotification(KNotification *notification, const KNotifyConfig &notifyConfig) const
+KNotificationData NotifyByAndroid::createAndroidNotification(KNotification *notification, const KNotifyConfig &notifyConfig) const
 {
     QJniEnvironment env;
-    QJniObject n("org/kde/knotifications/KNotification", "()V");
+    KNotificationData n;
     n.setField("id", notification->id());
-    n.setField("text", QJniObject::fromString(stripRichText(notification->text())).object<jstring>());
-    n.setField("richText", QJniObject::fromString(notification->text()).object<jstring>());
-    n.setField("title", QJniObject::fromString(notification->title()).object<jstring>());
+    n.setField("text", stripRichText(notification->text()));
+    n.setField("richText", notification->text());
+    n.setField("title", notification->title());
     n.setField("urgency", (jint)(notification->urgency() == KNotification::DefaultUrgency ? KNotification::HighUrgency : notification->urgency()));
-    n.setField("visibility", QJniObject::fromString(notification->hints().value(QLatin1String("x-kde-visibility")).toString().toLower()).object<jstring>());
+    n.setField("visibility", notification->hints().value(QLatin1String("x-kde-visibility")).toString().toLower());
 
-    n.setField("channelId", QJniObject::fromString(notification->eventId()).object<jstring>());
-    n.setField("channelName", QJniObject::fromString(notifyConfig.readEntry(QLatin1String("Name"))).object<jstring>());
-    n.setField("channelDescription", QJniObject::fromString(notifyConfig.readEntry(QLatin1String("Comment"))).object<jstring>());
+    n.setField("channelId", notification->eventId());
+    n.setField("channelName", notifyConfig.readEntry(QLatin1String("Name")));
+    n.setField("channelDescription", notifyConfig.readEntry(QLatin1String("Comment")));
 
     if ((notification->flags() & KNotification::SkipGrouping) == 0) {
-        n.setField("group", QJniObject::fromString(notification->eventId()).object<jstring>());
+        n.setField("group", notification->eventId());
     }
 
     // icon
@@ -156,15 +139,12 @@ QJniObject NotifyByAndroid::createAndroidNotification(KNotification *notificatio
     // actions
     const auto actions = notification->actions();
     for (const KNotificationAction *action : actions) {
-        n.callMethod<void>("addAction",
-                           "(Ljava/lang/String;Ljava/lang/String;)V",
-                           QJniObject::fromString(action->id()).object<jstring>(),
-                           QJniObject::fromString(action->label()).object<jstring>());
+        n.callMethod<void>("addAction", action->id(), action->label());
     }
 
     if (notification->replyAction()) {
-        n.setField("inlineReplyLabel", QJniObject::fromString(notification->replyAction()->label()).object<jstring>());
-        n.setField("inlineReplyPlaceholder", QJniObject::fromString(notification->replyAction()->placeholderText()).object<jstring>());
+        n.setField("inlineReplyLabel", notification->replyAction()->label());
+        n.setField("inlineReplyPlaceholder", notification->replyAction()->placeholderText());
     }
 
     return n;
@@ -175,18 +155,18 @@ void NotifyByAndroid::notify(KNotification *notification, const KNotifyConfig &n
     const auto n = createAndroidNotification(notification, notifyConfig);
     m_notifications.insert(notification->id(), notification);
 
-    m_backend.callMethod<void>("notify", "(Lorg/kde/knotifications/KNotification;)V", n.object<jobject>());
+    m_backend.callMethod<void>("notify", n);
 }
 
 void NotifyByAndroid::update(KNotification *notification, const KNotifyConfig &notifyConfig)
 {
     const auto n = createAndroidNotification(notification, notifyConfig);
-    m_backend.callMethod<void>("notify", "(Lorg/kde/knotifications/KNotification;)V", n.object<jobject>());
+    m_backend.callMethod<void>("notify", n);
 }
 
 void NotifyByAndroid::close(KNotification *notification)
 {
-    m_backend.callMethod<void>("close", "(ILjava/lang/String;)V", notification->id(), QJniObject::fromString(notification->eventId()).object<jstring>());
+    m_backend.callMethod<void>("close", notification->id(), notification->eventId());
     KNotificationPlugin::close(notification);
 }
 

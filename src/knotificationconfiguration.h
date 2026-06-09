@@ -25,6 +25,9 @@ class KNotificationConfigurationPrivate;
  * This is particularly relevant for sandboxed applications (Flatpak, APK, etc)
  * where the host platform ultimately decides if/how notifications are shown.
  *
+ * This requires an installed \c .notifyrc file matching the application name
+ * to work, a \c .notifyrc file bundled as Qt resource will only work on Android.
+ *
  * \since 6.28
  */
 class KNOTIFICATIONS_EXPORT KNotificationConfiguration

@@ -19,6 +19,20 @@
 
 using namespace Qt::Literals;
 
+[[nodiscard]] static bool hasNotifyRcFile(QStringView appName)
+{
+    if (!QStandardPaths::locate(QStandardPaths::GenericDataLocation, "knotifications6/"_L1 + appName + ".notifyrc"_L1).isEmpty()) {
+        return true;
+    }
+#ifdef Q_OS_ANDROID
+    // on platforms where the system doesn't read notifyrc files bundling them as Qt resources is good enough'
+    if (QFileInfo::exists(":/knotifications6/"_L1 + appName + ".notifyrc"_L1)) {
+        return true;
+    }
+#endif
+    return false;
+}
+
 #ifndef Q_OS_ANDROID
 struct {
     bool initialized : 1 = false;
@@ -32,6 +46,10 @@ static void detectCapabilities()
         return;
     }
     s_capabilities.initialized = true;
+
+    if (!hasNotifyRcFile(QCoreApplication::applicationName())) {
+        return;
+    }
 
     if (QFileInfo::exists(u"/.flatpak-info"_s)) {
         // technically only for Plasma >= 6.7, but we have no way to detect that
@@ -53,7 +71,7 @@ static void detectCapabilities()
 bool KNotificationConfiguration::isAvailable()
 {
 #ifdef Q_OS_ANDROID
-    return true;
+    return hasNotifyRcFile(QCoreApplication::applicationName());
 #else
     detectCapabilities();
     return s_capabilities.hasSystemSettingsUri || s_capabilities.hasKcm;

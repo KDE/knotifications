@@ -8604,7 +8604,7 @@ msgstr ""
 
 #~ msgid "Too many requests to server. Please try again in a few minutes."
 #~ msgstr ""
-#~ "Troppo requestas a le servitor. Pro favor prova de nove inter pauc "
+#~ "Troppo requestas a le servitor. Pro favor prova de nove inter pauco "
 #~ "minutas."
 
 #~ msgid "Unknown Open Collaboration Service API error. (%1)"

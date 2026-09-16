@@ -103,7 +103,7 @@ if(APPLE)
   target_link_libraries(KF6Notifications PRIVATE "-framework Foundation" "-framework AppKit")
 endif()
 
-ecm_generate_headers(KNotifications_HEADERS
+ecm_generate_headers(KNotifications_CamelCase_HEADERS
   HEADER_NAMES
   KNotification
   KNotificationConfiguration
@@ -119,6 +119,7 @@ install(TARGETS KF6Notifications EXPORT KF6NotificationsTargets ${KF_INSTALL_TAR
 install(FILES
   ${CMAKE_CURRENT_BINARY_DIR}/knotifications_export.h
   ${KNotifications_HEADERS}
+  ${KNotifications_CamelCase_HEADERS}
   DESTINATION ${KDE_INSTALL_INCLUDEDIR_KF}/KNotifications COMPONENT Devel
 )
 
@@ -136,6 +137,19 @@ if (ANDROID)
         RENAME KF6Notifications_${CMAKE_ANDROID_ARCH_ABI}-android-dependencies.xml
     )
 endif()
+
+ecm_add_installed_library_check(KF6Notifications
+    PACKAGE_NAME "KF6Notifications"
+    PACKAGE_TARGET_NAMESPACE "KF6::"
+)
+
+ecm_installed_library_check_include_strings(KF6Notifications
+    HEADERS ${KNotifications_CamelCase_HEADERS}
+)
+
+ecm_installed_library_check_version_preprocessor_macros(KF6Notifications
+    PREFIX KNOTIFICATIONS
+)
 
 if (TARGET Qt6::Qml)
     add_subdirectory(qml)

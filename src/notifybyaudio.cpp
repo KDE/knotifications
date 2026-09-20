@@ -171,9 +171,16 @@ void NotifyByAudio::ca_finish_callback(ca_context *c, uint32_t id, int error_cod
 
 void NotifyByAudio::finishCallback(uint32_t id, int error_code)
 {
-    KNotification *notification = m_notifications.value(id, nullptr);
-    if (!notification) {
+    const auto it = m_notifications.constFind(id);
+    if (it == m_notifications.constEnd()) {
         // We may have gotten a late finish callback.
+        return;
+    }
+
+    const auto notification = *it;
+    if (!notification) {
+        // Notification was already deleted
+        finishNotification(notification, id);
         return;
     }
 
@@ -204,7 +211,6 @@ void NotifyByAudio::close(KNotification *notification)
         int ret = ca_context_cancel(m_context, id);
         if (ret != CA_SUCCESS) {
             qCWarning(LOG_KNOTIFICATIONS) << "Failed to cancel canberra context for audio notification:" << ca_strerror(ret);
-            return;
         }
     }
 

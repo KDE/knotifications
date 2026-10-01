@@ -15,6 +15,7 @@
 #include "notifybyaudio.h"
 
 #include <QBuffer>
+#include <QDBusArgument>
 #include <QDBusConnection>
 #include <QDBusConnectionInterface>
 #include <QDBusError>
@@ -207,10 +208,23 @@ void NotifyByPortal::onServiceOwnerChanged(const QString &serviceName, const QSt
     }
 }
 
+static QString activationToken(const QVariantList &parameter)
+{
+    for (const QVariant &value : parameter) {
+        if (!value.canConvert<QDBusArgument>()) {
+            continue;
+        }
+        const QDBusArgument argument = value.value<QDBusArgument>();
+        if (argument.currentSignature() != QLatin1String("a{sv}")) {
+            continue;
+        }
+        return qdbus_cast<QVariantMap>(argument).value(QStringLiteral("activation-token")).toString();
+    }
+    return {};
+}
+
 void NotifyByPortal::onPortalNotificationActionInvoked(const QString &id, const QString &action, const QVariantList &parameter)
 {
-    Q_UNUSED(parameter);
-
     auto iter = d->portalNotifications.find(id.toUInt());
     if (iter == d->portalNotifications.end()) {
         return;
@@ -218,6 +232,9 @@ void NotifyByPortal::onPortalNotificationActionInvoked(const QString &id, const 
 
     KNotification *n = *iter;
     if (n) {
+        if (const QString token = activationToken(parameter); !token.isEmpty()) {
+            Q_EMIT xdgActivationTokenReceived(n->id(), token);
+        }
         Q_EMIT actionInvoked(n->id(), action);
     } else {
         d->portalNotifications.erase(iter);

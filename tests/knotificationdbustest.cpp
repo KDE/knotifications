@@ -5,7 +5,6 @@
 */
 
 #include <QTimer>
-#include <knotification.h>
 
 #include <QDBusConnection>
 #include <QDBusMessage>

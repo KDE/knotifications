@@ -21,7 +21,6 @@
 #include <utility>
 
 class KNotification;
-class QDBusPendingCallWatcher;
 
 class NotifyByPopup : public KNotificationPlugin
 {

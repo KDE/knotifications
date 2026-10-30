@@ -19,7 +19,6 @@
 #include "notifybyaudio.h"
 
 class KNotification;
-class QDBusPendingCallWatcher;
 
 class NotifyByPopup : public KNotificationPlugin
 {

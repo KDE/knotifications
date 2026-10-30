@@ -14,8 +14,6 @@
 #include <memory>
 
 class KNotification;
-class QPixmap;
-class KNotificationPlugin;
 
 class KNotificationManager : public QObject
 {

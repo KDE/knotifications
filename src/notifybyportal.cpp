@@ -29,6 +29,10 @@
 #include <QPointer>
 
 #include <KConfigGroup>
+
+#include <algorithm>
+#include <optional>
+
 static const char portalDbusServiceName[] = "org.freedesktop.portal.Desktop";
 static const char portalDbusInterfaceName[] = "org.freedesktop.portal.Notification";
 static const char portalDbusPath[] = "/org/freedesktop/portal/desktop";
@@ -51,12 +55,12 @@ public:
      * Sends notification to DBus "org.freedesktop.notifications" interface.
      * id knotify-sid identifier of notification
      * config notification data
-     * update If true, will request the DBus service to update
+     * updateId If not nullopt, will request the DBus service to update
                      the notification with new data from \c notification
      *               Otherwise will put new notification on screen
      * Returns true for success or false if there was an error.
      */
-    bool sendNotificationToPortal(KNotification *notification, const KNotifyConfig &config);
+    bool sendNotificationToPortal(KNotification *notification, const KNotifyConfig &config, const std::optional<int> &updateId);
 
     /*
      * Sends request to close Notification with id to DBus "org.freedesktop.notifications" interface
@@ -144,7 +148,7 @@ void NotifyByPortal::notify(KNotification *notification, const KNotifyConfig &no
     if (notifyConfig.actions().testFlag(KNotifyConfig::Popup)) {
         // check if Notifications DBus service exists on bus, use it if it does
         if (d->dbusServiceExists) {
-            if (!d->sendNotificationToPortal(notification, notifyConfig)) {
+            if (!d->sendNotificationToPortal(notification, notifyConfig, std::nullopt)) {
                 finish(notification); // an error occurred.
             }
         }
@@ -172,9 +176,10 @@ void NotifyByPortal::close(KNotification *notification)
 
 void NotifyByPortal::update(KNotification *notification, const KNotifyConfig &notifyConfig)
 {
-    // TODO not supported by portals
-    Q_UNUSED(notification);
-    Q_UNUSED(notifyConfig);
+    auto it = std::find(d->portalNotifications.cbegin(), d->portalNotifications.cend(), notification);
+    if (it != d->portalNotifications.cend()) {
+        d->sendNotificationToPortal(notification, notifyConfig, it.key());
+    }
 }
 
 void NotifyByPortal::onServiceOwnerChanged(const QString &serviceName, const QString &oldOwner, const QString &newOwner)
@@ -263,7 +268,7 @@ void NotifyByPortalPrivate::getAppCaptionAndIconName(const KNotifyConfig &notify
     }
 }
 
-bool NotifyByPortalPrivate::sendNotificationToPortal(KNotification *notification, const KNotifyConfig &notifyConfig_nocheck)
+bool NotifyByPortalPrivate::sendNotificationToPortal(KNotification *notification, const KNotifyConfig &notifyConfig_nocheck, const std::optional<int> &updateId)
 {
     QDBusMessage dbusNotificationMessage;
     dbusNotificationMessage = QDBusMessage::createMethodCall(QString::fromLatin1(portalDbusServiceName),
@@ -353,15 +358,21 @@ bool NotifyByPortalPrivate::sendNotificationToPortal(KNotification *notification
     portalArgs.insert(QStringLiteral("body"), text);
     portalArgs.insert(QStringLiteral("buttons"), QVariant::fromValue<QList<QVariantMap>>(buttons));
 
-    args.append(QString::number(nextId));
+    if (updateId) {
+        args.append(QString::number(*updateId));
+    } else {
+        args.append(QString::number(nextId));
+    }
     args.append(portalArgs);
 
     dbusNotificationMessage.setArguments(args);
 
     QDBusPendingCall notificationCall = QDBusConnection::sessionBus().asyncCall(dbusNotificationMessage, -1);
 
-    // If we are in sandbox we don't need to wait for returned notification id
-    portalNotifications.insert(nextId++, notification);
+    if (!updateId) {
+        // If we are in sandbox we don't need to wait for returned notification id
+        portalNotifications.insert(nextId++, notification);
+    }
 
     return true;
 }

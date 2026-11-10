@@ -52,7 +52,7 @@ void NotifyByPopup::notify(KNotification *notification, const KNotifyConfig &not
         // if we don't have the server capabilities yet, we need to query for them first;
         // as that is an async dbus operation, we enqueue the notification and process them
         // when we receive dbus reply with the server capabilities
-        m_notificationQueue.append(qMakePair(notification, notifyConfig));
+        m_notificationQueue.append(std::make_pair(notification, notifyConfig));
         queryPopupServerCapabilities();
     } else {
         if (notifyConfig.actions().testFlag(KNotifyConfig::Popup)) {
@@ -82,7 +82,7 @@ void NotifyByPopup::close(KNotification *notification)
         m_audio->close(notification);
     }
 
-    QMutableListIterator<QPair<KNotification *, KNotifyConfig>> iter(m_notificationQueue);
+    QMutableListIterator<std::pair<KNotification *, KNotifyConfig>> iter(m_notificationQueue);
     while (iter.hasNext()) {
         auto &item = iter.next();
         if (item.first == notification) {
@@ -359,7 +359,7 @@ void NotifyByPopup::queryPopupServerCapabilities()
         m_dbusServiceCapCacheDirty = false;
 
         // re-run notify() on all enqueued m_notifications
-        for (const QPair<KNotification *, KNotifyConfig> &noti : std::as_const(m_notificationQueue)) {
+        for (const std::pair<KNotification *, KNotifyConfig> &noti : std::as_const(m_notificationQueue)) {
             notify(noti.first, noti.second);
         }
 

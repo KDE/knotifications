@@ -18,6 +18,8 @@
 
 #include "notifybyaudio.h"
 
+#include <utility>
+
 class KNotification;
 class QDBusPendingCallWatcher;
 
@@ -76,7 +78,7 @@ private:
      * so we queue all notifications while waiting for the capabilities
      * to return, then process them from this queue
      */
-    QList<QPair<KNotification *, KNotifyConfig>> m_notificationQueue;
+    QList<std::pair<KNotification *, KNotifyConfig>> m_notificationQueue;
     /*
      * Whether the DBus notification daemon capability cache is up-to-date.
      */

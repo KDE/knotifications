@@ -509,12 +509,8 @@ void KNotification::beep(const QString &reason)
 void KNotification::sendEvent()
 {
     d->needUpdate = false;
-    if (d->isNew) {
-        d->isNew = false;
-        KNotificationManager::self()->notify(this);
-    } else {
-        KNotificationManager::self()->reemit(this);
-    }
+    d->isNew = false;
+    KNotificationManager::self()->notify(this);
 }
 
 int KNotification::id()

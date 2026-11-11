@@ -42,11 +42,6 @@ public:
      */
     void update(KNotification *n);
 
-    /*
-     * re-emit the notification
-     */
-    void reemit(KNotification *n);
-
 private Q_SLOTS:
     void notificationClosed();
     void xdgActivationTokenReceived(int id, const QString &token);

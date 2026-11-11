@@ -237,11 +237,6 @@ void KNotificationManager::update(KNotification *n)
     d->plugin->update(n, notifyConfig);
 }
 
-void KNotificationManager::reemit(KNotification *n)
-{
-    notify(n);
-}
-
 void KNotificationManager::reparseConfiguration(const QString &app)
 {
     if (!d->dirtyConfigCache.contains(app)) {

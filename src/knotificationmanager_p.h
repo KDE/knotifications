@@ -41,11 +41,15 @@ private Q_SLOTS:
 private:
     bool isInsideSandbox();
 
-    struct Private;
-    std::unique_ptr<Private> const d;
     KNotificationManager();
 
     friend class KNotificationManagerSingleton;
+
+    QHash<int, KNotification *> notifications;
+    KNotificationPlugin *plugin = nullptr;
+
+    QStringList dirtyConfigCache;
+    bool portalDBusServiceExists = false;
 };
 
 #endif

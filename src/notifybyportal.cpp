@@ -160,6 +160,13 @@ void NotifyByPortal::notify(KNotification *notification, const KNotifyConfig &no
         }
 
         d->m_audio->notify(notification, notifyConfig);
+
+        // if this is an audio-only notification close it when the sound finished playing
+        if (!notifyConfig.actions().testFlag(KNotifyConfig::Popup)) {
+            connect(d->m_audio.get(), &NotifyByAudio::finished, this, [this, notification] {
+                finish(notification);
+            });
+        }
     }
 }
 

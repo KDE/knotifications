@@ -31,6 +31,9 @@ public:
     void notify(KNotification *notification, const KNotifyConfig &notifyConfig);
     void close(KNotification *notification);
 
+Q_SIGNALS:
+    void finished();
+
 private Q_SLOTS:
     void finishCallback(uint32_t id, int error_code);
 

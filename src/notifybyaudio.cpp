@@ -226,6 +226,8 @@ void NotifyByAudio::finishNotification(KNotification *notification, quint32 id)
 {
     m_notifications.remove(id);
     m_loopSoundUrls.remove(id);
+
+    Q_EMIT finished();
 }
 
 #include "moc_notifybyaudio.cpp"

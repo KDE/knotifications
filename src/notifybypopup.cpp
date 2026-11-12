@@ -82,13 +82,9 @@ void NotifyByPopup::close(KNotification *notification)
         m_audio->close(notification);
     }
 
-    QMutableListIterator<std::pair<KNotification *, KNotifyConfig>> iter(m_notificationQueue);
-    while (iter.hasNext()) {
-        auto &item = iter.next();
-        if (item.first == notification) {
-            iter.remove();
-        }
-    }
+    m_notificationQueue.removeIf([notification](const auto &n) {
+        return n.first == notification;
+    });
 
     uint id = m_notifications.key(notification, 0);
 

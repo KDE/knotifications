@@ -61,7 +61,7 @@ NotifyBySnore::NotifyBySnore(QObject *parent)
     m_server.listen(QString::number(qHash(qApp->applicationDirPath())));
     connect(&m_server, &QLocalServer::newConnection, this, [this]() {
         QLocalSocket *responseSocket = m_server.nextPendingConnection();
-        connect(responseSocket, &QLocalSocket::readyRead, [this, responseSocket]() {
+        connect(responseSocket, &QLocalSocket::readyRead, this, [this, responseSocket]() {
             const QByteArray rawNotificationResponse = responseSocket->readAll();
             responseSocket->deleteLater();
 
@@ -204,11 +204,11 @@ void NotifyBySnore::notifyDeferred(KNotification *notification)
     }
 
     QProcess *snoretoastProcess = new QProcess();
-    connect(snoretoastProcess, &QProcess::readyReadStandardError, [snoretoastProcess, snoretoastArgsList]() {
+    connect(snoretoastProcess, &QProcess::readyReadStandardError, snoretoastProcess, [snoretoastProcess, snoretoastArgsList]() {
         const auto data = snoretoastProcess->readAllStandardError();
         qCDebug(LOG_KNOTIFICATIONS) << "SnoreToast process stderr:" << snoretoastArgsList << data;
     });
-    connect(snoretoastProcess, &QProcess::readyReadStandardOutput, [snoretoastProcess, snoretoastArgsList]() {
+    connect(snoretoastProcess, &QProcess::readyReadStandardOutput, snoretoastProcess, [snoretoastProcess, snoretoastArgsList]() {
         const auto data = snoretoastProcess->readAllStandardOutput();
         qCDebug(LOG_KNOTIFICATIONS) << "SnoreToast process stdout:" << snoretoastArgsList << data;
     });

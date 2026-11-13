@@ -85,6 +85,7 @@ private:
     friend class NotifyByPopup;
     friend class NotifyBySnore;
     friend class NotifyByAndroid;
+    friend class NotifyByMacOSNotificationCenter;
 
     void setId(const QString &id);
     QString id() const;

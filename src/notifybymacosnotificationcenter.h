@@ -24,6 +24,9 @@ public:
     void notify(KNotification *notification, const KNotifyConfig &notifyConfig) override;
     void update(KNotification *notification, const KNotifyConfig &notifyConfig) override;
     void close(KNotification *notification) override;
+
+    // actionIndex is -1 for the default action
+    void activate(KNotification *notification, int actionIndex);
 };
 
 #endif // NOTIFYBYMACOSNOTIFICATIONCENTER_H

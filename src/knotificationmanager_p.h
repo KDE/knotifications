@@ -14,6 +14,7 @@
 #include <memory>
 
 class KNotification;
+class KNotificationPlugin;
 
 class KNotificationManager : public QObject
 {
